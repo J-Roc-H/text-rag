@@ -1249,7 +1249,7 @@ const DB_SKILLS = {
   return {msg:`🛡️ <b>[오토 가드 Lv.${slv}]</b> 방어 확률 ${Math.floor(slv*6)}%! (${20+slv*5}턴)`, type:'level-up'};
 }},
 "쉴드 부메랑":{ rank:2, job:"JOB_CRU", type:"액티브", maxLv:5, spCost:(l)=>12, cooldown:2000, req:{"쉴드 차지":3}, emoji:"🛡️", desc:"방패를 던져 원거리 물리 피해.", effect(p,s,t,slv){
-  let shieldDef=(p.equip&&p.equip["방패"]&&DB.items[p.equip["방패"]]&&DB.items[p.equip["방패"]].def)||0;
+  let shieldDef=0; if(p.equip&&p.equip["방패"]){ let __pr=parseItem(p.equip["방패"]); let __it=__pr?__pr.base:DB.items[p.equip["방패"]]; shieldDef=(__it&&__it.def)||0; }
   let d=Math.max(1,Math.floor((shieldDef*4+s.baseAtk*0.5)*slv-t.softDef));
   t.currentHp-=d;
   return {msg:`🛡️ <b>[쉴드 부메랑 Lv.${slv}]</b> 방패 투척! <span class="hl-dmg">${d}</span> 피해!`, type:'crit'};
@@ -1716,7 +1716,7 @@ const DB_SKILLS = {
 }}
 ,"리플렉트 쉴드":{ rank:2, job:"JOB_CRU", type:"패시브", maxLv:10, spCost:0, req:{"쉴드 부메랑":3}, emoji:"🔄", desc:"피격 피해 일부 반사. Lv1: 5% ~ Lv10: 30%.", effect:null }
 ,"쉴드 차지":{ rank:2, job:"JOB_CRU", type:"액티브", maxLv:5, spCost:(l)=>12, cooldown:2000, req:{"오토 가드":5}, emoji:"🛡️", desc:"방패로 타격, 넉백.", effect(p,s,t,slv){
-  let shieldDef=(p.equip&&p.equip["방패"]&&DB.items[p.equip["방패"]]&&DB.items[p.equip["방패"]].def)||0;
+  let shieldDef=0; if(p.equip&&p.equip["방패"]){ let __pr=parseItem(p.equip["방패"]); let __it=__pr?__pr.base:DB.items[p.equip["방패"]]; shieldDef=(__it&&__it.def)||0; }
   let d=Math.max(1,Math.floor((shieldDef*3+s.baseAtk*0.5)*slv-t.softDef));
   t.currentHp-=d;
   return {msg:`🛡️ <b>[쉴드 차지 Lv.${slv}]</b> 방패 강타! <span class="hl-dmg">${d}</span> 피해! 넉백!`, type:'crit'};
@@ -3087,7 +3087,10 @@ function rollDrops(p, mon, opts){
     let chance = mon.drops[k] * ((isCard ? set.cardRate : set.dropRate) + rich);
     if(Math.random()*100 > chance) return;
 
-    let name = (it.dropSlots) ? `${k} [${it.dropSlots}]` : k;
+    // [P1-03] slots는 이 아이템이 원래 가진 소켓 수(무/유슬롯 쌍을 병합한 필드) —
+    // 드롭명에도 그대로 반영해야 parseItem() 폴백(이름에 [N] 없으면 base.slots로 추정)과
+    // 실제 표시가 어긋나지 않는다
+    let name = (it.slots>0) ? `${k} [${it.slots}]` : k;
     p.inventory[name] = (p.inventory[name]||0) + 1;
     if(isCard){ if(!p.cardCodex) p.cardCodex = {}; p.cardCodex[k] = true; }
     if(opts.summary) opts.summary.items[name] = (opts.summary.items[name]||0) + 1;
@@ -3753,7 +3756,7 @@ function calcStats(){
   if(p.inventory){
     Object.keys(p.inventory).forEach(n=>{
       let cnt = p.inventory[n]||0; if(!cnt) return;
-      let it = DB.items[n]; if(!it) return;
+      let pr = parseItem(n); let it = pr ? pr.base : DB.items[n]; if(!it) return;
       let w = it.weight||0;
       carriedWeight += w * cnt;
     });
@@ -6601,7 +6604,7 @@ function kafraWarehouse(){
   if(!invKeys.length) h+=`<div style="color:var(--text-dim);font-size:10px;padding:10px;">아이템 없음</div>`;
   invKeys.forEach(k=>{
     let safeK=k.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;');
-    let it=DB.items[k]; let qty=p.inventory[k];
+    let prK=parseItem(k); let it=prK?prK.base:DB.items[k]; let qty=p.inventory[k];
     h+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:3px 5px;border-bottom:1px dashed #eee;font-size:11px;">
       <span>${it?it.emoji:'📦'} ${safeK} <span style="color:var(--text-dim)">x${qty}</span></span>
       <button onclick="warehouseDeposit('${safeK}')" style="background:var(--blue-light);color:#fff;border:none;padding:2px 7px;border-radius:3px;font-size:10px;cursor:pointer;">맡기기 ▶</button>
@@ -6617,7 +6620,7 @@ function kafraWarehouse(){
   if(!whKeys.length) h+=`<div style="color:var(--text-dim);font-size:10px;padding:10px;">창고 비어있음</div>`;
   whKeys.forEach(k=>{
     let safeK=k.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;');
-    let it=DB.items[k]; let qty=wh[k];
+    let prK=parseItem(k); let it=prK?prK.base:DB.items[k]; let qty=wh[k];
     h+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:3px 5px;border-bottom:1px dashed #eee;font-size:11px;">
       <span>${it?it.emoji:'📦'} ${safeK} <span style="color:var(--text-dim)">x${qty}</span></span>
       <button onclick="warehouseWithdraw('${safeK}')" style="background:var(--gold);color:#fff;border:none;padding:2px 7px;border-radius:3px;font-size:10px;cursor:pointer;">◀ 찾기</button>
@@ -6702,13 +6705,17 @@ function showShopModal(npcName, npcData){
     h+=`</div>`;
   } else {
     // 판매 탭: 인벤토리에서 sellPrice 있는 것만 (퀘스트아이템 제외)
-    let sellable=Object.keys(p.inventory).filter(k=>p.inventory[k]>0&&DB.items[k]&&(DB.items[k].sell||0)>0&&DB.items[k].type!=='퀘스트아이템');
+    let sellable=Object.keys(p.inventory).filter(k=>{
+      if(!(p.inventory[k]>0)) return false;
+      let pr=parseItem(k); let it=pr?pr.base:DB.items[k];
+      return it && (it.sell||0)>0 && it.type!=='퀘스트아이템';
+    });
     if(!sellable.length){
       h+=`<div style="color:var(--text-dim);text-align:center;padding:20px;font-size:11px;">판매 가능한 아이템이 없습니다.</div>`;
     } else {
       h+=`<div style="display:flex;flex-direction:column;gap:5px;max-height:50vh;overflow-y:auto;">`;
       sellable.forEach(itemName=>{
-        let it=DB.items[itemName]; let qty=p.inventory[itemName];
+        let prN=parseItem(itemName); let it=prN?prN.base:DB.items[itemName]; let qty=p.inventory[itemName];
         let ocLv=(p.skills&&p.skills["오버챠지"])||0;
         let sellPrice=ocLv>0?Math.floor((it.sell||0)*(1+ocLv*0.024)):it.sell||0;
         h+=`<div style="display:flex;align-items:center;gap:8px;padding:7px 8px;background:#fff;border:1px solid var(--border);border-radius:4px;">
@@ -6746,7 +6753,7 @@ function shopBuy(itemName, price, npcName){
 function shopSell(itemName, sellPrice, npcName){
   let p=G.player;
   if((p.inventory[itemName]||0)<=0){ log('아이템이 없습니다.','error'); return; }
-  if(DB.items[itemName] && DB.items[itemName].type === '퀘스트아이템'){ log(`❌ <b>${itemName}</b>은(는) 퀘스트 아이템으로 판매할 수 없습니다.`,'error'); return; }
+  { let prS=parseItem(itemName); let itS=prS?prS.base:DB.items[itemName]; if(itS && itS.type === '퀘스트아이템'){ log(`❌ <b>${itemName}</b>은(는) 퀘스트 아이템으로 판매할 수 없습니다.`,'error'); return; } }
   p.inventory[itemName]--;
   if(p.inventory[itemName]<=0) delete p.inventory[itemName];
   p.zeny+=sellPrice;
@@ -7591,7 +7598,11 @@ function showVendingModal(lv){
   if(G.vendingSlots&&G.vendingSlots.length>0){ showVendingStatus(); return; }
   let slotCount=[3,5,8][(lv||1)-1]||3;
   let vendSlots=Array(slotCount).fill(null).map(()=>({item:'',price:0,qty:0}));
-  let invItems=Object.keys(p.inventory).filter(k=>p.inventory[k]>0&&DB.items[k]&&DB.items[k].type!=='퀘스트아이템');
+  let invItems=Object.keys(p.inventory).filter(k=>{
+    if(!(p.inventory[k]>0)) return false;
+    let pr=parseItem(k); let it=pr?pr.base:DB.items[k];
+    return it && it.type!=='퀘스트아이템';
+  });
 
   function calcBase(itemName){
     if(!itemName) return 0;
