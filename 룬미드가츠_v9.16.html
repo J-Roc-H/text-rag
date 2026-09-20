@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>룬 미드가츠 연대기</title>
-</head>
-<body>
 <!-- ════ BLOCK 1: STYLE ════ -->
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Noto+Sans+KR:wght@300;400;500&family=Noto+Serif+KR:wght@400;700&display=swap');
@@ -35400,10 +35398,13 @@ body.work-mode p {
 
   <span style="color:var(--border);margin:0 2px;flex-shrink:0;">│</span>
 
+  <button class="sys-btn" id="dev-tools-toggle" onclick="toggleDevTools()" title="개발자 도구 표시/숨김">🛠 개발자</button>
+  <span id="dev-tools-group" style="display:none;">
   <button class="sys-btn" onclick="showEditModal()" title="치트/디버그">✏️ 에디터</button>
   <button class="sys-btn" onclick="showDBViewer()" title="DB 데이터 뷰어/검증">🔍 DB뷰어</button>
   <button class="sys-btn" onclick="showMonsterListEditor()" title="몬스터 DB 편집">🐉 몬스터</button>
   <button class="sys-btn" onclick="showCombatSim()" title="전투 시뮬레이터 & 브레이크포인트">⚔️ 밸런스</button>
+  </span>
   <button class="sys-btn" onclick="exitToLobby()" style="color:var(--red-light);border-color:var(--red-light);">🏠 로비</button>
   <button class="sys-btn" id="dark-mode-btn" onclick="toggleDarkMode()">🌙 다크</button>
 
@@ -35557,6 +35558,20 @@ window.$ = id => {
   const saved = localStorage.getItem('rmc_theme') || 'light';
   document.documentElement.setAttribute('data-theme', saved);
 })();
+// [P2-10] 개발도구(에디터/DB뷰어/몬스터/밸런스) 기본 숨김 — 일반 플레이 UI와 분리
+(function(){
+  const on = localStorage.getItem('rmc_devtools') === '1';
+  const grp = document.getElementById('dev-tools-group');
+  if(grp) grp.style.display = on ? '' : 'none';
+})();
+
+function toggleDevTools(){
+  const grp = document.getElementById('dev-tools-group');
+  if(!grp) return;
+  const willShow = grp.style.display === 'none';
+  grp.style.display = willShow ? '' : 'none';
+  localStorage.setItem('rmc_devtools', willShow ? '1' : '0');
+}
 
 function toggleDarkMode(){
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
