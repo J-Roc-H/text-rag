@@ -16,6 +16,12 @@ git + GitHub 원격으로 머신간 동기화한다. **이유**: 룬미드가츠
 **현재 파일**: `룬미드가츠_v9.16.html` (빌드 산출물, 직접 편집 금지) ← `source/template.html` +
 `source/data/*.json` + `python build.py`
 
+**모바일 플레이**: https://j-roc-h.github.io/text-rag/ (GitHub Pages, 공개 저장소, 2026-09-20 개설).
+아이폰 "파일 앱"으로 html을 직접 열면 QuickLook 제한으로 JS가 안 돈다(DEVREF-E 보류-01) — 이 URL은
+진짜 브라우저 탭이라 정상 동작. `build.py`가 `index.html`도 같이 굽는다(루트 URL 고정, 버전 올라가도
+안 바뀜) — **버전 올릴 때 `INDEX_PATH` 갱신 빠뜨리지 말 것**, push하면 몇 분 내로 Pages 반영.
+저장소가 공개라 코드가 그대로 노출된다(RO 팬게임이라 설정·이름도 원작 그대로) — 감수하기로 확정.
+
 ---
 
 ## 작업 시작 전 필수 순서

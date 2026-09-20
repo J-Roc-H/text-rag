@@ -21,6 +21,9 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_PATH = os.path.join(BASE, "source", "template.html")
 DATA_DIR = os.path.join(BASE, "source", "data")
 OUTPUT_PATH = os.path.join(BASE, "룬미드가츠_v9.16.html")
+# GitHub Pages는 루트의 index.html을 서빙한다 — 버전 올려도 폰 북마크 URL이
+# 안 바뀌게 매 빌드마다 같은 내용을 index.html에도 복사한다 (2026-09-20)
+INDEX_PATH = os.path.join(BASE, "index.html")
 
 # 블록ID -> (데이터 파일명, 마커, 재삽입 시 그대로 삽입할지 여부)
 # db-items 는 사람이 읽기 편하게 json.dumps(indent=2)로 저장돼 있다 — 파일 내용을
@@ -51,7 +54,14 @@ def main():
     with open(tmp_path, "w", encoding="utf-8-sig", newline="\r\n") as f:
         f.write(template)
     os.replace(tmp_path, OUTPUT_PATH)
+
+    tmp_index = INDEX_PATH + ".tmp"
+    with open(tmp_index, "w", encoding="utf-8-sig", newline="\r\n") as f:
+        f.write(template)
+    os.replace(tmp_index, INDEX_PATH)
+
     print(f"OK - built {OUTPUT_PATH} ({len(template)} chars)")
+    print(f"OK - built {INDEX_PATH} (GitHub Pages entry point)")
 
 
 if __name__ == "__main__":
