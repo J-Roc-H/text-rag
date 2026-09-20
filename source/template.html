@@ -5561,7 +5561,7 @@ function checkVending(){
     if(Math.random()<buyChance){
       let buyer=VEND_BUYERS[Math.floor(Math.random()*VEND_BUYERS.length)];
       p.zeny+=slot.price;
-      if(p.records) p.records.totalZeny=(p.records.totalZeny||0)+slot.price;
+      if(p.records){ p.records.totalZeny=(p.records.totalZeny||0)+slot.price; p.records.totalVendingZeny=(p.records.totalVendingZeny||0)+slot.price; }
       slot.qty--;
       log(`🏪 <b>[${buyer}]</b>${josa(buyer,'이가')} <b>${slot.item}</b>${josa(slot.item,'을를')} <span style="color:var(--gold-light);font-weight:bold;">${slot.price.toLocaleString()}z</span>에 구매했습니다!`,'loot');
       sold=true;
@@ -6481,7 +6481,7 @@ function refine(sl){
   if((p.inventory[o]||0)<=0){log(`${o} 부족`,'error');return;}
   if(p.zeny<c){log(`제니 부족 (필요: ${c.toLocaleString()}z)`,'error');return;}
   p.inventory[o]--; if(p.inventory[o]<=0)delete p.inventory[o]; p.zeny-=c;
-  if(Math.random()*100<sr){if(!p.refineLevel)p.refineLevel={}; p.refineLevel[sl]=cur+1;log(`🔨 ${n} +${cur+1} 성공! (성공률 ${sr}%)`, 'loot');}
+  if(Math.random()*100<sr){if(!p.refineLevel)p.refineLevel={}; p.refineLevel[sl]=cur+1; p._maxRefineEver=Math.max(p._maxRefineEver||0,cur+1); log(`🔨 ${n} +${cur+1} 성공! (성공률 ${sr}%)`, 'loot');}
   else {p.equip[sl]=null;if(p.refineLevel)delete p.refineLevel[sl];log(`💥 ${n} 파괴! (성공률 ${sr}%)`, 'error');notify('파괴','red');}
   updateUI(); closeModal();
 }
@@ -9396,7 +9396,17 @@ const ACHIEVEMENTS = [
   { id: "z1m", title: "백만장자", desc: "누적 1,000,000 제니 획득", req: (p) => (p.records.totalZeny||0) >= 1000000 },
   { id: "t1h", title: "시간 여행자", desc: "플레이 타임 1시간 달성", req: (p) => (p.records.playTime||0) >= 3600 },
   { id: "lv50", title: "베테랑 모험가", desc: "Base Lv.50 달성", req: (p) => p.baseLv >= 50 },
-  { id: "boss1", title: "영웅의 자질", desc: "보스/MVP 몬스터 첫 처치", req: (p) => Object.keys(p.killCount||{}).some(name => Object.values(DB.monsters).some(m => m.name === name && m.hp >= 40000)) }
+  { id: "boss1", title: "영웅의 자질", desc: "보스/MVP 몬스터 첫 처치", req: (p) => Object.keys(p.killCount||{}).some(name => Object.values(DB.monsters).some(m => m.name === name && m.hp >= 40000)) },
+  // [P2-05] 업적 확충 (2026-09-20) — 카드도감·전직·MVP·강화·노점
+  { id: "card10", title: "카드 수집가", desc: "카드도감 10종 등록", req: (p) => Object.keys(p.cardCodex||{}).length >= 10 },
+  { id: "card50", title: "카드 마니아", desc: "카드도감 50종 등록", req: (p) => Object.keys(p.cardCodex||{}).length >= 50 },
+  { id: "job1", title: "첫 발걸음", desc: "1차 전직 완료", req: (p) => !!p.job && p.job !== '노비스' },
+  { id: "job2", title: "숙련된 모험가", desc: "2차 전직 완료", req: (p) => { let jc = JOB_NAME2CODE ? JOB_NAME2CODE[normalizeJob(p.job||'')] : null; return jc !== null && jc !== undefined && JOB_TIER[jc] === undefined; } },
+  { id: "rebirth1", title: "다시 태어난 자", desc: "전승 완료", req: (p) => !!p.rebirth },
+  { id: "mvp5", title: "보스 사냥꾼", desc: "서로 다른 MVP 5종 처치", req: (p) => Object.keys(p.killCount||{}).filter(name => Object.values(DB.monsters).some(m => m.name === name && m.hp >= 40000)).length >= 5 },
+  { id: "refine7", title: "장인의 손길", desc: "장비 +7 강화 달성", req: (p) => (p._maxRefineEver||0) >= 7 },
+  { id: "refine10", title: "전설의 대장장이", desc: "장비 +10 강화 달성", req: (p) => (p._maxRefineEver||0) >= 10 },
+  { id: "vend100k", title: "노점왕", desc: "노점 누적판매 100,000z", req: (p) => (p.records.totalVendingZeny||0) >= 100000 }
 ];
 
 function checkAchievements() {
