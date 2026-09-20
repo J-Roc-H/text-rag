@@ -1,0 +1,14 @@
+# 휴지통 / 임시
+휴지통/
+*.tmp
+~$*
+zNex~$*
+
+# OS / 편집기
+.obsidian/
+Thumbs.db
+.DS_Store
+
+# 세이브·런타임 (로컬 전용)
+*.save.json
+savedata*.json
