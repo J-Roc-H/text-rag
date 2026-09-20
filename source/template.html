@@ -4806,6 +4806,15 @@ function procResummonSlaves(p){
     }
 }
 function procPlayerStatusTick(p){
+  // [P1-01] 상태이상(지속시간·매턴 효과 전부) 실시간 1초 간격으로 분리 — ASPD 무관.
+  // processTurn 호출 빈도(=ASPD)가 올라가도 이 함수 내부 로직(turns--, 독/생츄어리/맥시마이즈파워
+  // 매턴 효과)은 실제 1초에 1회만 돈다. 자연회복(procNaturalRegen)과 같은 패턴 — 몬스터가 건 CC가
+  // 플레이어 ASPD에 비례해 실시간으로 빨리 풀리던 문제(고AGI 사실상 무적)의 근본 원인이었다.
+  let now = Date.now();
+  if(!p._lastStatusTickAt) p._lastStatusTickAt = now;
+  if(now - p._lastStatusTickAt < 1000) return;
+  p._lastStatusTickAt = now;
+
   let se=p.statusEffects||{};
   // 카드: 원령무사 HP 자동 감소
   { let _s2=calcStats(); if(_s2.cardHpDrainSelf>0){ let _p=G.player; let drain=Math.floor(_s2.cardHpDrainSelf/10); _p.hp=Math.max(1,_p.hp-drain); if(drain>0)log(`💀 <b>[원령무사]</b> HP -${drain}`,'dmg-recv'); } }
