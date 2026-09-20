@@ -6904,8 +6904,16 @@ function showItemDetail(n){
       if(!p.equip)p.equip={};
       let hadKey=(slot in p.equip);
       p.equip[slot]=n;
+      // [P2-09] 양손무기 미리보기 시 equipItem()과 동일하게 방패도 임시 해제 —
+      // 안 그러면 실제로는 사라질 방패 스탯이 그대로 남아 diff가 과대평가된다
+      const twoHandedTypes=['양손검','양손도끼','양손봉','창','활'];
+      let shieldCur=p.equip['방패']; let shieldHadKey=('방패' in p.equip); let shieldAutoUnequipped=false;
+      if(slot==='무기' && it.wType && twoHandedTypes.includes(it.wType) && shieldCur){
+        delete p.equip['방패']; shieldAutoUnequipped=true;
+      }
       let s2=calcStats();
       if(hadKey)p.equip[slot]=cur; else delete p.equip[slot];
+      if(shieldAutoUnequipped && shieldHadKey) p.equip['방패']=shieldCur;
       calcStats(); // 부수효과(weaponElement 등) 원복
       const _CMP=[['ATK','totalAtk'],['MATK','totalMAtk'],['DEF','hardDef'],['MDEF','hardMDef'],['HIT','hit'],['FLEE','flee'],['CRI','crit'],['HP','maxHp'],['SP','maxSp']];
       let rows=_CMP.map(([lb,k])=>{
@@ -6915,7 +6923,8 @@ function showItemDetail(n){
         return `<span style="margin-right:8px;white-space:nowrap;">${lb} <b style="color:${cl}">${ar}${Math.abs(d)}</b></span>`;
       }).filter(Boolean).join('');
       let curNm=cur?(cur.length>16?cur.slice(0,15)+'…':cur):'빈 슬롯';
-      cmpHtml=`<div style="margin-top:10px;padding:6px 8px;border:1px solid var(--border);border-radius:3px;background:rgba(0,0,0,0.03);font-size:10px;text-align:left;"><div style="color:var(--text-dim);margin-bottom:3px;">📊 장착 시 변화 <span style="font-size:9px">(현재: ${curNm})</span></div>${rows||'<span style="color:var(--text-dim)">스탯 변화 없음</span>'}</div>`;
+      let shieldNote=shieldAutoUnequipped?`<div style="color:#e67e22;margin-top:3px;">🛡️ 양손무기라 방패(${shieldCur}) 자동 해제됨</div>`:'';
+      cmpHtml=`<div style="margin-top:10px;padding:6px 8px;border:1px solid var(--border);border-radius:3px;background:rgba(0,0,0,0.03);font-size:10px;text-align:left;"><div style="color:var(--text-dim);margin-bottom:3px;">📊 장착 시 변화 <span style="font-size:9px">(현재: ${curNm})</span></div>${rows||'<span style="color:var(--text-dim)">스탯 변화 없음</span>'}${shieldNote}</div>`;
     }catch(e){ cmpHtml=''; }
   }
 

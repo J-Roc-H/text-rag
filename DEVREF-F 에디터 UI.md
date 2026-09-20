@@ -27,7 +27,8 @@
 
 - 장비 타입 && 미장착 && 보유 시: `p.equip[slot]` 임시 스왑 → `calcStats()` 2회 비교 → 원복 후 `calcStats()` 재호출(부수효과 복원)
 - 비교 필드: ATK/MATK/DEF/MDEF/HIT/FLEE/CRI/HP/SP — ▲초록/▼빨강
-- 한계: 양손무기→방패 해제 미반영(과대평가 가능), Accessory는 빈 슬롯 기준 (관련 백로그: DEVREF-E P2-09)
+- **양손무기→방패 자동해제 반영 (2026-09-20, P2-09)**: 미리보기 대상이 `twoHandedTypes`(양손검/양손도끼/양손봉/창/활)면 `p.equip['방패']`도 같이 임시 해제 후 계산 — `equipItem()`의 실제 동작과 일치. 해제 발생 시 diff 카드에 안내 문구 표시
+- 한계: Accessory는 빈 슬롯 기준
 
 ### ⑤ 모바일 레이아웃 (≤700px)
 
