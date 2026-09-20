@@ -36174,10 +36174,11 @@ const DB_SKILLS = {
   return {msg:`🏪 <b>[노점 개설 Lv.${slv}]</b> 노점 설정 창을 열었습니다.`, type:'system'};
 }},
 "매머나이트":{ rank:1, job:"JOB_MER", type:"액티브", maxLv:10, spCost:(l)=>5, cooldown:1500, emoji:"💰", desc:"제니를 소모해 방어 무시 강력 물리 피해.", effect(p,s,t,slv){
-  let cost=Math.floor(t.lv*slv*50);
+  // [P1-06] 원작(RO_스킬_레벨별_수치_테이블 「매머나이트」): 제니 100z×Lv 고정, ATK 100%+50%×Lv(Lv1 150%~Lv10 600%)
+  let cost=100*slv;
   if((p.zeny||0)<cost) return {msg:`💰 <b>[매머나이트]</b> 제니 부족! (필요: ${cost}z)`, type:'miss'};
   p.zeny-=cost;
-  let d=Math.max(1,cost*2+s.baseAtk*slv);
+  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(1+0.5*slv)));
   t.currentHp-=d;
   return {msg:`💰 <b>[매머나이트 Lv.${slv}]</b> ${cost}z 소모! 방어 무시 <span class="hl-dmg">${d}</span>!`, type:'crit'};
 }},
