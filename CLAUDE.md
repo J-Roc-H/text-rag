@@ -24,10 +24,23 @@ git + GitHub 원격으로 머신간 동기화한다. **이유**: 룬미드가츠
 
 ---
 
+## 세션 종류별 문서 경로 (2026-09-21)
+
+문서 정본은 언제나 vault다. 아래는 **정본에 닿는 방법**만 갈린다.
+
+- **데스크탑**: vault `D:\Vault_JROC\02_Dev\App\Text_Rag\` 직접 읽기. 세션 시작 시
+  `powershell -File scripts\sync-docs.ps1` 로 미러를 갱신한다(첫 실행만 `-Mode Initialize`).
+- **모바일/웹 세션**: vault에 닿을 수 없다 — 폰이 아니라 클라우드 컨테이너에서 돌기 때문이다.
+  `J-Roc-H/text-rag-docs`(비공개 미러)를 `add_repo`로 붙여 읽는다. **미러는 읽기 전용** —
+  DEVREF·개발일지를 여기서 고치지 않는다(정본 단일 소유). 남길 기록은
+  `_mobile-inbox/YYYY-MM-DD.md`에 append하고 push한다.
+- 데스크탑은 `_mobile-inbox/`에 들어온 초안을 `/wrapup-dev`로 정본에 병합한 뒤 그 파일을 지운다.
+  **인박스에 파일이 남아 있는 동안은 그 세션 기록이 아직 정본에 없다.**
+
 ## 작업 시작 전 필수 순서
 
 1. `git pull` — 다른 머신에서 작업했을 수 있음
-2. vault `DEVREF-INDEX.md` 읽기 (관련 DEVREF-A~H 이어서)
+2. `DEVREF-INDEX.md` 읽기 (관련 DEVREF-A~H 이어서) — 경로는 아래 「세션 종류별 문서 경로」
 3. 관련 시스템 블록 확인 (`DEVREF-A`「HTML 내부 블록 순서」)
 4. 이해 안 되는 부분은 **작업 전에** 질문
 
