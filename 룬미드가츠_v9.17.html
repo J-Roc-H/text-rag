@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>룬 미드가츠 연대기</title>
 <!-- ════ BLOCK 1: STYLE ════ -->
 <style>
@@ -33,7 +33,6 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg-deep);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:13px;height:100vh;height:100dvh;overflow:hidden;}
 
-#mobile-inv-btn { display: none; }
 #lobby{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;position:relative;background:radial-gradient(ellipse at 50% 30%,rgba(52,152,219,0.1) 0%,transparent 70%);}
 .lobby-title{font-family:'Cinzel',serif;font-size:28px;color:var(--gold);letter-spacing:4px;text-align:center;text-shadow:0 0 10px rgba(52,152,219,0.2);margin-bottom:8px;}
 .lobby-sub{font-size:11px;color:var(--text-dim);letter-spacing:2px;margin-bottom:30px;}
@@ -50,10 +49,13 @@ body{background:var(--bg-deep);color:var(--text);font-family:'Noto Sans KR',sans
 
 #app{display:none;height:100%;overflow:hidden;}
 .app-inner{display:grid;grid-template-columns:200px 1fr 185px;grid-template-rows:38px 1fr 52px;height:100%;}
-#titlebar{grid-column:1/-1;background:#c3d6e3;border-bottom:1px solid var(--border-gold);display:flex;align-items:center;padding:0 6px;gap:4px;z-index:10;overflow-x:auto;overflow-y:hidden;flex-wrap:nowrap;scrollbar-width:none;} /* [스타일] 플랫화 */
-#titlebar::-webkit-scrollbar{display:none;}
+#titlebar{grid-column:1/-1;background:#c3d6e3;border-bottom:1px solid var(--border-gold);display:flex;align-items:center;padding:0 6px;gap:6px;z-index:10;overflow:hidden;flex-wrap:nowrap;} /* [스타일] 플랫화 · [P1-13] 관리기능 나열·가로스크롤 제거 */
+.title-spacer{flex:1;min-width:0;}
+.save-state{font-size:11px;color:var(--text-dim);white-space:nowrap;flex-shrink:0;}
+.save-state.fail{color:var(--red-light);font-weight:700;}
+.icon-btn{font-size:16px;line-height:1;min-width:32px;height:28px;padding:0 6px;font-family:inherit;}
 .title-logo{font-family:'Cinzel',serif;font-size:13px;font-weight:900;color:var(--gold-light);letter-spacing:2px;white-space:nowrap;flex-shrink:0;}
-.title-map{font-size:10px;color:var(--gold);font-weight:600;white-space:nowrap;flex-shrink:0;}
+.title-map{font-size:11px;color:var(--gold);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
 .sys-btn{background:#ffffff;border:1px solid var(--border-gold);color:var(--gold);padding:2px 6px;cursor:pointer;font-size:10px;border-radius:2px;font-family:'Cinzel',serif;white-space:nowrap;flex-shrink:0;}
 
 #left-panel,#right-panel{background:var(--bg-panel);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
@@ -186,6 +188,43 @@ html[data-theme="dark"] .sum-card{background:#223040;}
 .menu-btn{flex:1;height:38px;background:#f7fafc;border:1px solid var(--border-gold);color:var(--gold-light);font-size:11px;cursor:pointer;border-radius:3px;font-weight:500;} /* [스타일] 플랫화 */
 .menu-btn:hover{background:#ffffff;border-color:var(--blue-light);}
 .menu-btn.hunt-on{background:#fdeeec;border-color:#c0665c;color:#a44a40;font-weight:700;} /* [스타일] 플랫화+감산 */
+/* ── [P1-13] UI 개편 1차 ── */
+button{touch-action:manipulation;}
+/* 좌측: 상세 진입 버튼 + 미분배 포인트 배지 */
+.char-detail-btns{display:flex;gap:4px;padding:6px 8px;border-bottom:1px solid var(--border);}
+.cd-open-btn{flex:1;height:32px;background:#f7fafc;border:1px solid var(--border-gold);color:var(--gold-light);font-size:12px;cursor:pointer;border-radius:3px;font-family:inherit;}
+.cd-open-btn:hover{border-color:var(--blue-light);}
+.pts-badge,.tab-badge{margin-left:4px;color:#fff;background:var(--red-light);border-radius:8px;padding:0 5px;font-size:11px;font-weight:700;font-style:normal;}
+/* 캐릭터 상세 시트 (모달 z 1000 아래 — 장비 슬롯 클릭 시 장비 모달이 위로) */
+#char-detail{position:fixed;inset:0;z-index:900;display:none;align-items:center;justify-content:center;background:rgba(20,30,40,.45);}
+#char-detail.open{display:flex;}
+.cd-box{background:var(--bg-panel);border:1px solid var(--border-gold);border-radius:4px;width:380px;max-width:96vw;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 10px 25px rgba(0,0,0,.2);}
+.cd-hdr{display:flex;align-items:center;border-bottom:1px solid var(--border-gold);background:#dfeaf1;}
+.cd-tabs{display:flex;flex:1;}
+.cd-tab{flex:1;height:40px;background:none;border:none;border-bottom:2px solid transparent;color:var(--text-dim);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+.cd-tab.active{color:var(--blue-light);border-bottom-color:var(--blue-light);}
+.cd-close{width:44px;height:40px;background:none;border:none;color:var(--text-dim);font-size:16px;cursor:pointer;}
+.cd-body{overflow-y:auto;-webkit-overflow-scrolling:touch;}
+#char-detail[data-tab="stats"] .equip-sec,#char-detail[data-tab="equip"] .stats-sec{display:none;}
+#char-detail .equip-sec{border-top:none;}
+/* 중앙: 현재 행동 상태 + 주행동 */
+#action-bar{border-top:1px solid var(--border-gold);background:var(--bg-panel);padding:6px 10px;display:flex;flex-direction:column;gap:6px;}
+.action-status{font-size:13px;color:var(--text);display:flex;flex-wrap:wrap;align-items:center;gap:4px;min-height:18px;}
+.as-sep{color:var(--text-dim);margin:0 2px;}
+.as-pot.empty{color:var(--red-light);font-weight:700;}
+.primary-action{height:44px;width:100%;background:#eaf4fb;border:1px solid var(--blue-light);color:var(--gold-light);font-size:15px;font-weight:700;border-radius:4px;cursor:pointer;font-family:inherit;}
+.primary-action:hover{background:#dcedf8;}
+.primary-action.hunt-on{background:#fdeeec;border-color:#c0665c;color:#a44a40;}
+/* ⚙/⋯ 메뉴 목록 */
+.menu-list{display:flex;flex-direction:column;gap:6px;}
+.menu-list-btn{min-height:44px;text-align:left;padding:0 14px;background:#fff;border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:14px;cursor:pointer;font-family:inherit;}
+.menu-list-btn:hover{border-color:var(--blue-light);background:#f2f7fa;}
+/* 가방 헤더 */
+.bag-weight{font-size:13px;padding:4px 6px 8px;color:var(--text);}
+.bag-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:10px;background:#f2f7fa;}
+.bag-tab{flex:1;min-height:40px;background:none;border:none;border-bottom:2px solid transparent;color:var(--text-dim);font-size:13px;font-weight:bold;cursor:pointer;font-family:inherit;}
+.bag-tab.active{color:var(--blue-light);border-bottom-color:var(--blue-light);background:#fff;}
+.mon-more{display:none;font-size:12px;color:var(--text-dim);text-align:center;padding:2px;}
 
 /* ── [v9.10] 능력치 상세 분석 Tooltip ── */
 .stat-tooltip {
@@ -355,33 +394,56 @@ html[data-theme="dark"] .mon-card.mvp{background:#262114;} /* [스타일] 플랫
 .job-btn{padding:10px;background:#ffffff;border:1px solid var(--border-gold);color:var(--gold-light);cursor:pointer;text-align:center;font-weight:600;border-radius:3px;}
 .job-btn:hover{background:#f2f7fa;border-color:var(--blue-light);}
 
-/* ── [UI-⑤] 모바일 레이아웃: 하단 탭 바 + 핫바 가로 스트립 ── */
+/* ── [UI-⑤→P1-13] 모바일: 상단 요약 · 상황 카드 · 로그 · 핫바 · 상태/주행동 · 보조행동 칩 · 탭 4개 ── */
 #mobile-tabbar{display:none;}
 @media(max-width:700px){
-  .app-inner{grid-template-columns:1fr;grid-template-rows:38px 1fr auto auto;}
-  #left-panel,#right-panel{display:none;}
-  /* 패널 = 전체 폭 시트 (탭 바 위까지) */
-  #left-panel.mobile-show,#right-panel.mobile-show{display:flex;position:fixed;top:38px;bottom:46px;left:0;right:0;width:auto;z-index:500;box-shadow:0 -2px 10px rgba(0,0,0,0.15);}
-  #main-area{grid-column:1;grid-row:2;}
-  #bottom-menu{grid-column:1;grid-row:3;flex-wrap:wrap;height:auto;padding:3px 4px;}
-  .menu-btn{flex:1;min-width:56px;height:32px;font-size:10px;}
-  #notif-area{right:8px;} .m-close{display:block;}
-  #mobile-inv-btn{display:none;} /* 탭 바 '가방'으로 대체 */
-  #mobile-char-btn,#mobile-enc-btn{display:none !important;} /* 탭 바로 대체 */
-  #titlebar{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;}
+  .app-inner{grid-template-columns:1fr;grid-template-rows:38px auto 1fr auto auto;}
+  #right-panel{display:none;}
+  .pc-only{display:none !important;}
+  /* 캐릭터 요약 스트립: 이름·직업·Lv | 제니 / HP·SP·EXP·JEXP 2열 */
+  #left-panel{grid-column:1;grid-row:2;display:grid;grid-template-columns:1fr auto;border-right:none;border-bottom:1px solid var(--border-gold);overflow:visible;}
+  #left-panel .char-portrait{grid-column:1;flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:6px;padding:4px 10px;border-bottom:none;background:none;}
+  #left-panel .char-portrait > div:first-child{display:none !important;} /* 인라인 display 덮어씀 */
+  #left-panel .zeny-row{grid-column:2;grid-row:1;border-bottom:none;background:none;padding:4px 10px;}
+  #left-panel .bars-sec{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;column-gap:12px;padding:0 10px 4px;border-bottom:none;background:none;}
+  #left-panel .bar-row{margin-bottom:2px;}
+  #left-panel #vending-badge{grid-column:1/-1;}
+  #left-panel .status-row,#left-panel .char-detail-btns{display:none;}
+  #main-area{grid-column:1;grid-row:3;}
+  /* 보조행동 칩 1줄 */
+  #bottom-menu{grid-column:1;grid-row:4;flex-wrap:nowrap;height:auto;padding:4px;gap:4px;}
+  .menu-btn{flex:1;min-width:0;height:44px;font-size:12px;padding:0 2px;white-space:nowrap;}
+  #notif-area{right:8px;}
   /* 하단 탭 바 */
-  #mobile-tabbar{display:flex;grid-column:1;grid-row:4;background:var(--bg-panel);border-top:1px solid var(--border-gold);height:46px;}
-  .mtab{flex:1;background:none;border:none;color:var(--text-dim);font-size:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer;padding:0;}
-  .mtab span{font-size:8px;line-height:1;}
+  #mobile-tabbar{display:flex;grid-column:1;grid-row:5;background:var(--bg-panel);border-top:1px solid var(--border-gold);height:52px;}
+  .mtab{flex:1;background:none;border:none;color:var(--text-dim);font-size:17px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;padding:0;position:relative;}
+  .mtab span{font-size:11px;line-height:1;}
   .mtab.active{color:var(--blue-light);font-weight:700;}
-  .mtab.hunt-on{color:#c0392b;font-weight:700;}
-  /* 핫바 가로 스트립 (main-area 하단으로 JS 이동) */
+  .mtab .tab-badge{position:absolute;top:4px;left:55%;margin:0;}
+  /* 상황 카드 — 전투 중에만, 몬스터 1마리 1줄 · 최대 3줄 + "외 N마리" */
+  #main-area #mon-list{flex:0 0 auto;overflow:visible;padding:4px 6px 0;border-bottom:1px solid var(--border);background:var(--bg-panel);}
+  #main-area #mon-list:has(.no-target){display:none;}
+  #main-area .mon-card{padding:3px 6px;margin-bottom:4px;}
+  #main-area .mon-card.mon-extra{display:none;}
+  #main-area .mon-more{display:block;padding:0 0 4px;}
+  #main-area .mon-meta{display:none;}
+  #main-area .mon-info{display:flex;align-items:center;gap:6px;min-width:0;}
+  #main-area .mon-name{flex:0 1 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:45%;}
+  #main-area .mon-hp-track{flex:1;margin-top:0;}
+  #main-area .mon-hp-txt{flex:0 0 auto;}
+  #main-area .mon-emoji{font-size:18px;}
+  /* 핫바 가로 스트립 (main-area 하단, 주행동 위로 JS 이동) */
   #main-area #hotbar-panel{border-top:1px solid var(--border);border-bottom:none;}
+  #main-area #hotbar-panel .panel-hdr{display:none;}
   #main-area .hotbar-grid{grid-template-columns:repeat(6,1fr);gap:2px;padding:3px 4px 4px;}
-  #main-area .hotbar-slot{min-height:38px;}
+  #main-area .hotbar-slot{min-height:44px;}
   .hb-hint{display:none;}
   #zone-hud{justify-content:flex-end;}
   .map-info-disp{display:none;} /* 좁은 화면: 구역 HUD 우선 */
+  .title-logo{display:none;}
+  /* 캐릭터 상세 = 탭 바 위 전체 폭 시트 */
+  #char-detail{top:38px;bottom:52px;align-items:stretch;background:none;}
+  .cd-box{width:100%;max-width:none;max-height:none;border-radius:0;border:none;}
 }
 
 /* ── Dark Mode ── */
@@ -418,6 +480,15 @@ html[data-theme="dark"] .stat-plus{background:#22303f;}
 html[data-theme="dark"] .equip-sec{background:#162030;}
 html[data-theme="dark"] .eq-slot{background:#1a2430;}
 html[data-theme="dark"] .map-hdr{background:#1a2634;} /* [스타일] 플랫화 */
+/* [P1-13] 신규 요소 다크 */
+html[data-theme="dark"] .cd-hdr{background:#202d3c;}
+html[data-theme="dark"] .cd-open-btn,html[data-theme="dark"] .menu-list-btn{background:#1a2430;color:var(--text);}
+html[data-theme="dark"] .menu-list-btn:hover{background:#22303f;}
+html[data-theme="dark"] .primary-action{background:#1f3448;color:var(--text-bright);}
+html[data-theme="dark"] .primary-action.hunt-on{background:#3a2226;border-color:#c0665c;color:#ff9b8f;}
+html[data-theme="dark"] .bag-tabs{background:#162030;}
+html[data-theme="dark"] .bag-tab.active{background:#1a2430;}
+html[data-theme="dark"] .icon-btn{color:var(--text-bright);}
 html[data-theme="dark"] #game-log{background:#1a2430;}
 html[data-theme="dark"] #mon-list{background:#1a2430;}
 html[data-theme="dark"] .mon-card{background:#1d2b3a;}
@@ -35380,45 +35451,45 @@ body.work-mode p {
 <div id="titlebar">
   <span class="title-logo">⚔ 룬 미드가츠</span>
   <span class="title-map" id="title-map">프론테라 남쪽 평원</span>
-
-  <button class="sys-btn" onclick="saveGame()" title="저장">💾 저장</button>
-  <button class="sys-btn" onclick="showDeviceTransfer()" title="다른 기기로 보내기 / 다른 기기에서 가져오기">🔄 기기 이동</button>
-  <label class="sys-btn" style="cursor:pointer;" title="파일 불러오기">
-    📂 로드
-    <input type="file" style="display:none;" onchange="importGame(event)"><!-- accept 미지정: iOS 선택기가 .rmg를 막지 않게 -->
-  </label>
-
-  <span style="color:var(--border);margin:0 2px;flex-shrink:0;">│</span>
-
-  <button class="sys-btn" onclick="toggleWorkMode()">>💼 업무 모드</button>
-  <button class="sys-btn" onclick="showEnvOptionModal()">⚙️ 환경 설정</button>
-  <button class="sys-btn" onclick="showCombatOptionModal()">⚔️ 전투 설정</button>
-  <button class="sys-btn" onclick="showAchieveModal()">🏆 업적</button>
-  <button class="sys-btn" onclick="showRecordModal()">📊 기록</button>
-  <button class="sys-btn" onclick="showJobTreeModal()" title="전직 경로 안내 — 어떤 조건에서 어디의 누구에게 가야 하는지">🌳 전직트리</button>
-
-  <span style="color:var(--border);margin:0 2px;flex-shrink:0;">│</span>
-
-  <button class="sys-btn" id="dev-tools-toggle" onclick="toggleDevTools()" title="개발자 도구 표시/숨김">🛠 개발자</button>
-  <span id="dev-tools-group" style="display:none;">
-  <button class="sys-btn" onclick="showEditModal()" title="치트/디버그">✏️ 에디터</button>
-  <button class="sys-btn" onclick="showDBViewer()" title="DB 데이터 뷰어/검증">🔍 DB뷰어</button>
-  <button class="sys-btn" onclick="showMonsterListEditor()" title="몬스터 DB 편집">🐉 몬스터</button>
-  <button class="sys-btn" onclick="showCombatSim()" title="전투 시뮬레이터 & 브레이크포인트">⚔️ 밸런스</button>
-  </span>
-  <button class="sys-btn" onclick="exitToLobby()" style="color:var(--red-light);border-color:var(--red-light);">🏠 로비</button>
-  <button class="sys-btn" id="dark-mode-btn" onclick="toggleDarkMode()">🌙 다크</button>
-
-  <button class="sys-btn" id="mobile-char-btn" style="display:none" onclick="toggleMobilePanel('left')">👤</button>
-  <button class="sys-btn" id="mobile-enc-btn" style="display:none" onclick="toggleMobilePanel('right')">⚔</button>
+  <span class="title-spacer"></span>
+  <span class="save-state" id="save-state" title="자동저장 — 60초마다, 화면을 떠날 때"></span>
+  <button class="sys-btn icon-btn" onclick="showSettingsMenu()" title="설정" aria-label="설정">⚙</button>
+  <button class="sys-btn icon-btn" onclick="showMoreMenu()" title="더보기" aria-label="더보기">⋯</button>
+  <input type="file" id="import-file-input" style="display:none;" onchange="importGame(event)"><!-- accept 미지정: iOS 선택기가 .rmg를 막지 않게 -->
 </div>
-<div id="left-panel"><div class="panel-hdr">CHARACTER <span class="m-close" onclick="toggleMobilePanel('left')">✕</span></div><div class="char-portrait"><div style="position:relative;display:inline-block;">
+<div id="left-panel"><div class="char-portrait"><div style="position:relative;display:inline-block;">
     <div class="portrait-frame" id="char-emoji">⚔️</div>
     <div id="mount-overlay" style="display:none;position:absolute;bottom:-4px;right:-4px;font-size:18px;line-height:1;filter:drop-shadow(0 0 3px #fff);"></div>
   </div>
   <div id="mount-btn-row" style="display:none;margin-top:4px;">
     <button onclick="dismount()" style="width:100%;padding:3px 6px;font-size:10px;background:var(--bg-panel);border:1px solid var(--gold);border-radius:3px;color:var(--gold);cursor:pointer;"><span id="mount-btn-label">🦤 하차</span></button>
   </div><div class="char-name" id="char-name">모험가</div><div class="char-job" id="char-job">노비스</div><div class="char-lv" id="char-lv">Base.1</div></div><div class="bars-sec"><div class="bar-row"><div class="bar-lbl"><span>HP</span><span id="hp-text">50/50</span></div><div class="bar-track"><div class="bar-fill hp-bar" id="hp-bar" style="width:100%"></div></div></div><div class="bar-row"><div class="bar-lbl"><span>SP</span><span id="sp-text">50/50</span></div><div class="bar-track"><div class="bar-fill sp-bar" id="sp-bar" style="width:100%"></div></div></div><div class="bar-row"><div class="bar-lbl"><span>EXP</span><span id="exp-text">0%</span></div><div class="bar-track"><div class="bar-fill exp-bar" id="exp-bar" style="width:0%"></div></div></div><div class="bar-row"><div class="bar-lbl"><span>JEXP</span><span id="jexp-text">0%</span></div><div class="bar-track"><div class="bar-fill job-bar" id="jexp-bar" style="width:0%"></div></div></div></div><div class="zeny-row"><span class="label">💰 제니</span><span class="zeny-val" id="zeny-disp">500 z</span></div><div id="vending-badge" onclick="showVendingStatus()" style="display:none;padding:3px 8px;border-bottom:1px solid var(--border);font-size:9px;color:var(--gold-light);font-weight:bold;cursor:pointer;background:#fff7e6;"></div><div class="status-row" id="status-row"></div>
+<div class="char-detail-btns"><button class="cd-open-btn" onclick="openCharDetail('stats')">📊 능력치<span class="pts-badge" id="pts-badge" style="display:none"></span></button><button class="cd-open-btn" onclick="openCharDetail('equip')">🛡 장비</button></div>
+</div>
+<div id="main-area"><div class="map-hdr"><span class="map-name-disp" id="map-name-disp">🗺 프론테라 평원</span><span id="zone-hud"></span><span class="map-info-disp" id="map-info-disp">Lv.1~10 | 필드</span></div><div id="log-filter"><span class="lf-chip active" data-lf="" onclick="setLogFilter('',this)">전체</span><span class="lf-chip" data-lf="lf-battle" onclick="setLogFilter('lf-battle',this)">⚔ 전투</span><span class="lf-chip" data-lf="lf-loot" onclick="setLogFilter('lf-loot',this)">🎁 보상</span><span class="lf-chip" data-lf="lf-sys" onclick="setLogFilter('lf-sys',this)">📋 시스템</span></div><div id="game-log"></div>
+<!-- [P1-13] 현재 행동 상태 + 주행동 (자동사냥은 여기로 이동, id 유지) -->
+<div id="action-bar"><div class="action-status" id="action-status">대기 중</div><button class="primary-action" id="hunt-btn" onclick="toggleHunt()">▶ 자동사냥</button></div></div>
+<div id="right-panel"><div id="hotbar-panel"><div class="panel-hdr">HOTBAR <span class="hb-hint" style="font-size:9px;font-weight:normal;color:var(--text-dim)">슬롯 클릭으로 등록 / 키보드 QWERASDFZXCV</span></div><div class="hotbar-grid" id="hotbar-grid"></div></div><div class="panel-hdr">ENCOUNTER</div><div id="mon-list"><div class="no-target">전투 중인 적 없음</div></div></div>
+<div id="bottom-menu">
+<button class="menu-btn" onclick="showMapModal()">🗺 이동</button>
+<button class="menu-btn" onclick="showNpcModal()">💬 NPC</button>
+<button class="menu-btn" onclick="showSkillModal()">✨ 스킬</button>
+<button class="menu-btn" id="quest-btn" onclick="showQuestModal()">📋 퀘스트</button>
+<button class="menu-btn" onclick="showCodexModal()">📖 도감</button>
+<button class="menu-btn pc-only" onclick="showInvModal()">🎒 가방</button>
+<button class="menu-btn pc-only" onclick="showMoreMenu()">☰ 메뉴</button>
+</div>
+<!-- [P1-13] 모바일 하단 탭 4개: 로그·캐릭터·가방·메뉴 (사냥은 중앙 주행동, 전투는 상황 카드) -->
+<div id="mobile-tabbar">
+  <button class="mtab active" data-mt="log" onclick="mobileTab('log')">📜<span>로그</span></button>
+  <button class="mtab" data-mt="char" onclick="mobileTab('char')">👤<span>캐릭터</span><i class="tab-badge" id="m-pts-badge" style="display:none"></i></button>
+  <button class="mtab" data-mt="bag" onclick="mobileTab('bag')">🎒<span>가방</span></button>
+  <button class="mtab" data-mt="menu" onclick="mobileTab('menu')">☰<span>메뉴</span></button>
+</div></div>
+<!-- [P1-13] 캐릭터 상세 — PC 좌측 버튼·모바일 캐릭터 탭 공용 1화면. 노드 id는 기존 그대로(updateUI가 갱신) -->
+<div id="char-detail" onclick="if(event.target===this)closeCharDetail()"><div class="cd-box">
+<div class="cd-hdr"><div class="cd-tabs"><button class="cd-tab" data-cd="stats" onclick="openCharDetail('stats')">능력치</button><button class="cd-tab" data-cd="equip" onclick="openCharDetail('equip')">장비</button></div><button class="cd-close" onclick="closeCharDetail()" aria-label="닫기">✕</button></div>
+<div class="cd-body" id="cd-body">
 <div class="stats-sec">
   <div class="pts-row" id="pts-row"></div>
   <div class="stat-r"><span class="stat-lbl">STR</span><span class="stat-v" id="stat-str">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-str" onclick="addStat('str',1)">+1</button><button class="stat-plus10" id="plus10-str" onclick="addStat('str',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:22px;height:14px;font-size:8px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
@@ -35437,7 +35508,6 @@ body.work-mode p {
   <div class="stat-r"><span class="stat-lbl">✨ CRIT</span><span class="stat-v" id="stat-crit">1</span></div>
   <div class="stat-r"><span class="stat-lbl">⚡ ASPD</span><span class="stat-v" id="stat-aspd">100</span></div>
   <div class="stat-r"><span class="stat-lbl">🔵 CAST</span><span class="stat-v" id="stat-cast">100%</span></div>
-  <div class="stat-r"><span class="stat-lbl">🎒 무게</span><span class="stat-v" id="stat-weight">0/2000</span></div>
 </div>
 <div class="equip-sec">
 <div class="panel-hdr" style="margin:0 -8px 4px;padding:3px 8px;">EQUIPMENT</div>
@@ -35453,34 +35523,8 @@ body.work-mode p {
   <div class="eq-slot" onclick="openEquipModal('악세1')"><div class="eq-slot-lbl">악세사리1</div><div class="eq-slot-item" id="eq-악세1">—</div></div>
   <div class="eq-slot" onclick="openEquipModal('악세2')"><div class="eq-slot-lbl">악세사리2</div><div class="eq-slot-item" id="eq-악세2">—</div></div>
 </div>
-</div></div>
-<div id="main-area"><div class="map-hdr"><span class="map-name-disp" id="map-name-disp">🗺 프론테라 평원</span><span id="zone-hud"></span><span class="map-info-disp" id="map-info-disp">Lv.1~10 | 필드</span></div><div id="log-filter"><span class="lf-chip active" data-lf="" onclick="setLogFilter('',this)">전체</span><span class="lf-chip" data-lf="lf-battle" onclick="setLogFilter('lf-battle',this)">⚔ 전투</span><span class="lf-chip" data-lf="lf-loot" onclick="setLogFilter('lf-loot',this)">🎁 보상</span><span class="lf-chip" data-lf="lf-sys" onclick="setLogFilter('lf-sys',this)">📋 시스템</span></div><div id="game-log"></div></div>
-<div id="right-panel"><div id="hotbar-panel"><div class="panel-hdr">HOTBAR <span class="hb-hint" style="font-size:9px;font-weight:normal;color:var(--text-dim)">슬롯 클릭으로 등록 / 키보드 QWERASDFZXCV</span></div><div class="hotbar-grid" id="hotbar-grid"></div></div><div class="panel-hdr">ENCOUNTER <span class="m-close" onclick="toggleMobilePanel('right')">✕</span></div><div id="mon-list"><div class="no-target">전투 중인 적 없음</div></div><div class="panel-hdr">INVENTORY</div>
-<div class="inv-tabs">
-  <div class="inv-tab active" onclick="switchTab('all',this)">전체</div>
-  <div class="inv-tab" onclick="switchTab('cons',this)">소모품</div>
-  <div class="inv-tab" onclick="switchTab('equip',this)">장비</div>
-  <div class="inv-tab" onclick="switchTab('etc',this)">수집품</div>
-  <div class="inv-tab" onclick="switchTab('card',this)">카드</div>
 </div>
-<div class="inv-content" id="inv-content"></div></div>
-<div id="bottom-menu">
-<button class="menu-btn" onclick="showMapModal()">🗺 이동</button>
-<button class="menu-btn" onclick="showNpcModal()">💬 NPC</button>
-<button class="menu-btn" onclick="showSkillModal()">✨ 스킬</button>
-<button class="menu-btn" id="quest-btn" onclick="showQuestModal()">📋 퀘스트</button>
-<button class="menu-btn" id="mobile-inv-btn" onclick="showInvModal()">🎒 인벤</button>
-<button class="menu-btn" onclick="showCodexModal()">📖 도감</button>
-<button class="menu-btn hunt-btn" id="hunt-btn" onclick="toggleHunt()">▶ 자동사냥</button>
-</div>
-<!-- [UI-⑤] 모바일 하단 탭 바 -->
-<div id="mobile-tabbar">
-  <button class="mtab active" data-mt="log" onclick="mobileTab('log',this)">📜<span>로그</span></button>
-  <button class="mtab" data-mt="char" onclick="mobileTab('char',this)">👤<span>캐릭터</span></button>
-  <button class="mtab" data-mt="battle" onclick="mobileTab('battle',this)">⚔<span>전투</span></button>
-  <button class="mtab" onclick="showInvModal()">🎒<span>가방</span></button>
-  <button class="mtab" id="m-hunt-btn" onclick="toggleHunt()">▶<span>사냥</span></button>
-</div></div>
+</div></div></div>
 </div>
 <div id="modal-overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
@@ -35559,19 +35603,67 @@ window.$ = id => {
   const saved = localStorage.getItem('rmc_theme') || 'light';
   document.documentElement.setAttribute('data-theme', saved);
 })();
-// [P2-10] 개발도구(에디터/DB뷰어/몬스터/밸런스) 기본 숨김 — 일반 플레이 UI와 분리
-(function(){
-  const on = localStorage.getItem('rmc_devtools') === '1';
-  const grp = document.getElementById('dev-tools-group');
-  if(grp) grp.style.display = on ? '' : 'none';
-})();
+// ── [P1-13] 상단바 ⚙ / ⋯ 메뉴 — 관리 기능을 플레이 화면에서 격리 ──
+// 개발도구(에디터/DB뷰어/몬스터/밸런스)는 ⋯ → 개발자 하위 목록으로만 연다([P2-10] 분리 유지).
+function _menuList(items){
+  return '<div class="menu-list">' + items.map(([label, fn]) =>
+    `<button class="menu-list-btn" onclick="closeModal();${fn}">${label}</button>`).join('') + '</div>';
+}
+function showSettingsMenu(){
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  openModal('⚙ 설정', _menuList([
+    ['⚙️ 환경 설정', 'showEnvOptionModal()'],
+    ['⚔️ 전투 설정', 'showCombatOptionModal()'],
+    [dark ? '☀️ 라이트 모드' : '🌙 다크 모드', 'toggleDarkMode()'],
+  ]));
+}
+function showMoreMenu(){
+  openModal('⋯ 더보기', _menuList([
+    ['💾 파일로 백업', 'saveGame()'],
+    ['📂 파일 불러오기', "document.getElementById('import-file-input').click()"],
+    ['🔄 기기 이동', 'showDeviceTransfer()'],
+    ['💼 업무 모드', 'toggleWorkMode()'],
+    ['🏆 업적', 'showAchieveModal()'],
+    ['📊 기록', 'showRecordModal()'],
+    ['🌳 전직 안내', 'showJobTreeModal()'],
+    ['🏠 로비', 'exitToLobby()'],
+    ['🛠 개발자', 'showDevMenu()'],
+  ]));
+  if(typeof syncMobileTab === 'function') syncMobileTab();
+}
+function showDevMenu(){
+  openModal('🛠 개발자', _menuList([
+    ['✏️ 에디터', 'showEditModal()'],
+    ['🔍 DB뷰어', 'showDBViewer()'],
+    ['🐉 몬스터', 'showMonsterListEditor()'],
+    ['⚔️ 밸런스', 'showCombatSim()'],
+  ]));
+}
 
-function toggleDevTools(){
-  const grp = document.getElementById('dev-tools-group');
-  if(!grp) return;
-  const willShow = grp.style.display === 'none';
-  grp.style.display = willShow ? '' : 'none';
-  localStorage.setItem('rmc_devtools', willShow ? '1' : '0');
+// ── [P1-13] 캐릭터 상세 (능력치·장비·스탯 분배) — PC·모바일 공용 1화면 ──
+function openCharDetail(tab){
+  const el = document.getElementById('char-detail'); if(!el) return;
+  tab = tab || 'stats';
+  el.dataset.tab = tab;
+  el.classList.add('open');
+  document.querySelectorAll('#char-detail .cd-tab').forEach(b => b.classList.toggle('active', b.dataset.cd === tab));
+  if(typeof syncMobileTab === 'function') syncMobileTab();
+}
+function closeCharDetail(){
+  const el = document.getElementById('char-detail'); if(el) el.classList.remove('open');
+  if(typeof syncMobileTab === 'function') syncMobileTab();
+}
+
+// ── [P1-13] 상단 저장 상태 — 기준은 자동저장(saveLocal). 파일 백업은 섞지 않는다 ──
+function setSaveState(state){
+  const el = document.getElementById('save-state'); if(!el) return;
+  el.classList.toggle('fail', state === 'fail');
+  if(state === 'saving') el.textContent = '저장 중…';
+  else if(state === 'fail') el.textContent = '저장 실패';
+  else {
+    const d = new Date();
+    el.textContent = `저장됨 ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  }
 }
 
 function toggleDarkMode(){
@@ -35622,18 +35714,14 @@ function loadDB(){
   window.JOB_NAME2CODE = DB.jobName2Code;
 }
   window.addEventListener('keydown', (e) => {
-    // [Space] 사냥 시작/중지
+    // [Space] 사냥 시작/중지 — [P1-13] 버튼·입력 포커스 중엔 가로채지 않는다(Tab 탐색 후 Space = 버튼 누름)
+    // [P1-13] Tab → 업무모드 단축키 폐지 — 보스키는 백틱(`), Tab은 브라우저 기본 키보드 탐색
     if (e.code === 'Space') {
-        if (!G.player || G.battles.length === 0) return; 
+        if (!G.player || G.battles.length === 0) return;
+        const tag = document.activeElement && document.activeElement.tagName;
+        if (['BUTTON','INPUT','SELECT','TEXTAREA','A'].includes(tag)) return;
         e.preventDefault();
         toggleHunt();
-    }
-    
-    // [Tab] 업무 모드 전환
-    if (e.key === 'Tab') {
-        e.preventDefault(); // 브라우저 포커스 이동 방지
-		if (!G.player || G.battles.length === 0) return;
-        toggleWorkMode();
     }
   });
 // 직업명 정규화: 어떤 표기든 정규명으로 통일
@@ -37151,7 +37239,7 @@ function consumeMats(p, mats) {
 }
 
 function loadSlots(){ try{ let d=localStorage.getItem('rmc_v3'); if(d)slots=JSON.parse(d); }catch(e){} }
-function saveSlots(){ try{ localStorage.setItem('rmc_v3',JSON.stringify(slots)); }catch(e){} }
+function saveSlots(){ try{ localStorage.setItem('rmc_v3',JSON.stringify(slots)); return true; }catch(e){ return false; } } // [P1-13] 성공 여부 반환 — 상단 저장 상태 표시용
 // [P1-09] 현재 캐릭터를 브라우저 저장소 슬롯에 기록 — 수동 저장·자동저장 공통 경로.
 // 위치 규칙: 안전지역(safe 맵)에서만 savedMap 갱신, 필드면 기존 귀환지점 유지.
 // 쓰기 직전 저장소를 다시 읽어 자기 슬롯만 덮는다 — 다른 탭이 바꾼 다른 슬롯을 낡은 메모리로 되돌리지 않게.
@@ -37164,7 +37252,7 @@ function saveLocal(){
   loadSlots();
   slots[activeSlot] = JSON.parse(JSON.stringify(G.player));
   slots[activeSlot].savedMap = (DB.maps[G.currentMap]&&DB.maps[G.currentMap].safe) ? G.currentMap : (G.player.savedMap||'프론테라');
-  saveSlots();
+  setSaveState(saveSlots() ? 'saved' : 'fail'); // [P1-13] 반환값(true)은 기존 호출부 계약대로 유지
   return true;
 }
 function deleteSlot(idx, e) {
@@ -38843,17 +38931,9 @@ function updateUI(){
   // CAST 표시: DEX 기반 단축률 + 무캐스팅 여부
   // 소지무게 표시
   updateMountUI();
-  if($('stat-weight')){
-    // [P4-02] 같은 함수 안에서 3940행 s와 완전히 같은 재계산 — updateMountUI()는 DOM만 만지고
-    // calcStats 의존 상태(장비/스탯/버프)를 안 건드리므로 s 그대로 재사용해도 안전(2a 누락분)
-    let wc=s.carriedWeight||0, wm=s.maxWeight||2000;
-    let wpct=Math.floor(wc/wm*100);
-    // [P2-02] 색상 구간을 실제 패널티 구간과 일치시킴: 50 자연회복정지 / 70 자동스킬금지 / 90 ASPD
-    let wcolor = wpct>90?'var(--red-light)':wpct>70?'var(--red)':wpct>50?'var(--gold)':'var(--green)';
-    let wtip = wpct>90?'자연회복 정지 + 자동스킬 불가 + ASPD 저하':wpct>70?'자연회복 정지 + 자동스킬 불가':wpct>50?'자연회복 정지':'패널티 없음';
-    let wmark = wpct>50?`<span style="color:${wcolor};font-size:9px"> ⚠${wpct}%</span>`:'';
-    $('stat-weight').innerHTML=`<span title="무게 패널티: ${wtip}"><span style="color:${wcolor}">${wc}</span><span style="color:var(--text-dim);font-size:9px">/${wm}</span>${wmark}</span>`;
-  }
+  // [P1-13] 무게 표시는 가방 헤더(showInvModal)로 이동 — weightInfo(s) 공용. 과적 경고는 현재 행동 상태줄
+  // [P4-02] updateMountUI()는 DOM만 만지므로 s 그대로 재사용해도 안전
+  G._weight = weightInfo(s);
   if($('stat-cast')){
     let castPct = Math.floor(s.castReduction * 100);
     let castColor = s.instantCast ? 'var(--green)' : castPct >= 50 ? 'var(--gold)' : 'var(--text-dim)';
@@ -38863,6 +38943,8 @@ function updateUI(){
   }
   
   let pts=p.statPoints||0; if($('pts-row')) $('pts-row').textContent=pts>0?`포인트: ${pts}`:'';
+  // [P1-13] 미분배 포인트 배지 — PC 좌측 능력치 버튼 / 모바일 캐릭터 탭
+  ['pts-badge','m-pts-badge'].forEach(id=>{ let b=document.getElementById(id); if(b){ b.textContent=pts>0?`●${pts}`:''; b.style.display=pts>0?'':'none'; } });
 
   // 스탯별 다음 1칸 비용 반영 (원작 누진 비용) — 상한·잔액에 따라 버튼 노출/흐림 처리
   STAT_KEYS.forEach(k=>{
@@ -38913,13 +38995,40 @@ function updateUI(){
 	el.className='eq-slot-item has';}
     else {el.textContent='—'; el.className='eq-slot-item';}
   });
-  renderInvPanel(); renderMonsters(); renderChar(); renderStatusHUD(); renderHotbar();
+  renderInvPanel(); renderMonsters(); renderChar(); renderStatusHUD(); renderHotbar(); updateActionStatus();
+}
+// [P1-13] 소지 무게 요약 — 색 구간은 실제 패널티 구간([P2-02]: 50 자연회복정지 / 70 자동스킬금지 / 90 ASPD)
+function weightInfo(s){
+  let wc=s.carriedWeight||0, wm=s.maxWeight||2000;
+  let pct=Math.floor(wc/wm*100);
+  let color = pct>90?'var(--red-light)':pct>70?'var(--red)':pct>50?'var(--gold)':'var(--green)';
+  let tip = pct>90?'자연회복 정지 + 자동스킬 불가 + ASPD 저하':pct>70?'자연회복 정지 + 자동스킬 불가':pct>50?'자연회복 정지':'패널티 없음';
+  return {wc, wm, pct, color, tip};
+}
+function weightHtml(w){
+  return `<span title="무게 패널티: ${w.tip}"><span style="color:${w.color}">${w.wc}</span><span style="color:var(--text-dim)">/${w.wm}</span>${w.pct>50?`<span style="color:${w.color}"> ⚠${w.pct}%</span>`:''}</span>`;
+}
+// [P1-13] 현재 행동 상태줄 — "지금 무엇을 하고 있는가"(로그와 분리). 자동포션 잔량·과적 경고를 함께 둔다
+function updateActionStatus(){
+  let el=document.getElementById('action-status'); let p=G.player; if(!el||!p) return;
+  let parts=[];
+  if(G.autoHunt){
+    let k=(G.idleSum&&G.idleSum.kills)||0;
+    parts.push(`<b>자동사냥 중</b>${G.battles.length?` · ${G.battles[0].name}`:''} · 처치 ${k}`);
+  } else if(G.battles.length){
+    parts.push(`<b>교전 중</b> · ${G.battles[0].name}${G.battles.length>1?` 외 ${G.battles.length-1}`:''}`);
+  } else parts.push('대기 중');
+  let inv=p.inventory||{};
+  let hpN=AUTO_HP_POTS.reduce((a,n)=>a+(inv[n]||0),0), spN=AUTO_SP_POTS.reduce((a,n)=>a+(inv[n]||0),0);
+  parts.push(`<span class="as-pot${hpN?'':' empty'}" title="자동 HP 포션 잔량">🧪${hpN}</span>`+(spN?`<span class="as-pot" title="자동 SP 포션 잔량">💧${spN}</span>`:''));
+  let w=G._weight; if(w&&w.pct>50) parts.push(`<span style="color:${w.color}" title="무게 패널티: ${w.tip}">⚠무게 ${w.pct}%</span>`);
+  el.innerHTML=parts.join('<span class="as-sep">·</span>');
 }
 function updateBar(id,c,m,t){ let pct=Math.max(0,Math.min(100,(c/Math.max(1,m))*100)); let b=$(id+'-bar'); if(b)b.style.width=pct+'%'; let txt=$(id+'-text'); if(txt)txt.textContent=t; }
 
 // 1. 우측 패널 인벤토리 렌더링 함수
 function renderInvPanel(){
-  let p = G.player; let t = G.invTab; let c = $('inv-content'); if(!c) return; 
+  let p = G.player; let t = G.invTab; let c = document.getElementById('inv-content'); if(!c) return; // [P1-13] 우측 인벤 제거 — 가방 화면만 사용 
   c.innerHTML = '';
   
   // 가방과 장착 중인 아이템 통합 계산
@@ -38993,8 +39102,10 @@ function renderMonsters(){
     let eIco=ELEM_ICO[eStr[0]]||'⚪';
     let meta=`Lv.${m.lv||'?'} · ${eIco}${eStr.replace('속성','')}${m.elementLv||''} · ${(m.size||'?')} · ${m.race||'?'}`;
     let dist=(m.distance&&m.distance>1)?`<span class="mon-dist" title="거리 ${m.distance} — 원거리/접근 중">↔${m.distance}</span>`:'';
-    h+=`<div class="mon-card${i===0?' active':''}${m.isMvp?' mvp':''}"><div class="mon-emoji">${m.emoji}</div><div class="mon-info"><div class="mon-name">${m.name}${m.isMvp?' <span class="mvp-badge">👑MVP</span>':''}${dist}</div><div class="mon-meta">${meta}</div><div class="mon-hp-track"><div class="mon-hp-fill" style="width:${pct}%"></div></div><div class="mon-hp-txt">${m.currentHp}/${m.hp}</div></div></div>`;
+    h+=`<div class="mon-card${i===0?' active':''}${m.isMvp?' mvp':''}${i>=3?' mon-extra':''}"><div class="mon-emoji">${m.emoji}</div><div class="mon-info"><div class="mon-name">${m.name}${m.isMvp?' <span class="mvp-badge">👑MVP</span>':''}${dist}</div><div class="mon-meta">${meta}</div><div class="mon-hp-track"><div class="mon-hp-fill" style="width:${pct}%"></div></div><div class="mon-hp-txt">${m.currentHp}/${m.hp}</div></div></div>`;
   });
+  // [P1-13] 모바일 상황 카드는 CSS로 최대 3마리 — 나머지는 한 줄로 요약
+  if(G.battles.length>3) h+=`<div class="mon-more">외 ${G.battles.length-3}마리</div>`;
   ml.innerHTML=h;
 }
 
@@ -39147,18 +39258,21 @@ function startRegenTimer(){
   },3000); 
 }
 
+// [P1-13] 자동포션 대상(우선순위 순) — 상태줄 잔량 표시와 공용
+const AUTO_HP_POTS=['이그드라실의 열매','하얀포션','주홍포션','노란포션','빨간포션'];
+const AUTO_SP_POTS=['파란포션'];
 function autoPotion(){
   let p=G.player;
   let hpPct = (p.options && p.options.hpPotPct != null) ? p.options.hpPotPct : 40;
   let spPct = (p.options && p.options.spPotPct != null) ? p.options.spPotPct : 0;
   // HP 자동 포션
   if(hpPct > 0 && p.hp < p.maxHp * hpPct / 100){
-    let pots=['이그드라실의 열매','하얀포션','주홍포션','노란포션','빨간포션'];
+    let pots=AUTO_HP_POTS;
     let _now=Date.now(); for(let i=0;i<pots.length;i++){if((p.inventory[pots[i]]||0)>0&&!(G.itemCooldowns[pots[i]]&&_now<G.itemCooldowns[pots[i]])){useItem(pots[i],true);return;}}
   }
   // SP 자동 포션 (spPct > 0 이고 SP가 임계 이하일 때)
   if(spPct > 0 && p.sp < p.maxSp * spPct / 100){
-    let spPots=['파란포션'];
+    let spPots=AUTO_SP_POTS;
     let _now2=Date.now(); for(let i=0;i<spPots.length;i++){if((p.inventory[spPots[i]]||0)>0&&!(G.itemCooldowns[spPots[i]]&&_now2<G.itemCooldowns[spPots[i]])){useItem(spPots[i],true);return;}}
   }
 }
@@ -39167,7 +39281,7 @@ function toggleHunt(){
   G.autoHunt=!G.autoHunt; let b=$('hunt-btn');
   if(G.autoHunt){ if(b){b.classList.add('hunt-on'); b.textContent='⏹ 사냥중지';} G.idleSum={t0:Date.now(),kills:0,exp:0,zeny:0}; log('🔁 <b>자동 사냥</b> 시작','system'); scheduleTickAspd(100); schedulePasserby(); } // [UI-①] 요약 카운터 리셋
   else { if(b){b.classList.remove('hunt-on'); b.textContent='▶ 자동사냥';} clearTimeout(G.huntTimer); clearTimeout(G.passerbyTimer); log('⏹ 자동 사냥 중지','system'); }
-  if(typeof syncMobileHunt==='function')syncMobileHunt(); // [UI-⑤]
+  updateActionStatus(); // [P1-13]
 }
 function scheduleTick(d=1000){ clearTimeout(G.huntTimer); G.huntTimer=setTimeout(huntTick,d); }
 
@@ -40698,9 +40812,11 @@ function checkQuestGather() {
 function showInvModal(tab = 'all'){
   G.invTab = tab; let p = G.player;
   // 1. 상단 탭 UI (전체/소모품/장비/카드/기타)
-  let h = `<div style="display:flex; border-bottom:1px solid var(--border); margin-bottom:10px; background:#f2f7fa;">
+  // [P1-13] 가방 헤더 = 소지 무게 (좌측 능력치 목록에서 이동). 탭은 button
+  let _w = G._weight || weightInfo(calcStats());
+  let h = `<div class="bag-weight">🎒 무게 ${weightHtml(_w)}</div><div class="bag-tabs">
     ${[['all','전체'],['cons','소모품'],['equip','장비'],['card','카드'],['etc','기타']].map(([v, n]) =>
-      `<div onclick="showInvModal('${v}')" style="flex:1; text-align:center; padding:8px; cursor:pointer; font-size:11px; font-weight:bold; color:${G.invTab===v?'var(--blue-light)':'var(--text-dim)'}; border-bottom:2px solid ${G.invTab===v?'var(--blue-light)':'transparent'}; background:${G.invTab===v?'#fff':'none'};">${n}</div>`
+      `<button class="bag-tab${G.invTab===v?' active':''}" onclick="showInvModal('${v}')">${n}</button>`
     ).join('')}
   </div><div style="display:flex; flex-direction:column; gap:6px; max-height:50vh; overflow-y:auto; padding:5px;">`;
 
@@ -40754,7 +40870,7 @@ function showInvModal(tab = 'all'){
       <div>${btn}</div></div>`;
   });
 
-  openModal('🎒 인벤토리', h + '</div>', [{label:'닫기', action:()=>{}}]);
+  openModal('🎒 가방', h + '</div>', [{label:'닫기', action:()=>{}}]);
 }
 // ── [ 카드 장착 모달 및 합성 로직 ] ──
 function openCardSlotModal(equipName) {
@@ -44137,40 +44253,32 @@ function spawnMonsters(){
 // 2. 평타 전투 처리 (처치 및 카드 획득 기록)
 function checkMobile(){
   let isM=window.innerWidth<=700;
-  // [UI-⑤] 구형 상단 토글 버튼은 하단 탭 바로 대체 (CSS에서도 숨김)
-  if($('mobile-char-btn'))$('mobile-char-btn').style.display='none';
-  if($('mobile-enc-btn'))$('mobile-enc-btn').style.display='none';
-  // [UI-⑤] 핫바를 모바일에서는 main-area 하단 가로 스트립으로 이동
-  let hp=$('hotbar-panel'), ma=$('main-area'), rp=$('right-panel');
-  if(hp&&ma&&rp){
-    if(isM&&hp.parentElement!==ma) ma.appendChild(hp);
-    else if(!isM&&hp.parentElement===ma) rp.insertBefore(hp,rp.firstChild);
+  // [UI-⑤] 핫바를 모바일에서는 main-area 하단 가로 스트립으로 이동 — [P1-13] 주행동 바 바로 위
+  // [P1-13] 적 정보(#mon-list)는 모바일에서 로그 위 상황 카드로 이동 (전투 탭 폐지)
+  let hp=$('hotbar-panel'), ma=document.getElementById('main-area'), rp=document.getElementById('right-panel');
+  let ml=document.getElementById('mon-list'), ab=document.getElementById('action-bar'), gl=document.getElementById('game-log');
+  if(!ma||!rp) return;
+  if(isM){
+    if(hp&&hp.parentElement!==ma) ma.insertBefore(hp,ab);
+    if(ml&&ml.parentElement!==ma) ma.insertBefore(ml,gl);
+  } else {
+    if(ml&&ml.parentElement===ma) rp.appendChild(ml);
+    if(hp&&hp.parentElement===ma) rp.insertBefore(hp,rp.firstChild);
   }
 }
-function toggleMobilePanel(s){
-  let e=$(s+'-panel'); if(e.classList.contains('mobile-show'))e.classList.remove('mobile-show');
-  else {document.querySelectorAll('.mobile-show').forEach(n=>n.classList.remove('mobile-show')); e.classList.add('mobile-show');}
-  syncMobileTab();
-}
-// [UI-⑤] 하단 탭 바
-function mobileTab(t,el){
-  let L=$('left-panel'),R=$('right-panel');
-  if(L)L.classList.remove('mobile-show');
-  if(R)R.classList.remove('mobile-show');
-  if(t==='char'&&L)L.classList.add('mobile-show');
-  if(t==='battle'&&R)R.classList.add('mobile-show');
+// [P1-13] 모바일 하단 탭 4개 — 로그·캐릭터(상세 공용 화면)·가방·메뉴
+function mobileTab(t){
+  if(t==='char'){ closeModal(); openCharDetail('stats'); return; }
+  closeCharDetail();
+  if(t==='bag') showInvModal();
+  else if(t==='menu') showMoreMenu();
+  else closeModal();
   syncMobileTab();
 }
 function syncMobileTab(){
-  let L=$('left-panel'),R=$('right-panel');
-  let cur=(L&&L.classList.contains('mobile-show'))?'char':(R&&R.classList.contains('mobile-show'))?'battle':'log';
+  let cd=document.getElementById('char-detail');
+  let cur=(cd&&cd.classList.contains('open'))?'char':'log';
   document.querySelectorAll('.mtab[data-mt]').forEach(b=>b.classList.toggle('active',b.dataset.mt===cur));
-}
-function syncMobileHunt(){
-  let b=$('m-hunt-btn'); if(!b)return;
-  let on=!!G.autoHunt;
-  b.classList.toggle('hunt-on',on);
-  b.innerHTML=on?'⏸<span>사냥중</span>':'▶<span>사냥</span>';
 }
 window.addEventListener('resize',checkMobile);
 </script>
@@ -49281,7 +49389,6 @@ function renderHotbar(){
     }
   });
   hg.innerHTML=h;
-  if(typeof syncMobileHunt==='function')syncMobileHunt(); // [UI-⑤] 모바일 사냥 버튼 상태 동기화
 }
 
 function openHotbarModal(key){
@@ -49480,6 +49587,12 @@ document.addEventListener('keydown',e=>{
   // [3-10] 위장 중 Ctrl+S = 조용한 저장 (브라우저 '페이지 저장' 대화상자 차단)
   if(G.stealthOn&&e.ctrlKey&&!e.altKey&&!e.metaKey&&(e.key==='s'||e.key==='S')){ e.preventDefault(); stealthSave(); return; }
   if(e.ctrlKey||e.altKey||e.metaKey) return;
+  // [P1-13] Esc = 닫기 통일 — 위에 뜬 것부터(모달 → 캐릭터 상세)
+  if(e.key==='Escape'){
+    if($('modal-overlay').classList.contains('open')) closeModal();
+    else closeCharDetail();
+    return;
+  }
   // [3-10] 보스키: 백틱 — 입력 필드 포커스 여부와 무관하게 동작
   if(e.key==='`'){ if(G.player||G.stealthOn){ e.preventDefault(); toggleStealth(); } return; }
   if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)) return;
