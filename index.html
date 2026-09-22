@@ -60,16 +60,16 @@ body{background:var(--bg-deep);color:var(--text);font-family:'Noto Sans KR',sans
 
 #left-panel,#right-panel{background:var(--bg-panel);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
 #left-panel{border-right:1px solid var(--border);} #right-panel{border-left:1px solid var(--border);}
-.panel-hdr{background:#dfeaf1;border-bottom:1px solid var(--border-gold);padding:5px 8px;font-family:'Cinzel',serif;font-size:9px;color:var(--gold-light);font-weight:700;display:flex;justify-content:space-between;} /* [스타일] 플랫화 */
+.panel-hdr{background:#dfeaf1;border-bottom:1px solid var(--border-gold);padding:5px 8px;font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);font-weight:700;display:flex;justify-content:space-between;} /* [스타일] 플랫화 */
 .m-close{display:none;cursor:pointer;color:var(--gold-dim);font-size:14px;}
 
 .char-portrait{padding:8px;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid var(--border);background:#f2f7fa;}
 .portrait-frame{width:60px;height:60px;border:2px solid var(--border-gold);background:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:5px;border-radius:3px;}
 .char-name{font-family:'Noto Serif KR',serif;font-size:12px;color:var(--gold-light);font-weight:700;}
-.char-job{font-size:9px;color:var(--text-dim);} .char-lv{font-size:10px;color:var(--gold);font-weight:600;}
+.char-job{font-size:11px;color:var(--text-dim);} .char-lv{font-size:10px;color:var(--gold);font-weight:600;}
 
 .bars-sec{padding:6px 8px;border-bottom:1px solid var(--border);background:#fff;}
-.bar-row{margin-bottom:4px;} .bar-lbl{display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim);font-weight:500;}
+.bar-row{margin-bottom:4px;} .bar-lbl{display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);font-weight:500;}
 .bar-track{height:6px;background:#e5eef3;border:1px solid #bdcdd6;overflow:hidden;border-radius:1px;}
 .bar-fill{height:100%;transition:width .3s;}
 .hp-bar{background:linear-gradient(90deg,#e74c3c,#ff6b6b);}
@@ -77,22 +77,22 @@ body{background:var(--bg-deep);color:var(--text);font-family:'Noto Sans KR',sans
 .exp-bar{background:linear-gradient(90deg,#d35400,#f39c12);}
 .job-bar{background:linear-gradient(90deg,#8e44ad,#9b59b6);}
 
-.zeny-row{padding:3px 8px 4px;display:flex;align-items:center;border-bottom:1px solid var(--border);font-size:9px;background:#f2f7fa;}
+.zeny-row{padding:3px 8px 4px;display:flex;align-items:center;border-bottom:1px solid var(--border);font-size:11px;background:#f2f7fa;}
 .zeny-val{font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);font-weight:700;margin-left:auto;}
 
 .status-row{padding:3px 8px;display:flex;flex-wrap:wrap;gap:2px;border-bottom:1px solid var(--border);min-height:20px;background:#fff;}
-.s-badge{padding:1px 4px;border:1px solid;font-size:8px;font-family:'Cinzel',serif;border-radius:2px;}
+.s-badge{padding:1px 4px;border:1px solid;font-size:11px;font-family:'Cinzel',serif;border-radius:2px;}
 
 .stats-sec{padding:5px 8px;background:#fff;}
 .stat-r{display:flex;justify-content:space-between;align-items:center;padding:2px 0;border-bottom:1px dashed #e0e8ed;}
-.stat-lbl{font-size:9px;color:var(--text-dim);font-weight:600;} .stat-v{font-family:'Cinzel',serif;font-size:10px;color:var(--text-bright);font-weight:600;}
-.pts-row{font-size:9px;color:var(--red-light);text-align:right;font-weight:700;}
-.stat-plus{background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:14px;height:14px;font-size:9px;cursor:pointer;display:none;align-items:center;justify-content:center;border-radius:2px;}
+.stat-lbl{font-size:11px;color:var(--text-dim);font-weight:600;} .stat-v{font-family:'Cinzel',serif;font-size:10px;color:var(--text-bright);font-weight:600;}
+.pts-row{font-size:11px;color:var(--red-light);text-align:right;font-weight:700;}
+.stat-plus{background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:28px;height:26px;font-size:11px;cursor:pointer;display:none;align-items:center;justify-content:center;border-radius:2px;}
 
 .equip-sec{padding:5px 8px;border-top:1px solid var(--border);background:#f2f7fa;}
 .equip-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
-.eq-slot{background:#ffffff;border:1px solid var(--border);padding:3px 5px;font-size:8px;cursor:pointer;border-radius:2px;}
-.eq-slot-lbl{color:var(--text-dim);font-size:7px;}
+.eq-slot{background:#ffffff;border:1px solid var(--border);padding:3px 5px;font-size:11px;cursor:pointer;border-radius:2px;}
+.eq-slot-lbl{color:var(--text-dim);font-size:11px;}
 .eq-slot-item{color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;} 
 .eq-slot-item.has{color:var(--gold-light);font-weight:600;}
 
@@ -102,7 +102,7 @@ body{background:var(--bg-deep);color:var(--text);font-family:'Noto Sans KR',sans
 .map-info-disp{font-size:10px;color:var(--text-dim);}
 /* ── [UI-②] 구역/리젠 HUD ── */
 #zone-hud{display:flex;align-items:center;gap:6px;flex:1;justify-content:center;min-width:0;}
-.zone-chip{display:inline-flex;align-items:center;gap:4px;font-size:9px;color:var(--text-dim);background:rgba(0,0,0,0.04);border:1px solid var(--border);border-radius:8px;padding:1px 7px;white-space:nowrap;}
+.zone-chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--text-dim);background:rgba(0,0,0,0.04);border:1px solid var(--border);border-radius:8px;padding:1px 7px;white-space:nowrap;}
 .zone-chip .zc-bar{width:44px;height:4px;background:#e5eef3;border-radius:2px;overflow:hidden;}
 .zone-chip .zc-fill{height:100%;background:linear-gradient(90deg,var(--blue-light),#7bb3d4);transition:width .3s;}
 .zone-chip.regen .zc-fill{background:linear-gradient(90deg,#9575cd,#7e57c2);}
@@ -115,7 +115,7 @@ html[data-theme="dark"] .zone-chip .zc-bar{background:#2d3e50;}
 /* 중립/비중요 */
 .le.narrate{color:#6b7b85;font-style:italic;}
 .le.system{color:#8b98a1;font-size:11px;font-style:italic;}
-.le.sep{color:var(--border);font-size:9px;text-align:center;opacity:.4;}
+.le.sep{color:var(--border);font-size:11px;text-align:center;opacity:.4;}
 .le.miss{color:#a5b1b9;font-style:italic;}
 /* 플레이어 행동/유리 — 저채도 블루그레이 */
 .le.combat{color:#3d5466;font-weight:600;}
@@ -139,7 +139,7 @@ html[data-theme="dark"] .zone-chip .zc-bar{background:#2d3e50;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(3px)}to{opacity:1}}
 /* ── [UI-①] 로그 채널 필터 + 요약 카드 ── */
 #log-filter{display:flex;gap:4px;padding:4px 10px;background:var(--bg-panel);border-bottom:1px solid var(--border);}
-.lf-chip{font-size:9px;color:var(--text-dim);border:1px solid var(--border);border-radius:8px;padding:1px 8px;cursor:pointer;user-select:none;transition:all .12s;}
+.lf-chip{font-size:11px;color:var(--text-dim);border:1px solid var(--border);border-radius:8px;padding:1px 8px;cursor:pointer;user-select:none;transition:all .12s;}
 .lf-chip:hover{border-color:var(--blue-light);color:var(--blue-light);}
 .lf-chip.active{background:var(--blue-light);border-color:var(--blue-light);color:#fff;font-weight:600;}
 #game-log.lf-battle .le:not(.combat):not(.dmg-dealt):not(.dmg-recv):not(.crit):not(.miss):not(.heal):not(.warning):not(.summary):not(.sep){display:none;}
@@ -190,6 +190,13 @@ html[data-theme="dark"] .sum-card{background:#223040;}
 .menu-btn.hunt-on{background:#fdeeec;border-color:#c0665c;color:#a44a40;font-weight:700;} /* [스타일] 플랫화+감산 */
 /* ── [P1-13] UI 개편 1차 ── */
 button{touch-action:manipulation;}
+/* div/span → button 전환분 기본 스타일 리셋 */
+.lf-chip,.eq-slot,.modal-close,.hotbar-slot{font-family:inherit;text-align:inherit;line-height:inherit;}
+.lf-chip{background:none;min-height:28px;}
+.eq-slot{display:block;width:100%;text-align:left;min-height:36px;}
+.eq-slot-lbl,.eq-slot-item{display:block;}
+.modal-close{background:none;border:none;min-width:44px;min-height:40px;}
+.hotbar-slot{width:100%;padding:0;color:inherit;}
 /* 좌측: 상세 진입 버튼 + 미분배 포인트 배지 */
 .char-detail-btns{display:flex;gap:4px;padding:6px 8px;border-bottom:1px solid var(--border);}
 .cd-open-btn{flex:1;height:32px;background:#f7fafc;border:1px solid var(--border-gold);color:var(--gold-light);font-size:12px;cursor:pointer;border-radius:3px;font-family:inherit;}
@@ -306,10 +313,10 @@ html[data-theme="dark"] .stat-tooltip {
 .hotbar-slot{position:relative;border:1px solid var(--border);border-radius:3px;background:#f8fbfd;cursor:pointer;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;transition:background .12s;}
 .hotbar-slot:hover{background:#e8f4fc;border-color:var(--blue-light);}
 .hotbar-slot.empty{background:#f5f5f5;}
-.hb-key{position:absolute;top:1px;left:3px;font-size:8px;font-weight:bold;color:var(--text-dim);line-height:1;text-transform:uppercase;}
+.hb-key{position:absolute;top:1px;left:3px;font-size:11px;font-weight:bold;color:var(--text-dim);line-height:1;text-transform:uppercase;}
 .hb-icon{font-size:17px;line-height:1.3;}
-.hb-name{font-size:7px;color:var(--text-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:96%;text-align:center;}
-.hb-cd{position:absolute;bottom:1px;right:3px;font-size:7px;color:#e74c3c;font-weight:bold;}
+.hb-name{font-size:11px;color:var(--text-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:96%;text-align:center;}
+.hb-cd{position:absolute;bottom:1px;right:3px;font-size:11px;color:#e74c3c;font-weight:bold;}
 /* ── [UI-③] 핫바 슬롯 상태 ── */
 .hotbar-slot.nosp{opacity:.45;filter:grayscale(.6);}
 .hotbar-slot.cd .hb-icon,.hotbar-slot.cd .hb-name{opacity:.35;}
@@ -330,23 +337,23 @@ html[data-theme="dark"] .hb-list-row:hover{background:#1e3045;}
 .mon-hp-track{height:5px;background:#e5eef3;border:1px solid #bdcdd6;margin-top:2px;border-radius:1px;}
 .mon-hp-fill{height:100%;background:linear-gradient(90deg,#e74c3c,#ff6b6b);transition:width .2s;}
 /* ── [UI-⑥] 몬스터 카드 메타/거리/MVP ── */
-.mon-meta{font-size:8px;color:var(--text-dim);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.mon-dist{display:inline-block;margin-left:4px;font-size:8px;color:var(--blue-light);border:1px solid var(--blue-light);border-radius:6px;padding:0 4px;font-weight:600;vertical-align:1px;}
-.mvp-badge{color:var(--gold);font-size:9px;font-weight:700;margin-left:2px;}
+.mon-meta{font-size:11px;color:var(--text-dim);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mon-dist{display:inline-block;margin-left:4px;font-size:11px;color:var(--blue-light);border:1px solid var(--blue-light);border-radius:6px;padding:0 4px;font-weight:600;vertical-align:1px;}
+.mvp-badge{color:var(--gold);font-size:11px;font-weight:700;margin-left:2px;}
 .mon-card.mvp{border-color:var(--gold);background:#fdf8e8;animation:mvpPulse 1.4s ease-in-out infinite alternate;} /* [스타일] 플랫화 */
 @keyframes mvpPulse{from{box-shadow:0 0 3px rgba(212,175,55,.35);}to{box-shadow:0 0 9px rgba(212,175,55,.75);}}
 html[data-theme="dark"] .mon-card.mvp{background:#262114;} /* [스타일] 플랫화 */
-.mon-hp-txt{font-size:8px;color:var(--text-dim);text-align:right;}
+.mon-hp-txt{font-size:11px;color:var(--text-dim);text-align:right;}
 .no-target{text-align:center;color:var(--text-dim);padding:15px 5px;font-size:10px;background:#fff;}
 
 .inv-tabs{display:flex;border-bottom:1px solid var(--border);background:#f2f7fa;}
-.inv-tab{flex:1;padding:5px 2px;text-align:center;font-size:9px;color:var(--text-dim);font-weight:600;cursor:pointer;border-right:1px solid var(--border);}
+.inv-tab{flex:1;padding:5px 2px;text-align:center;font-size:11px;color:var(--text-dim);font-weight:600;cursor:pointer;border-right:1px solid var(--border);}
 .inv-tab.active{color:var(--gold-light);background:#ffffff;border-bottom:2px solid var(--blue-light);}
 .inv-content{padding:4px;background:#fff;}
 .inv-item{display:flex;align-items:center;gap:4px;padding:3px 4px;border-bottom:1px dashed #e0e8ed;cursor:pointer;}
 .inv-item:hover{background:#f2f7fa;}
-.inv-name{font-size:9px;color:var(--text);overflow:hidden;text-overflow:ellipsis;flex:1;}
-.inv-name.eq{color:var(--gold);} .inv-name.cons{color:var(--green);} .inv-qty{font-size:9px;color:var(--text-dim);font-weight:600;}
+.inv-name{font-size:11px;color:var(--text);overflow:hidden;text-overflow:ellipsis;flex:1;}
+.inv-name.eq{color:var(--gold);} .inv-name.cons{color:var(--green);} .inv-qty{font-size:11px;color:var(--text-dim);font-weight:600;}
 
 #modal-overlay{position:fixed;inset:0;background:rgba(20,30,40,.6);display:none;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(2px);}
 #modal-overlay.open{display:flex;}
@@ -630,7 +637,7 @@ html[data-theme="dark"] .modal-body [style*="background:#fdfaf0"]{ background:#2
 /* 에디터 구분선 (#ddd) */
 html[data-theme="dark"] .modal-body [style*="border-bottom:1px dashed #ddd"]{ border-bottom-color:#2d3e50 !important; }
 /* 직업 버튼 현재 직업 (#eaf4fb) — 이미 위에서 처리되지만 색도 보완 */
-html[data-theme="dark"] .modal-body [style*="background:#eaf4fb"]:not([style*="font-size:9px"])
+html[data-theme="dark"] .modal-body [style*="background:#eaf4fb"]:not([style*="font-size:11px"])
   { background:#0a1e2b !important; }
 
 /* 퀘스트 섹션 내 파란 텍스트 (#2471a3) — 다크에서 너무 어두움 방지 */
@@ -713,7 +720,7 @@ body.work-mode p {
 }
 .buff-icon .buff-emoji{font-size:20px;line-height:1;}
 .buff-icon .buff-turns{
-  font-size:9px;
+  font-size:11px;
   font-weight:700;
   font-family:'Cinzel',sans-serif;
   line-height:1;
@@ -35463,13 +35470,13 @@ body.work-mode p {
   </div>
   <div id="mount-btn-row" style="display:none;margin-top:4px;">
     <button onclick="dismount()" style="width:100%;padding:3px 6px;font-size:10px;background:var(--bg-panel);border:1px solid var(--gold);border-radius:3px;color:var(--gold);cursor:pointer;"><span id="mount-btn-label">🦤 하차</span></button>
-  </div><div class="char-name" id="char-name">모험가</div><div class="char-job" id="char-job">노비스</div><div class="char-lv" id="char-lv">Base.1</div></div><div class="bars-sec"><div class="bar-row"><div class="bar-lbl"><span>HP</span><span id="hp-text">50/50</span></div><div class="bar-track"><div class="bar-fill hp-bar" id="hp-bar" style="width:100%"></div></div></div><div class="bar-row"><div class="bar-lbl"><span>SP</span><span id="sp-text">50/50</span></div><div class="bar-track"><div class="bar-fill sp-bar" id="sp-bar" style="width:100%"></div></div></div><div class="bar-row"><div class="bar-lbl"><span>EXP</span><span id="exp-text">0%</span></div><div class="bar-track"><div class="bar-fill exp-bar" id="exp-bar" style="width:0%"></div></div></div><div class="bar-row"><div class="bar-lbl"><span>JEXP</span><span id="jexp-text">0%</span></div><div class="bar-track"><div class="bar-fill job-bar" id="jexp-bar" style="width:0%"></div></div></div></div><div class="zeny-row"><span class="label">💰 제니</span><span class="zeny-val" id="zeny-disp">500 z</span></div><div id="vending-badge" onclick="showVendingStatus()" style="display:none;padding:3px 8px;border-bottom:1px solid var(--border);font-size:9px;color:var(--gold-light);font-weight:bold;cursor:pointer;background:#fff7e6;"></div><div class="status-row" id="status-row"></div>
+  </div><div class="char-name" id="char-name">모험가</div><div class="char-job" id="char-job">노비스</div><div class="char-lv" id="char-lv">Base.1</div></div><div class="bars-sec"><div class="bar-row"><div class="bar-lbl"><span>HP</span><span id="hp-text">50/50</span></div><div class="bar-track"><div class="bar-fill hp-bar" id="hp-bar" style="width:100%"></div></div></div><div class="bar-row"><div class="bar-lbl"><span>SP</span><span id="sp-text">50/50</span></div><div class="bar-track"><div class="bar-fill sp-bar" id="sp-bar" style="width:100%"></div></div></div><div class="bar-row"><div class="bar-lbl"><span>EXP</span><span id="exp-text">0%</span></div><div class="bar-track"><div class="bar-fill exp-bar" id="exp-bar" style="width:0%"></div></div></div><div class="bar-row"><div class="bar-lbl"><span>JEXP</span><span id="jexp-text">0%</span></div><div class="bar-track"><div class="bar-fill job-bar" id="jexp-bar" style="width:0%"></div></div></div></div><div class="zeny-row"><span class="label">💰 제니</span><span class="zeny-val" id="zeny-disp">500 z</span></div><div id="vending-badge" onclick="showVendingStatus()" style="display:none;padding:3px 8px;border-bottom:1px solid var(--border);font-size:11px;color:var(--gold-light);font-weight:bold;cursor:pointer;background:#fff7e6;"></div><div class="status-row" id="status-row"></div>
 <div class="char-detail-btns"><button class="cd-open-btn" onclick="openCharDetail('stats')">📊 능력치<span class="pts-badge" id="pts-badge" style="display:none"></span></button><button class="cd-open-btn" onclick="openCharDetail('equip')">🛡 장비</button></div>
 </div>
-<div id="main-area"><div class="map-hdr"><span class="map-name-disp" id="map-name-disp">🗺 프론테라 평원</span><span id="zone-hud"></span><span class="map-info-disp" id="map-info-disp">Lv.1~10 | 필드</span></div><div id="log-filter"><span class="lf-chip active" data-lf="" onclick="setLogFilter('',this)">전체</span><span class="lf-chip" data-lf="lf-battle" onclick="setLogFilter('lf-battle',this)">⚔ 전투</span><span class="lf-chip" data-lf="lf-loot" onclick="setLogFilter('lf-loot',this)">🎁 보상</span><span class="lf-chip" data-lf="lf-sys" onclick="setLogFilter('lf-sys',this)">📋 시스템</span></div><div id="game-log"></div>
+<div id="main-area"><div class="map-hdr"><span class="map-name-disp" id="map-name-disp">🗺 프론테라 평원</span><span id="zone-hud"></span><span class="map-info-disp" id="map-info-disp">Lv.1~10 | 필드</span></div><div id="log-filter"><button class="lf-chip active" data-lf="" onclick="setLogFilter('',this)">전체</button><button class="lf-chip" data-lf="lf-battle" onclick="setLogFilter('lf-battle',this)">⚔ 전투</button><button class="lf-chip" data-lf="lf-loot" onclick="setLogFilter('lf-loot',this)">🎁 보상</button><button class="lf-chip" data-lf="lf-sys" onclick="setLogFilter('lf-sys',this)">📋 시스템</button></div><div id="game-log"></div>
 <!-- [P1-13] 현재 행동 상태 + 주행동 (자동사냥은 여기로 이동, id 유지) -->
 <div id="action-bar"><div class="action-status" id="action-status">대기 중</div><button class="primary-action" id="hunt-btn" onclick="toggleHunt()">▶ 자동사냥</button></div></div>
-<div id="right-panel"><div id="hotbar-panel"><div class="panel-hdr">HOTBAR <span class="hb-hint" style="font-size:9px;font-weight:normal;color:var(--text-dim)">슬롯 클릭으로 등록 / 키보드 QWERASDFZXCV</span></div><div class="hotbar-grid" id="hotbar-grid"></div></div><div class="panel-hdr">ENCOUNTER</div><div id="mon-list"><div class="no-target">전투 중인 적 없음</div></div></div>
+<div id="right-panel"><div id="hotbar-panel"><div class="panel-hdr" title="슬롯 클릭으로 등록 / 키보드 QWERASDFZXCV">HOTBAR <span class="hb-hint" style="font-size:11px;font-weight:normal;color:var(--text-dim)">⌨ QWER…</span></div><div class="hotbar-grid" id="hotbar-grid"></div></div><div class="panel-hdr">ENCOUNTER</div><div id="mon-list"><div class="no-target">전투 중인 적 없음</div></div></div>
 <div id="bottom-menu">
 <button class="menu-btn" onclick="showMapModal()">🗺 이동</button>
 <button class="menu-btn" onclick="showNpcModal()">💬 NPC</button>
@@ -35492,12 +35499,12 @@ body.work-mode p {
 <div class="cd-body" id="cd-body">
 <div class="stats-sec">
   <div class="pts-row" id="pts-row"></div>
-  <div class="stat-r"><span class="stat-lbl">STR</span><span class="stat-v" id="stat-str">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-str" onclick="addStat('str',1)">+1</button><button class="stat-plus10" id="plus10-str" onclick="addStat('str',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:22px;height:14px;font-size:8px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">AGI</span><span class="stat-v" id="stat-agi">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-agi" onclick="addStat('agi',1)">+1</button><button class="stat-plus10" id="plus10-agi" onclick="addStat('agi',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:22px;height:14px;font-size:8px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">VIT</span><span class="stat-v" id="stat-vit">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-vit" onclick="addStat('vit',1)">+1</button><button class="stat-plus10" id="plus10-vit" onclick="addStat('vit',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:22px;height:14px;font-size:8px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">INT</span><span class="stat-v" id="stat-int">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-int" onclick="addStat('int',1)">+1</button><button class="stat-plus10" id="plus10-int" onclick="addStat('int',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:22px;height:14px;font-size:8px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">DEX</span><span class="stat-v" id="stat-dex">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-dex" onclick="addStat('dex',1)">+1</button><button class="stat-plus10" id="plus10-dex" onclick="addStat('dex',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:22px;height:14px;font-size:8px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">LUK</span><span class="stat-v" id="stat-luk">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-luk" onclick="addStat('luk',1)">+1</button><button class="stat-plus10" id="plus10-luk" onclick="addStat('luk',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:22px;height:14px;font-size:8px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">STR</span><span class="stat-v" id="stat-str">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-str" onclick="addStat('str',1)">+1</button><button class="stat-plus10" id="plus10-str" onclick="addStat('str',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">AGI</span><span class="stat-v" id="stat-agi">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-agi" onclick="addStat('agi',1)">+1</button><button class="stat-plus10" id="plus10-agi" onclick="addStat('agi',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">VIT</span><span class="stat-v" id="stat-vit">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-vit" onclick="addStat('vit',1)">+1</button><button class="stat-plus10" id="plus10-vit" onclick="addStat('vit',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">INT</span><span class="stat-v" id="stat-int">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-int" onclick="addStat('int',1)">+1</button><button class="stat-plus10" id="plus10-int" onclick="addStat('int',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">DEX</span><span class="stat-v" id="stat-dex">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-dex" onclick="addStat('dex',1)">+1</button><button class="stat-plus10" id="plus10-dex" onclick="addStat('dex',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">LUK</span><span class="stat-v" id="stat-luk">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-luk" onclick="addStat('luk',1)">+1</button><button class="stat-plus10" id="plus10-luk" onclick="addStat('luk',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
   <div style="height:1px;background:var(--border);margin:3px 0;"></div>
   <div class="stat-r"><span class="stat-lbl">⚔ ATK</span><span class="stat-v" id="stat-atk">3</span></div>
   <div class="stat-r"><span class="stat-lbl">🛡 DEF</span><span class="stat-v" id="stat-def">0</span></div>
@@ -35512,16 +35519,16 @@ body.work-mode p {
 <div class="equip-sec">
 <div class="panel-hdr" style="margin:0 -8px 4px;padding:3px 8px;">EQUIPMENT</div>
 <div class="equip-grid" id="equip-grid">
-  <div class="eq-slot" onclick="openEquipModal('투구_상단')"><div class="eq-slot-lbl">투구_상단</div><div class="eq-slot-item" id="eq-투구_상단">—</div></div>
-  <div class="eq-slot" onclick="openEquipModal('투구_중단')"><div class="eq-slot-lbl">투구_중단</div><div class="eq-slot-item" id="eq-투구_중단">—</div></div>
-  <div class="eq-slot" onclick="openEquipModal('투구_하단')"><div class="eq-slot-lbl">투구_하단</div><div class="eq-slot-item" id="eq-투구_하단">—</div></div>
-  <div class="eq-slot" onclick="openEquipModal('갑옷')"><div class="eq-slot-lbl">갑옷</div><div class="eq-slot-item" id="eq-갑옷">—</div></div>
-  <div class="eq-slot" onclick="openEquipModal('걸칠것')"><div class="eq-slot-lbl">걸칠것</div><div class="eq-slot-item" id="eq-걸칠것">—</div></div>
-  <div class="eq-slot" onclick="openEquipModal('무기')"><div class="eq-slot-lbl">무기</div><div class="eq-slot-item" id="eq-무기">—</div></div>
-  <div class="eq-slot" onclick="openEquipModal('방패')"><div class="eq-slot-lbl">방패</div><div class="eq-slot-item" id="eq-방패">—</div></div>
-  <div class="eq-slot" onclick="openEquipModal('신발')"><div class="eq-slot-lbl">신발</div><div class="eq-slot-item" id="eq-신발">—</div></div>
-  <div class="eq-slot" onclick="openEquipModal('악세1')"><div class="eq-slot-lbl">악세사리1</div><div class="eq-slot-item" id="eq-악세1">—</div></div>
-  <div class="eq-slot" onclick="openEquipModal('악세2')"><div class="eq-slot-lbl">악세사리2</div><div class="eq-slot-item" id="eq-악세2">—</div></div>
+  <button class="eq-slot" onclick="openEquipModal('투구_상단')"><span class="eq-slot-lbl">투구_상단</span><span class="eq-slot-item" id="eq-투구_상단">—</span></button>
+  <button class="eq-slot" onclick="openEquipModal('투구_중단')"><span class="eq-slot-lbl">투구_중단</span><span class="eq-slot-item" id="eq-투구_중단">—</span></button>
+  <button class="eq-slot" onclick="openEquipModal('투구_하단')"><span class="eq-slot-lbl">투구_하단</span><span class="eq-slot-item" id="eq-투구_하단">—</span></button>
+  <button class="eq-slot" onclick="openEquipModal('갑옷')"><span class="eq-slot-lbl">갑옷</span><span class="eq-slot-item" id="eq-갑옷">—</span></button>
+  <button class="eq-slot" onclick="openEquipModal('걸칠것')"><span class="eq-slot-lbl">걸칠것</span><span class="eq-slot-item" id="eq-걸칠것">—</span></button>
+  <button class="eq-slot" onclick="openEquipModal('무기')"><span class="eq-slot-lbl">무기</span><span class="eq-slot-item" id="eq-무기">—</span></button>
+  <button class="eq-slot" onclick="openEquipModal('방패')"><span class="eq-slot-lbl">방패</span><span class="eq-slot-item" id="eq-방패">—</span></button>
+  <button class="eq-slot" onclick="openEquipModal('신발')"><span class="eq-slot-lbl">신발</span><span class="eq-slot-item" id="eq-신발">—</span></button>
+  <button class="eq-slot" onclick="openEquipModal('악세1')"><span class="eq-slot-lbl">악세사리1</span><span class="eq-slot-item" id="eq-악세1">—</span></button>
+  <button class="eq-slot" onclick="openEquipModal('악세2')"><span class="eq-slot-lbl">악세사리2</span><span class="eq-slot-item" id="eq-악세2">—</span></button>
 </div>
 </div>
 </div></div></div>
@@ -35530,7 +35537,7 @@ body.work-mode p {
   <div class="modal-box">
     <div class="modal-hdr">
       <span class="modal-title-txt" id="modal-title">정보</span>
-      <span class="modal-close" onclick="closeModal()">✕</span>
+      <button class="modal-close" onclick="closeModal()" aria-label="닫기">✕</button>
     </div>
     <div class="modal-body" id="modal-body"></div>
     <div class="modal-actions" id="modal-actions"></div>
@@ -37292,7 +37299,7 @@ function initLobby(){
         <div class="slot-emoji">${(_jcode&&DB.jobEmoji[_jcode])||'⚔️'}</div>
         <div class="slot-name">${s.name}</div>
         <div class="slot-info">${s.job} | Lv.${s.baseLv}</div>
-        <div class="slot-info" style="color:var(--gold);font-size:9px">${s.zeny}z</div>
+        <div class="slot-info" style="color:var(--gold);font-size:11px">${s.zeny}z</div>
         <div style="margin-top:12px; display:flex; gap:4px; align-items:center;">
           <button onclick="event.stopPropagation(); exportCharacter(${i})" class="sys-btn" style="border-color:var(--blue-light);">💾 백업</button>
           <button onclick="deleteSlot(${i},event)" class="sys-btn danger" style="color:var(--red-light); border-color:var(--red-light);">🗑 삭제</button>
@@ -37302,11 +37309,11 @@ function initLobby(){
       d.innerHTML=`
         <div style="font-size:28px;opacity:.4">+</div>
         <div style="font-size:10px;margin-top:4px;margin-bottom:12px;">새 캐릭터</div>
-        <label onclick="event.stopPropagation();" class="sys-btn" style="cursor:pointer; background:#ffffff; font-size:9px; padding:4px 8px; border-color:var(--blue-light);">
+        <label onclick="event.stopPropagation();" class="sys-btn" style="cursor:pointer; background:#ffffff; font-size:11px; padding:4px 8px; border-color:var(--blue-light);">
           📂 파일 불러오기
           <input type="file" style="display:none;" onchange="importCharacter(event, ${i})">
         </label>
-        <button onclick="event.stopPropagation(); showPortableImport(${i})" class="sys-btn" style="background:#ffffff; font-size:9px; padding:4px 8px; margin-top:4px; border-color:var(--blue-light);">📋 코드 붙여넣기</button>`;
+        <button onclick="event.stopPropagation(); showPortableImport(${i})" class="sys-btn" style="background:#ffffff; font-size:11px; padding:4px 8px; margin-top:4px; border-color:var(--blue-light);">📋 코드 붙여넣기</button>`;
       d.onclick=(e)=>{
         // 버튼을 누른 게 아니라 슬롯 여백을 누른 경우에만 캐릭터 생성
         if(e.target.tagName !== 'INPUT' && e.target.tagName !== 'LABEL') createCharacter(i);
@@ -38889,9 +38896,9 @@ function updateUI(){
   let seB = getSeStatBonus(p);
   const fmtStat = (base, jobB, eqB, seBonus) => {
     let html = `<span style="color:var(--text-bright)">${base}</span>`;
-    if(jobB    > 0) html += `<span style="color:var(--gold-light);font-size:9px">+${jobB}</span>`;
-    if(eqB   !== 0) html += `<span style="color:${eqB>0?'var(--blue-light)':'var(--red-light)'};font-size:9px">${eqB>0?'+':''}${eqB}</span>`;
-    if(seBonus > 0) html += `<span style="color:#27ae60;font-size:9px">+${seBonus}▲</span>`;
+    if(jobB    > 0) html += `<span style="color:var(--gold-light);font-size:11px">+${jobB}</span>`;
+    if(eqB   !== 0) html += `<span style="color:${eqB>0?'var(--blue-light)':'var(--red-light)'};font-size:11px">${eqB>0?'+':''}${eqB}</span>`;
+    if(seBonus > 0) html += `<span style="color:#27ae60;font-size:11px">+${seBonus}▲</span>`;
     return html;
   };
   // 파생 스탯: 기본치 + 장비/카드(파랑, 음수는 빨강) + SE버프(초록) 분리 표시
@@ -38899,8 +38906,8 @@ function updateUI(){
     eqBonus = (eqBonus||0) - (seBonus||0); // s.bonusXxx에는 SE 기여분 포함 → 장비/카드 몫만 분리
     let base = total - eqBonus - (seBonus||0);
     let html = `<span>${base}</span>`;
-    if(eqBonus !== 0) html += `<span style="color:${eqBonus>0?'var(--blue-light)':'var(--red-light)'};font-size:9px">${eqBonus>0?'+':''}${eqBonus}</span>`;
-    if(seBonus  >  0) html += `<span style="color:#27ae60;font-size:9px">+${seBonus}▲</span>`;
+    if(eqBonus !== 0) html += `<span style="color:${eqBonus>0?'var(--blue-light)':'var(--red-light)'};font-size:11px">${eqBonus>0?'+':''}${eqBonus}</span>`;
+    if(seBonus  >  0) html += `<span style="color:#27ae60;font-size:11px">+${seBonus}▲</span>`;
     return html;
   };
   ['str','agi','vit','int','dex','luk'].forEach(st=>{
@@ -38916,17 +38923,17 @@ function updateUI(){
     btnNodes.forEach(b => el.appendChild(b));
   });
   // 파생 스탯 표시 (앞스탯+장비보너스 형식) — SE 기여분은 초록으로 분리
-  if($('stat-atk'))  $('stat-atk').innerHTML  = `<span>${s.baseAtk}</span><span style="color:var(--blue-light);font-size:9px">+${s.weaponAtk}</span>${seB.atk>0?`<span style="color:#27ae60;font-size:9px">+${seB.atk}▲</span>`:''}`;
-  if($('stat-matk')) $('stat-matk').innerHTML = `<span>${s.baseMAtk}</span><span style="color:var(--blue-light);font-size:9px">+${s.bonusMAtk||0}</span>`;
-  if($('stat-def'))  $('stat-def').innerHTML  = `<span>${s.softDef}</span><span style="color:var(--blue-light);font-size:9px">+${Math.max(0,s.hardDef-(seB.def||0))}</span>${seB.def>0?`<span style="color:#27ae60;font-size:9px">+${seB.def}▲</span>`:''}`;
-  if($('stat-mdef')) $('stat-mdef').innerHTML = `<span>${s.softMDef}</span><span style="color:var(--blue-light);font-size:9px">+${Math.max(0,s.hardMDef-(seB.mdef||0))}</span>${seB.mdef>0?`<span style="color:#27ae60;font-size:9px">+${seB.mdef}▲</span>`:''}`;
+  if($('stat-atk'))  $('stat-atk').innerHTML  = `<span>${s.baseAtk}</span><span style="color:var(--blue-light);font-size:11px">+${s.weaponAtk}</span>${seB.atk>0?`<span style="color:#27ae60;font-size:11px">+${seB.atk}▲</span>`:''}`;
+  if($('stat-matk')) $('stat-matk').innerHTML = `<span>${s.baseMAtk}</span><span style="color:var(--blue-light);font-size:11px">+${s.bonusMAtk||0}</span>`;
+  if($('stat-def'))  $('stat-def').innerHTML  = `<span>${s.softDef}</span><span style="color:var(--blue-light);font-size:11px">+${Math.max(0,s.hardDef-(seB.def||0))}</span>${seB.def>0?`<span style="color:#27ae60;font-size:11px">+${seB.def}▲</span>`:''}`;
+  if($('stat-mdef')) $('stat-mdef').innerHTML = `<span>${s.softMDef}</span><span style="color:var(--blue-light);font-size:11px">+${Math.max(0,s.hardMDef-(seB.mdef||0))}</span>${seB.mdef>0?`<span style="color:#27ae60;font-size:11px">+${seB.mdef}▲</span>`:''}`;
   if($('stat-hit'))  $('stat-hit').innerHTML  = fmtDerived(s.hit,  s.bonusHit,  seB.hit);
   if($('stat-flee')) $('stat-flee').innerHTML = fmtDerived(s.flee, s.bonusFlee, seB.flee);
   if($('stat-crit')) $('stat-crit').innerHTML = fmtDerived(s.crit, s.bonusCrit, seB.crit);
   // ASPD 표시: 수치(빠를수록 높음) + 딜레이ms
   if($('stat-aspd')){
     let aspdColor = s.aspdDelay <= 400 ? 'var(--green)' : s.aspdDelay <= 800 ? 'var(--gold)' : 'var(--text-dim)';
-    $('stat-aspd').innerHTML = `<span style="color:${aspdColor}">${s.aspdDisplay}</span><span style="font-size:9px;color:var(--text-dim)">(${s.aspdDelay}ms)</span>`;
+    $('stat-aspd').innerHTML = `<span style="color:${aspdColor}">${s.aspdDisplay}</span><span style="font-size:11px;color:var(--text-dim)">(${s.aspdDelay}ms)</span>`;
   }
   // CAST 표시: DEX 기반 단축률 + 무캐스팅 여부
   // 소지무게 표시
@@ -38939,7 +38946,7 @@ function updateUI(){
     let castColor = s.instantCast ? 'var(--green)' : castPct >= 50 ? 'var(--gold)' : 'var(--text-dim)';
     $('stat-cast').innerHTML = s.instantCast
       ? `<span style="color:var(--green);font-weight:700">무캐스팅</span>`
-      : `<span style="color:${castColor}">${castPct}%</span><span style="font-size:9px;color:var(--text-dim)"> 단축</span>`;
+      : `<span style="color:${castColor}">${castPct}%</span><span style="font-size:11px;color:var(--text-dim)"> 단축</span>`;
   }
   
   let pts=p.statPoints||0; if($('pts-row')) $('pts-row').textContent=pts>0?`포인트: ${pts}`:'';
@@ -38979,7 +38986,7 @@ function updateUI(){
   });
   
   let se=p.statusEffects||{}; let c=$('status-row'); if(c){
-    c.innerHTML=''; let sks=Object.keys(se); if(!sks.length)c.innerHTML='<span style="font-size:8px;color:var(--text-dim)">정상</span>';
+    c.innerHTML=''; let sks=Object.keys(se); if(!sks.length)c.innerHTML='<span style="font-size:11px;color:var(--text-dim)">정상</span>';
     else sks.forEach(k=>{let d=DB.statusEffects[k]; if(d)c.innerHTML+=`<span class="s-badge ${d.cssClass}" title="${d.desc}">${d.emoji}${d.name}(${se[k].turns})</span>`;});
   }
   
@@ -39078,7 +39085,7 @@ function renderInvPanel(){
     let cls = it ? (it.type === '카드' ? 'card' : (it.type === '소모품' ? 'cons' : (equipTypes.includes(it.type) ? 'eq' : ''))) : '';
 
     // 장착 중인 아이템에 태그 표시
-    let equipLabel = data.equipped ? ' <span style="color:var(--blue-light);font-size:8px;font-weight:700;">(장착됨)</span>' : '';
+    let equipLabel = data.equipped ? ' <span style="color:var(--blue-light);font-size:11px;font-weight:700;">(장착됨)</span>' : '';
     let qtyLabel = data.qty > 1 ? `x${data.qty}` : '';
     let displayName = parsed ? getItemDisplayName(parsed) : k;
     let safeK = k.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -40439,8 +40446,8 @@ function processTurn(){
             let pr=p.statusEffects.poisonReact;
             if(pr.count>0&&mdg>0){m.currentHp-=(pr.dmg||0);pr.count--;log(`☠️ <b>[포이즌 리액트]</b> 반격 ${pr.dmg} 피해! (${pr.count}회 남음)`,'dmg-dealt');if(pr.count<=0)delete p.statusEffects.poisonReact;}
           }
-          let speedInfo = speedRatio < 0.5 ? ` <span style="font-size:9px;color:var(--green)">[고속회피]</span>` : speedRatio > 2 ? ` <span style="font-size:9px;color:var(--red-light)">[고속${attackCount}타]</span>` : '';
-          let atkTag = attackCount>1?` <span style="font-size:9px;color:var(--gold)">[${ac+1}/${attackCount}타]</span>`:'';
+          let speedInfo = speedRatio < 0.5 ? ` <span style="font-size:11px;color:var(--green)">[고속회피]</span>` : speedRatio > 2 ? ` <span style="font-size:11px;color:var(--red-light)">[고속${attackCount}타]</span>` : '';
+          let atkTag = attackCount>1?` <span style="font-size:11px;color:var(--gold)">[${ac+1}/${attackCount}타]</span>`:'';
           atkTag += speedInfo; log(`🩸 <b>[피격]</b> ${m.name}${josa(m.name,'이가')} ${p.name}${josa(p.name,'을를')} 공격! <span class="hl-dmg">${mdg}</span> 피해.${atkTag}`,'dmg-recv'); }
         if(m.inflict) Object.keys(m.inflict).forEach(k=>{ if(Math.random()<m.inflict[k]){ if(!p.statusEffects) p.statusEffects={}; p.statusEffects[k]={turns:DB.statusEffects[k]?DB.statusEffects[k].duration:3}; log(`⚠️ ${k} 감염!`,'warning'); } }); 
         if(p.hp<=0){dd=true;break;} 
@@ -40861,7 +40868,7 @@ function showInvModal(tab = 'all'){
       btn = `<button onclick="${isEq ? `unequipItem('${slotType}')` : `equipItem('${safeK}')`}" class="m-btn" style="background:${isEq?'var(--red-light)':'var(--green)'}; color:#fff; border:none; padding:4px 8px; border-radius:3px;">${isEq?'해제':'장착'}</button>`;
     }
 
-    let equipLabel = isEq ? ' <span style="color:var(--blue-light);font-size:8px;font-weight:700;">(장착됨)</span>' : '';
+    let equipLabel = isEq ? ' <span style="color:var(--blue-light);font-size:11px;font-weight:700;">(장착됨)</span>' : '';
     let countLabel = count > 0 ? `보유: ${count}` : '장착 중';
 
     h += `<div style="border:1px solid ${isEq?'var(--border-gold)':'var(--border)'}; padding:8px; border-radius:4px; display:flex; justify-content:space-between; align-items:center; background:${isEq?'#fdfaf0':'#fff'};">
@@ -41653,7 +41660,7 @@ function showShopModal(npcName, npcData){
           <div style="font-size:10px;color:var(--text-dim);">${it.desc||''}</div>
         </div>
         <div style="text-align:right;">
-          ${dcLv>0?`<div style="font-size:10px;color:var(--text-dim);text-decoration:line-through;">${(it.buy||0).toLocaleString()} z</div><div style="font-size:9px;color:#4caf50;font-weight:bold;">🏷️ -${Math.round(dcLv*2.4)}%</div>`:''}
+          ${dcLv>0?`<div style="font-size:10px;color:var(--text-dim);text-decoration:line-through;">${(it.buy||0).toLocaleString()} z</div><div style="font-size:11px;color:#4caf50;font-weight:bold;">🏷️ -${Math.round(dcLv*2.4)}%</div>`:''}
           <div style="font-size:11px;color:var(--gold);font-weight:bold;">${price.toLocaleString()} z</div>
           <button onclick="shopBuy('${itemName}',${price},'${npcName}')" ${canBuy?'':'disabled'} style="margin-top:3px;padding:3px 10px;background:${canBuy?'var(--blue-light)':'#ccc'};color:#fff;border:none;border-radius:3px;font-size:10px;cursor:${canBuy?'pointer':'not-allowed'};">구매</button>
         </div>
@@ -41682,7 +41689,7 @@ function showShopModal(npcName, npcData){
             <div style="font-size:10px;color:var(--text-dim);">${it.desc||''}</div>
           </div>
           <div style="text-align:right;">
-            ${ocLv>0?`<div style="font-size:9px;color:#4caf50;font-weight:bold;">📈 +${Math.round(ocLv*2.4)}%</div>`:''}
+            ${ocLv>0?`<div style="font-size:11px;color:#4caf50;font-weight:bold;">📈 +${Math.round(ocLv*2.4)}%</div>`:''}
             <div style="font-size:11px;color:var(--gold);font-weight:bold;">${sellPrice.toLocaleString()} z</div>
             <button onclick="shopSell('${itemName}',${sellPrice},'${npcName}')" style="margin-top:3px;padding:3px 10px;background:var(--gold);color:#fff;border:none;border-radius:3px;font-size:10px;cursor:pointer;">판매</button>
           </div>
@@ -41736,10 +41743,10 @@ function showMapModal(){
         let r=z.spawnRange?`Lv${z.spawnRange[0]}~${z.spawnRange[1]}`:'';
         zh+=`<div onclick="setZone(${i});showMapModal();" style="cursor:pointer;padding:5px 12px;border-radius:6px;border:2px solid ${cur?'var(--gold)':'var(--border)'};background:${cur?'#fdf8e8':'#fff'};min-width:66px;">
           <div style="font-size:11px;font-weight:700;color:${cur?'var(--gold-light)':'var(--text-dim)'};">${cur?'📍 ':''}구역 ${ZONE_NAMES[i]}</div>
-          <div style="font-size:9px;color:var(--text-dim);">${r}</div>
+          <div style="font-size:11px;color:var(--text-dim);">${r}</div>
         </div>`;
       });
-      zh+=`</div><div style="font-size:9px;color:var(--text-dim);margin-top:6px;">구역 클릭으로 이동 (전투 중 불가) · ${getZoneKillTh()>0?`현재 구역 처치 ${G.zoneKills}/${getZoneKillTh()}`:'자동 전환 꺼짐 (수동 이동만)'}</div>`;
+      zh+=`</div><div style="font-size:11px;color:var(--text-dim);margin-top:6px;">구역 클릭으로 이동 (전투 중 불가) · ${getZoneKillTh()>0?`현재 구역 처치 ${G.zoneKills}/${getZoneKillTh()}`:'자동 전환 꺼짐 (수동 이동만)'}</div>`;
     }
   }
 
@@ -41768,7 +41775,7 @@ function showMapModal(){
       h+=`<div onclick="tryMove('${n}')" style="width:130px; padding:12px 8px; border:2px solid ${borderColor}; background:${bgColor}; border-radius:8px; cursor:pointer; text-align:center; transition:0.2s; box-shadow:0 3px 5px rgba(0,0,0,0.08);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 5px 8px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 3px 5px rgba(0,0,0,0.08)';">
         <div style="font-size:24px; margin-bottom:6px;">${m.emoji}</div>
         <div style="font-size:12px; font-weight:bold; color:${textColor}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${n}</div>
-        <div style="font-size:9px; color:var(--text-dim); margin-top:4px;">${m.type} | Lv.${m.level}</div>
+        <div style="font-size:11px; color:var(--text-dim); margin-top:4px;">${m.type} | Lv.${m.level}</div>
       </div>`;
     });
   }
@@ -41871,7 +41878,7 @@ function showItemDetail(n){
       }).filter(Boolean).join('');
       let curNm=cur?(cur.length>16?cur.slice(0,15)+'…':cur):'빈 슬롯';
       let shieldNote=shieldAutoUnequipped?`<div style="color:#e67e22;margin-top:3px;">🛡️ 양손무기라 방패(${shieldCur}) 자동 해제됨</div>`:'';
-      cmpHtml=`<div style="margin-top:10px;padding:6px 8px;border:1px solid var(--border);border-radius:3px;background:rgba(0,0,0,0.03);font-size:10px;text-align:left;"><div style="color:var(--text-dim);margin-bottom:3px;">📊 장착 시 변화 <span style="font-size:9px">(현재: ${curNm})</span></div>${rows||'<span style="color:var(--text-dim)">스탯 변화 없음</span>'}${shieldNote}</div>`;
+      cmpHtml=`<div style="margin-top:10px;padding:6px 8px;border:1px solid var(--border);border-radius:3px;background:rgba(0,0,0,0.03);font-size:10px;text-align:left;"><div style="color:var(--text-dim);margin-bottom:3px;">📊 장착 시 변화 <span style="font-size:11px">(현재: ${curNm})</span></div>${rows||'<span style="color:var(--text-dim)">스탯 변화 없음</span>'}${shieldNote}</div>`;
     }catch(e){ cmpHtml=''; }
   }
 
@@ -42414,13 +42421,13 @@ let togHtml = '';
 if(isActive && myLv > 0){
   togHtml = `<div style="display:flex;gap:0;margin-top:2px;">
     <button onclick="event.stopPropagation();setSkillToggle('${sn}',true)"
-      style="flex:1;padding:2px 0;font-size:8px;
+      style="flex:1;padding:2px 0;font-size:11px;
              border:1px solid ${togOn?'var(--blue-light)':'#ccc'};
              background:${togOn?'var(--blue-light)':'#f0f0f0'};
              color:${togOn?'#fff':'#aaa'};
              border-radius:2px 0 0 2px;cursor:pointer;">자동</button>
     <button onclick="event.stopPropagation();setSkillToggle('${sn}',false)"
-      style="flex:1;padding:2px 0;font-size:8px;
+      style="flex:1;padding:2px 0;font-size:11px;
              border:1px solid ${!togOn?'#e74c3c':'#ccc'};
              background:${!togOn?'#e74c3c':'#f0f0f0'};
              color:${!togOn?'#fff':'#aaa'};
@@ -42430,7 +42437,7 @@ if(isActive && myLv > 0){
 
 h += `<div id="sknode-${sn}" onclick="selectSkill('${sn}')" class="sk-node" style="width:62px; border:2px solid ${bdColor}; border-radius:4px; background:${bg}; opacity:${op}; cursor:pointer; transition:0.2s; position:relative; ${selBox}">
   <div style="font-size:20px; text-align:center; padding:4px 0; background:#f2f7fa; border-bottom:1px solid ${bdColor}; border-radius:2px 2px 0 0; ${!reqMet?'filter:grayscale(1)':''}">${sk.emoji}</div>
-  <div style="font-size:9px; text-align:center; padding:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text);">${sn}</div>
+  <div style="font-size:11px; text-align:center; padding:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text);">${sn}</div>
   <div style="font-size:10px; font-weight:bold; text-align:center; background:var(--bg-deep); color:${isMax?'var(--gold)':'var(--text-dim)'}; border-radius:0 0 2px 2px;">Lv.${myLv}</div>
   ${togHtml}
 </div>`;
@@ -42525,7 +42532,7 @@ function selectSkill(name){
   }
 
   let cost = typeof sk.spCost === 'function' ? (isLearned ? sk.spCost(myLv) : sk.spCost(1)) : sk.spCost;
-  let typeBdg = sk.type==='패시브'?`<span style="font-size:9px;background:#f0e8ff;color:#8e44ad;padding:2px 5px;border-radius:3px;">패시브</span>`:`<span style="font-size:9px;background:#eaf4fb;color:var(--blue-light);padding:2px 5px;border-radius:3px;">SP ${cost}</span>`;
+  let typeBdg = sk.type==='패시브'?`<span style="font-size:11px;background:#f0e8ff;color:#8e44ad;padding:2px 5px;border-radius:3px;">패시브</span>`:`<span style="font-size:11px;background:#eaf4fb;color:var(--blue-light);padding:2px 5px;border-radius:3px;">SP ${cost}</span>`;
   
   let canLearn = (p.skillPoints||0) > 0 && reqMet && !isMax;
   let btnText = isMax ? 'MAX' : (!isLearned ? '배우기' : 'Lv UP'); 
@@ -42603,7 +42610,7 @@ function showVendingModal(lv){
           <input type="number" placeholder="가격(z)" min="1" value="${slot.price||''}" oninput="window.__vs[${i}].price=Math.max(0,parseInt(this.value)||0);window.__vRender()" style="width:75px;font-size:10px;padding:2px;border:1px solid var(--border);border-radius:2px;">
           <input type="number" placeholder="수량" min="1" max="${maxQty}" value="${slot.qty||''}" oninput="window.__vs[${i}].qty=Math.min(Math.max(0,parseInt(this.value)||0),${maxQty});window.__vRender()" style="width:50px;font-size:10px;padding:2px;border:1px solid var(--border);border-radius:2px;">
         </div>
-        ${base&&slot.price?`<div style="font-size:9px;color:var(--text-dim);">기준가 <b>${base.toLocaleString()}z</b> · 배율 <b>${ratio.toFixed(1)}x</b> <span style="font-family:monospace;color:${chColor};letter-spacing:-1px;">${bar}</span> <b style="color:${chColor}">${Math.round(chance)}%</b>/30초</div>`:''}
+        ${base&&slot.price?`<div style="font-size:11px;color:var(--text-dim);">기준가 <b>${base.toLocaleString()}z</b> · 배율 <b>${ratio.toFixed(1)}x</b> <span style="font-family:monospace;color:${chColor};letter-spacing:-1px;">${bar}</span> <b style="color:${chColor}">${Math.round(chance)}%</b>/30초</div>`:''}
       </div>`;
     }).join('');
     let h=`<div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">슬롯 ${slotCount}개 · 소지금 <b style="color:var(--gold-light)">${p.zeny.toLocaleString()}z</b></div>
@@ -42662,12 +42669,12 @@ function showVendingStatus(){
     let chColor=chance>=50?'var(--green)':chance>=20?'var(--gold)':'var(--red-light)';
     return `<div style="display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px dashed var(--border);">
       <div style="flex:1;"><div style="font-size:11px;font-weight:bold;">${s.item}</div>
-        <div style="font-size:9px;color:var(--text-dim);">기준가 ${base?base.toLocaleString()+'z':'알 수 없음'}</div></div>
+        <div style="font-size:11px;color:var(--text-dim);">기준가 ${base?base.toLocaleString()+'z':'알 수 없음'}</div></div>
       <div style="text-align:right;">
         <div style="font-size:11px;color:var(--gold-light);font-weight:bold;">${s.price.toLocaleString()}z</div>
-        <div style="font-size:9px;color:var(--text-dim);">잔여 ${s.qty}개</div>
+        <div style="font-size:11px;color:var(--text-dim);">잔여 ${s.qty}개</div>
       </div>
-      <div style="font-size:10px;font-weight:bold;color:${chColor};min-width:36px;text-align:right;">${chance}%<br><span style="font-size:8px;font-weight:normal;">/ 30초</span></div>
+      <div style="font-size:10px;font-weight:bold;color:${chColor};min-width:36px;text-align:right;">${chance}%<br><span style="font-size:11px;font-weight:normal;">/ 30초</span></div>
     </div>`;
   }).join('');
 
@@ -42811,7 +42818,7 @@ function showCodexModal(tab = 'all'){
               <div style="font-size:36px; min-width:54px; height:54px; display:flex; align-items:center; justify-content:center; background:#f8fbfd; border-radius:4px; border:1px solid #e0e8ed;">${m.emoji}</div>
               <div style="flex:1; line-height:1.4;">
                 <div style="font-size:12px; font-weight:bold; color:var(--text); border-bottom:1px dashed var(--border); padding-bottom:3px; margin-bottom:3px;">${m.name}</div>
-                <div style="font-size:9px; color:var(--gold-dim); background:#fcf9f2; padding:3px 5px; border-radius:2px; margin-bottom:3px; display:inline-block;">📍 ${mapStr}</div>
+                <div style="font-size:11px; color:var(--gold-dim); background:#fcf9f2; padding:3px 5px; border-radius:2px; margin-bottom:3px; display:inline-block;">📍 ${mapStr}</div>
                 <div style="font-size:10px; color:var(--text-dim); margin-top:2px;">사냥 성공 기록이 없어 상세 정보를 알 수 없습니다.</div>
               </div>
             </div>`;
@@ -42834,8 +42841,8 @@ function showCodexModal(tab = 'all'){
               <div style="font-size:36px; min-width:54px; height:54px; display:flex; align-items:center; justify-content:center; background:#f8fbfd; border-radius:4px; border:1px solid #e0e8ed;">${m.emoji}</div>
               <div style="flex:1; line-height:1.4; overflow:hidden;">
                 <div style="font-size:12px; font-weight:bold; color:${nameColor}; border-bottom:1px dashed var(--border); padding-bottom:3px; margin-bottom:3px; display:flex; justify-content:space-between;">
-                  <span>${m.name} <span style="font-size:9px;color:var(--text-dim);font-weight:normal;">(처치: ${p.killCount[m.name]})</span></span>
-                  ${isBoss ? '<span style="color:#fff; background:#e74c3c; font-size:9px; padding:1px 4px; border-radius:2px;">BOSS</span>' : ''}
+                  <span>${m.name} <span style="font-size:11px;color:var(--text-dim);font-weight:normal;">(처치: ${p.killCount[m.name]})</span></span>
+                  ${isBoss ? '<span style="color:#fff; background:#e74c3c; font-size:11px; padding:1px 4px; border-radius:2px;">BOSS</span>' : ''}
                 </div>
                 <div style="font-size:10px; color:var(--text-dim); margin-bottom:2px;">
                   <b style="color:var(--gold-light);">Lv.${m.lv}</b> | ${m.element} | ${m.size}
@@ -42843,10 +42850,10 @@ function showCodexModal(tab = 'all'){
                 <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">
                   <span style="color:#e74c3c; font-weight:600;">HP ${m.hp}</span> / <span style="color:#2980b9; font-weight:600;">ATK ${m.atk}</span> / DEF ${m.def}
                 </div>
-                <div style="font-size:9px; color:var(--gold-dim); background:#fcf9f2; padding:3px 5px; border-radius:2px; margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${mapStr}">
+                <div style="font-size:11px; color:var(--gold-dim); background:#fcf9f2; padding:3px 5px; border-radius:2px; margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${mapStr}">
                   📍 ${mapStr}
                 </div>
-                <div style="font-size:9px; color:var(--text); line-height:1.3;">
+                <div style="font-size:11px; color:var(--text); line-height:1.3;">
                   🎁 ${dropsHtml}
                 </div>
               </div>
@@ -42869,7 +42876,7 @@ function showCodexModal(tab = 'all'){
                 <div style="font-size:24px; min-width:40px; text-align:center;">${c.emoji}</div>
                 <div style="flex:1; line-height:1.4;">
                   <div style="font-size:12px; font-weight:bold; color:var(--gold-light);">${k}</div>
-                  <div style="font-size:9px; color:var(--blue-light); margin-bottom:2px;">[장착 부위: ${c.target}] ${c.prefix ? `접두어: ${c.prefix}` : (c.suffix ? `접미어: ${c.suffix}` : '')}</div>
+                  <div style="font-size:11px; color:var(--blue-light); margin-bottom:2px;">[장착 부위: ${c.target}] ${c.prefix ? `접두어: ${c.prefix}` : (c.suffix ? `접미어: ${c.suffix}` : '')}</div>
                   <div style="font-size:10px; color:var(--text);">${c.desc}</div>
                 </div>
               </div>`;
@@ -43019,7 +43026,7 @@ function showEditModal(){
       ].map(([name, emoji, desc]) => `
         <div style="background:#fff;border:1px solid var(--border-gold);border-radius:4px;padding:6px 8px;">
           <div style="font-size:11px;font-weight:bold;margin-bottom:2px;">${emoji} ${name}</div>
-          <div style="font-size:9px;color:var(--text-dim);margin-bottom:4px;">${desc} (보유: ${p.inventory[name]||0}개)</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">${desc} (보유: ${p.inventory[name]||0}개)</div>
           <div style="display:flex;gap:4px;align-items:center;">
             <input type="number" id="mat-${name}" value="10" min="1" max="999"
               style="width:55px;padding:3px 5px;border:1px solid var(--border);border-radius:3px;font-size:11px;font-family:inherit;">
@@ -43220,7 +43227,7 @@ function showEditModal(){
       <input type="number" id="e-buff-val" value="10" step="0.01"
         style="width:70px;padding:3px 5px;border:1px solid var(--border);border-radius:3px;font-size:11px;font-family:inherit;">
     </div>
-    <div id="e-buff-hint" style="font-size:9px;color:var(--text-dim);margin:3px 0 6px 0;padding-left:2px;">STR/INT/DEX +수치</div>
+    <div id="e-buff-hint" style="font-size:11px;color:var(--text-dim);margin:3px 0 6px 0;padding-left:2px;">STR/INT/DEX +수치</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
       <button onclick="editorApplyBuff()"
         style="padding:6px;background:#e8d5f5;color:#8e44ad;border:1px solid #c39bd3;border-radius:4px;font-size:11px;font-weight:bold;cursor:pointer;">
@@ -43385,7 +43392,7 @@ function showMonsterEditModal(id) {
     '<div class="mon-drop-row" style="display:flex;gap:4px;align-items:center;margin-bottom:4px;">' +
     '<select class="drop-item-sel" style="flex:2;padding:3px 4px;border:1px solid var(--border);border-radius:3px;font-size:11px;font-family:inherit;">' + _mkOpts(item) + '</select>' +
     '<input type="number" class="drop-item-rate" value="' + rate + '" step="0.01" min="0" max="100" style="width:52px;padding:3px 4px;border:1px solid var(--border);border-radius:3px;font-size:11px;font-family:inherit;">' +
-    '<span style="font-size:9px;color:var(--text-dim);">%</span>' +
+    '<span style="font-size:11px;color:var(--text-dim);">%</span>' +
     '<button onclick="this.closest(\'.mon-drop-row\').remove()" style="padding:2px 6px;background:#fee;color:#c0392b;border:1px solid #f1948a;border-radius:3px;font-size:10px;cursor:pointer;">✕</button>' +
     '</div>'
   ).join('');
@@ -43478,7 +43485,7 @@ function showMonsterEditModal(id) {
   <div style="font-size:11px;font-weight:bold;color:#d35400;margin-bottom:5px;">🎁 드롭 아이템</div>
   <div id="me-drops-container">${dropRows}</div>
   <button onclick="monEditAddDrop()" style="width:100%;padding:4px;background:#fef9f0;color:#d35400;border:1px dashed #f0b27a;border-radius:3px;font-size:11px;cursor:pointer;margin-top:4px;">＋ 드롭 추가</button>
-  <div style="font-size:9px;color:var(--text-dim);margin-top:3px;">확률 단위: % (예: 0.01 = 0.01%, 70 = 70%)</div>
+  <div style="font-size:11px;color:var(--text-dim);margin-top:3px;">확률 단위: % (예: 0.01 = 0.01%, 70 = 70%)</div>
 </div>
 <div style="background:#f0f5fb;border-radius:4px;padding:7px 9px;margin-top:6px;">
   <div style="font-size:11px;font-weight:bold;color:#2471a3;margin-bottom:5px;">🗺 출몰 지역</div>
@@ -43501,7 +43508,7 @@ function monEditAddDrop() {
   div.innerHTML =
     '<select class="drop-item-sel" style="flex:2;padding:3px 4px;border:1px solid var(--border);border-radius:3px;font-size:11px;font-family:inherit;">' + (window._monItemOpts||'') + '</select>' +
     '<input type="number" class="drop-item-rate" value="1" step="0.01" min="0" max="100" style="width:52px;padding:3px 4px;border:1px solid var(--border);border-radius:3px;font-size:11px;font-family:inherit;">' +
-    '<span style="font-size:9px;color:var(--text-dim);">%</span>' +
+    '<span style="font-size:11px;color:var(--text-dim);">%</span>' +
     '<button onclick="this.closest(\'.mon-drop-row\').remove()" style="padding:2px 6px;background:#fee;color:#c0392b;border:1px solid #f1948a;border-radius:3px;font-size:10px;cursor:pointer;">✕</button>';
   c.appendChild(div);
 }
@@ -44611,7 +44618,7 @@ function showDBViewer() {
     const errStyle = `background:#ffeaea;`;
 
     function badge(txt, color) {
-      return `<span style="background:${color};color:#fff;font-size:9px;padding:1px 4px;border-radius:2px;font-weight:700;margin-left:3px;">${txt}</span>`;
+      return `<span style="background:${color};color:#fff;font-size:11px;padding:1px 4px;border-radius:2px;font-weight:700;margin-left:3px;">${txt}</span>`;
     }
 
     // ── 검색 박스 ──
@@ -44694,7 +44701,7 @@ function showDBViewer() {
           <td style="${tdStyle}">${m.size||'-'}</td>
           <td style="${tdStyle}">${m.element||'-'}</td>
           <td style="${tdStyle}">${m.exp||0}</td>
-          <td style="${tdStyle};font-size:9px;">${dropList}</td>
+          <td style="${tdStyle};font-size:11px;">${dropList}</td>
           <td style="${tdStyle}">${issueHtml||'✅'}</td>
         </tr>`;
       });
@@ -44796,12 +44803,12 @@ function showDBViewer() {
         const issueHtml = issues.map(i => badge(i[1], i[0]==='err'?'#c0392b':'#d35400')).join(' ');
 
         tbl += `<tr class="dbv-row" data-name="${mapName.toLowerCase()}" style="${rowCls}">
-          <td style="${tdStyle}">${mp.emoji||''} ${mapName}${mp.safe?'<span style="color:#27ae60;font-size:9px;"> [안전]</span>':''}${mp.hasMvp?badge('MVP','#8e44ad'):''}
+          <td style="${tdStyle}">${mp.emoji||''} ${mapName}${mp.safe?'<span style="color:#27ae60;font-size:11px;"> [안전]</span>':''}${mp.hasMvp?badge('MVP','#8e44ad'):''}
           </td>
           <td style="${tdStyle}">${mp.type||'-'}</td>
           <td style="${tdStyle}">${mp.level||'-'}</td>
-          <td style="${tdStyle};font-size:9px;max-width:200px;">${monList}</td>
-          <td style="${tdStyle};font-size:9px;">${connList}</td>
+          <td style="${tdStyle};font-size:11px;max-width:200px;">${monList}</td>
+          <td style="${tdStyle};font-size:11px;">${connList}</td>
           <td style="${tdStyle}">${issueHtml||'✅'}</td>
         </tr>`;
       });
@@ -44857,7 +44864,7 @@ function showDBViewer() {
           <td style="${tdStyle}">${sk.type||'-'}</td>
           <td style="${tdStyle}">${sk.maxLv||'-'}</td>
           <td style="${tdStyle}">${spTxt}</td>
-          <td style="${tdStyle};font-size:9px;">${reqHtml}</td>
+          <td style="${tdStyle};font-size:11px;">${reqHtml}</td>
           <td style="${tdStyle}">${issueHtml||'✅'}</td>
         </tr>`;
       });
@@ -44916,7 +44923,7 @@ function showDBViewer() {
           <td style="${tdStyle};font-size:10px;color:#7093ab;">${code}</td>
           <td style="${tdStyle}">${jobEmoji[code]||'?'} ${name}</td>
           <td style="${tdStyle}">${advNames}</td>
-          <td style="${tdStyle};font-size:9px;">${skHtml}</td>
+          <td style="${tdStyle};font-size:11px;">${skHtml}</td>
           <td style="${tdStyle}">${issueHtml||'✅'}</td>
         </tr>`;
       });
@@ -45089,8 +45096,8 @@ function showCombatSim() {
       }
 
       // 크기/속성 보정 뱃지
-      const szBadge = szP!==1 ? `<span style="font-size:9px;color:#e64a19">(크기${Math.round(szP*100)}%)</span>` : '';
-      const elBadge = elM!==1 ? `<span style="font-size:9px;color:${elM>1?'#c62828':'#1565c0'}">(속${Math.round(elM*100)}%)</span>` : '';
+      const szBadge = szP!==1 ? `<span style="font-size:11px;color:#e64a19">(크기${Math.round(szP*100)}%)</span>` : '';
+      const elBadge = elM!==1 ? `<span style="font-size:11px;color:${elM>1?'#c62828':'#1565c0'}">(속${Math.round(elM*100)}%)</span>` : '';
 
       return `<tr style="background:${rowBg};">
         <td style="padding:3px 6px;white-space:nowrap;">${m.emoji||''}${m.name} ${szBadge}${elBadge}</td>
@@ -46592,7 +46599,7 @@ function showQuestModal() {
         <div style="border:1px solid #fde8c8; border-radius:6px; padding:10px 12px; background:#fffaf4; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
           <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;">
             <div style="font-size:12px; font-weight:bold; color:var(--gold-light);">${q.title}</div>
-            <span style="font-size:9px; background:#e67e22; color:#fff; padding:2px 6px; border-radius:10px; white-space:nowrap;">수락 가능</span>
+            <span style="font-size:11px; background:#e67e22; color:#fff; padding:2px 6px; border-radius:10px; white-space:nowrap;">수락 가능</span>
           </div>
           <div style="font-size:10px; color:var(--text-dim); margin-top:3px;">📍 ${q.npc}에게 말을 걸어보세요.</div>
         </div>`;
@@ -46647,7 +46654,7 @@ function showQuestModal() {
       <div style="border:1px solid var(--border-gold); border-radius:6px; padding:10px 12px; background:#fff; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;">
           <div style="font-size:12px; font-weight:bold; color:var(--gold-light);">${q.title}</div>
-          <span style="font-size:9px; background:${badgeColor}; color:#fff; padding:2px 6px; border-radius:10px; white-space:nowrap;">${badgeText}</span>
+          <span style="font-size:11px; background:${badgeColor}; color:#fff; padding:2px 6px; border-radius:10px; white-space:nowrap;">${badgeText}</span>
         </div>
         ${progressHtml}
       </div>`;
@@ -46681,7 +46688,7 @@ function showQuestModal() {
           <div style="border:1px solid #fde8c8; border-radius:6px; padding:10px 12px; background:#fffaf4; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;">
               <div style="font-size:12px; font-weight:bold; color:var(--gold-light);">${q.title}</div>
-              <span style="font-size:9px; background:#e67e22; color:#fff; padding:2px 6px; border-radius:10px; white-space:nowrap;">전직 퀘스트</span>
+              <span style="font-size:11px; background:#e67e22; color:#fff; padding:2px 6px; border-radius:10px; white-space:nowrap;">전직 퀘스트</span>
             </div>
             <div style="font-size:10px; color:var(--text-dim); margin-top:3px;">📍 ${q.npc}에게 말을 걸어보세요.</div>
           </div>`;
@@ -46716,7 +46723,7 @@ function showQuestModal() {
         <div style="border:1px solid var(--border-gold); border-radius:6px; padding:10px 12px; background:#fff; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
           <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;">
             <div style="font-size:12px; font-weight:bold; color:var(--gold-light);">${q.title}</div>
-            <span style="font-size:9px; background:#8e44ad; color:#fff; padding:2px 6px; border-radius:10px; white-space:nowrap;">전직 진행중</span>
+            <span style="font-size:11px; background:#8e44ad; color:#fff; padding:2px 6px; border-radius:10px; white-space:nowrap;">전직 진행중</span>
           </div>
           ${progressHtml}
         </div>`;
@@ -49192,8 +49199,8 @@ function buildJobNode(code, idx, p){
            opacity:${s.op}; cursor:pointer; transition:.15s; flex-shrink:0;
            ${sel?'box-shadow:0 0 0 2px var(--gold);transform:scale(1.06);':'box-shadow:0 1px 3px rgba(0,0,0,.1);'}">
     <div style="font-size:19px; text-align:center; padding:3px 0;">${DB.jobEmoji[code]||'❔'}</div>
-    <div style="font-size:9px; text-align:center; padding:0 3px 2px; white-space:nowrap; color:var(--text);">${name}</div>
-    ${s.tag?`<div style="font-size:8px; text-align:center; background:var(--bg-panel); color:var(--text-dim); border-radius:0 0 2px 2px;">${s.tag}</div>`:''}
+    <div style="font-size:11px; text-align:center; padding:0 3px 2px; white-space:nowrap; color:var(--text);">${name}</div>
+    ${s.tag?`<div style="font-size:11px; text-align:center; background:var(--bg-panel); color:var(--text-dim); border-radius:0 0 2px 2px;">${s.tag}</div>`:''}
   </div>`;
 }
 
@@ -49383,9 +49390,9 @@ function renderHotbar(){
         let _sk=DB.skills[slot.name];
         if(_sk){ let _slv=p.skills[slot.name]||1; let _cost=typeof _sk.spCost==='function'?_sk.spCost(_slv):_sk.spCost; if(_cost&&p.sp<_cost) stCls+=' nosp'; }
       }
-      h+=`<div class="hotbar-slot${stCls}" id="hb-slot-${k}" onclick="openHotbarModal('${k}')" title="${slot.name} (${k.toUpperCase()})"><span class="hb-key">${k.toUpperCase()}</span><span class="hb-icon">${em}</span><span class="hb-name">${nm}</span>${cdTxt?`<span class="hb-cd-ov">${cdTxt}</span>`:''}</div>`;
+      h+=`<button class="hotbar-slot${stCls}" id="hb-slot-${k}" onclick="openHotbarModal('${k}')" title="${slot.name} (${k.toUpperCase()})"><span class="hb-key">${k.toUpperCase()}</span><span class="hb-icon">${em}</span><span class="hb-name">${nm}</span>${cdTxt?`<span class="hb-cd-ov">${cdTxt}</span>`:''}</button>`;
     } else {
-      h+=`<div class="hotbar-slot empty" onclick="openHotbarModal('${k}')"><span class="hb-key">${k.toUpperCase()}</span><span class="hb-icon" style="font-size:14px;color:#ccc">＋</span></div>`;
+      h+=`<button class="hotbar-slot empty" onclick="openHotbarModal('${k}')"><span class="hb-key">${k.toUpperCase()}</span><span class="hb-icon" style="font-size:14px;color:#ccc">＋</span></button>`;
     }
   });
   hg.innerHTML=h;
@@ -49425,7 +49432,7 @@ function buildSkillTab(key){
   if(!list.length) return '<div style="color:var(--text-dim);font-size:11px;padding:10px">등록 가능한 액티브/버프 스킬 없음</div>';
   return list.map(sn=>{
     let sk=DB.skills[sn]; let slv=p.skills[sn];
-    return `<div class="hb-list-row" onclick="assignHotbar('${key}','skill','${sn}')"><span>${sk.emoji||'✨'}</span><span style="flex:1">${sn} <span style="color:var(--text-dim);font-size:10px">Lv.${slv}</span></span><span style="font-size:9px;color:var(--text-dim);white-space:nowrap">${sk.type}</span></div>`;
+    return `<div class="hb-list-row" onclick="assignHotbar('${key}','skill','${sn}')"><span>${sk.emoji||'✨'}</span><span style="flex:1">${sn} <span style="color:var(--text-dim);font-size:10px">Lv.${slv}</span></span><span style="font-size:11px;color:var(--text-dim);white-space:nowrap">${sk.type}</span></div>`;
   }).join('');
 }
 
@@ -49443,7 +49450,7 @@ function buildItemTab(key){
 
 function buildActionTab(key){
   return Object.entries(HOTBAR_ACTIONS).map(([name,act])=>
-    `<div class="hb-list-row" onclick="assignHotbar('${key}','action','${name}')"><span>${act.emoji}</span><span style="flex:1">${name}</span><span style="font-size:9px;color:var(--text-dim)">${act.desc}</span></div>`
+    `<div class="hb-list-row" onclick="assignHotbar('${key}','action','${name}')"><span>${act.emoji}</span><span style="flex:1">${name}</span><span style="font-size:11px;color:var(--text-dim)">${act.desc}</span></div>`
   ).join('');
 }
 
