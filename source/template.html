@@ -798,6 +798,7 @@ body.work-mode p {
   <span class="title-map" id="title-map">프론테라 남쪽 평원</span>
 
   <button class="sys-btn" onclick="saveGame()" title="저장">💾 저장</button>
+  <button class="sys-btn" onclick="showPortableExport()" title="다른 기기로 보내기">📤 보내기</button>
   <label class="sys-btn" style="cursor:pointer;" title="파일 불러오기">
     📂 로드
     <input type="file" style="display:none;" accept=".json,.txt" onchange="importGame(event)">
@@ -2654,7 +2655,8 @@ function initLobby(){
         <label onclick="event.stopPropagation();" class="sys-btn" style="cursor:pointer; background:#ffffff; font-size:9px; padding:4px 8px; border-color:var(--blue-light);">
           📂 파일 불러오기
           <input type="file" style="display:none;" accept=".json,.txt" onchange="importCharacter(event, ${i})">
-        </label>`;
+        </label>
+        <button onclick="event.stopPropagation(); showPortableImport(${i})" class="sys-btn" style="background:#ffffff; font-size:9px; padding:4px 8px; margin-top:4px; border-color:var(--blue-light);">📋 코드 붙여넣기</button>`;
       d.onclick=(e)=>{
         // 버튼을 누른 게 아니라 슬롯 여백을 누른 경우에만 캐릭터 생성
         if(e.target.tagName !== 'INPUT' && e.target.tagName !== 'LABEL') createCharacter(i);
@@ -3064,6 +3066,138 @@ function importGame(event) {
   };
   reader.readAsText(file);
 }
+
+// ══ [P1-10] 휴대형 세이브 RMG1 — 기기 간 이동 코드 ═══════════════════════════
+// 규격: vault `데이터베이스\설계_휴대형세이브_RMG_v1.1.md` (원문 v1.0 옆).
+// 코드 = RMG1:<base64url(deflate(JSON 패키지))>.<crc32 8hex>. 패키지는 운반 포장일 뿐이고
+// 안의 character는 슬롯에 들어가는 세이브 그대로다 — 마이그레이션은 슬롯 로드 시 loadPlayerData가 한다.
+// 1차 범위: 게임 안 "보내기"(코드 생성·복사) + 로비 빈 슬롯 "코드 붙여넣기". 덮어쓰기·비교 화면은 2차.
+const RMG_PREFIX = 'RMG1:';
+const RMG_FORMAT_VERSION = 1;
+const RMG_STRIP_KEYS = ['_ghostPurged', '_statResetNotice', 'offlineHunt'];  // offlineHunt: 두 기기가 같은 부재 구간을 이중 정산하지 않게
+const RMG_MSG_DAMAGED = '세이브 데이터를 읽을 수 없습니다. 코드가 일부 누락되었거나 손상되었습니다.';
+const RMG_MSG_NEWER = '더 새로운 버전의 게임에서 만든 세이브입니다. 게임을 새로고침(최신 버전)한 뒤 다시 시도하세요.';
+const RMG_MSG_UNSUPPORTED = '이 브라우저는 세이브 코드를 지원하지 않습니다. 브라우저를 최신 버전으로 업데이트하세요. (iOS 16.4 이상)';
+
+function rmgSupported(){ return typeof CompressionStream === 'function' && typeof DecompressionStream === 'function'; }
+
+// 무결성 값 — 보안·치트 방지가 아니라 잘린 문자열·복사 오류 감지용. crypto.subtle은 file:// 배포에서 보장이 안 돼 쓰지 않는다
+let _crcTable = null;
+function crc32(str){
+  if(!_crcTable){
+    _crcTable = new Uint32Array(256);
+    for(let n = 0; n < 256; n++){ let c = n; for(let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); _crcTable[n] = c >>> 0; }
+  }
+  let crc = 0xFFFFFFFF;
+  for(let i = 0; i < str.length; i++) crc = _crcTable[(crc ^ str.charCodeAt(i)) & 0xFF] ^ (crc >>> 8);
+  return ((crc ^ 0xFFFFFFFF) >>> 0).toString(16).padStart(8, '0');
+}
+function bytesToB64url(bytes){
+  let s = '';
+  for(let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function b64urlToBytes(str){
+  let b = str.replace(/-/g, '+').replace(/_/g, '/');
+  while(b.length % 4) b += '=';
+  let bin = atob(b), out = new Uint8Array(bin.length);
+  for(let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+async function rmgPipe(bytes, stream){
+  return new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(stream)).arrayBuffer());
+}
+
+// 원천은 G.player가 아니라 saveLocal 직후의 슬롯 — 안전지역 위치 규칙·lastSavedAt이 적용된 상태
+function createPortableSave(){
+  if(!saveLocal()) return null;
+  let ch = JSON.parse(JSON.stringify(slots[activeSlot]));
+  RMG_STRIP_KEYS.forEach(k => { delete ch[k]; });
+  return { format:'RMG', formatVersion:RMG_FORMAT_VERSION, createdAt:new Date().toISOString(), character:ch };
+}
+async function encodePortableSave(pkg){
+  let packed = await rmgPipe(new TextEncoder().encode(JSON.stringify(pkg)), new CompressionStream('deflate'));
+  let payload = bytesToB64url(packed);
+  return RMG_PREFIX + payload + '.' + crc32(payload);
+}
+// 입력 형식만 다르고 결과는 { character, createdAt } 하나. 실패는 사용자에게 보일 문장으로 던진다
+async function decodePortableSave(text){
+  let t = String(text || '').replace(/^﻿/, '').trim();
+  if(!t) throw new Error('코드가 비어 있습니다.');
+  if(t[0] === '{'){                         // 구 JSON 세이브 (공백 제거 전에 판별 — 이름 속 공백이 깨진다)
+    try{ return { character: JSON.parse(t), createdAt: null }; }
+    catch(e){ throw new Error(RMG_MSG_DAMAGED); }
+  }
+  let s = t.replace(/\s+/g, '');            // 메신저가 끼운 줄바꿈·공백 제거
+  let m = /^RMG(\d+):/.exec(s);
+  if(!m) throw new Error('룬 미드가츠 세이브 코드가 아닙니다.');
+  if(m[1] !== String(RMG_FORMAT_VERSION)) throw new Error(RMG_MSG_NEWER);
+  let body = s.slice(RMG_PREFIX.length), dot = body.lastIndexOf('.');
+  if(dot < 0) throw new Error(RMG_MSG_DAMAGED);
+  let payload = body.slice(0, dot);
+  if(crc32(payload) !== body.slice(dot + 1).toLowerCase()) throw new Error(RMG_MSG_DAMAGED);
+  if(!rmgSupported()) throw new Error(RMG_MSG_UNSUPPORTED);
+  let pkg;
+  try{ pkg = JSON.parse(new TextDecoder().decode(await rmgPipe(b64urlToBytes(payload), new DecompressionStream('deflate')))); }
+  catch(e){ throw new Error(RMG_MSG_DAMAGED); }
+  if(!pkg || pkg.format !== 'RMG' || pkg.formatVersion !== RMG_FORMAT_VERSION) throw new Error(RMG_MSG_DAMAGED);
+  return { character: pkg.character, createdAt: pkg.createdAt || null };
+}
+// 슬롯에 넣기 전 공통 검사. 구버전 세이브는 통과(로드 때 migrateSave), 미래 버전은 거부 — 다운그레이드 경로가 없다
+function checkImportedCharacter(ch){
+  if(!validateSave(ch)) throw new Error('캐릭터 데이터가 올바르지 않습니다.');
+  if((ch.saveVersion || 0) > SAVE_SCHEMA_VERSION) throw new Error(RMG_MSG_NEWER);
+}
+
+async function showPortableExport(){
+  if(!rmgSupported()){ alert(RMG_MSG_UNSUPPORTED); return; }
+  let pkg = createPortableSave(); if(!pkg) return;
+  let code = await encodePortableSave(pkg);
+  openModal('📤 다른 기기로 보내기', `
+    <div style="font-size:12px; line-height:1.7;">
+      아래 코드를 복사해 다른 기기의 로비에서 빈 슬롯의 <b>📋 코드 붙여넣기</b>에 넣으세요.
+      <textarea id="rmg-out" readonly style="width:100%; height:110px; margin:8px 0; font-family:monospace; font-size:10px; word-break:break-all; box-sizing:border-box;">${code}</textarea>
+      <div style="font-size:10px; color:var(--text-dim);">코드 길이 ${code.length.toLocaleString()}자 · 지금 이 기기의 저장 상태 그대로입니다. 귀환 위치는 마지막 안전지역입니다.</div>
+    </div>`, [
+      { label:'코드 복사', cls:'ok', close:false, action:()=>copySyncCode() },
+      { label:'닫기', action:()=>{} }
+    ]);
+}
+async function copySyncCode(){
+  let ta = $('rmg-out'); if(!ta) return;
+  try{ await navigator.clipboard.writeText(ta.value); notify('코드를 복사했습니다', 'green'); return; }
+  catch(e){}
+  ta.focus(); ta.select();
+  let ok = false; try{ ok = document.execCommand('copy'); }catch(e){}
+  notify(ok ? '코드를 복사했습니다' : '자동 복사가 막혔습니다. 코드를 길게 눌러 직접 복사하세요', ok ? 'green' : 'gold');
+}
+function showPortableImport(i){
+  openModal('📥 다른 기기에서 가져오기', `
+    <div style="font-size:12px; line-height:1.7;">
+      다른 기기에서 복사한 코드(<b>RMG1:</b>로 시작)를 붙여넣으세요. 예전 .json 세이브 내용도 받습니다.
+      <textarea id="rmg-in" placeholder="RMG1:..." style="width:100%; height:110px; margin:8px 0; font-family:monospace; font-size:10px; word-break:break-all; box-sizing:border-box;"></textarea>
+      <div id="rmg-err" style="font-size:11px; color:var(--red-light); min-height:14px;"></div>
+    </div>`, [
+      { label:'가져오기', cls:'ok', close:false, action:()=>importSyncCode(i) },
+      { label:'취소', action:()=>{} }
+    ]);
+}
+async function importSyncCode(i){
+  let err = $('rmg-err');
+  try{
+    let r = await decodePortableSave($('rmg-in').value);
+    checkImportedCharacter(r.character);
+    loadSlots();
+    if(slots[i]) throw new Error('이 슬롯은 비어 있지 않습니다. 빈 슬롯에서 가져오세요.');
+    slots[i] = r.character;
+    saveSlots();
+    closeModal(); initLobby();
+    notify(`[${r.character.name}] 캐릭터를 가져왔습니다`, 'green');
+  }catch(e){
+    if(err) err.textContent = e.message || RMG_MSG_DAMAGED;
+  }
+}
+
 function exitToLobby(){ G.autoHunt=false; clearTimeout(G.huntTimer); saveGame(); /* [P1-11] 사냥을 먼저 끈다 — 로비로 나간 시간은 오프라인 보상 대상 아님 */ clearTimeout(G.passerbyTimer); clearInterval(regenTimer); $('game-log').innerHTML=''; initLobby(); }
 function confirmReset(){ openModal('초기화','모든 데이터를 삭제합니다.',[{label:'확인',cls:'danger',action:()=>{localStorage.removeItem('rmc_v3');slots=Array(6).fill(null);closeModal();initLobby();}}]); }
 // 수량 접두어 정의, 장비 이름 생성 엔진
