@@ -214,6 +214,21 @@ button{touch-action:manipulation;}
 .cd-body{overflow-y:auto;-webkit-overflow-scrolling:touch;}
 #char-detail[data-tab="stats"] .equip-sec,#char-detail[data-tab="equip"] .stats-sec{display:none;}
 #char-detail .equip-sec{border-top:none;}
+/* [P1-13 v1.2] 장비창 사람 모양 배치 */
+#char-detail .equip-grid{grid-template-columns:1fr 96px 1fr;grid-template-areas:"hu doll hm" "hl doll ga" "wp doll sh" "ar doll bo" "a1 . a2";gap:6px;align-items:stretch;}
+#char-detail .eq-doll{grid-area:doll;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:1px dashed var(--border-gold);border-radius:48px 48px 8px 8px;background:linear-gradient(180deg,#f7fafc,#eaf2f7);}
+#char-detail .eq-doll-fig{font-size:44px;line-height:1;}
+#char-detail .eq-doll-job{font-size:11px;color:var(--text-dim);text-align:center;padding:0 4px;}
+#char-detail .eq-slot{min-height:48px;padding:4px 6px;}
+#char-detail .eq-slot-lbl{font-size:11px;}
+#char-detail .eq-slot-item{font-size:12px;}
+#char-detail .eq-slot[data-slot=hm],#char-detail .eq-slot[data-slot=ga],#char-detail .eq-slot[data-slot=sh],#char-detail .eq-slot[data-slot=bo],#char-detail .eq-slot[data-slot=a2]{text-align:right;}
+#char-detail .eq-slot[data-slot=hu]{grid-area:hu;} #char-detail .eq-slot[data-slot=hm]{grid-area:hm;}
+#char-detail .eq-slot[data-slot=hl]{grid-area:hl;} #char-detail .eq-slot[data-slot=ga]{grid-area:ga;}
+#char-detail .eq-slot[data-slot=wp]{grid-area:wp;} #char-detail .eq-slot[data-slot=sh]{grid-area:sh;}
+#char-detail .eq-slot[data-slot=ar]{grid-area:ar;} #char-detail .eq-slot[data-slot=bo]{grid-area:bo;}
+#char-detail .eq-slot[data-slot=a1]{grid-area:a1;} #char-detail .eq-slot[data-slot=a2]{grid-area:a2;}
+@media(max-width:700px){ #char-detail .equip-grid{grid-template-columns:1fr 72px 1fr;} #char-detail .eq-doll-fig{font-size:34px;} }
 /* 중앙: 현재 행동 상태 + 주행동 */
 #action-bar{border-top:1px solid var(--border-gold);background:var(--bg-panel);padding:6px 10px;display:flex;flex-direction:column;gap:6px;}
 .action-status{font-size:13px;color:var(--text);display:flex;flex-wrap:wrap;align-items:center;gap:4px;min-height:18px;}
@@ -510,6 +525,7 @@ html[data-theme="dark"] .bag-tabs{background:#162030;}
 html[data-theme="dark"] .bag-tab.active{background:#1a2430;}
 html[data-theme="dark"] .icon-btn{color:var(--text-bright);}
 html[data-theme="dark"] .as-alert{background:#2a2a1a;}
+html[data-theme="dark"] #char-detail .eq-doll{background:linear-gradient(180deg,#1d2b3a,#162030);}
 html[data-theme="dark"] #game-log{background:#1a2430;}
 html[data-theme="dark"] #mon-list{background:#1a2430;}
 html[data-theme="dark"] .mon-card{background:#1d2b3a;}
@@ -35534,16 +35550,18 @@ body.work-mode p {
 <div class="equip-sec">
 <div class="panel-hdr" style="margin:0 -8px 4px;padding:3px 8px;">EQUIPMENT</div>
 <div class="equip-grid" id="equip-grid">
-  <button class="eq-slot" onclick="openEquipModal('투구_상단')"><span class="eq-slot-lbl">투구_상단</span><span class="eq-slot-item" id="eq-투구_상단">—</span></button>
-  <button class="eq-slot" onclick="openEquipModal('투구_중단')"><span class="eq-slot-lbl">투구_중단</span><span class="eq-slot-item" id="eq-투구_중단">—</span></button>
-  <button class="eq-slot" onclick="openEquipModal('투구_하단')"><span class="eq-slot-lbl">투구_하단</span><span class="eq-slot-item" id="eq-투구_하단">—</span></button>
-  <button class="eq-slot" onclick="openEquipModal('갑옷')"><span class="eq-slot-lbl">갑옷</span><span class="eq-slot-item" id="eq-갑옷">—</span></button>
-  <button class="eq-slot" onclick="openEquipModal('걸칠것')"><span class="eq-slot-lbl">걸칠것</span><span class="eq-slot-item" id="eq-걸칠것">—</span></button>
-  <button class="eq-slot" onclick="openEquipModal('무기')"><span class="eq-slot-lbl">무기</span><span class="eq-slot-item" id="eq-무기">—</span></button>
-  <button class="eq-slot" onclick="openEquipModal('방패')"><span class="eq-slot-lbl">방패</span><span class="eq-slot-item" id="eq-방패">—</span></button>
-  <button class="eq-slot" onclick="openEquipModal('신발')"><span class="eq-slot-lbl">신발</span><span class="eq-slot-item" id="eq-신발">—</span></button>
-  <button class="eq-slot" onclick="openEquipModal('악세1')"><span class="eq-slot-lbl">악세사리1</span><span class="eq-slot-item" id="eq-악세1">—</span></button>
-  <button class="eq-slot" onclick="openEquipModal('악세2')"><span class="eq-slot-lbl">악세사리2</span><span class="eq-slot-item" id="eq-악세2">—</span></button>
+  <!-- [P1-13 v1.2] 사람 모양 배치 — 가운데 캐릭터, 양옆 슬롯 (원작 RO 장비창 구도) -->
+  <div class="eq-doll" aria-hidden="true"><div class="eq-doll-fig" id="eq-doll-fig">🧒</div><div class="eq-doll-job" id="eq-doll-job"></div></div>
+  <button class="eq-slot" data-slot="hu" onclick="openEquipModal('투구_상단')"><span class="eq-slot-lbl">🎩 머리 상</span><span class="eq-slot-item" id="eq-투구_상단">—</span></button>
+  <button class="eq-slot" data-slot="hm" onclick="openEquipModal('투구_중단')"><span class="eq-slot-lbl">👓 머리 중</span><span class="eq-slot-item" id="eq-투구_중단">—</span></button>
+  <button class="eq-slot" data-slot="hl" onclick="openEquipModal('투구_하단')"><span class="eq-slot-lbl">😷 머리 하</span><span class="eq-slot-item" id="eq-투구_하단">—</span></button>
+  <button class="eq-slot" data-slot="ar" onclick="openEquipModal('갑옷')"><span class="eq-slot-lbl">🥋 갑옷</span><span class="eq-slot-item" id="eq-갑옷">—</span></button>
+  <button class="eq-slot" data-slot="ga" onclick="openEquipModal('걸칠것')"><span class="eq-slot-lbl">🧥 걸칠것</span><span class="eq-slot-item" id="eq-걸칠것">—</span></button>
+  <button class="eq-slot" data-slot="wp" onclick="openEquipModal('무기')"><span class="eq-slot-lbl">⚔️ 무기</span><span class="eq-slot-item" id="eq-무기">—</span></button>
+  <button class="eq-slot" data-slot="sh" onclick="openEquipModal('방패')"><span class="eq-slot-lbl">🛡️ 방패</span><span class="eq-slot-item" id="eq-방패">—</span></button>
+  <button class="eq-slot" data-slot="bo" onclick="openEquipModal('신발')"><span class="eq-slot-lbl">👢 신발</span><span class="eq-slot-item" id="eq-신발">—</span></button>
+  <button class="eq-slot" data-slot="a1" onclick="openEquipModal('악세1')"><span class="eq-slot-lbl">💍 악세 1</span><span class="eq-slot-item" id="eq-악세1">—</span></button>
+  <button class="eq-slot" data-slot="a2" onclick="openEquipModal('악세2')"><span class="eq-slot-lbl">📿 악세 2</span><span class="eq-slot-item" id="eq-악세2">—</span></button>
 </div>
 </div>
 </div></div></div>
@@ -38898,6 +38916,8 @@ function updateUI(){
   if($('map-name-disp')) $('map-name-disp').textContent='🗺 '+G.currentMap+((typeof getZoneSuffix==='function')?getZoneSuffix():''); // [2-9] 구역 표시
   applyMapTint(); // [스타일] 맵 분위기 틴트
   if($('char-emoji')) $('char-emoji').textContent=DB.jobEmoji[JOB_NAME2CODE[normalizeJob(p.job)]]||'⚔️'; 
+  { let f=document.getElementById('eq-doll-fig'), j=document.getElementById('eq-doll-job'); // [P1-13 v1.2] 장비창 인형
+    if(f) f.textContent=DB.jobEmoji[JOB_NAME2CODE[normalizeJob(p.job)]]||'⚔️'; if(j) j.textContent=`${p.job} · Lv.${p.baseLv}`; }
   if($('zeny-disp')) $('zeny-disp').textContent=p.zeny.toLocaleString()+' z'; // [스타일] 천 단위 콤마
   
   // MaxHP/SP 장비/카드 보너스는 괄호로 표기 (예: 1520/1520 (+800))
