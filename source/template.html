@@ -2573,6 +2573,9 @@ function saveSlots(){ try{ localStorage.setItem('rmc_v3',JSON.stringify(slots));
 function saveLocal(){
   if(activeSlot < 0 || !G.player) return false;
   G.player.lastSavedAt = new Date().toISOString();
+  // [P1-11] 자동사냥 중(필드)이면 재접속 정산 기준을 남긴다 — 브라우저가 종료돼도 loadCharacter가 이어 계산
+  if(G.autoHunt && DB.maps[G.currentMap] && !DB.maps[G.currentMap].safe) G.player.offlineHunt = { map: G.currentMap, at: Date.now() };
+  else delete G.player.offlineHunt;
   loadSlots();
   slots[activeSlot] = JSON.parse(JSON.stringify(G.player));
   slots[activeSlot].savedMap = (DB.maps[G.currentMap]&&DB.maps[G.currentMap].safe) ? G.currentMap : (G.player.savedMap||'프론테라');
@@ -2953,6 +2956,20 @@ function loadCharacter(i){
         </div>
       </div>`, [{label:'확인', cls:'ok', action:()=>{ updateUI(); }}]);
   }
+
+  // [P1-11] 브라우저가 종료된 동안의 오프라인 사냥 정산. 위치는 마지막 안전지역 그대로(자동사냥 재개 안 함).
+  // 기기 시각을 되돌린 경우(elapsed<0)는 정산하지 않는다.
+  if(p.offlineHunt){
+    let oh = p.offlineHunt; delete p.offlineHunt;
+    let elapsed = Date.now() - (oh.at||0);
+    if(oh.map && DB.maps[oh.map] && !DB.maps[oh.map].safe && elapsed > 3000){
+      let home = G.currentMap;
+      G.currentMap = oh.map; G.autoHunt = true;
+      try{ processOfflineTicks(elapsed, false); }
+      finally{ G.autoHunt = false; clearTimeout(G.huntTimer); G.battles = []; G.currentMap = home; }
+      updateUI(); saveLocal();
+    }
+  }
 }
 
 let _saveFileHandle = null;
@@ -3043,7 +3060,7 @@ function importGame(event) {
   };
   reader.readAsText(file);
 }
-function exitToLobby(){ saveGame(); G.autoHunt=false; clearTimeout(G.huntTimer); clearTimeout(G.passerbyTimer); clearInterval(regenTimer); $('game-log').innerHTML=''; initLobby(); }
+function exitToLobby(){ G.autoHunt=false; clearTimeout(G.huntTimer); saveGame(); /* [P1-11] 사냥을 먼저 끈다 — 로비로 나간 시간은 오프라인 보상 대상 아님 */ clearTimeout(G.passerbyTimer); clearInterval(regenTimer); $('game-log').innerHTML=''; initLobby(); }
 function confirmReset(){ openModal('초기화','모든 데이터를 삭제합니다.',[{label:'확인',cls:'danger',action:()=>{localStorage.removeItem('rmc_v3');slots=Array(6).fill(null);closeModal();initLobby();}}]); }
 // 수량 접두어 정의, 장비 이름 생성 엔진
 const cardCountPrefix = ["", "", "더블 ", "트리플 ", "쿼드로플 "];
@@ -10358,24 +10375,31 @@ huntTick = function(){
   _origHuntTick();
 };
 
-function processOfflineTicks(elapsedMs) {
+// [P1-11] 오프라인 보상 = 앞 30분은 실제 시뮬(표본), 나머지는 표본 비율로 외삽. 상한은 시간 기준.
+// 구버전 상한은 "틱 3만 개"라 공격이 느린 캐릭터일수록 더 긴 시간을 받았다(890ms면 7시간+).
+const OFFLINE_CAP_MS = 12 * 3600 * 1000;
+const OFFLINE_SIM_MS = 30 * 60 * 1000;
+
+function processOfflineTicks(elapsedMs, resume = true) {
   if(!G.autoHunt || !G.player) return;
   let huntMap = G.currentMap; // 오프라인 처리 전 사냥 맵 저장
   let s = calcStats();
   let tickMs = Math.max(200, s.aspdDelay);
-  let ticks = Math.floor(elapsedMs / tickMs);
+  let effMs = Math.min(elapsedMs, OFFLINE_CAP_MS);
+  let wasCapped = elapsedMs > OFFLINE_CAP_MS;
+  let ticks = Math.floor(Math.min(effMs, OFFLINE_SIM_MS) / tickMs);
   if(ticks <= 0) return;
-
-  const MAX_TICKS = 30000;
-  let actualTicks = Math.min(ticks, MAX_TICKS);
-  let wasCapped = ticks > MAX_TICKS;
 
   let summary = { kills:0, exp:0, jexp:0, zeny:0, items:{}, deaths:0 };
   let p = G.player;
+  let kc0 = Object.assign({}, p.killCount || {});
+  let inv0 = Object.assign({}, p.inventory || {});
 
   // [P0-02③④] 온라인 엔진(huntTick→processTurn)을 그대로 N틱 돌린다.
   // 구버전은 여기서 _silentTurn() 이라는 별도 축약 전투식을 돌렸다 — 아래 함수 주석 참조.
-  runHeadlessTicks(actualTicks, tickMs, summary, huntMap);
+  runHeadlessTicks(ticks, tickMs, summary, huntMap);
+  let sampleMs = summary.ticksRun * tickMs;
+  extrapolateOffline(p, summary, kc0, inv0, effMs - sampleMs, sampleMs, huntMap);
   let ns = calcStats(); p.maxHp = ns.maxHp; p.maxSp = ns.maxSp;
   p.hp = Math.min(p.hp, p.maxHp); p.sp = Math.min(p.sp, p.maxSp);
 
@@ -10385,7 +10409,7 @@ function processOfflineTicks(elapsedMs) {
   let timeStr = offSec >= 3600 ? `${Math.floor(offSec/3600)}시간 ${Math.floor((offSec%3600)/60)}분`
               : offSec >= 60   ? `${Math.floor(offSec/60)}분 ${offSec%60}초`
               : `${offSec}초`;
-  log(`🌙 <b>[오프라인 사냥 보상]</b> 자리를 비운 <b>${timeStr}</b>동안 자동 사냥이 진행되었습니다.${wasCapped?' (최대 100분치 적용)':''}${summary.timeCapped?' (계산 시간 상한 도달 — 일부 구간 생략)':''}`, 'level-up');
+  log(`🌙 <b>[오프라인 사냥 보상]</b> 자리를 비운 <b>${timeStr}</b>동안 자동 사냥이 진행되었습니다.${wasCapped?' (최대 12시간치 적용)':''}${summary.timeCapped?' (계산 시간 상한 도달 — 일부 구간 생략)':''}`, 'level-up');
   if(summary.kills > 0)  log(`⚔️ 처치: <b>${summary.kills}</b>마리 / EXP +${summary.exp.toLocaleString()} / JEXP +${summary.jexp.toLocaleString()}`, 'system');
   if(summary.zeny > 0)   log(`💰 획득 제니: <b>+${summary.zeny.toLocaleString()}z</b>`, 'system');
   let itemKeys = Object.keys(summary.items);
@@ -10393,11 +10417,74 @@ function processOfflineTicks(elapsedMs) {
   if(summary.deaths > 0) log(`💀 전투 중 ${summary.deaths}회 쓰러졌습니다. (자동 귀환 처리됨)`, 'warning');
   logSep();
   // 오프라인 처리 중 사망으로 마을에 있으면 원래 사냥 맵으로 복귀 → 자동사냥 즉시 재개
-  if(DB.maps[G.currentMap] && DB.maps[G.currentMap].safe && huntMap && !DB.maps[huntMap]?.safe){
+  // (재접속 정산은 resume:false — 위치는 마지막 안전지역 규칙을 호출부가 적용)
+  if(resume && DB.maps[G.currentMap] && DB.maps[G.currentMap].safe && huntMap && !DB.maps[huntMap]?.safe){
     G.currentMap = huntMap;
     log(`🗺️ <b>[${G.currentMap}]</b>으로 복귀하여 사냥을 재개합니다.`, 'system');
   }
   updateUI();
+  saveLocal(); // offlineHunt 기준 시각 갱신 — 정산 직후 재로드돼도 같은 구간을 두 번 받지 않게
+}
+
+// [P1-11] 표본 구간의 비율로 나머지 시간을 채운다. 보상은 전부 기존 경로로 흘린다 —
+// 처치마다 awardKillReward(EXP·레벨업·제니·드롭 굴림·퀘스트 카운트), 사망은 온라인과 같은 1% EXP 손실.
+// 비율을 곱해 한 번에 더하지 않는 이유: 레벨업 중간 정산과, 0.01% 카드가 표본에 0장이면 영원히 0장이 되는 문제.
+function extrapolateOffline(p, summary, kc0, inv0, restMs, sampleMs, huntMap){
+  if(restMs <= 0 || sampleMs <= 0 || summary.huntStopped) return;
+  let dist = [], sampleKills = 0;   // 표본 처치 분포 (AOE 경로도 killCount는 올리므로 전 경로 포괄)
+  for(let n in (p.killCount||{})){
+    let d = (p.killCount[n]||0) - (kc0[n]||0);
+    if(d > 0){ dist.push([n, d]); sampleKills += d; }
+  }
+  if(!sampleKills) return;
+  let factor = restMs / sampleMs;
+  // 소모품: 표본에서 줄어든 만큼 같은 속도로 더 쓴다. 탄약(ammo)이 바닥나면 공격 불가라 거기서 외삽을 끊고,
+  // 포션 등은 바닥나도 사냥은 계속되므로 재고만 0으로 막는다.
+  let used = [];
+  for(let k in inv0){
+    let d = (inv0[k]||0) - ((p.inventory&&p.inventory[k])||0);
+    if(d <= 0) continue;
+    used.push([k, d]);
+    let it = DB.items[k];
+    if(it && it.ammo) factor = Math.min(factor, ((p.inventory&&p.inventory[k])||0) / d);
+  }
+  let extraKills = Math.round(sampleKills * factor);
+  if(extraKills <= 0) return;
+  let deathRate = summary.deaths / sampleKills;
+  let monByName = {};
+  Object.values(DB.monsters).forEach(m => { if(m && m.name && !monByName[m.name]) monByName[m.name] = m; });
+  let k0 = p.totalKills||0, e0 = p.records.totalExp||0, z0 = p.records.totalZeny||0;
+  let jx0 = p.jobExp||0, jl0 = p.jobLv||1;
+  G.currentMap = huntMap;           // 표본이 사망 귀환(마을)으로 끝났어도 구역 처치 집계는 사냥 맵 기준
+  G.silentMode = true; G.silentSummary = summary;
+  try{
+    for(let i = 0; i < extraKills; i++){
+      let r = Math.random() * sampleKills, name = dist[0][0];
+      for(let j = 0; j < dist.length; j++){ r -= dist[j][1]; if(r < 0){ name = dist[j][0]; break; } }
+      let mon = monByName[name];
+      if(mon) awardKillReward(p, mon, p.settings || {});
+      if(Math.random() < deathRate){
+        summary.deaths++;
+        if(p.baseLv > 1 && p.baseLv < 99){
+          let expLoss = Math.floor((DB.expTable[p.baseLv]||0) * 0.01);
+          if(expLoss > 0) p.baseExp = Math.max(0, p.baseExp - expLoss);
+        }
+      }
+    }
+  } finally {
+    G.silentMode = false; G.silentSummary = null;
+  }
+  used.forEach(([k, d]) => {
+    if(!p.inventory || !p.inventory[k]) return;
+    p.inventory[k] = Math.max(0, p.inventory[k] - Math.round(d * factor));
+    if(p.inventory[k] === 0) delete p.inventory[k];
+  });
+  summary.kills += (p.totalKills||0) - k0;
+  summary.exp   += (p.records.totalExp||0) - e0;
+  summary.zeny  += (p.records.totalZeny||0) - z0;
+  let jx = (p.jobExp||0) - jx0;
+  for(let l = jl0; l < (p.jobLv||1); l++) jx += l * 50;
+  summary.jexp += Math.max(0, jx);
 }
 
 // ══ [P0-02③④] 오프라인 사냥 러너 — 온라인 엔진을 그대로 N틱 돌린다 ══════════
@@ -10429,15 +10516,16 @@ function runHeadlessTicks(nTicks, tickMs, summary, huntMap){
   const budgetMs = 8000;                                   // 복귀 시 탭이 멈춰 보이지 않게 하는 실시간 상한
   const realStart = realNow();
   G.silentMode = true; G.silentSummary = summary; G.silentDead = false;
+  let i = 0;
   try{
     Date.now = function(){ return simT; };
-    for(let i = 0; i < nTicks; i++){
+    for(i = 0; i < nTicks; i++){
       simT += tickMs;
-      if(!G.autoHunt) break;                       // spawnMonsters 가 안전맵에서 사냥을 끈 경우
+      if(!G.autoHunt){ summary.huntStopped = true; break; }   // spawnMonsters 가 안전맵에서 사냥을 끈 경우
       if(!G.battles.length){
         let md = DB.maps[G.currentMap];
         // 사냥이 불가능한 맵이면 더 돌려도 얻는 게 없다
-        if(!md || md.safe || !((md.monsters && md.monsters.length) || md.hasMvp)) break;
+        if(!md || md.safe || !((md.monsters && md.monsters.length) || md.hasMvp)){ summary.huntStopped = true; break; }
       }
       G.silentDead = false;
       huntTick();                                  // ← 온라인과 같은 틱
@@ -10455,6 +10543,7 @@ function runHeadlessTicks(nTicks, tickMs, summary, huntMap){
     Date.now = realNow;
     G.silentMode = false; G.silentSummary = null; G.silentDead = false;
   }
+  summary.ticksRun = Math.min(i, nTicks);   // [P1-11] 실제로 시뮬된 틱 수 (사망 휴식 포함) — 외삽의 표본 길이
 
   // 잔여 레벨업 정산 (광역 처치 경로가 baseExp 를 직접 더해두는 경우 대비)
   gainBaseExp(p, 0, true);
