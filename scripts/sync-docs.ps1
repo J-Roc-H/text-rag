@@ -24,9 +24,13 @@ $ErrorActionPreference = 'Stop'
 $gitDir = Join-Path $MirrorRoot 'text-rag-docs.git'
 $inbox  = Join-Path $DocsRoot '_mobile-inbox'
 
-function Git { & git --git-dir=$gitDir --work-tree=$DocsRoot @args }
+# git.exe, not git: PowerShell resolves a bare name as alias -> function -> cmdlet ->
+# executable, and names are case-insensitive, so inside a function called Git the call
+# `& git` finds the function again and recurses until CallDepthOverflow. The name is
+# Invoke-Git AND the target is git.exe - either alone fixes it, both make it unrepeatable.
+function Invoke-Git { & git.exe --git-dir=$gitDir --work-tree=$DocsRoot @args }
 
-if (-not (Get-Command git -ErrorAction SilentlyContinue)) { throw 'git not found on PATH.' }
+if (-not (Get-Command git.exe -ErrorAction SilentlyContinue)) { throw 'git not found on PATH.' }
 if (-not (Test-Path -LiteralPath $DocsRoot)) { throw "Docs folder not found: $DocsRoot" }
 
 # git writes ordinary progress to stderr. Under ErrorActionPreference=Stop that becomes
@@ -43,12 +47,12 @@ if ($fresh -and $Mode -ne 'Initialize') {
 }
 if ($fresh) {
     New-Item -ItemType Directory -Force -Path $MirrorRoot | Out-Null
-    Git init -b main | Out-Null
+    Invoke-Git init -b main | Out-Null
     # Korean UTF-8 markdown written by Obsidian - never let git rewrite the bytes.
-    Git config core.autocrlf false | Out-Null
-    Git config user.name  'text-rag-docs-sync' | Out-Null
-    Git config user.email 'sync@localhost' | Out-Null
-    Git remote add origin $Origin | Out-Null
+    Invoke-Git config core.autocrlf false | Out-Null
+    Invoke-Git config user.name  'text-rag-docs-sync' | Out-Null
+    Invoke-Git config user.email 'sync@localhost' | Out-Null
+    Invoke-Git remote add origin $Origin | Out-Null
 }
 
 # Markdown only. Attachments, .obsidian state and Sync conflict copies stay out - this
@@ -57,30 +61,30 @@ $exclude = Join-Path $gitDir 'info\exclude'
 New-Item -ItemType Directory -Force -Path (Split-Path $exclude) | Out-Null
 Set-Content -LiteralPath $exclude -Encoding ASCII -Value @('*', '!*/', '!*.md', '.obsidian/', '.trash/')
 
-if (-not $NoPush) { Git fetch origin main 2>$null | Out-Null }
-$originHead = (& git --git-dir=$gitDir rev-parse --verify --quiet origin/main)
+if (-not $NoPush) { Invoke-Git fetch origin main 2>$null | Out-Null }
+$originHead = (& git.exe --git-dir=$gitDir rev-parse --verify --quiet origin/main)
 
 if ($fresh -and $originHead) {
     # Another machine bootstrapped first. Continue its history instead of starting a
     # second root commit that could never be merged into it.
-    Git symbolic-ref HEAD refs/heads/main | Out-Null
-    & git --git-dir=$gitDir update-ref refs/heads/main $originHead.Trim() | Out-Null
-    Git reset --mixed | Out-Null
+    Invoke-Git symbolic-ref HEAD refs/heads/main | Out-Null
+    & git.exe --git-dir=$gitDir update-ref refs/heads/main $originHead.Trim() | Out-Null
+    Invoke-Git reset --mixed | Out-Null
     # Paths origin has that this vault does not are almost always _mobile-inbox/ notes
     # that have not reached this machine through Obsidian Sync yet. Pull them down
     # rather than committing a deletion of someone else's note.
-    Git add -A | Out-Null
-    foreach ($p in @(Git diff --cached --name-only --diff-filter=D)) {
-        Git checkout HEAD -- $p | Out-Null
+    Invoke-Git add -A | Out-Null
+    foreach ($p in @(Invoke-Git diff --cached --name-only --diff-filter=D)) {
+        Invoke-Git checkout HEAD -- $p | Out-Null
     }
 }
 
 # --- commit whatever changed in the vault ------------------------------------
-Git add -A | Out-Null
-$pending = @(Git status --porcelain)
+Invoke-Git add -A | Out-Null
+$pending = @(Invoke-Git status --porcelain)
 if ($pending.Count -gt 0) {
     $stamp = Get-Date -Format 'yyyy-MM-dd HH:mm'
-    Git commit -q -m ("docs: vault sync {0} ({1} path(s))" -f $stamp, $pending.Count) | Out-Null
+    Invoke-Git commit -q -m ("docs: vault sync {0} ({1} path(s))" -f $stamp, $pending.Count) | Out-Null
     Write-Host ("committed {0} path(s)" -f $pending.Count)
 } else {
     Write-Host 'no local doc changes'
@@ -89,17 +93,17 @@ if ($pending.Count -gt 0) {
 if ($NoPush) { Write-Host 'NoPush set - stopped before the network.'; exit 0 }
 
 # --- take origin's commits, then publish -------------------------------------
-Git fetch origin main 2>$null | Out-Null
-if (& git --git-dir=$gitDir rev-parse --verify --quiet origin/main) {
+Invoke-Git fetch origin main 2>$null | Out-Null
+if (& git.exe --git-dir=$gitDir rev-parse --verify --quiet origin/main) {
     # Mobile sessions only ever write _mobile-inbox/, so this rebase is expected to be
     # conflict-free. If it is not, git stops and leaves the vault untouched - resolve
     # by hand rather than let a script guess which side of a DEVREF edit wins.
-    Git rebase origin/main
+    Invoke-Git rebase origin/main
     if ($LASTEXITCODE -ne 0) {
         throw "Rebase stopped. Resolve in $DocsRoot, then run: git --git-dir=$gitDir --work-tree=$DocsRoot rebase --continue"
     }
 }
-Git push -u origin main
+Invoke-Git push -u origin main
 if ($LASTEXITCODE -ne 0) { throw 'Push failed. Check network / that the repo exists and you have access.' }
 Write-Host ("pushed -> {0}" -f $Origin)
 
