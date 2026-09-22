@@ -37541,6 +37541,9 @@ function loadCharacter(i){
       </div>`, [{label:'확인', cls:'ok', action:()=>{ updateUI(); }}]);
   }
 
+  // [P1-12] 장기 부재 귀환 선물 — 오프라인 정산의 saveLocal이 lastSavedAt을 갱신하기 전에 판정해야 한다
+  let _gifted = checkReturnerGift(p);
+
   // [P1-11] 브라우저가 종료된 동안의 오프라인 사냥 정산. 위치는 마지막 안전지역 그대로(자동사냥 재개 안 함).
   // 기기 시각을 되돌린 경우(elapsed<0)는 정산하지 않는다.
   if(p.offlineHunt){
@@ -37554,6 +37557,7 @@ function loadCharacter(i){
       updateUI(); saveLocal();
     }
   }
+  if(_gifted) saveLocal();   // lastSavedAt 갱신 — 저장 전에 새로고침해도 선물이 또 나오지 않게
 }
 
 let _saveFileHandle = null;
@@ -37695,7 +37699,7 @@ function rollDrops(p, mon, opts){
       return;
     }
     let isCard = k.includes('카드');
-    let chance = mon.drops[k] * ((isCard ? set.cardRate : set.dropRate) + rich);
+    let chance = mon.drops[k] * ((isCard ? set.cardRate : set.dropRate) + rich) * returnerMult(p);
     if(Math.random()*100 > chance) return;
 
     // [P1-03] slots는 이 아이템이 원래 가진 소켓 수(무/유슬롯 쌍을 병합한 필드) —
@@ -39482,8 +39486,9 @@ function awardKillReward(p, mon, set){
   if(!p.killCount) p.killCount = {};
   p.killCount[mon.name] = (p.killCount[mon.name]||0) + 1;
   addZoneKill();
-  let getExp = Math.floor((mon.exp||0) * (set.expRate||1));
-  let getJexp = Math.floor((mon.jexp||0) * (set.expRate||1));
+  let _rm = returnerMult(p);
+  let getExp = Math.floor((mon.exp||0) * (set.expRate||1) * _rm);
+  let getJexp = Math.floor((mon.jexp||0) * (set.expRate||1) * _rm);
   p.jobExp += getJexp; p.records.totalExp += getExp;
   log(`✨ EXP +${getExp} JEXP +${getJexp}`, 'system');
   gainBaseExp(p, getExp);
@@ -39758,7 +39763,7 @@ function processTurn(){
           p.totalKills=(p.totalKills||0)+1;
           if(!p.killCount)p.killCount={};p.killCount[_am.name]=(p.killCount[_am.name]||0)+1;
           addZoneKill(); // [2-9]
-          let _ae=Math.floor((_am.exp||0)*(set.expRate||1)),_aj=Math.floor((_am.jexp||0)*(set.expRate||1));
+          let _rm=returnerMult(p), _ae=Math.floor((_am.exp||0)*(set.expRate||1)*_rm),_aj=Math.floor((_am.jexp||0)*(set.expRate||1)*_rm);
           p.baseExp+=_ae;p.jobExp+=_aj;p.records.totalExp+=_ae;
           log(`✨ EXP +${_ae} JEXP +${_aj}`,'system');
           let _az=_am.zeny[0]+Math.floor(Math.random()*(_am.zeny[1]-_am.zeny[0]));
@@ -41823,7 +41828,7 @@ function useSkill(name){
     if(!p.killCount) p.killCount = {}; p.killCount[t.name] = (p.killCount[t.name] || 0) + 1; // ⚔️ 스킬 처치 기록!
     addZoneKill(); // [2-9]
 
-    let set = p.settings || {expRate:1, dropRate:1, cardRate:1}; let getExp = Math.floor(t.exp * set.expRate); let getJexp = Math.floor(t.jexp * set.expRate);
+    let set = p.settings || {expRate:1, dropRate:1, cardRate:1}; let _rm = returnerMult(p); let getExp = Math.floor(t.exp * set.expRate * _rm); let getJexp = Math.floor(t.jexp * set.expRate * _rm);
     p.jobExp += getJexp;
     if(!p.records) p.records={playTime:0,totalExp:0,totalZeny:0,mapTime:{}};
     p.records.totalExp += getExp;
@@ -45173,6 +45178,80 @@ function autoSave(){
 setInterval(autoSave, AUTOSAVE_INTERVAL_MS);
 document.addEventListener('visibilitychange', ()=>{ if(document.hidden) autoSave(); });
 window.addEventListener('pagehide', autoSave);
+
+// [P1-12] 귀환 선물 — 오래 비웠다 돌아오면 단계형 1회 선물 + 귀환자 축복(EXP·드롭 배율).
+// 오프라인 보상(P1-11)은 12시간에서 끊는다. 1~2년 부재를 비례로 주면 만렙·무한 제니로 게임이 끝나므로 별도 선물로 준다.
+// 축복은 "직접 사냥한 시간"만 소진 — 오프라인 정산(silentMode)엔 배율이 붙지 않고 시간도 줄지 않는다.
+// 재수령 조건은 따로 저장하지 않는다: 지급 직후 saveLocal이 lastSavedAt을 갱신하므로 다시 7일 비워야 한다.
+const RETURNER_TIERS = [   // 긴 부재부터 검사. 1년 이상은 모두 같은 최고 단계
+  { days:365, title:'1년 만의 귀환', buffH:20, mult:2.0, zenyPerLv:3000,
+    items:{ '오래된보라상자':1, '오래된파란상자':2, '선물상자':1, '이그드라실의 열매':5, '파란포션':20, '파리의 날개':10, '나비의 날개':5 } },
+  { days:180, title:'반년 만의 귀환', buffH:10, mult:2.0, zenyPerLv:1500,
+    items:{ '오래된파란상자':2, '선물상자':1, '이그드라실의 열매':3, '파란포션':10, '파리의 날개':10, '나비의 날개':5 } },
+  { days:30,  title:'한 달 만의 귀환', buffH:5,  mult:1.5, zenyPerLv:1000,
+    items:{ '선물상자':1, '파란포션':10, '파리의 날개':10, '나비의 날개':5 } },
+  { days:7,   title:'오랜만의 귀환',   buffH:2,  mult:1.5, zenyPerLv:0,
+    items:{ '파리의 날개':10, '나비의 날개':5 } },
+];
+const RETURNER_HP_POTION_QTY = 30;
+function returnerHpPotion(lv){ return lv>=70 ? '하얀포션' : lv>=45 ? '노란포션' : lv>=20 ? '주홍포션' : '빨간포션'; }
+
+function returnerMult(p){
+  return (!G.silentMode && p && p.returnerBuff && p.returnerBuff.remainMs > 0) ? p.returnerBuff.mult : 1;
+}
+
+function checkReturnerGift(p){
+  if(!p.lastSavedAt) return;
+  let away = Date.now() - Date.parse(p.lastSavedAt);
+  if(!(away > 0)) return;                         // 기기 시각 역행·파싱 실패는 지급 안 함
+  let days = away / 86400000;
+  let tier = RETURNER_TIERS.find(t => days >= t.days);
+  if(!tier) return;
+
+  let gifts = Object.assign({}, tier.items);
+  let pot = returnerHpPotion(p.baseLv||1);
+  gifts[pot] = (gifts[pot]||0) + RETURNER_HP_POTION_QTY;
+  if(!p.inventory) p.inventory = {};
+  Object.keys(gifts).forEach(k => { if(DB.items[k]) p.inventory[k] = (p.inventory[k]||0) + gifts[k]; else delete gifts[k]; });
+  let zeny = tier.zenyPerLv * (p.baseLv||1);
+  if(zeny > 0) p.zeny = (p.zeny||0) + zeny;
+  let prev = p.returnerBuff || { mult:1, remainMs:0 };
+  p.returnerBuff = { mult: Math.max(prev.mult, tier.mult), remainMs: Math.max(prev.remainMs, tier.buffH * 3600000) };
+
+  let dayText = days >= 365 ? `${Math.floor(days/365)}년 ${Math.floor(days%365/30)}개월` : days >= 30 ? `${Math.floor(days/30)}개월 ${Math.floor(days%30)}일` : `${Math.floor(days)}일`;
+  let itemText = Object.keys(gifts).map(k => `${k} ×${gifts[k]}`).join(', ');
+  let pct = Math.round((p.returnerBuff.mult-1)*100);
+  logSep();
+  log(`💌 <b>[카프라 직원의 편지 — ${tier.title}]</b> ${dayText} 만에 돌아오셨군요!`,'level-up');
+  log(`🎁 보관해 둔 물건: ${itemText}${zeny>0?` / 💰 ${zeny.toLocaleString()}z`:''}`,'loot');
+  log(`✨ <b>귀환자 축복</b> — 경험치·드롭 +${pct}% (사냥 시간 ${tier.buffH}시간)`,'level-up');
+  logSep();
+  openModal(`💌 카프라 직원의 편지`, `
+    <div style="font-size:12px; line-height:1.8;">
+      <b>${p.name}</b>님, ${dayText} 만이네요. 다시 뵙게 되어 정말 기뻐요.<br>
+      그동안 룬 미드가츠에도 많은 일이 있었답니다. 자리를 비우신 사이 맡겨 두신 물건을 잘 보관해 두었어요.
+      <div style="margin:10px 0; padding:9px 12px; background:#fdfaf0; border:1px solid var(--border-gold); border-radius:4px;">
+        <div>🎁 ${itemText}</div>
+        ${zeny>0?`<div>💰 ${zeny.toLocaleString()}z</div>`:''}
+        <div>✨ 귀환자 축복: 경험치·드롭 <b>+${pct}%</b> — 직접 사냥하는 동안 <b>${tier.buffH}시간</b></div>
+      </div>
+      무리하지 마시고, 천천히 다시 감을 찾으세요. 카프라는 언제나 모험가님 곁에 있을게요.
+      <div style="margin-top:8px; text-align:right; color:var(--text-dim);">— 카프라 서비스 직원 드림</div>
+    </div>`, [{label:'고마워요', cls:'ok', action:()=>{ closeModal(); updateUI(); }}]);
+  return true;
+}
+
+// 귀환자 축복 소진 — 게임 화면이 보이고 자동사냥 중일 때만 1초씩 줄인다
+setInterval(()=>{
+  let p = G.player;
+  if(!p || !p.returnerBuff || G.silentMode) return;
+  if($('app').style.display !== 'block' || document.hidden || !G.autoHunt) return;
+  p.returnerBuff.remainMs -= 1000;
+  if(p.returnerBuff.remainMs <= 0){
+    delete p.returnerBuff;
+    log('✨ <b>귀환자 축복</b>이 끝났습니다. 다시 돌아와 주셔서 고마워요!','system');
+  }
+}, 1000);
 
 // ══════════════════════════════════════════════
 // ── 튜토리얼 퀘스트 시스템
