@@ -38066,7 +38066,7 @@ function rollDrops(p, mon, opts){
     p.inventory[name] = (p.inventory[name]||0) + 1;
     if(isCard){ if(!p.cardCodex) p.cardCodex = {}; p.cardCodex[k] = true; }
     if(opts.summary) opts.summary.items[name] = (opts.summary.items[name]||0) + 1;
-    if(!opts.silent) log(`🎁 ${name} 획득!`,'loot');
+    if(!opts.silent){ log(`🎁 ${name} 획득!`,'loot'); if(isCard) pbReact('card', k); }
   });
 }
 
@@ -39329,7 +39329,7 @@ function gainBaseExp(p, amount, silent){
     p.statPoints = (p.statPoints||0) + levelStatPoints(p.baseLv); // 올리기 전 레벨 기준
     p.baseLv++;
     lvUp = true;
-    if(!silent){ log(`🌟 Base Lv.${p.baseLv} 달성!`,'level-up'); notify('레벨 업!','gold'); }
+    if(!silent){ log(`🌟 Base Lv.${p.baseLv} 달성!`,'level-up'); notify('레벨 업!','gold'); pbReact('levelup'); }
   }
   if(lvUp && !silent){
     let ns = calcStats();
@@ -39498,6 +39498,17 @@ const PASSERBY_DATA = {
     'KnightBane','StarForge','AlchemyKing','정직한상인','VioletMage','IronWill'
   ],
   jobs: [
+    // [지나가는 유저 개편] 노비스·1차 — 저레벨 맵용. 복사는 Lv5 버프(블레싱 +5, 속도 증가 +7 = 2+SkillLv),
+    // 지속은 기존 표(Lv10 기준 턴)에 원작 지속시간 비율(40+20×Lv초: Lv5 140 / Lv10 240)을 곱했다
+    { name:'노비스',   emoji:'🧒',  type:'dps',     lv:[1,15] },
+    { name:'소드맨',   emoji:'⚔️',  type:'dps',     lv:[10,55] },
+    { name:'마법사',   emoji:'🔮',  type:'dps',     lv:[10,55] },
+    { name:'궁수',     emoji:'🏹',  type:'dps',     lv:[10,55] },
+    { name:'도둑',     emoji:'🗡️', type:'dps',     lv:[10,55] },
+    { name:'상인',     emoji:'💰',  type:'dps',     lv:[10,55] },
+    { name:'복사',     emoji:'✝️',  type:'support', lv:[10,55],
+      buffs:['blessing','agility'],
+      buffValues:{ blessing:{ turns:76, str:5, int:5, dex:5 }, agility:{ turns:70, agi:7 } } },
     // 비서포트
     { name:'기사',     emoji:'⚔️',  type:'dps',     lv:[40,80] },
     { name:'로드나이트',emoji:'🐴',  type:'dps',     lv:[80,99] },
@@ -39625,6 +39636,66 @@ function schedulePasserby(){
 }
 
 // 지나가던 유저 이벤트 실행
+// [지나가는 유저 개편] ① 직업·레벨을 맵 레벨대와 겹치는 것만 (저렙 맵에 "화이트스미스 Lv.7" 방지)
+// ② 방문 1회 = 1~2줄 (등장/퇴장 알림 제거) ③ 몬스터·맵 이름 대사 + 사건 반응(pbReact) ④ 같은 세션 안에선 같은 이름 = 같은 사람
+const PB_EXTRA = {
+  // 몬스터·맵 문맥 대사 — {mon} {map} 치환
+  ctxMon: ['{mon} 카드 떠요?','{mon} 은근 아프네요','{mon} 잡기 딱 좋다','{mon} 드랍 뭐 나와요?','{mon} 몇 마리째인지 ㅋ','{mon} 리젠 빠르네'],
+  ctxMap: ['{map} 오랜만이네','{map} 사람 없어서 좋다 ㅋ','{map} 경험치 괜찮죠?','{map} 길 헷갈려 ㅠ'],
+  // 사건 반응 — 근처에 누가 있을 때만
+  react: {
+    levelup: ['ㅊㅊ!','오 렙업 축하요~','ㅊㅋㅊㅋ','렙업 ㄷㄷ 부럽','축하해요!'],
+    death:   ['헐 괜찮아요?','ㅠㅠ 조심하세요','아이고...','여기 몹 세죠 ㄷㄷ','포션 챙기세요 ㅠ'],
+    mvp:     ['MVP다!!','헐 {mon} 떴다','도망가요 ㄷㄷ','같이 잡아요?!','와 MVP 처음 봐'],
+    card:    ['오 카드 ㄷㄷ','{card} 축하요!','카드 떴다 ㅊㅊ','부럽다... 카드','와 운 좋으시네'],
+  },
+  reactRate: { levelup:0.7, death:0.8, mvp:0.9, card:0.8 },
+  // 마을 외침
+  townTalk: ['카프라 어디 있어요?','포션 싸게 파는 곳 있나요?','전직 퀘스트 어려워요 ㅠ','길드원 모집합니다~','혹시 창고 이용료 얼마예요?','오늘 사람 많네 ㅋ'],
+};
+function pbPick(a){ return a[Math.floor(Math.random()*a.length)]; }
+function pbMapLv(mapData){
+  let m = mapData && mapData.level ? String(mapData.level).match(/(\d+)/) : null;
+  return m ? parseInt(m[1]) : 1;
+}
+// 이 맵 레벨대에 있을 법한 유저 한 명 — 같은 세션에선 이름마다 직업 고정(G.pbRoster)
+function pbPickUser(mapData){
+  let mapLv = pbMapLv(mapData);
+  let lvMin = Math.max(1, mapLv - 10), lvMax = Math.min(99, mapLv + 15);
+  const fits = j => j.lv[0] <= lvMax && j.lv[1] >= lvMin;
+  let eligible = PASSERBY_DATA.jobs.filter(fits);
+  if(!eligible.length) eligible = PASSERBY_DATA.jobs;
+  if(!G.pbRoster) G.pbRoster = {};
+  let uname, rec;
+  for(let t=0; t<12; t++){
+    uname = pbPick(PASSERBY_DATA.names);
+    rec = G.pbRoster[uname];
+    // 처음 보는 이름이거나, 기억된 사람이 이 맵 레벨대에 맞으면 채택 (맵보다 한참 높은 사람은 오지 않는다)
+    if(!rec) break;
+    if(fits(rec.job) && rec.lv <= lvMax){
+      // 그새 성장한 것으로 — 이 맵 하한보다 낮으면 직업 범위 안에서 끌어올린다
+      if(rec.lv < lvMin){ let lo=Math.max(lvMin,rec.job.lv[0]), hi=Math.min(lvMax,rec.job.lv[1]); if(lo<=hi) rec.lv = lo + Math.floor(Math.random()*(hi-lo+1)); }
+      break;
+    }
+    rec = null; uname = null;
+  }
+  if(!uname){ uname = pbPick(PASSERBY_DATA.names); rec = null; } // 전부 막히면 새 사람으로 덮어씀
+  if(!rec){
+    let job = pbPick(eligible);
+    let lo = Math.max(lvMin, job.lv[0]), hi = Math.min(lvMax, job.lv[1]);
+    if(lo > hi){ lo = job.lv[0]; hi = job.lv[1]; }
+    rec = { job, lv: lo + Math.floor(Math.random()*(hi-lo+1)) };
+    G.pbRoster[uname] = rec;
+  }
+  return { uname, job: rec.job, lv: rec.lv, tag: `${rec.job.emoji} <b>${uname}</b>(${rec.job.name}·Lv.${rec.lv})` };
+}
+function pbSay(uname, msg){ log(`💬 <b>${uname}</b>: "${msg}"`, 'narrate chat chat-say'); }
+function pbCurMon(){
+  if(G.battles.length) return G.battles[0].name;
+  let md = DB.maps[G.currentMap]; let ids = md && md.monsters;
+  let m = ids && ids.length ? DB.monsters[pbPick(ids)] : null;
+  return m ? m.name : null;
+}
 function triggerPasserby(){
   if(!G.autoHunt) return;
   let p = G.player;
@@ -39632,76 +39703,75 @@ function triggerPasserby(){
   // 전투 맵만 발동 (safe:false)
   if(!mapData || mapData.safe) { schedulePasserby(); return; }
 
+  let u = pbPickUser(mapData);
+  // 근처에 머무는 동안(약 1분) 사건 반응 대상이 된다
+  G.pbHere = { uname: u.uname, until: Date.now() + 60000, reacts: 0 };
 
-  // 맵 레벨 기반 직업 필터
-  let mapLv = 1;
-  if(mapData.level){
-    let m = String(mapData.level).match(/(\d+)/);
-    mapLv = m ? parseInt(m[1]) : 1;
+  // ① 대사 (80%) — 35%는 지금 몬스터·맵 이야기
+  let said = Math.random() < 0.8;
+  if(said){
+    let msg, mon = pbCurMon();
+    if(Math.random() < 0.35){
+      msg = (mon && Math.random() < 0.65) ? pbPick(PB_EXTRA.ctxMon).replace('{mon}', mon)
+                                          : pbPick(PB_EXTRA.ctxMap).replace('{map}', G.currentMap);
+    } else {
+      let pool = PASSERBY_DATA.chat[getMapTier(G.currentMap)];
+      msg = pbPick(pool[pbPick(Object.keys(pool))]);
+    }
+    log(`💬 ${u.tag}: "${msg}"`, 'narrate chat chat-say');
   }
-  let eligible = PASSERBY_DATA.jobs.filter(j => mapLv >= j.lv[0] - 15);
-  if(!eligible.length) eligible = PASSERBY_DATA.jobs;
-  let job = eligible[Math.floor(Math.random() * eligible.length)];
 
-  // 이름·레벨 결정
-  let uname = PASSERBY_DATA.names[Math.floor(Math.random() * PASSERBY_DATA.names.length)];
-  let lvMin = Math.max(1, mapLv - 10), lvMax = Math.min(99, mapLv + 15);
-  let ulv = lvMin + Math.floor(Math.random() * (lvMax - lvMin + 1));
-
-  let tag = `${job.emoji} <b>${uname}</b>(${job.name}·Lv.${ulv})`;
-
-  // ① 입장 로그
-  log(`🧑 ${tag}이/가 사냥터에 나타났습니다.`, 'system chat');
-
-  let delay2 = 2000 + Math.random() * 2000; // 2~4초 후 채팅/버프
-
-  setTimeout(() => {
-    if(!G.autoHunt) return;
-
-    // ② 채팅 (80%)
-    if(Math.random() < 0.8){
-      let tier = getMapTier(G.currentMap);
-      let pool = PASSERBY_DATA.chat[tier];
-      let types = Object.keys(pool);
-      let type = types[Math.floor(Math.random() * types.length)];
-      let lines = pool[type];
-      let msg = lines[Math.floor(Math.random() * lines.length)];
-      log(`💬 <b>${uname}</b>: "${msg}"`, 'narrate chat chat-say');
+  // ② 버프 (서포트 직업 50% × 80%) — 여러 개면 한 줄로
+  let given = [];
+  if(Math.random() < 0.5 && u.job.type === 'support' && Math.random() < 0.8 && u.job.buffs && u.job.buffs.length){
+    if(!p.statusEffects) p.statusEffects = {};
+    let table = u.job.buffValues || PASSERBY_DATA.buffValues;
+    u.job.buffs.forEach(bkey => {
+      let bval = table[bkey], bdef = BUFF_DEFS[bkey];
+      if(bval && bdef){ p.statusEffects[bkey] = Object.assign({}, bval); given.push(`${bdef.emoji}<b>${bdef.name}</b>`); }
+    });
+    if(given.length){
+      let last = BUFF_DEFS[u.job.buffs[u.job.buffs.length-1]].name;
+      log(`✨ ${u.tag}${josa(u.uname,'이가')} ${given.join(' · ')}${josa(last,'을를')} 걸어줬습니다!`, 'level-up chat');
+      renderStatusHUD();
     }
-
-    // ③ 버프 단계 (50%)
-    let buffGiven = false;
-    if(Math.random() < 0.5 && job.type === 'support'){
-      // 서포트면 80% 확률로 해당 직업의 모든 버프 적용
-      if(Math.random() < 0.8 && job.buffs && job.buffs.length){
-        if(!p.statusEffects) p.statusEffects = {};
-        job.buffs.forEach(bkey => {
-          let bval = PASSERBY_DATA.buffValues[bkey];
-          let bdef = BUFF_DEFS[bkey];
-          if(bval && bdef){
-            p.statusEffects[bkey] = Object.assign({}, bval);
-            log(`${bdef.emoji} ${tag}이/가 <b>${bdef.name}</b>을/를 걸어줬습니다!`, 'level-up chat');
-            buffGiven = true;
-          }
-        });
-        if(buffGiven) renderStatusHUD();
-      }
-    }
-
-    // 버프 없을 때 "지나갔다" 메시지
-    if(!buffGiven){
-      log(`🚶 ${tag}이/가 그냥 지나갔습니다.`, 'system chat');
-    }
-
-    // 퇴장 로그 (항상)
-    setTimeout(() => {
-      if(!G.autoHunt) return;
-      log(`🚪 <b>${uname}</b>이/가 사냥터를 떠났습니다.`, 'system chat');
-    }, 3000 + Math.random() * 3000);
-
-    // 다음 이벤트 스케줄
-    schedulePasserby();
-  }, delay2);
+  }
+  // ③ 말도 버프도 없으면 지나간 흔적 한 줄
+  if(!said && !given.length){
+    log(`🚶 ${u.tag}${josa(u.uname,'이가')} 옆을 지나갔습니다.`, 'system chat');
+  }
+  schedulePasserby();
+}
+// 사건 반응 — 레벨업·사망·MVP·카드. 근처에 누가 있을 때만, 방문당 최대 2회
+function pbReact(kind, arg){
+  let h = G.pbHere;
+  if(G.silentMode || !h || Date.now() > h.until || h.reacts >= 2) return;
+  if(Math.random() > (PB_EXTRA.reactRate[kind]||0)) return;
+  h.reacts++;
+  let msg = pbPick(PB_EXTRA.react[kind]).replace('{mon}', arg||'MVP').replace('{card}', arg||'카드');
+  setTimeout(() => pbSay(h.uname, msg), 800 + Math.random()*1500);
+}
+// 마을 외침 — 노점·구매·파티 모집·잡담. 0.5초 HUD 주기에서 호출, 25~60초 간격
+function townChatTick(){
+  let p = G.player; if(!p || G.silentMode || G.stealthOn) return;
+  let md = DB.maps[G.currentMap];
+  if(!md || !md.safe){ G.nextTownChat = 0; return; }
+  let now = Date.now();
+  if(!G.nextTownChat){ G.nextTownChat = now + 8000 + Math.random()*12000; return; }
+  if(now < G.nextTownChat) return;
+  G.nextTownChat = now + 25000 + Math.random()*35000;
+  let uname = pbPick(PASSERBY_DATA.names), r = Math.random(), msg;
+  if(!G._pbCards) G._pbCards = Object.keys(DB.items||{}).filter(k => DB.items[k] && DB.items[k].type === '카드');
+  let hunt = (md.connected||[]).filter(m => DB.maps[m] && !DB.maps[m].safe);
+  if(r < 0.35 && G._pbCards.length){
+    let price = (1 + Math.floor(Math.random()*50)) * 10000;
+    msg = `S> ${pbPick(G._pbCards)} ${price.toLocaleString()}z`;
+  } else if(r < 0.5 && G._pbCards.length){
+    msg = `B> ${pbPick(G._pbCards)} 삽니다`;
+  } else if(r < 0.75 && hunt.length){
+    msg = `${pbPick(hunt)} 파티 구함 (${1+Math.floor(Math.random()*3)}/4)`;
+  } else msg = pbPick(PB_EXTRA.townTalk);
+  log(`📢 <b>${uname}</b>: "${msg}"`, 'system chat town');
 }
 // ─────────────────────────────────────────────────────────────
 
@@ -40673,7 +40743,7 @@ function processTurn(){
       updateUI(); if(G.autoHunt) scheduleTickAspd(600);
     }
     else {
-      G.battles=[]; p.hp=0; log('💀 <b>쓰러졌습니다...</b> 마을 귀환','error');
+      G.battles=[]; p.hp=0; log('💀 <b>쓰러졌습니다...</b> 마을 귀환','error'); pbReact('death');
       // 경험치 손실 (Pre-Renewal: 현재 레벨 필요 EXP의 1%. Lv1·Lv99 제외. 레벨 다운 없음)
       if(p.baseLv > 1 && p.baseLv < 99){
         let expLoss = Math.floor((DB.expTable[p.baseLv]||0) * 0.01);
@@ -44342,7 +44412,7 @@ function updateZoneHud(){
     h+=`<span class="zone-chip regen" title="다음 몬스터 리젠 대기">💤 ${Math.ceil(wait/1000)}s<span class="zc-bar"><span class="zc-fill" style="width:${pct}%"></span></span></span>`;
   }
   el.innerHTML=h;
-  if(!G.silentMode){ updateActionStatus(); renderSituation(); } // [P1-13 2차] 리젠 카운트다운·상태 전환을 같은 0.5초 주기로
+  if(!G.silentMode){ updateActionStatus(); renderSituation(); townChatTick(); } // [P1-13 2차] 리젠 카운트다운·상태 전환을 같은 0.5초 주기로 · 마을 외침
 }
 function startZoneHudTimer(){
   if(G._zoneHudTimer) clearInterval(G._zoneHudTimer);
@@ -44445,6 +44515,7 @@ function spawnMonsters(){
   let hasMvpInBattle = G.battles.some(b=>b.isMvp);
   if(hasMvpInBattle){
     log(`⚠ ⚠ <b style="color:#9b59b6;">[MVP 출현!]</b> ${nm.join(', ')}`, 'warning');
+    pbReact('mvp', (G.battles.find(b=>b.isMvp)||{}).name);
   } else if(initDist > 1){
     log(`⚠ 야생의 <b>${nm.join(', ')}</b> 출현! <span style="color:var(--blue-light)">[거리 ${initDist}]</span>`,'warning');
   } else {
