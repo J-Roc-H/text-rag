@@ -2567,6 +2567,18 @@ function consumeMats(p, mats) {
 
 function loadSlots(){ try{ let d=localStorage.getItem('rmc_v3'); if(d)slots=JSON.parse(d); }catch(e){} }
 function saveSlots(){ try{ localStorage.setItem('rmc_v3',JSON.stringify(slots)); }catch(e){} }
+// [P1-09] 현재 캐릭터를 브라우저 저장소 슬롯에 기록 — 수동 저장·자동저장 공통 경로.
+// 위치 규칙: 안전지역(safe 맵)에서만 savedMap 갱신, 필드면 기존 귀환지점 유지.
+// 쓰기 직전 저장소를 다시 읽어 자기 슬롯만 덮는다 — 다른 탭이 바꾼 다른 슬롯을 낡은 메모리로 되돌리지 않게.
+function saveLocal(){
+  if(activeSlot < 0 || !G.player) return false;
+  G.player.lastSavedAt = new Date().toISOString();
+  loadSlots();
+  slots[activeSlot] = JSON.parse(JSON.stringify(G.player));
+  slots[activeSlot].savedMap = (DB.maps[G.currentMap]&&DB.maps[G.currentMap].safe) ? G.currentMap : (G.player.savedMap||'프론테라');
+  saveSlots();
+  return true;
+}
 function deleteSlot(idx, e) {
   if (e) e.stopPropagation();
   if (confirm('정말로 이 캐릭터를 삭제하시겠습니까?')) {
@@ -2948,11 +2960,8 @@ let _saveFileHandle = null;
 async function saveGame(){
   if(activeSlot < 0 || !G.player) return;
 
-  // 1. 브라우저 내부(Local Storage) 저장
-  slots[activeSlot] = JSON.parse(JSON.stringify(G.player));
-  // [FIX] safe 맵(마을)에서만 savedMap 업데이트 — 필드 저장 시 기존 savedMap 유지
-  slots[activeSlot].savedMap = (DB.maps[G.currentMap]&&DB.maps[G.currentMap].safe) ? G.currentMap : (G.player.savedMap||'프론테라');
-  saveSlots();
+  // 1. 브라우저 내부(Local Storage) 저장 — safe 맵 규칙은 saveLocal이 소유
+  saveLocal();
 
   // 2. 파일로 내보내기 (File System Access API — 같은 파일에 덮어쓰기)
   const dataStr = JSON.stringify(slots[activeSlot], null, 2);
@@ -6514,9 +6523,7 @@ const KAFRA_WARP = {
 /** 귀환 지점 설정 */
 function kafraSetSave(){
   G.player.savedMap = G.currentMap;
-  slots[activeSlot]=JSON.parse(JSON.stringify(G.player));
-  slots[activeSlot].savedMap=G.currentMap;
-  saveSlots();
+  saveLocal(); // 비안전 맵이어도 방금 넣은 G.player.savedMap(=현재 맵)이 그대로 기록된다
   notify('귀환 지점 설정 완료','gold');
   log(`📍 <b>[카프라]</b> 귀환 지점이 <b>${G.currentMap}</b>으로 설정되었습니다.`,'system');
   closeModal();
@@ -10482,6 +10489,18 @@ document.addEventListener('visibilitychange', ()=>{
   }
 });
 
+// [P1-09] 자동저장 — 모바일에서 탭이 강제 종료돼도 진행이 남도록 브라우저 저장소 슬롯만 갱신한다
+// (파일 저장은 하지 않음). 게임 화면일 때만 — 로비에서 돌면 방금 삭제한 슬롯을 되살린다.
+const AUTOSAVE_INTERVAL_MS = 60000;
+function autoSave(){
+  if(G.silentMode) return;
+  if($('app').style.display !== 'block') return;
+  saveLocal();
+}
+setInterval(autoSave, AUTOSAVE_INTERVAL_MS);
+document.addEventListener('visibilitychange', ()=>{ if(document.hidden) autoSave(); });
+window.addEventListener('pagehide', autoSave);
+
 // ══════════════════════════════════════════════
 // ── 튜토리얼 퀘스트 시스템
 // ══════════════════════════════════════════════
@@ -14442,10 +14461,7 @@ function stealthSetLog(t){
 
 // [3-10] 위장 중 조용한 저장 — 파일 대화상자/다운로드 없이 localStorage 슬롯만 (saveGame 1단계와 동일 로직)
 function stealthSave(){
-  if(activeSlot<0||!G.player){ stealthSetLog('저장할 변경 내용이 없습니다'); return; }
-  slots[activeSlot]=JSON.parse(JSON.stringify(G.player));
-  slots[activeSlot].savedMap=(DB.maps[G.currentMap]&&DB.maps[G.currentMap].safe)?G.currentMap:(G.player.savedMap||'프론테라');
-  saveSlots();
+  if(!saveLocal()){ stealthSetLog('저장할 변경 내용이 없습니다'); return; }
   let sEl=document.getElementById('st-saved');
   if(sEl){ sEl.textContent='저장 중...'; setTimeout(()=>{ sEl.textContent='저장됨'; },600); }
   stealthSetLog('모든 변경 내용이 저장되었습니다');
