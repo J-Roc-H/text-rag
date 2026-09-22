@@ -35385,7 +35385,7 @@ body.work-mode p {
   <button class="sys-btn" onclick="showDeviceTransfer()" title="다른 기기로 보내기 / 다른 기기에서 가져오기">🔄 기기 이동</button>
   <label class="sys-btn" style="cursor:pointer;" title="파일 불러오기">
     📂 로드
-    <input type="file" style="display:none;" accept=".json,.txt" onchange="importGame(event)">
+    <input type="file" style="display:none;" onchange="importGame(event)"><!-- accept 미지정: iOS 선택기가 .rmg를 막지 않게 -->
   </label>
 
   <span style="color:var(--border);margin:0 2px;flex-shrink:0;">│</span>
@@ -37175,42 +37175,20 @@ function deleteSlot(idx, e) {
     initLobby();
   }
 }
-// 1. 캐릭터 데이터를 JSON 파일로 다운로드 (추출)
-function exportCharacter(i) {
+// 1. 캐릭터 백업 파일 저장 — [P1-10 3차] 내용은 휴대형 세이브 코드(.rmg). 코드 복사와 같은 패키지다
+async function exportCharacter(i) {
   let charData = slots[i];
   if (!charData) return;
-  const dataStr = JSON.stringify(charData, null, 2);
-  const blob = new Blob([dataStr], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `${charData.name}_save.json`;
-  a.click();
-  URL.revokeObjectURL(url);
+  let f = await slotToSaveFile(charData);
+  downloadText(f.text, f.name);
 }
 
-// 2. JSON 파일을 선택해서 슬롯으로 불러오기 (Import)
-function importCharacter(event, i) {
+// 2. 파일을 골라 슬롯으로 불러오기 — [P1-10 3차] .rmg·구 .json 모두, 코드 붙여넣기와 같은 비교 화면을 거친다
+async function importCharacter(event, i) {
   const file = event.target.files[0];
+  event.target.value = '';          // 같은 파일을 다시 골라도 onchange가 오게
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const data = JSON.parse(e.target.result);
-      // 기본적인 데이터 무결성 체크
-      if(data && data.name && data.job) {
-        slots[i] = data;
-        saveSlots(); // 불러온 뒤 로컬 스토리지에도 동기화
-        initLobby();
-        alert(`[${data.name}] 캐릭터를 성공적으로 불러왔습니다.`);
-      } else {
-        alert('올바른 캐릭터 세이브 파일이 아닙니다.');
-      }
-    } catch(err) {
-      alert('파일을 읽거나 분석하는 중 오류가 발생했습니다.');
-    }
-  };
-  reader.readAsText(file);
+  rmgPrepareImport(i, await file.text());
 }
 
 // 3. 로비 UI 수정 (추출, 불러오기 버튼 추가)
@@ -37238,7 +37216,7 @@ function initLobby(){
         <div style="font-size:10px;margin-top:4px;margin-bottom:12px;">새 캐릭터</div>
         <label onclick="event.stopPropagation();" class="sys-btn" style="cursor:pointer; background:#ffffff; font-size:9px; padding:4px 8px; border-color:var(--blue-light);">
           📂 파일 불러오기
-          <input type="file" style="display:none;" accept=".json,.txt" onchange="importCharacter(event, ${i})">
+          <input type="file" style="display:none;" onchange="importCharacter(event, ${i})">
         </label>
         <button onclick="event.stopPropagation(); showPortableImport(${i})" class="sys-btn" style="background:#ffffff; font-size:9px; padding:4px 8px; margin-top:4px; border-color:var(--blue-light);">📋 코드 붙여넣기</button>`;
       d.onclick=(e)=>{
@@ -37572,85 +37550,43 @@ async function saveGame(){
   // 1. 브라우저 내부(Local Storage) 저장 — safe 맵 규칙은 saveLocal이 소유
   saveLocal();
 
-  // 2. 파일로 내보내기 (File System Access API — 같은 파일에 덮어쓰기)
-  const dataStr = JSON.stringify(slots[activeSlot], null, 2);
+  // 2. 파일로 내보내기 (File System Access API — 같은 파일에 덮어쓰기). [P1-10 3차] 내용은 휴대형 세이브(.rmg)
+  const f = await slotToSaveFile(slots[activeSlot]);
 
   if ('showSaveFilePicker' in window) {
     try {
       if (!_saveFileHandle) {
         _saveFileHandle = await window.showSaveFilePicker({
-          suggestedName: `${G.player.name}_save.json`,
-          types: [{ description: 'JSON 세이브 파일', accept: { 'application/json': ['.json'] } }]
+          suggestedName: f.name,
+          types: [f.rmg ? { description: '룬 미드가츠 세이브', accept: { 'text/plain': ['.rmg'] } }
+                        : { description: 'JSON 세이브 파일', accept: { 'application/json': ['.json'] } }]
         });
       }
       const writable = await _saveFileHandle.createWritable();
-      await writable.write(dataStr);
+      await writable.write(f.text);
       await writable.close();
     } catch(e) {
       if (e.name === 'AbortError') return; // 사용자가 창 닫음
       // API 실패 시 기존 다운로드 방식으로 폴백
       _saveFileHandle = null;
-      const blob = new Blob([dataStr], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = `${G.player.name}_save.json`;
-      a.click(); URL.revokeObjectURL(url);
+      downloadText(f.text, f.name);
     }
   } else {
     // File System Access API 미지원 브라우저 폴백
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = `${G.player.name}_save.json`;
-    a.click(); URL.revokeObjectURL(url);
+    downloadText(f.text, f.name);
   }
 
   notify('파일 저장 및 백업 완료', 'gold');
   log('현재 데이터가 파일로 저장되었습니다.', 'system');
 }
 // 인게임 전용 불러오기 함수 추가
-function importGame(event) {
+// [P1-10 3차] 예전엔 비교 없이 현재 캐릭터를 바로 덮어썼다. 이제 코드 붙여넣기와 같은 경로 —
+// 비교 화면 → 승인 → 복구 지점 → 적용(플레이 중 슬롯이면 loadCharacter로 다시 로드, 마이그레이션도 거기서)
+async function importGame(event) {
   const file = event.target.files[0];
+  event.target.value = '';
   if (!file) return;
-  
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const raw = JSON.parse(e.target.result);
-      if(validateSave(raw)) {
-        // [P1-07] 로비 로드와 같은 마이그레이션 경로 — 구맵명·배열형 스킬·유령 아이템·
-        // statSystemV2 환급을 인게임 import도 동일하게 받는다
-        const data = loadPlayerData(raw);
-
-        // 현재 게임 세션에 즉시 반영
-        G.player = data;
-        G.currentMap = data.savedMap || "프론테라";
-        G.battles = []; // 전투 중이었다면 초기화
-
-        // 브라우저 내부 저장소도 동기화
-        if(activeSlot >= 0) slots[activeSlot] = data;
-        saveSlots();
-
-        updateUI();
-        logSep();
-        log(`📂 파일로부터 <b>${data.name}</b> 데이터를 성공적으로 불러왔습니다.`, 'system');
-        notify('데이터 로드 완료', 'green');
-        if(data._ghostPurged){
-          log(`🧹 아이템 DB에 없던 <b>유령 아이템 ${data._ghostPurged}종</b>을 가방에서 정리했습니다.`,'system');
-          delete data._ghostPurged;
-        }
-        if(data._statResetNotice != null){
-          log(`📊 <b>[스탯 시스템 개편]</b> 스탯이 초기화되고 <b>${data._statResetNotice}점</b>이 환급되었습니다.`,'level-up');
-          delete data._statResetNotice;
-        }
-      } else {
-        alert('올바른 캐릭터 세이브 파일이 아닙니다.');
-      }
-    } catch(err) {
-      alert('파일을 읽는 중 오류가 발생했습니다.');
-    }
-  };
-  reader.readAsText(file);
+  rmgPrepareImport(activeSlot, await file.text());
 }
 
 // ══ [P1-10] 휴대형 세이브 RMG1 — 기기 간 이동 코드 ═══════════════════════════
@@ -37699,12 +37635,33 @@ async function rmgPipe(bytes, stream){
 // 원천은 G.player가 아니라 saveLocal 직후의 슬롯 — 안전지역 위치 규칙·lastSavedAt이 적용된 상태
 function createPortableSave(){
   if(!saveLocal()) return null;
-  let ch = JSON.parse(JSON.stringify(slots[activeSlot]));
+  return buildPortablePackage(slots[activeSlot]);
+}
+function buildPortablePackage(slotData){
+  let ch = JSON.parse(JSON.stringify(slotData));
   RMG_STRIP_KEYS.forEach(k => { delete ch[k]; });
   let pkg = { format:'RMG', formatVersion:RMG_FORMAT_VERSION, createdAt:new Date().toISOString(), character:ch };
   let wh = readWarehouse();                       // 창고는 전 캐릭터 공유(별도 키) — 선택 블록으로 싣고, 받는 쪽에서 기본 OFF
   if(Object.keys(wh).some(k => wh[k] > 0)) pkg.account = { warehouse: wh };
   return pkg;
+}
+
+// [P1-10 3차] 파일 저장 — 내용은 코드 복사와 같은 RMG1 문자열(.rmg). 압축 API가 없는 브라우저만 구 JSON으로 폴백
+function rmgFileName(name, ext){
+  let safe = String(name || '캐릭터').replace(/[\\/:*?"<>|]/g, '').trim() || '캐릭터';
+  let d = new Date(), z = n => String(n).padStart(2, '0');
+  return `${safe}_${d.getFullYear()}${z(d.getMonth()+1)}${z(d.getDate())}-${z(d.getHours())}${z(d.getMinutes())}.${ext}`;
+}
+async function slotToSaveFile(slotData){
+  if(!rmgSupported()) return { text: JSON.stringify(slotData, null, 2), name: rmgFileName(slotData.name, 'json'), rmg: false };
+  return { text: await encodePortableSave(buildPortablePackage(slotData)), name: rmgFileName(slotData.name, 'rmg'), rmg: true };
+}
+function downloadText(text, filename){
+  const url = URL.createObjectURL(new Blob([text], { type: 'text/plain' }));
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 function readWarehouse(){ try{ let d = localStorage.getItem('rmc_warehouse'); return d ? JSON.parse(d) : {}; }catch(e){ return {}; } }
 function readRestore(){ try{ let d = localStorage.getItem(RMG_RESTORE_KEY); return d ? JSON.parse(d) : null; }catch(e){ return null; } }
@@ -37795,14 +37752,17 @@ function showPortableImport(i){
 }
 
 let _rmgPending = null;   // 비교 화면에 올라간 가져올 데이터 {character, createdAt, account}
-async function rmgPrepareImport(defaultSlot){
-  let err = $('rmg-err');
+// text 생략 = 열린 창의 붙여넣기 칸(#rmg-in). 파일 불러오기는 파일 내용을 넘긴다(오류는 창이 없으니 alert)
+async function rmgPrepareImport(defaultSlot, text){
+  let fromFile = text != null;
+  let err = fromFile ? null : $('rmg-err');
   try{
-    let r = await decodePortableSave($('rmg-in').value);
+    let r = await decodePortableSave(fromFile ? text : $('rmg-in').value);
     checkImportedCharacter(r.character);
     _rmgPending = r;
   }catch(e){
-    if(err) err.textContent = e.message || RMG_MSG_DAMAGED;
+    let msg = e.message || RMG_MSG_DAMAGED;
+    if(err) err.textContent = msg; else alert(msg);
     return;
   }
   loadSlots();
