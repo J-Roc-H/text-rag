@@ -232,6 +232,19 @@ button{touch-action:manipulation;}
 .bag-tab{flex:1;min-height:40px;background:none;border:none;border-bottom:2px solid transparent;color:var(--text-dim);font-size:13px;font-weight:bold;cursor:pointer;font-family:inherit;}
 .bag-tab.active{color:var(--blue-light);border-bottom-color:var(--blue-light);background:#fff;}
 .mon-more{display:none;font-size:12px;color:var(--text-dim);text-align:center;padding:2px;}
+/* [P1-13 2차] 상태줄 알림 · 우측 상황 패널 */
+.as-alert{border:1px solid var(--gold);background:#fff7e6;color:var(--gold-light);border-radius:10px;padding:1px 8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
+.primary-action:disabled{opacity:.6;cursor:default;}
+#situation{display:flex;flex-direction:column;}
+.sit-body{padding:8px 10px;display:flex;flex-direction:column;gap:4px;background:var(--bg-panel);}
+.sit-big{font-size:14px;font-weight:700;color:var(--gold-light);}
+.sit-sub{font-size:12px;color:var(--text-dim);}
+.sit-desc{font-size:12px;color:var(--text);font-style:italic;}
+.sit-lbl{font-size:11px;color:var(--text-dim);font-weight:700;margin-top:4px;}
+.sit-mon{font-size:12px;color:var(--text);display:flex;gap:4px;}
+.sit-mon span{margin-left:auto;color:var(--text-dim);}
+.menu-btn{position:relative;}
+.menu-btn .tab-badge{position:absolute;top:2px;right:4px;margin:0;}
 
 /* ── [v9.10] 능력치 상세 분석 Tooltip ── */
 .stat-tooltip {
@@ -496,6 +509,7 @@ html[data-theme="dark"] .primary-action.hunt-on{background:#3a2226;border-color:
 html[data-theme="dark"] .bag-tabs{background:#162030;}
 html[data-theme="dark"] .bag-tab.active{background:#1a2430;}
 html[data-theme="dark"] .icon-btn{color:var(--text-bright);}
+html[data-theme="dark"] .as-alert{background:#2a2a1a;}
 html[data-theme="dark"] #game-log{background:#1a2430;}
 html[data-theme="dark"] #mon-list{background:#1a2430;}
 html[data-theme="dark"] .mon-card{background:#1d2b3a;}
@@ -35475,14 +35489,15 @@ body.work-mode p {
 </div>
 <div id="main-area"><div class="map-hdr"><span class="map-name-disp" id="map-name-disp">🗺 프론테라 평원</span><span id="zone-hud"></span><span class="map-info-disp" id="map-info-disp">Lv.1~10 | 필드</span></div><div id="log-filter"><button class="lf-chip active" data-lf="" onclick="setLogFilter('',this)">전체</button><button class="lf-chip" data-lf="lf-battle" onclick="setLogFilter('lf-battle',this)">⚔ 전투</button><button class="lf-chip" data-lf="lf-loot" onclick="setLogFilter('lf-loot',this)">🎁 보상</button><button class="lf-chip" data-lf="lf-sys" onclick="setLogFilter('lf-sys',this)">📋 시스템</button></div><div id="game-log"></div>
 <!-- [P1-13] 현재 행동 상태 + 주행동 (자동사냥은 여기로 이동, id 유지) -->
-<div id="action-bar"><div class="action-status" id="action-status">대기 중</div><button class="primary-action" id="hunt-btn" onclick="toggleHunt()">▶ 자동사냥</button></div></div>
-<div id="right-panel"><div id="hotbar-panel"><div class="panel-hdr" title="슬롯 클릭으로 등록 / 키보드 QWERASDFZXCV">HOTBAR <span class="hb-hint" style="font-size:11px;font-weight:normal;color:var(--text-dim)">⌨ QWER…</span></div><div class="hotbar-grid" id="hotbar-grid"></div></div><div class="panel-hdr">ENCOUNTER</div><div id="mon-list"><div class="no-target">전투 중인 적 없음</div></div></div>
+<div id="action-bar"><div class="action-status" id="action-status">대기 중</div><button class="primary-action" id="hunt-btn" onclick="primaryAction()">▶ 사냥 시작</button></div></div>
+<div id="right-panel"><div id="hotbar-panel"><div class="panel-hdr" title="슬롯 클릭으로 등록 / 키보드 QWERASDFZXCV">HOTBAR <span class="hb-hint" style="font-size:11px;font-weight:normal;color:var(--text-dim)">⌨ QWER…</span></div><div class="hotbar-grid" id="hotbar-grid"></div></div><div id="situation"></div><div class="panel-hdr" id="enc-hdr">ENCOUNTER</div><div id="mon-list"><div class="no-target">현재 전투 없음</div></div></div>
 <div id="bottom-menu">
+<!-- [P1-13 2차] 상황별 보조행동: NPC는 그 맵에 있을 때만, 귀환은 던전+날개 보유 시. 도감은 ⋯ 메뉴 -->
+<button class="menu-btn" id="ctx-return" style="display:none" onclick="useItem('나비의 날개')">🦋 귀환</button>
 <button class="menu-btn" onclick="showMapModal()">🗺 이동</button>
-<button class="menu-btn" onclick="showNpcModal()">💬 NPC</button>
+<button class="menu-btn" id="ctx-npc" onclick="showNpcModal()">💬 NPC</button>
 <button class="menu-btn" onclick="showSkillModal()">✨ 스킬</button>
-<button class="menu-btn" id="quest-btn" onclick="showQuestModal()">📋 퀘스트</button>
-<button class="menu-btn" onclick="showCodexModal()">📖 도감</button>
+<button class="menu-btn" id="quest-btn" onclick="showQuestModal()">📋 퀘스트<i class="tab-badge" id="quest-badge" style="display:none"></i></button>
 <button class="menu-btn pc-only" onclick="showInvModal()">🎒 가방</button>
 <button class="menu-btn pc-only" onclick="showMoreMenu()">☰ 메뉴</button>
 </div>
@@ -35632,6 +35647,7 @@ function showMoreMenu(){
     ['💼 업무 모드', 'toggleWorkMode()'],
     ['🏆 업적', 'showAchieveModal()'],
     ['📊 기록', 'showRecordModal()'],
+    ['📖 도감', 'showCodexModal()'],
     ['🌳 전직 안내', 'showJobTreeModal()'],
     ['🏠 로비', 'exitToLobby()'],
     ['🛠 개발자', 'showDevMenu()'],
@@ -39002,7 +39018,7 @@ function updateUI(){
 	el.className='eq-slot-item has';}
     else {el.textContent='—'; el.className='eq-slot-item';}
   });
-  renderInvPanel(); renderMonsters(); renderChar(); renderStatusHUD(); renderHotbar(); updateActionStatus();
+  renderInvPanel(); renderMonsters(); renderChar(); renderStatusHUD(); renderHotbar(); updateActionStatus(); updateContextActions(); renderSituation();
 }
 // [P1-13] 소지 무게 요약 — 색 구간은 실제 패널티 구간([P2-02]: 50 자연회복정지 / 70 자동스킬금지 / 90 ASPD)
 function weightInfo(s){
@@ -39015,21 +39031,112 @@ function weightInfo(s){
 function weightHtml(w){
   return `<span title="무게 패널티: ${w.tip}"><span style="color:${w.color}">${w.wc}</span><span style="color:var(--text-dim)">/${w.wm}</span>${w.pct>50?`<span style="color:${w.color}"> ⚠${w.pct}%</span>`:''}</span>`;
 }
-// [P1-13] 현재 행동 상태줄 — "지금 무엇을 하고 있는가"(로그와 분리). 자동포션 잔량·과적 경고를 함께 둔다
+// [P1-13 2차] 현재 UI 상태 판정 — 표시 전용(게임 로직 불변). 우선순위: 사망 > 교전/사냥 > 대기
+function getUiState(){
+  let p=G.player; if(!p) return 'idle';
+  if(p.hp<=0) return 'dead';
+  let md=DB.maps[G.currentMap]||{};
+  if(G.autoHunt){
+    if(G.battles.length) return 'hunt';
+    return ((G.nextSpawnAt||0)>Date.now()) ? 'regen' : 'hunt';
+  }
+  if(G.battles.length) return 'residual';
+  return md.safe ? 'town' : 'idle';
+}
+// [P1-13] 현재 행동 상태줄 — "지금 무엇을 하고 있는가"(로그와 분리). 자동포션 잔량·과적 경고·알림을 함께 둔다
+// [P1-13 2차] 주행동 버튼(#hunt-btn)의 문구·동작도 상태에 따라 여기서 정한다 (0.5초 HUD 타이머와 함께 갱신)
 function updateActionStatus(){
   let el=document.getElementById('action-status'); let p=G.player; if(!el||!p) return;
-  let parts=[];
-  if(G.autoHunt){
-    let k=(G.idleSum&&G.idleSum.kills)||0;
-    parts.push(`<b>자동사냥 중</b>${G.battles.length?` · ${G.battles[0].name}`:''} · 처치 ${k}`);
-  } else if(G.battles.length){
-    parts.push(`<b>교전 중</b> · ${G.battles[0].name}${G.battles.length>1?` 외 ${G.battles.length-1}`:''}`);
-  } else parts.push('대기 중');
+  let st=getUiState(), parts=[];
+  let tgt=G.battles.length?`${G.battles[0].isMvp?'👑 ':''}${G.battles[0].name}${G.battles.length>1?` 외 ${G.battles.length-1}`:''}`:'';
+  let kills=(G.huntSess&&G.huntSess.kills)||0;
+  if(st==='dead') parts.push('<b style="color:var(--red-light)">전투불능</b> · 휴식 중');
+  else if(st==='hunt') parts.push(`<b>${G.battles.some(m=>m.isMvp)?'MVP 교전 중':'자동사냥 중'}</b>${tgt?` · ${tgt}`:''} · 처치 ${kills}`);
+  else if(st==='regen') parts.push(`<b>자동사냥 중</b> · 다음 출현 ${Math.ceil(((G.nextSpawnAt||0)-Date.now())/1000)}초 · 처치 ${kills}`);
+  else if(st==='residual') parts.push(`<b>사냥 정지 · 교전 중</b> · ${tgt}`);
+  else if(st==='town') parts.push('마을 · 대기 중');
+  else parts.push('대기 중');
   let inv=p.inventory||{};
   let hpN=AUTO_HP_POTS.reduce((a,n)=>a+(inv[n]||0),0), spN=AUTO_SP_POTS.reduce((a,n)=>a+(inv[n]||0),0);
   parts.push(`<span class="as-pot${hpN?'':' empty'}" title="자동 HP 포션 잔량">🧪${hpN}</span>`+(spN?`<span class="as-pot" title="자동 SP 포션 잔량">💧${spN}</span>`:''));
   let w=G._weight; if(w&&w.pct>50) parts.push(`<span style="color:${w.color}" title="무게 패널티: ${w.tip}">⚠무게 ${w.pct}%</span>`);
-  el.innerHTML=parts.join('<span class="as-sep">·</span>');
+  if(canJobAdvanceNow()) parts.push(`<button class="as-alert" onclick="showJobTreeModal()" title="전직 조건 충족 — 전직 안내 열기">🌟 전직 가능</button>`);
+  let html=parts.join('<span class="as-sep">·</span>');
+  if(el._h!==html){ el.innerHTML=html; el._h=html; }
+  // 주행동
+  let btn=document.getElementById('hunt-btn'); if(!btn) return;
+  let lab, on=false, dis=false;
+  if(st==='dead'){ lab='💤 휴식 중…'; dis=true; }
+  else if(st==='hunt'||st==='regen'){ lab='⏹ 사냥 중지'; on=true; }
+  else if(st==='residual'){ lab='▶ 사냥 재개'; }
+  else if(st==='town'){ lab='🗺 사냥터로 이동'; }
+  else lab='▶ 사냥 시작';
+  if(btn.textContent!==lab) btn.textContent=lab;
+  btn.classList.toggle('hunt-on',on); btn.disabled=dis;
+}
+// [P1-13 2차] 주행동 — 마을에선 사냥이 성립하지 않으므로 이동 화면을 연다
+function primaryAction(){
+  let st=getUiState();
+  if(st==='dead') return;
+  if(st==='town'){ showMapModal(); return; }
+  toggleHunt();
+}
+// [P1-13 2차] 전직 가능 알림 — 현재 직업의 전직 요구 Job Lv 도달 + 다음 직업 존재
+function canJobAdvanceNow(){
+  let p=G.player; if(!p||!DB.jobAdvance) return false;
+  let code=JOB_NAME2CODE[normalizeJob(p.job)]; let adv=code&&DB.jobAdvance[code];
+  if(!adv||!adv.next||(Array.isArray(adv.next)&&!adv.next.length)) return false;
+  return p.jobLv>=(adv.reqJobLv||999);
+}
+// [P1-13 2차] 퀘스트 알림 — 완료 보고 가능한 퀘스트 수
+function countCompletableQuests(){
+  let q=G.player&&G.player.quests; if(!q) return 0;
+  return Object.keys(q).filter(k=>q[k]&&q[k].state==='completable').length;
+}
+// [P1-13 2차] 상황별 보조행동 — NPC는 그 맵에 있을 때만, 귀환은 던전+날개 보유 시. 퀘스트 ! 배지
+function updateContextActions(){
+  let p=G.player; if(!p) return;
+  let md=DB.maps[G.currentMap]||{};
+  let hasNpc=!!(DB.npcs&&Object.keys(DB.npcs).some(k=>DB.npcs[k].map===G.currentMap));
+  let wing=(p.inventory&&p.inventory['나비의 날개'])||0;
+  const show=(id,v)=>{ let e=document.getElementById(id); if(e) e.style.display=v?'':'none'; };
+  show('ctx-npc',hasNpc);
+  show('ctx-return',md.type==='던전'&&wing>0);
+  let rb=document.getElementById('ctx-return'); if(rb) rb.title=`나비의 날개 (${wing}개) — 귀환 지점으로`;
+  let qn=countCompletableQuests(), qb=document.getElementById('quest-badge');
+  if(qb){ qb.textContent=qn?'!':''; qb.style.display=qn?'':'none'; }
+}
+// [P1-13 2차] 우측 상황 패널 — 전투 중이 아니면 지역 정보 / 리젠 대기(직전 전투 요약 + 남은 시간)
+function renderSituation(){
+  let box=document.getElementById('situation'), hdr=document.getElementById('enc-hdr'), ml=document.getElementById('mon-list');
+  let p=G.player; if(!box||!p) return;
+  let inRight=ml&&ml.parentElement&&ml.parentElement.id==='right-panel';
+  let fighting=G.battles.length>0;
+  box.style.display=fighting?'none':'';
+  if(hdr) hdr.style.display=fighting?'':'none';
+  if(ml) ml.style.display=(fighting||!inRight)?'':'none';
+  if(fighting) return;
+  let st=getUiState(), h='';
+  if(st==='regen'){
+    let sec=Math.ceil(((G.nextSpawnAt||0)-Date.now())/1000), lw=G.lastWave;
+    h=`<div class="panel-hdr">리젠 대기</div><div class="sit-body"><div class="sit-big">💤 다음 출현 ${sec}초</div>`+
+      (lw?`<div class="sit-sub">직전 전투 · 처치 ${lw.kills} · EXP +${lw.exp.toLocaleString()} · ${lw.zeny.toLocaleString()}z</div>`:'')+
+      (G.huntSess?`<div class="sit-sub">이번 사냥 · 처치 ${G.huntSess.kills} · EXP +${G.huntSess.exp.toLocaleString()}</div>`:'')+`</div>`;
+  } else {
+    let md=DB.maps[G.currentMap]||{};
+    let mons=[];
+    if(md.monsters&&md.monsters.length){
+      let zones=(typeof getZones==='function')?getZones(G.currentMap):null;
+      let ids=(zones&&zones.length>=2)?(zones[Math.min(G.zoneIdx||0,zones.length-1)].monsters||md.monsters):md.monsters;
+      mons=ids.map(id=>DB.monsters[id]).filter(Boolean);
+    }
+    h=`<div class="panel-hdr">지역 정보</div><div class="sit-body"><div class="sit-big">${md.emoji||'🗺'} ${G.currentMap}</div>`+
+      `<div class="sit-sub">${md.type||''}${md.level&&md.level!=='0'?` · 권장 Lv.${md.level}`:''}</div>`+
+      (md.desc?`<div class="sit-desc">${md.desc}</div>`:'')+
+      (mons.length?`<div class="sit-lbl">출현 몬스터</div>`+mons.slice(0,8).map(m=>`<div class="sit-mon">${m.emoji||'?'} ${m.name} <span>Lv.${m.lv||'?'}</span></div>`).join('')+(mons.length>8?`<div class="sit-sub">외 ${mons.length-8}종</div>`:''):
+        `<div class="sit-sub">${md.safe?'안전 지역 — 몬스터가 출현하지 않습니다':'출현 몬스터 정보 없음'}</div>`)+`</div>`;
+  }
+  if(box._h!==h){ box.innerHTML=h; box._h=h; }
 }
 function updateBar(id,c,m,t){ let pct=Math.max(0,Math.min(100,(c/Math.max(1,m))*100)); let b=$(id+'-bar'); if(b)b.style.width=pct+'%'; let txt=$(id+'-text'); if(txt)txt.textContent=t; }
 
@@ -39100,7 +39207,7 @@ const ELEM_ICO={'무':'⚪','화':'🔥','수':'💧','풍':'💨','지':'⛰️
 function renderMonsters(){
   if(G.silentMode) return; // [P0-02③] 무음 모드
   let ml=$('mon-list'); if(!ml)return;
-  if(!G.battles.length){ml.innerHTML='<div class="no-target">전투 중인 적 없음</div>';return;}
+  if(!G.battles.length){ml.innerHTML='<div class="no-target">현재 전투 없음</div>';return;}
   let h=''; if(G.battles.length>=3)h+=`<div class="multi-warn">⚠ 다수 포위! 회피율 극감</div>`;
   G.battles.forEach((m,i)=>{
     let pct=Math.max(0,(m.currentHp/m.hp)*100);
@@ -39220,6 +39327,11 @@ function idleTrack(exp,zeny){
   if(!G.autoHunt)return;
   if(!G.idleSum)G.idleSum={t0:Date.now(),kills:0,exp:0,zeny:0};
   G.idleSum.kills++; G.idleSum.exp+=(exp||0); G.idleSum.zeny+=(zeny||0);
+  // [P1-13 2차] 표시 전용 집계 — 이번 사냥(상태줄 처치 수) / 현재 교전 웨이브(리젠 대기 중 직전 전투 요약)
+  if(!G.huntSess)G.huntSess={kills:0,exp:0,zeny:0};
+  G.huntSess.kills++; G.huntSess.exp+=(exp||0); G.huntSess.zeny+=(zeny||0);
+  if(!G.curWave)G.curWave={kills:0,exp:0,zeny:0};
+  G.curWave.kills++; G.curWave.exp+=(exp||0); G.curWave.zeny+=(zeny||0);
 }
 function flushIdleSummary(){
   let su=G.idleSum; if(!su)return;
@@ -39286,7 +39398,7 @@ function autoPotion(){
 
 function toggleHunt(){
   G.autoHunt=!G.autoHunt; let b=$('hunt-btn');
-  if(G.autoHunt){ if(b){b.classList.add('hunt-on'); b.textContent='⏹ 사냥중지';} G.idleSum={t0:Date.now(),kills:0,exp:0,zeny:0}; log('🔁 <b>자동 사냥</b> 시작','system'); scheduleTickAspd(100); schedulePasserby(); } // [UI-①] 요약 카운터 리셋
+  if(G.autoHunt){ if(b){b.classList.add('hunt-on'); b.textContent='⏹ 사냥중지';} G.idleSum={t0:Date.now(),kills:0,exp:0,zeny:0}; G.huntSess={kills:0,exp:0,zeny:0}; log('🔁 <b>자동 사냥</b> 시작','system'); scheduleTickAspd(100); schedulePasserby(); } // [UI-①] 요약 카운터 리셋
   else { if(b){b.classList.remove('hunt-on'); b.textContent='▶ 자동사냥';} clearTimeout(G.huntTimer); clearTimeout(G.passerbyTimer); log('⏹ 자동 사냥 중지','system'); }
   updateActionStatus(); // [P1-13]
 }
@@ -39518,6 +39630,7 @@ function huntTick(){
     ensureZoneState();
     if(G._battleWasActive){
       G._battleWasActive=false;
+      G.lastWave=G.curWave||null; G.curWave=null; // [P1-13 2차] 직전 전투 요약 확정
       // [전투설정] 리젠 대기시간: p.options.respawnMin~respawnMax 초 (기본 0~2초, 레거시 상수는 폴백)
       let _o=(p&&p.options)||{};
       let _min=Math.max(0,(_o.respawnMin!=null?_o.respawnMin:0))*1000;
@@ -44147,6 +44260,7 @@ function updateZoneHud(){
     h+=`<span class="zone-chip regen" title="다음 몬스터 리젠 대기">💤 ${Math.ceil(wait/1000)}s<span class="zc-bar"><span class="zc-fill" style="width:${pct}%"></span></span></span>`;
   }
   el.innerHTML=h;
+  if(!G.silentMode){ updateActionStatus(); renderSituation(); } // [P1-13 2차] 리젠 카운트다운·상태 전환을 같은 0.5초 주기로
 }
 function startZoneHudTimer(){
   if(G._zoneHudTimer) clearInterval(G._zoneHudTimer);
