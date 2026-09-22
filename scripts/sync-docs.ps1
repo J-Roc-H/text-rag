@@ -55,11 +55,14 @@ if ($fresh) {
     Invoke-Git remote add origin $Origin | Out-Null
 }
 
-# Markdown only. Attachments, .obsidian state and Sync conflict copies stay out - this
-# is a read surface for Claude, not a vault backup.
+# The rules live in docs-mirror-exclude.txt, copied byte for byte. They name Korean
+# folders, and this script stays ASCII because PowerShell 5.1 mangles non-ASCII
+# literals in a UTF-8 file with no BOM. Copy-Item does not reinterpret the bytes.
 $exclude = Join-Path $gitDir 'info\exclude'
+$excludeSource = Join-Path $PSScriptRoot 'docs-mirror-exclude.txt'
+if (-not (Test-Path -LiteralPath $excludeSource)) { throw "Exclude rules missing: $excludeSource" }
 New-Item -ItemType Directory -Force -Path (Split-Path $exclude) | Out-Null
-Set-Content -LiteralPath $exclude -Encoding ASCII -Value @('*', '!*/', '!*.md', '.obsidian/', '.trash/')
+Copy-Item -LiteralPath $excludeSource -Destination $exclude -Force
 
 if (-not $NoPush) { Invoke-Git fetch origin main 2>$null | Out-Null }
 $originHead = (& git.exe --git-dir=$gitDir rev-parse --verify --quiet origin/main)
