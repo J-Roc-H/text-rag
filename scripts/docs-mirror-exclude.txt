@@ -1,0 +1,19 @@
+# text-rag-docs 미러 제외 규칙.
+# scripts/sync-docs.ps1 이 매 run마다 이 파일을 .git/info/exclude 로 복사한다.
+#
+# 이 파일이 따로 있는 이유: sync-docs.ps1 은 ASCII 전용으로 유지한다(PowerShell 5.1이
+# BOM 없는 UTF-8 안의 한글 리터럴을 깨뜨린다). 한글 폴더명은 여기 텍스트로 두고
+# 바이트 그대로 복사한다.
+
+# markdown만 싣는다. 디렉터리는 제외하지 않아야 git이 안으로 내려간다.
+*
+!*/
+!*.md
+
+# 편집기 상태
+.obsidian/
+
+# 낡은 문서는 미러의 최대 위험이다 — 독자가 grep 하는 LLM이라 파일명만으로는
+# 정본과 구분하지 못한다. DEVREF가 두 벌 보이면 안 된다.
+휴지통/
+_code폴더에서회수_2026-08-18/
