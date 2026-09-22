@@ -35375,14 +35375,14 @@ body.work-mode p {
 <div id="loading"><div class="ld-title">룬 미드가츠</div><div class="ld-bar-track"><div class="ld-bar-fill" id="ld-bar"></div></div><div class="ld-tip" id="ld-tip">데이터 로딩 중...</div></div>
 <div id="battle-flash"></div><div id="notif-area"></div>
 <div id="buff-hud"></div>
-<div id="lobby" style="display:none;"><div class="lobby-title">룬 미드가츠 연대기</div><div class="slot-grid" id="slot-grid"></div><div class="lobby-btns"><button class="lobby-btn danger" onclick="confirmReset()">전체 초기화</button></div></div>
+<div id="lobby" style="display:none;"><div class="lobby-title">룬 미드가츠 연대기</div><div class="slot-grid" id="slot-grid"></div><div class="lobby-btns" style="flex-wrap:wrap; justify-content:center;"><button class="lobby-btn" onclick="showPortableImport(-1)">📥 다른 기기에서 가져오기</button><button class="lobby-btn" id="lobby-restore-btn" style="display:none;" onclick="restorePreviousSave()">↩ 가져오기 전으로 되돌리기</button><button class="lobby-btn danger" onclick="confirmReset()">전체 초기화</button></div></div>
 <div id="app"><div class="app-inner">
 <div id="titlebar">
   <span class="title-logo">⚔ 룬 미드가츠</span>
   <span class="title-map" id="title-map">프론테라 남쪽 평원</span>
 
   <button class="sys-btn" onclick="saveGame()" title="저장">💾 저장</button>
-  <button class="sys-btn" onclick="showPortableExport()" title="다른 기기로 보내기">📤 보내기</button>
+  <button class="sys-btn" onclick="showDeviceTransfer()" title="다른 기기로 보내기 / 다른 기기에서 가져오기">🔄 기기 이동</button>
   <label class="sys-btn" style="cursor:pointer;" title="파일 불러오기">
     📂 로드
     <input type="file" style="display:none;" accept=".json,.txt" onchange="importGame(event)">
@@ -37248,6 +37248,8 @@ function initLobby(){
     }
     g.appendChild(d);
   });
+  let rb = $('lobby-restore-btn');                 // [P1-10] 가져오기 복구 지점이 있을 때만
+  if(rb){ let r = readRestore(); rb.style.display = r ? '' : 'none'; if(r) rb.title = `${r.slot+1}번 슬롯 · ${fmtSaveTime(r.at)} 가져오기 직전 상태`; }
 }
 
 function createCharacter(i){
@@ -37655,10 +37657,12 @@ function importGame(event) {
 // 규격: vault `데이터베이스\설계_휴대형세이브_RMG_v1.1.md` (원문 v1.0 옆).
 // 코드 = RMG1:<base64url(deflate(JSON 패키지))>.<crc32 8hex>. 패키지는 운반 포장일 뿐이고
 // 안의 character는 슬롯에 들어가는 세이브 그대로다 — 마이그레이션은 슬롯 로드 시 loadPlayerData가 한다.
-// 1차 범위: 게임 안 "보내기"(코드 생성·복사) + 로비 빈 슬롯 "코드 붙여넣기". 덮어쓰기·비교 화면은 2차.
+// 가져오기는 입력(코드 붙여넣기·구 JSON)만 다르고 경로는 하나: decode → 검사 → 비교 화면(대상 슬롯 선택) →
+// 승인 → 복구 지점(rmc_restore) 저장 → 적용. 저장 시각만으로 자동 덮어쓰지 않는다(규격 §16).
 const RMG_PREFIX = 'RMG1:';
 const RMG_FORMAT_VERSION = 1;
-const RMG_STRIP_KEYS = ['_ghostPurged', '_statResetNotice', 'offlineHunt'];  // offlineHunt: 두 기기가 같은 부재 구간을 이중 정산하지 않게
+const RMG_RESTORE_KEY = 'rmc_restore';   // 직전 가져오기 1건의 복구 지점 {slot, data, warehouse?, at, name}
+const RMG_STRIP_KEYS =['_ghostPurged', '_statResetNotice', 'offlineHunt'];  // offlineHunt: 두 기기가 같은 부재 구간을 이중 정산하지 않게
 const RMG_MSG_DAMAGED = '세이브 데이터를 읽을 수 없습니다. 코드가 일부 누락되었거나 손상되었습니다.';
 const RMG_MSG_NEWER = '더 새로운 버전의 게임에서 만든 세이브입니다. 게임을 새로고침(최신 버전)한 뒤 다시 시도하세요.';
 const RMG_MSG_UNSUPPORTED = '이 브라우저는 세이브 코드를 지원하지 않습니다. 브라우저를 최신 버전으로 업데이트하세요. (iOS 16.4 이상)';
@@ -37697,7 +37701,18 @@ function createPortableSave(){
   if(!saveLocal()) return null;
   let ch = JSON.parse(JSON.stringify(slots[activeSlot]));
   RMG_STRIP_KEYS.forEach(k => { delete ch[k]; });
-  return { format:'RMG', formatVersion:RMG_FORMAT_VERSION, createdAt:new Date().toISOString(), character:ch };
+  let pkg = { format:'RMG', formatVersion:RMG_FORMAT_VERSION, createdAt:new Date().toISOString(), character:ch };
+  let wh = readWarehouse();                       // 창고는 전 캐릭터 공유(별도 키) — 선택 블록으로 싣고, 받는 쪽에서 기본 OFF
+  if(Object.keys(wh).some(k => wh[k] > 0)) pkg.account = { warehouse: wh };
+  return pkg;
+}
+function readWarehouse(){ try{ let d = localStorage.getItem('rmc_warehouse'); return d ? JSON.parse(d) : {}; }catch(e){ return {}; } }
+function readRestore(){ try{ let d = localStorage.getItem(RMG_RESTORE_KEY); return d ? JSON.parse(d) : null; }catch(e){ return null; } }
+function fmtSaveTime(iso){
+  let d = iso ? new Date(iso) : null;
+  if(!d || isNaN(d)) return '기록 없음';
+  let z = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())} ${z(d.getHours())}:${z(d.getMinutes())}`;
 }
 async function encodePortableSave(pkg){
   let packed = await rmgPipe(new TextEncoder().encode(JSON.stringify(pkg)), new CompressionStream('deflate'));
@@ -37725,7 +37740,7 @@ async function decodePortableSave(text){
   try{ pkg = JSON.parse(new TextDecoder().decode(await rmgPipe(b64urlToBytes(payload), new DecompressionStream('deflate')))); }
   catch(e){ throw new Error(RMG_MSG_DAMAGED); }
   if(!pkg || pkg.format !== 'RMG' || pkg.formatVersion !== RMG_FORMAT_VERSION) throw new Error(RMG_MSG_DAMAGED);
-  return { character: pkg.character, createdAt: pkg.createdAt || null };
+  return { character: pkg.character, createdAt: pkg.createdAt || null, account: pkg.account || null };
 }
 // 슬롯에 넣기 전 공통 검사. 구버전 세이브는 통과(로드 때 migrateSave), 미래 버전은 거부 — 다운그레이드 경로가 없다
 function checkImportedCharacter(ch){
@@ -37733,19 +37748,30 @@ function checkImportedCharacter(ch){
   if((ch.saveVersion || 0) > SAVE_SCHEMA_VERSION) throw new Error(RMG_MSG_NEWER);
 }
 
-async function showPortableExport(){
+const RMG_TA_STYLE = 'width:100%; height:90px; margin:6px 0; font-family:monospace; font-size:10px; word-break:break-all; box-sizing:border-box;';
+
+// 게임 안 진입점 — 보내기(지금 상태의 코드)와 가져오기(붙여넣기 → 비교 화면)를 한 창에
+async function showDeviceTransfer(){
   if(!rmgSupported()){ alert(RMG_MSG_UNSUPPORTED); return; }
   let pkg = createPortableSave(); if(!pkg) return;
   let code = await encodePortableSave(pkg);
-  openModal('📤 다른 기기로 보내기', `
+  let whNote = pkg.account ? ' · 창고 포함' : '';
+  openModal('🔄 기기 이동', `
     <div style="font-size:12px; line-height:1.7;">
-      아래 코드를 복사해 다른 기기의 로비에서 빈 슬롯의 <b>📋 코드 붙여넣기</b>에 넣으세요.
-      <textarea id="rmg-out" readonly style="width:100%; height:110px; margin:8px 0; font-family:monospace; font-size:10px; word-break:break-all; box-sizing:border-box;">${code}</textarea>
-      <div style="font-size:10px; color:var(--text-dim);">코드 길이 ${code.length.toLocaleString()}자 · 지금 이 기기의 저장 상태 그대로입니다. 귀환 위치는 마지막 안전지역입니다.</div>
-    </div>`, [
-      { label:'코드 복사', cls:'ok', close:false, action:()=>copySyncCode() },
-      { label:'닫기', action:()=>{} }
-    ]);
+      <b>📤 다른 기기로 보내기</b> — 코드를 복사해 다른 기기에서 「다른 기기에서 가져오기」에 붙여넣으세요.
+      <textarea id="rmg-out" readonly style="${RMG_TA_STYLE}">${code}</textarea>
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
+        <span style="font-size:10px; color:var(--text-dim);">${code.length.toLocaleString()}자${whNote} · 귀환 위치는 마지막 안전지역</span>
+        <button class="sys-btn" onclick="copySyncCode()">코드 복사</button>
+      </div>
+      <div style="border-top:1px solid var(--border); margin:10px 0 8px;"></div>
+      <b>📥 다른 기기에서 가져오기</b> — 가져오기 전에 비교 화면이 나옵니다.
+      <textarea id="rmg-in" placeholder="RMG1:..." style="${RMG_TA_STYLE}"></textarea>
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
+        <span id="rmg-err" style="font-size:11px; color:var(--red-light);"></span>
+        <button class="sys-btn" onclick="rmgPrepareImport(activeSlot)">다음 ▶</button>
+      </div>
+    </div>`, [ { label:'닫기', action:()=>{} } ]);
 }
 async function copySyncCode(){
   let ta = $('rmg-out'); if(!ta) return;
@@ -37755,31 +37781,129 @@ async function copySyncCode(){
   let ok = false; try{ ok = document.execCommand('copy'); }catch(e){}
   notify(ok ? '코드를 복사했습니다' : '자동 복사가 막혔습니다. 코드를 길게 눌러 직접 복사하세요', ok ? 'green' : 'gold');
 }
+// 로비 진입점. i = 누른 빈 슬롯(없으면 -1 → 비교 화면에서 고른다)
 function showPortableImport(i){
   openModal('📥 다른 기기에서 가져오기', `
     <div style="font-size:12px; line-height:1.7;">
       다른 기기에서 복사한 코드(<b>RMG1:</b>로 시작)를 붙여넣으세요. 예전 .json 세이브 내용도 받습니다.
-      <textarea id="rmg-in" placeholder="RMG1:..." style="width:100%; height:110px; margin:8px 0; font-family:monospace; font-size:10px; word-break:break-all; box-sizing:border-box;"></textarea>
+      <textarea id="rmg-in" placeholder="RMG1:..." style="${RMG_TA_STYLE}"></textarea>
       <div id="rmg-err" style="font-size:11px; color:var(--red-light); min-height:14px;"></div>
     </div>`, [
-      { label:'가져오기', cls:'ok', close:false, action:()=>importSyncCode(i) },
+      { label:'다음 ▶', cls:'ok', close:false, action:()=>rmgPrepareImport(i) },
       { label:'취소', action:()=>{} }
     ]);
 }
-async function importSyncCode(i){
+
+let _rmgPending = null;   // 비교 화면에 올라간 가져올 데이터 {character, createdAt, account}
+async function rmgPrepareImport(defaultSlot){
   let err = $('rmg-err');
   try{
     let r = await decodePortableSave($('rmg-in').value);
     checkImportedCharacter(r.character);
-    loadSlots();
-    if(slots[i]) throw new Error('이 슬롯은 비어 있지 않습니다. 빈 슬롯에서 가져오세요.');
-    slots[i] = r.character;
-    saveSlots();
-    closeModal(); initLobby();
-    notify(`[${r.character.name}] 캐릭터를 가져왔습니다`, 'green');
+    _rmgPending = r;
   }catch(e){
     if(err) err.textContent = e.message || RMG_MSG_DAMAGED;
+    return;
   }
+  loadSlots();
+  // 기본 대상: 누른 슬롯 → 같은 이름 슬롯 → 첫 빈 슬롯 → 1번
+  let slot = defaultSlot;
+  if(!(slot >= 0)) slot = slots.findIndex(s => s && s.name === _rmgPending.character.name);
+  if(!(slot >= 0)) slot = slots.findIndex(s => !s);
+  if(!(slot >= 0)) slot = 0;
+  let inGame = $('app').style.display === 'block';
+  let opts = slots.map((s, k) => `<option value="${k}" ${k===slot?'selected':''}>${k+1}번 — ${s ? `${s.name} (${s.job} Lv.${s.baseLv})` : '빈 슬롯'}${inGame && k===activeSlot ? ' · 플레이 중' : ''}</option>`).join('');
+  let wh = _rmgPending.account && _rmgPending.account.warehouse;
+  let whRow = wh ? `
+      <label style="display:flex; gap:6px; align-items:flex-start; margin-top:8px; font-size:11px;">
+        <input type="checkbox" id="rmg-wh" style="margin-top:3px;">
+        <span>창고도 가져오기 — 창고는 <b>모든 캐릭터가 공유</b>합니다. 이 기기 창고 ${Object.keys(readWarehouse()).length}종이 가져올 창고 ${Object.keys(wh).length}종으로 <b>교체</b>됩니다.</span>
+      </label>` : '';
+  openModal('📥 가져오기 전 확인', `
+    <div style="font-size:12px; line-height:1.7;">
+      <div style="display:flex; gap:6px; align-items:center;">넣을 곳 <select id="rmg-slot" onchange="rmgRenderCompare()" style="flex:1;">${opts}</select></div>
+      <div id="rmg-cmp" style="margin-top:8px;"></div>
+      ${whRow}
+      <div style="margin-top:8px; font-size:10px; color:var(--text-dim);">가져오기 직전 상태는 보관됩니다. 문제가 있으면 로비의 「↩ 가져오기 전으로 되돌리기」로 복구하세요.</div>
+    </div>`, [
+      { label:'가져오기', cls:'ok', close:false, action:()=>rmgApplyImport() },
+      { label:'취소', action:()=>{ _rmgPending = null; } }
+    ]);
+  rmgRenderCompare();
+}
+
+function rmgRenderCompare(){
+  let box = $('rmg-cmp'), sel = $('rmg-slot'); if(!box || !sel || !_rmgPending) return;
+  let a = _rmgPending.character, b = slots[parseInt(sel.value)];
+  let cell = (v, bold) => `<td style="padding:3px 6px; ${bold?'font-weight:bold;':''}">${v}</td>`;
+  let row = (label, fa, fb) => `<tr><td style="padding:3px 6px; color:var(--text-dim);">${label}</td>${cell(fa(a), true)}${cell(b ? fb(b) : '—')}</tr>`;
+  let saved = c => fmtSaveTime(c.lastSavedAt);
+  let rows = [
+    row('이름', c => c.name, c => c.name),
+    row('직업', c => c.job, c => c.job),
+    row('Base Lv', c => c.baseLv, c => c.baseLv),
+    row('Job Lv', c => c.jobLv, c => c.jobLv),
+    row('저장 시각', c => saved(c) === '기록 없음' ? fmtSaveTime(_rmgPending.createdAt) : saved(c), saved),
+    row('제니', c => (c.zeny||0).toLocaleString() + 'z', c => (c.zeny||0).toLocaleString() + 'z'),
+  ].join('');
+  let warn = [];
+  if(!b) warn.push('빈 슬롯에 새로 넣습니다.');
+  else {
+    warn.push(`⚠ 이 슬롯의 <b>${b.name}</b> 데이터는 가져온 데이터로 <b>덮어써집니다</b>.`);
+    if(b.name !== a.name) warn.push('⚠ 이름이 다른 캐릭터입니다.');
+    if(a.lastSavedAt && b.lastSavedAt && Date.parse(a.lastSavedAt) < Date.parse(b.lastSavedAt)) warn.push('⚠ 가져올 데이터가 이 슬롯보다 <b>오래된 저장</b>입니다.');
+  }
+  box.innerHTML = `
+    <table style="width:100%; border-collapse:collapse; font-size:11px; border:1px solid var(--border);">
+      <tr style="background:rgba(0,0,0,.04);"><td></td>${cell('가져올 데이터', true)}${cell('현재 슬롯', true)}</tr>${rows}
+    </table>
+    <div style="margin-top:6px; font-size:11px; color:${b ? 'var(--red-light)' : 'var(--text-dim)'};">${warn.join('<br>')}</div>`;
+}
+
+function rmgApplyImport(){
+  let r = _rmgPending, sel = $('rmg-slot'); if(!r || !sel) return;
+  let i = parseInt(sel.value);
+  let withWh = !!($('rmg-wh') && $('rmg-wh').checked && r.account && r.account.warehouse);
+  let playing = $('app').style.display === 'block' && i === activeSlot && G.player;
+  if(playing){ G.autoHunt = false; clearTimeout(G.huntTimer); saveLocal(); }   // 복구 지점 = 지금 진행 상태 (사냥을 먼저 꺼서 offlineHunt가 남지 않게)
+  loadSlots();
+  let restore = { slot:i, data: slots[i] || null, at: new Date().toISOString(), name: r.character.name };
+  if(withWh) restore.warehouse = readWarehouse();
+  try{ localStorage.setItem(RMG_RESTORE_KEY, JSON.stringify(restore)); }
+  catch(e){ alert('복구용 임시 저장에 실패해 가져오기를 중단했습니다. (저장 공간 부족)'); return; }
+  slots[i] = r.character;
+  saveSlots();
+  if(withWh) localStorage.setItem('rmc_warehouse', JSON.stringify(r.account.warehouse));
+  _rmgPending = null;
+  closeModal();
+  if(playing){
+    // 플레이 중인 캐릭터를 교체 — exitToLobby와 같은 정리 후 새 데이터로 다시 로드(파일 저장 대화상자는 띄우지 않음)
+    clearTimeout(G.passerbyTimer); $('game-log').innerHTML = '';
+    loadCharacter(i);
+    log('📥 다른 기기의 데이터로 교체했습니다. 문제가 있으면 로비에서 <b>↩ 가져오기 전으로 되돌리기</b>를 누르세요.', 'system');
+  } else if($('lobby').style.display !== 'none'){
+    initLobby();
+  }
+  notify(`[${r.character.name}] 가져오기 완료`, 'green');
+}
+
+function restorePreviousSave(){
+  let r = readRestore(); if(!r) return;
+  let before = r.data ? `${r.data.name} (${r.data.job} Lv.${r.data.baseLv})` : '빈 슬롯';
+  openModal('↩ 가져오기 전으로 되돌리기', `
+    <div style="font-size:12px; line-height:1.7;">
+      <b>${r.slot+1}번 슬롯</b>을 ${fmtSaveTime(r.at)} 가져오기 직전 상태 — <b>${before}</b> — 로 되돌립니다.
+      ${r.warehouse ? '<br>창고도 가져오기 직전 상태로 되돌립니다.' : ''}
+      <div style="margin-top:6px; color:var(--red-light);">지금 그 슬롯에 있는 데이터는 사라집니다.</div>
+    </div>`, [
+      { label:'되돌리기', cls:'danger', action:()=>{
+          loadSlots(); slots[r.slot] = r.data; saveSlots();
+          if(r.warehouse) localStorage.setItem('rmc_warehouse', JSON.stringify(r.warehouse));
+          localStorage.removeItem(RMG_RESTORE_KEY);
+          initLobby(); notify('가져오기 전 상태로 되돌렸습니다', 'green');
+        } },
+      { label:'취소', action:()=>{} }
+    ]);
 }
 
 function exitToLobby(){ G.autoHunt=false; clearTimeout(G.huntTimer); saveGame(); /* [P1-11] 사냥을 먼저 끈다 — 로비로 나간 시간은 오프라인 보상 대상 아님 */ clearTimeout(G.passerbyTimer); clearInterval(regenTimer); $('game-log').innerHTML=''; initLobby(); }
