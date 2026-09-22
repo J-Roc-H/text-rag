@@ -199,7 +199,7 @@ button{touch-action:manipulation;}
 .hotbar-slot{width:100%;padding:0;color:inherit;}
 /* 좌측: 상세 진입 버튼 + 미분배 포인트 배지 */
 .char-detail-btns{display:flex;gap:4px;padding:6px 8px;border-bottom:1px solid var(--border);}
-.cd-open-btn{flex:1;height:32px;background:#f7fafc;border:1px solid var(--border-gold);color:var(--gold-light);font-size:12px;cursor:pointer;border-radius:3px;font-family:inherit;}
+.cd-open-btn{flex:1;height:32px;white-space:nowrap;padding:0 4px;background:#f7fafc;border:1px solid var(--border-gold);color:var(--gold-light);font-size:12px;cursor:pointer;border-radius:3px;font-family:inherit;}
 .cd-open-btn:hover{border-color:var(--blue-light);}
 .pts-badge,.tab-badge{margin-left:4px;color:#fff;background:var(--red-light);border-radius:8px;padding:0 5px;font-size:11px;font-weight:700;font-style:normal;}
 /* 캐릭터 상세 시트 (모달 z 1000 아래 — 장비 슬롯 클릭 시 장비 모달이 위로) */
@@ -912,8 +912,8 @@ body.work-mode p {
 <button class="menu-btn" id="ctx-return" style="display:none" onclick="useItem('나비의 날개')">🦋 귀환</button>
 <button class="menu-btn" onclick="showMapModal()">🗺 이동</button>
 <button class="menu-btn" id="ctx-npc" onclick="showNpcModal()">💬 NPC</button>
-<button class="menu-btn" onclick="showSkillModal()">✨ 스킬</button>
-<button class="menu-btn" id="quest-btn" onclick="showQuestModal()">📋 퀘스트<i class="tab-badge" id="quest-badge" style="display:none"></i></button>
+<button class="menu-btn" id="ctx-skill" style="display:none" onclick="showSkillModal()">✨ 스킬<i class="tab-badge" id="skill-badge" style="display:none"></i></button>
+<button class="menu-btn" id="quest-btn" style="display:none" onclick="showQuestModal()">📋 퀘스트<i class="tab-badge" id="quest-badge" style="display:none"></i></button>
 <button class="menu-btn pc-only" onclick="showInvModal()">🎒 가방</button>
 <button class="menu-btn pc-only" onclick="showMoreMenu()">☰ 메뉴</button>
 </div>
@@ -1044,7 +1044,7 @@ window.$ = id => {
 // ── [P1-13] 상단바 ⚙ / ⋯ 메뉴 — 관리 기능을 플레이 화면에서 격리 ──
 // 개발도구(에디터/DB뷰어/몬스터/밸런스)는 ⋯ → 개발자 하위 목록으로만 연다([P2-10] 분리 유지).
 function _menuList(items){
-  return '<div class="menu-list">' + items.map(([label, fn]) =>
+  return '<div class="menu-list">' + items.filter(Boolean).map(([label, fn]) =>
     `<button class="menu-list-btn" onclick="closeModal();${fn}">${label}</button>`).join('') + '</div>';
 }
 function showSettingsMenu(){
@@ -1056,6 +1056,7 @@ function showSettingsMenu(){
   ]));
 }
 function showMoreMenu(){
+  const u = (G.player && G.player.uiUnlock) || {}; // [P1-13 3차] 도감·전직 안내는 공개 후에만
   openModal('⋯ 더보기', _menuList([
     ['💾 파일로 백업', 'saveGame()'],
     ['📂 파일 불러오기', "document.getElementById('import-file-input').click()"],
@@ -1063,8 +1064,8 @@ function showMoreMenu(){
     ['💼 업무 모드', 'toggleWorkMode()'],
     ['🏆 업적', 'showAchieveModal()'],
     ['📊 기록', 'showRecordModal()'],
-    ['📖 도감', 'showCodexModal()'],
-    ['🌳 전직 안내', 'showJobTreeModal()'],
+    u.codex && ['📖 도감', 'showCodexModal()'],
+    u.job && ['🌳 전직 안내', 'showJobTreeModal()'],
     ['🏠 로비', 'exitToLobby()'],
     ['🛠 개발자', 'showDevMenu()'],
   ]));
@@ -4434,7 +4435,7 @@ function updateUI(){
 	el.className='eq-slot-item has';}
     else {el.textContent='—'; el.className='eq-slot-item';}
   });
-  renderInvPanel(); renderMonsters(); renderChar(); renderStatusHUD(); renderHotbar(); updateActionStatus(); updateContextActions(); renderSituation();
+  renderInvPanel(); renderMonsters(); renderChar(); renderStatusHUD(); renderHotbar(); updateUnlocks(); updateActionStatus(); updateContextActions(); renderSituation();
 }
 // [P1-13] 소지 무게 요약 — 색 구간은 실제 패널티 구간([P2-02]: 50 자연회복정지 / 70 자동스킬금지 / 90 ASPD)
 function weightInfo(s){
@@ -4447,6 +4448,30 @@ function weightInfo(s){
 function weightHtml(w){
   return `<span title="무게 패널티: ${w.tip}"><span style="color:${w.color}">${w.wc}</span><span style="color:var(--text-dim)">/${w.wm}</span>${w.pct>50?`<span style="color:${w.color}"> ⚠${w.pct}%</span>`:''}</span>`;
 }
+// [P1-13 3차] 점진적 공개 — 진행도에서 매번 판정하고, 한 번 공개된 기능은 다시 숨기지 않는다.
+// 판정이 진행도 기반이라 기존 세이브는 로드 즉시 소급 공개된다(uiUnlock 없는 세이브 = 조용히 초기화, 알림 없음).
+const START_SKILLS = ['응급치료','기본 스킬']; // createCharacter 시작 스킬 — 이것만으론 스킬 기능을 열지 않는다
+const UNLOCK_LABEL = { skill:'✨ 스킬', quest:'📋 퀘스트', codex:'📖 도감', job:'🌳 전직 안내' };
+function updateUnlocks(){
+  let p=G.player; if(!p) return;
+  let first=!p.uiUnlock;
+  let u=p.uiUnlock||(p.uiUnlock={});
+  let sk=p.skills||{};
+  const has=o=>!!o&&Object.keys(o).some(k=>o[k]);
+  const taken=o=>!!o&&Object.keys(o).some(k=>{ let v=o[k]; return v&&(typeof v!=='object'||(v.state&&v.state!=='available')); });
+  let cond={
+    skill: (p.skillPoints||0)>0 || Object.keys(sk).some(k=>sk[k]>0&&!START_SKILLS.includes(k)) || (sk['기본 스킬']||0)>=2,
+    quest: taken(p.quests) || taken(p.jobQuests), // 'available'은 미수령 — 시작부터 목록에 채워져 있다
+    codex: has(p.seenCount) || has(p.killCount) || has(p.cardCodex),
+    job:   normalizeJob(p.job)!=='노비스' || (p.jobLv||1)>=5 || !!p.rebirth,
+  };
+  Object.keys(cond).forEach(k=>{
+    if(u[k]||!cond[k]) return;
+    u[k]=true;
+    if(!first && !G.silentMode){ notify(`새 기능 공개: ${UNLOCK_LABEL[k]}`,'gold'); log(`🔓 <b>새 기능 공개</b> — ${UNLOCK_LABEL[k]}`,'system'); }
+  });
+}
+function isUnlocked(k){ let u=G.player&&G.player.uiUnlock; return !!(u&&u[k]); }
 // [P1-13 2차] 현재 UI 상태 판정 — 표시 전용(게임 로직 불변). 우선순위: 사망 > 교전/사냥 > 대기
 function getUiState(){
   let p=G.player; if(!p) return 'idle';
@@ -4521,6 +4546,13 @@ function updateContextActions(){
   let rb=document.getElementById('ctx-return'); if(rb) rb.title=`나비의 날개 (${wing}개) — 귀환 지점으로`;
   let qn=countCompletableQuests(), qb=document.getElementById('quest-badge');
   if(qb){ qb.textContent=qn?'!':''; qb.style.display=qn?'':'none'; }
+  // [P1-13 3차] 점진 공개 — 스킬·퀘스트 버튼, 스킬 포인트 배지, 핫바(등록 슬롯이 있거나 스킬 공개 후)
+  show('ctx-skill',isUnlocked('skill'));
+  show('quest-btn',isUnlocked('quest'));
+  let spn=p.skillPoints||0, sb=document.getElementById('skill-badge');
+  if(sb){ sb.textContent=spn?`●${spn}`:''; sb.style.display=spn?'':'none'; }
+  let hbUsed=!!p.hotbar&&Object.keys(p.hotbar).some(k=>p.hotbar[k]);
+  show('hotbar-panel',hbUsed||isUnlocked('skill'));
 }
 // [P1-13 2차] 우측 상황 패널 — 전투 중이 아니면 지역 정보 / 리젠 대기(직전 전투 요약 + 남은 시간)
 function renderSituation(){
