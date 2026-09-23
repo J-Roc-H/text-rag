@@ -43325,7 +43325,21 @@ function openEquipModal(sl){
     if(p.inventory[k]>0 && itm && (itm.type===sl || ((sl==='악세1'||sl==='악세2') && (itm.type==='Accessory'||itm.type==='accessory')))) {
       let safeK = k.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
       let dispName = parsed ? getItemDisplayName(parsed) : k;
-      h+=`<div style="padding:8px;border-bottom:1px solid #3d3020;cursor:pointer;color:var(--gold)" onclick="equipItem('${safeK}');closeModal()">▶ ${dispName} 장착</div>`;
+      // 목록에서 바로 비교할 수 있도록 핵심 스탯(무기=ATK, 방어구류=DEF)을 미리 계산해 표시.
+      // 카드·기타 부가효과까지 포함한 정확한 전후 비교는 행 클릭 시 상세 모달(showItemDetail)에서.
+      let statHint='';
+      if(itm.type==='무기'){
+        let wlv=itm.weaponLv||1; const refineBonusTable={1:2,2:3,3:5,4:7};
+        let atk=(itm.atk||0)+(parsed.refine>0?parsed.refine*(refineBonusTable[wlv]||2):0);
+        statHint=`ATK ${atk}`;
+      } else if(itm.def!=null){
+        let def=(itm.def||0)+(parsed.refine>0?parsed.refine:0);
+        statHint=`DEF ${def}`;
+      }
+      h+=`<div onclick="showItemDetail('${safeK}')" style="padding:8px;border-bottom:1px solid #3d3020;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <span style="color:var(--gold)">${dispName}${statHint?` <span style="color:var(--text-dim);font-size:11px;">(${statHint})</span>`:''}</span>
+        <button onclick="event.stopPropagation();equipItem('${safeK}');closeModal()" class="m-btn ok" style="padding:3px 10px;font-size:11px;flex-shrink:0;">장착</button>
+      </div>`;
     }
   });
   let a=[{label:'닫기',action:()=>{}}]; if(c)a.unshift({label:'해제',cls:'danger',action:()=>{unequipItem(sl);}}); openModal('장비 관리',h,a);
