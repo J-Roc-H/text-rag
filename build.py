@@ -20,7 +20,7 @@ import os
 BASE = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_PATH = os.path.join(BASE, "source", "template.html")
 DATA_DIR = os.path.join(BASE, "source", "data")
-OUTPUT_PATH = os.path.join(BASE, "룬미드가츠_v9.17.html")
+OUTPUT_PATH = os.path.join(BASE, "룬미드가츠_v9.18.html")
 # GitHub Pages는 루트의 index.html을 서빙한다 — 버전 올려도 폰 북마크 URL이
 # 안 바뀌게 매 빌드마다 같은 내용을 index.html에도 복사한다 (2026-09-20)
 INDEX_PATH = os.path.join(BASE, "index.html")

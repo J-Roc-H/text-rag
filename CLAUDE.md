@@ -7,7 +7,7 @@
 문서 정본). 코드는 git + GitHub 원격으로 머신간 동기화한다. 분리 이유(대용량 html + `.git`을 클라우드
 동기화 폴더에 두면 조용히 깨짐, 9/12~13 이력 실소실): vault `룬미드가츠_개발일지.md` 2026-09-20 절.
 
-**현재 파일**: `룬미드가츠_v9.17.html` (빌드 산출물, 직접 편집 금지) ← `source/template.html` +
+**현재 파일**: `룬미드가츠_v9.18.html` (빌드 산출물, 직접 편집 금지) ← `source/template.html` +
 `source/data/*.json` + `python build.py`
 
 **모바일 플레이**: https://j-roc-h.github.io/text-rag/ (GitHub Pages, 공개 저장소 — 노출 감수 확정).

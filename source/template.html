@@ -7320,6 +7320,15 @@ function showShopModal(npcName, npcData){
   if(!showShopModal._tab) showShopModal._tab='buy';
   let tab=showShopModal._tab;
 
+  // NPC가 바뀌면 이전 선택·수량 상태 초기화
+  if(showShopModal._npc!==npcName){ showShopModal._npc=npcName; showShopModal._sel={}; showShopModal._qty={}; }
+  if(!showShopModal._sel) showShopModal._sel={};
+  if(!showShopModal._qty) showShopModal._qty={};
+
+  // 목록 리렌더로 스크롤이 맨 위로 튕기지 않도록 위치 보존
+  let prevListEl=document.getElementById('shop-list');
+  let savedScroll=prevListEl?prevListEl.scrollTop:0;
+
   let h=`<div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:10px;">
     <div onclick="showShopModal._tab='buy'; showShopModal('${npcName}',DB.npcs['${npcName}'])" style="flex:1;text-align:center;padding:6px;cursor:pointer;border-bottom:2px solid ${tab==='buy'?'var(--blue-light)':'transparent'};color:${tab==='buy'?'var(--blue-light)':'var(--text-dim)'};font-weight:bold;font-size:11px;">🛒 구매</div>
     <div onclick="showShopModal._tab='sell'; showShopModal('${npcName}',DB.npcs['${npcName}'])" style="flex:1;text-align:center;padding:6px;cursor:pointer;border-bottom:2px solid ${tab==='sell'?'var(--gold)':'transparent'};color:${tab==='sell'?'var(--gold)':'var(--text-dim)'};font-weight:bold;font-size:11px;">💰 판매</div>
@@ -7328,7 +7337,7 @@ function showShopModal(npcName, npcData){
   h+=`<div style="font-size:11px;margin-bottom:8px;">소지금: <b style="color:var(--gold-light)">${p.zeny.toLocaleString()} z</b></div>`;
 
   if(tab==='buy'){
-    h+=`<div style="display:flex;flex-direction:column;gap:5px;max-height:50vh;overflow-y:auto;">`;
+    h+=`<div id="shop-list" style="display:flex;flex-direction:column;gap:5px;max-height:50vh;overflow-y:auto;">`;
     sells.forEach(itemName=>{
       let it=DB.items[itemName]; if(!it) return;
       let dcLv=(p.skills&&p.skills["디스카운트"])||0;
@@ -7358,21 +7367,30 @@ function showShopModal(npcName, npcData){
     if(!sellable.length){
       h+=`<div style="color:var(--text-dim);text-align:center;padding:20px;font-size:11px;">판매 가능한 아이템이 없습니다.</div>`;
     } else {
-      h+=`<div style="display:flex;flex-direction:column;gap:5px;max-height:50vh;overflow-y:auto;">`;
+      let selCount=sellable.filter(k=>showShopModal._sel[k]).length;
+      h+=`<div style="display:flex;gap:6px;margin-bottom:8px;">
+        <button onclick="shopSellSelected('${npcName}')" style="flex:1;padding:6px;background:var(--blue-light);color:#fff;border:none;border-radius:4px;font-size:11px;font-weight:bold;cursor:pointer;">✅ 선택 판매 (<span id="shop-sel-count">${selCount}</span>)</button>
+        <button onclick="shopSellAll('${npcName}')" style="flex:1;padding:6px;background:#c0392b;color:#fff;border:none;border-radius:4px;font-size:11px;font-weight:bold;cursor:pointer;">🗑️ 전체 판매</button>
+      </div>`;
+      h+=`<div id="shop-list" style="display:flex;flex-direction:column;gap:5px;max-height:50vh;overflow-y:auto;">`;
       sellable.forEach(itemName=>{
         let prN=parseItem(itemName); let it=prN?prN.base:DB.items[itemName]; let qty=p.inventory[itemName];
         let ocLv=(p.skills&&p.skills["오버챠지"])||0;
         let sellPrice=ocLv>0?Math.floor((it.sell||0)*(1+ocLv*0.024)):it.sell||0;
+        let checked=!!showShopModal._sel[itemName];
+        let qtyVal=Math.max(1,Math.min(qty,showShopModal._qty[itemName]||qty));
         h+=`<div style="display:flex;align-items:center;gap:8px;padding:7px 8px;background:#fff;border:1px solid var(--border);border-radius:4px;">
+          <input type="checkbox" ${checked?'checked':''} onchange="shopToggleSel('${itemName}',this.checked)" style="width:15px;height:15px;flex-shrink:0;cursor:pointer;">
           <span style="font-size:18px;">${it.emoji||'📦'}</span>
           <div style="flex:1;">
             <div style="font-size:12px;font-weight:bold;">${itemName} <span style="color:var(--text-dim);font-weight:normal;">x${qty}</span></div>
             <div style="font-size:10px;color:var(--text-dim);">${it.desc||''}</div>
           </div>
+          <input type="number" min="1" max="${qty}" value="${qtyVal}" oninput="shopSetQty('${itemName}',this.value,${qty})" style="width:42px;font-size:10px;padding:2px;border:1px solid var(--border);border-radius:2px;flex-shrink:0;">
           <div style="text-align:right;">
             ${ocLv>0?`<div style="font-size:11px;color:#4caf50;font-weight:bold;">📈 +${Math.round(ocLv*2.4)}%</div>`:''}
-            <div style="font-size:11px;color:var(--gold);font-weight:bold;">${sellPrice.toLocaleString()} z</div>
-            <button onclick="shopSell('${itemName}',${sellPrice},'${npcName}')" style="margin-top:3px;padding:3px 10px;background:var(--gold);color:#fff;border:none;border-radius:3px;font-size:10px;cursor:pointer;">판매</button>
+            <div style="font-size:11px;color:var(--gold);font-weight:bold;">${sellPrice.toLocaleString()} z<span style="color:var(--text-dim);font-weight:normal;">/개</span></div>
+            <button onclick="shopSellStack('${itemName}',${sellPrice},'${npcName}')" style="margin-top:3px;padding:3px 8px;background:var(--gold);color:#fff;border:none;border-radius:3px;font-size:10px;cursor:pointer;white-space:nowrap;">전량판매</button>
           </div>
         </div>`;
       });
@@ -7381,6 +7399,9 @@ function showShopModal(npcName, npcData){
   }
 
   openModal(`${npcData.emoji} ${npcName}`, h, [{label:'닫기',action:()=>{ showShopModal._tab='buy'; }}]);
+
+  let newListEl=document.getElementById('shop-list');
+  if(newListEl) newListEl.scrollTop=savedScroll;
 }
 
 /** 상점 구매 1개 */
@@ -7394,15 +7415,97 @@ function shopBuy(itemName, price, npcName){
   showShopModal(npcName, DB.npcs[npcName]); // 잔액 반영하여 모달 갱신
 }
 
-/** 상점 판매 1개 */
-function shopSell(itemName, sellPrice, npcName){
+/** 판매 탭 체크박스 토글 (전체 재렌더 없이 카운터만 갱신) */
+function shopToggleSel(itemName, checked){
+  if(!showShopModal._sel) showShopModal._sel={};
+  showShopModal._sel[itemName]=checked;
+  let cnt=$('shop-sel-count');
+  if(cnt) cnt.textContent=Object.keys(showShopModal._sel).filter(k=>showShopModal._sel[k]).length;
+}
+
+/** 판매 탭 수량 입력 반영 */
+function shopSetQty(itemName, val, maxQty){
+  if(!showShopModal._qty) showShopModal._qty={};
+  showShopModal._qty[itemName]=Math.max(1,Math.min(maxQty,parseInt(val)||1));
+}
+
+/** 아이템 한 종류를 N개 판매 — 판매 로직 공통 처리 (인벤토리 차감 + 제니 지급) */
+function sellItemUnits(itemName, unitPrice, units){
   let p=G.player;
-  if((p.inventory[itemName]||0)<=0){ log('아이템이 없습니다.','error'); return; }
-  { let prS=parseItem(itemName); let itS=prS?prS.base:DB.items[itemName]; if(itS && itS.type === '퀘스트아이템'){ log(`❌ <b>${itemName}</b>은(는) 퀘스트 아이템으로 판매할 수 없습니다.`,'error'); return; } }
-  p.inventory[itemName]--;
+  let have=p.inventory[itemName]||0;
+  units=Math.max(0,Math.min(units,have));
+  if(units<=0) return 0;
+  p.inventory[itemName]-=units;
   if(p.inventory[itemName]<=0) delete p.inventory[itemName];
-  p.zeny+=sellPrice;
-  log(`💰 <b>${itemName}</b> 판매! (+${sellPrice.toLocaleString()}z)`,'loot');
+  let gain=unitPrice*units;
+  p.zeny+=gain;
+  return gain;
+}
+
+/** 상점 판매: 해당 아이템 보유 수량 전부 즉시 판매 */
+function shopSellStack(itemName, sellPrice, npcName){
+  let p=G.player;
+  let have=p.inventory[itemName]||0;
+  if(have<=0){ log('아이템이 없습니다.','error'); return; }
+  let prS=parseItem(itemName); let itS=prS?prS.base:DB.items[itemName];
+  if(itS && itS.type==='퀘스트아이템'){ log(`❌ <b>${itemName}</b>은(는) 퀘스트 아이템으로 판매할 수 없습니다.`,'error'); return; }
+  let gain=sellItemUnits(itemName, sellPrice, have);
+  log(`💰 <b>${itemName}</b> ${have}개 판매! (+${gain.toLocaleString()}z)`,'loot');
+  if(showShopModal._sel) delete showShopModal._sel[itemName];
+  if(showShopModal._qty) delete showShopModal._qty[itemName];
+  updateUI();
+  showShopModal(npcName, DB.npcs[npcName]); // 갱신
+}
+
+/** 상점 판매: 체크박스로 선택한 아이템들을 각 수량 입력대로 한 번에 판매 */
+function shopSellSelected(npcName){
+  let p=G.player;
+  let sel=showShopModal._sel||{};
+  let targets=Object.keys(sel).filter(k=>sel[k] && (p.inventory[k]||0)>0);
+  if(!targets.length){ log('선택된 아이템이 없습니다.','error'); return; }
+  let ocLv=(p.skills&&p.skills["오버챠지"])||0;
+  let totalGain=0, totalCount=0, soldKinds=0;
+  targets.forEach(itemName=>{
+    let pr=parseItem(itemName); let it=pr?pr.base:DB.items[itemName];
+    if(!it || it.type==='퀘스트아이템' || !((it.sell||0)>0)) return;
+    let have=p.inventory[itemName]||0;
+    let qty=Math.max(1,Math.min(have,showShopModal._qty[itemName]||have));
+    let unitPrice=ocLv>0?Math.floor((it.sell||0)*(1+ocLv*0.024)):it.sell||0;
+    let gain=sellItemUnits(itemName, unitPrice, qty);
+    if(gain>0){ totalGain+=gain; totalCount+=qty; soldKinds++; }
+    delete sel[itemName];
+    delete showShopModal._qty[itemName];
+  });
+  if(soldKinds<=0){ log('판매할 수 있는 아이템이 없습니다.','error'); return; }
+  log(`💰 아이템 ${soldKinds}종 총 ${totalCount}개 판매! (+${totalGain.toLocaleString()}z)`,'loot');
+  updateUI();
+  showShopModal(npcName, DB.npcs[npcName]); // 갱신
+}
+
+/** 상점 판매: 판매 가능한 아이템 전부(카드·장비 포함) 일괄 판매 */
+function shopSellAll(npcName){
+  let p=G.player;
+  let sellable=Object.keys(p.inventory).filter(k=>{
+    if(!(p.inventory[k]>0)) return false;
+    let pr=parseItem(k); let it=pr?pr.base:DB.items[k];
+    return it && (it.sell||0)>0 && it.type!=='퀘스트아이템';
+  });
+  if(!sellable.length){ log('판매 가능한 아이템이 없습니다.','error'); return; }
+  let ocLv=(p.skills&&p.skills["오버챠지"])||0;
+  let unitPriceOf=itemName=>{
+    let pr=parseItem(itemName); let it=pr?pr.base:DB.items[itemName];
+    return ocLv>0?Math.floor((it.sell||0)*(1+ocLv*0.024)):it.sell||0;
+  };
+  let estGain=sellable.reduce((sum,k)=>sum+unitPriceOf(k)*p.inventory[k],0);
+  if(!confirm(`판매 가능한 아이템 ${sellable.length}종을 전부 판매하시겠습니까?\n예상 수익: ${estGain.toLocaleString()} z`)) return;
+  let totalGain=0, totalCount=0;
+  sellable.forEach(itemName=>{
+    let have=p.inventory[itemName]||0;
+    let gain=sellItemUnits(itemName, unitPriceOf(itemName), have);
+    totalGain+=gain; totalCount+=have;
+  });
+  showShopModal._sel={}; showShopModal._qty={};
+  log(`💰 아이템 ${sellable.length}종 총 ${totalCount}개 전체 판매! (+${totalGain.toLocaleString()}z)`,'loot');
   updateUI();
   showShopModal(npcName, DB.npcs[npcName]); // 갱신
 }
