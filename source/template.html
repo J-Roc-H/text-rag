@@ -6550,23 +6550,24 @@ function showInvModal(tab = 'all'){
 
     let isEq = data.equipped;
     let btn = '';
+    let safeK = k.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
     // 퀘스트아이템은 사용/판매 불가 표시
     if(i.type === '퀘스트아이템') {
       btn = `<span style="font-size:10px; color:var(--text-dim); padding:4px 6px;">📜 퀘스트</span>`;
     } else if(i.type === '소모품') {
-      let safeK = k.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      btn = `<button onclick="useItem('${safeK}')" class="m-btn ok">사용</button>`;
+      btn = `<button onclick="event.stopPropagation();useItem('${safeK}')" class="m-btn ok">사용</button>`;
     } else if(['무기','갑옷','방패','투구_상단','투구_중단','투구_하단','걸칠것','신발','Accessory'].includes(i.type)) {
       let slotType = data.equippedSlot || (i.type === 'Accessory' ? '악세1' : i.type);
-      let safeK = k.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      btn = `<button onclick="${isEq ? `unequipItem('${slotType}')` : `equipItem('${safeK}')`}" class="m-btn" style="background:${isEq?'var(--red-light)':'var(--green)'}; color:#fff; border:none; padding:4px 8px; border-radius:3px;">${isEq?'해제':'장착'}</button>`;
+      btn = `<button onclick="event.stopPropagation();${isEq ? `unequipItem('${slotType}')` : `equipItem('${safeK}')`}" class="m-btn" style="background:${isEq?'var(--red-light)':'var(--green)'}; color:#fff; border:none; padding:4px 8px; border-radius:3px;">${isEq?'해제':'장착'}</button>`;
     }
 
     let equipLabel = isEq ? ' <span style="color:var(--blue-light);font-size:11px;font-weight:700;">(장착됨)</span>' : '';
     let countLabel = count > 0 ? `보유: ${count}` : '장착 중';
 
-    h += `<div style="border:1px solid ${isEq?'var(--border-gold)':'var(--border)'}; padding:8px; border-radius:4px; display:flex; justify-content:space-between; align-items:center; background:${isEq?'#fdfaf0':'#fff'};">
+    // 행 전체 클릭 시 아이템 상세(능력치·설명) 표시 — 카드 등 액션 버튼이 없는
+    // 아이템도 이걸로 정보를 볼 수 있어야 한다(버튼 클릭은 stopPropagation으로 분리)
+    h += `<div onclick="showItemDetail('${safeK}')" style="cursor:pointer;border:1px solid ${isEq?'var(--border-gold)':'var(--border)'}; padding:8px; border-radius:4px; display:flex; justify-content:space-between; align-items:center; background:${isEq?'#fdfaf0':'#fff'};">
       <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:20px;">${i.emoji||'📦'}</span>
       <div style="line-height:1.2;"><b style="font-size:12px;">${parsed?getItemDisplayName(parsed):k}</b>${equipLabel}<br><span style="font-size:10px; color:var(--text-dim);">${countLabel}</span></div></div>
       <div>${btn}</div></div>`;
