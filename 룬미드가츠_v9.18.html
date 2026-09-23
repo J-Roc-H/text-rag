@@ -38332,6 +38332,8 @@ function calcStats(){
         let i = parsed.base;
         if(i.atk)  wAtk       += (i.atk||0);
         if(i.def)  bonus.def  += (i.def||0);
+        // 원작 Pre-Renewal: 방어구류(무기 제외) 제련 1당 DEF +1 — 무기는 별도 ATK 제련 보너스 블록에서 처리
+        if(eqKey!=='무기' && parsed.refine>0) bonus.def += parsed.refine;
         if(i.str)  bonus.str  += i.str;
         if(i.agi)  bonus.agi  += i.agi;
         if(i.vit)  bonus.vit  += i.vit;
@@ -41698,7 +41700,7 @@ function buyItemFromNpc(itemName, price){
 
 function refine(sl){
   let p=G.player; let n=p.equip[sl]; if(!n)return;
-  let it=parseItem(n); let itDef=DB.items[it.base]||DB.items[n]||{};
+  let it=parseItem(n); let itDef=it.base||DB.items[n]||{}; // it.base는 이미 parseItem이 찾아둔 DB 아이템 객체 — DB.items[객체]로 재조회하면 항상 undefined였다
   let cur=it.refine||0; // 강화치는 슬롯이 아니라 장착 중인 그 개체(n)에 귀속
   if(cur>=10){log('⚠ 최대 제련도 +10에 도달했습니다.','warning');return;}
   // DB.refine 테이블로 재료·비용·성공률 결정
