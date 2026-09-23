@@ -37451,7 +37451,7 @@ $('modal-overlay').classList.add('open');
       str:st.str, agi:st.agi, vit:st.vit, int:st.int, dex:st.dex, luk:st.luk,
       statPoints:initPoints, statSystemV2:true, zeny:500, savedMap:"프론테라",
       equip: Object.assign({}, jp.equip),
-      equipCards:{}, refineLevel:{}, weaponType:jp.wType,
+      weaponType:jp.wType,
       inventory: Object.assign({}, jp.inv),
       skills:{"응급치료":1, "기본 스킬":1}, hotbar:{}, quests:{}, unlockedMaps:{}, statusEffects:{}, killCount:{}, totalKills:0,
       startPreset: jk
@@ -38012,12 +38012,21 @@ const cardCountPrefix = ["", "", "더블 ", "트리플 ", "쿼드로플 "];
 
 function parseItem(name) {
   if(!name) return null;
-  // 슬롯 표기 앞 공백은 선택 — 드롭명에 "로드[1]" 처럼 공백 없이 붙은 형태가 있다 (결함 I)
-  let m = name.match(/^([^\[\<]+?)(?:\s?\[(\d+)\])?(?:\s?\<([^\>]+)\>)?$/);
+  // 앞에 "+N " 강화 접두(장비 인스턴스별 제련치) — 슬롯 표기 앞 공백은 선택,
+  // 드롭명에 "로드[1]" 처럼 공백 없이 붙은 형태가 있다 (결함 I)
+  let m = name.match(/^(?:\+(\d+)\s?)?([^\[\<]+?)(?:\s?\[(\d+)\])?(?:\s?\<([^\>]+)\>)?$/);
   if(!m) return null;
-  let bName = m[1].trim();
+  let bName = m[2].trim();
   let _base = DB.items[bName];
-  return { name: name, baseName: bName, base: _base, slots: m[2]?parseInt(m[2]):(_base&&_base.slots||0), cards: m[3]?m[3].split(',').map(s=>s.trim()):[] };
+  return { name: name, baseName: bName, base: _base, refine: m[1]?parseInt(m[1]):0, slots: m[3]?parseInt(m[3]):(_base&&_base.slots||0), cards: m[4]?m[4].split(',').map(s=>s.trim()):[] };
+}
+/** 장비 인스턴스 키 조립 — 강화("+N ")·슬롯("[N]")·카드("<a, b>") 표기를 parseItem()과 짝 맞춰 생성.
+ *  같은 베이스 아이템이라도 강화·카드 조합이 다르면 다른 키가 되어 인벤토리에서 별개 항목으로 취급된다. */
+function buildEquipKey(baseName, slots, cards, refine){
+  let s = (refine>0 ? `+${refine} ` : '') + baseName;
+  if(cards && cards.length>0) s += ` [${slots||0}] <${cards.join(', ')}>`;
+  else if(slots>0) s += ` [${slots}]`;
+  return s;
 }
 // ══════════════════════════════════════════════
 // ── 드롭 처리 공용 함수
@@ -38124,7 +38133,9 @@ function getItemDisplayName(parsed) {
   }
 
   // 슬롯 수는 원본 숫자 그대로 표기 (남은 슬롯 아님, 전체 슬롯 수)
-  return name + (parsed.slots > 0 ? ` [${parsed.slots}]` : "");
+  name = name + (parsed.slots > 0 ? ` [${parsed.slots}]` : "");
+  // 강화 수치는 맨 앞에 "+N " 형태로 (원작 표기 관례)
+  return (parsed.refine > 0 ? `+${parsed.refine} ` : "") + name;
 }
 
 // ── [ v9.10: 능력치 분석 Breakdown 함수들 ] ──
@@ -38558,13 +38569,16 @@ function calcStats(){
   // ATK 뒷뎀: 무기ATK (제련 보너스 포함)
   let refineBonus = 0;
   let equipWeapon = p.equip && p.equip['무기'];
-  if(equipWeapon && p.refineLevel && p.refineLevel['무기']){
-    let rl = p.refineLevel['무기']||0;
-    // 원작: 무기레벨에 따라 제련 1당 ATK 보너스
+  if(equipWeapon){
+    // 강화치는 장착된 그 무기 개체(equipWeapon)에 귀속 — parseItem으로 함께 읽는다
     let parsed2 = (typeof parseItem==='function') ? parseItem(equipWeapon) : null;
-    let wlv = parsed2&&parsed2.base&&parsed2.base.weaponLv ? parsed2.base.weaponLv : 1;
-    const refineBonusTable = {1:2,2:3,3:5,4:7};
-    refineBonus = rl * (refineBonusTable[wlv]||2);
+    let rl = parsed2&&parsed2.refine || 0;
+    if(rl>0){
+      // 원작: 무기레벨에 따라 제련 1당 ATK 보너스
+      let wlv = parsed2&&parsed2.base&&parsed2.base.weaponLv ? parsed2.base.weaponLv : 1;
+      const refineBonusTable = {1:2,2:3,3:5,4:7};
+      refineBonus = rl * (refineBonusTable[wlv]||2);
+    }
   }
   wAtk += (bonus.atk||0); // [FIX 1-2] 탈것 ATK 보너스 반영
   let weaponAtk = wAtk + refineBonus;
@@ -39041,10 +39055,8 @@ function updateUI(){
     let el=$('eq-'+sl); if(!el) return;
     let it=p.equip&&p.equip[sl];
     if(it){
-	let r=p.refineLevel&&p.refineLevel[sl]||0;
-	let cd=p.equipCards&&p.equipCards[sl];
 	let parsedEq=parseItem(it); let displayIt=parsedEq?getItemDisplayName(parsedEq):it;
-	el.innerHTML=displayIt+(r>0?`<span class="refine-bdg">+${r}</span>`:'')+(cd?`<span class="card-dot filled"></span>`:'');
+	el.innerHTML=displayIt;
 	el.className='eq-slot-item has';}
     else {el.textContent='—'; el.className='eq-slot-item';}
   });
@@ -41178,7 +41190,7 @@ function compoundCard(equipName, cardName) {
   let parsed = parseItem(equipName);
   let cardBaseName = cardName.replace(' 카드', '');
   let newCards = [...parsed.cards, cardBaseName];
-  let newEquipName = `${parsed.baseName} [${parsed.slots}] <${newCards.join(', ')}>`;
+  let newEquipName = buildEquipKey(parsed.baseName, parsed.slots, newCards, parsed.refine);
 
   // 장착 중인 장비인지 확인
   let equippedSlot = Object.keys(p.equip || {}).find(sl => p.equip[sl] === equipName);
@@ -41687,7 +41699,7 @@ function buyItemFromNpc(itemName, price){
 function refine(sl){
   let p=G.player; let n=p.equip[sl]; if(!n)return;
   let it=parseItem(n); let itDef=DB.items[it.base]||DB.items[n]||{};
-  let cur=p.refineLevel&&p.refineLevel[sl]||0;
+  let cur=it.refine||0; // 강화치는 슬롯이 아니라 장착 중인 그 개체(n)에 귀속
   if(cur>=10){log('⚠ 최대 제련도 +10에 도달했습니다.','warning');return;}
   // DB.refine 테이블로 재료·비용·성공률 결정
   let refKey='방어구';
@@ -41702,8 +41714,14 @@ function refine(sl){
   if((p.inventory[o]||0)<=0){log(`${o} 부족`,'error');return;}
   if(p.zeny<c){log(`제니 부족 (필요: ${c.toLocaleString()}z)`,'error');return;}
   p.inventory[o]--; if(p.inventory[o]<=0)delete p.inventory[o]; p.zeny-=c;
-  if(Math.random()*100<sr){if(!p.refineLevel)p.refineLevel={}; p.refineLevel[sl]=cur+1; p._maxRefineEver=Math.max(p._maxRefineEver||0,cur+1); log(`🔨 ${n} +${cur+1} 성공! (성공률 ${sr}%)`, 'loot');}
-  else {p.equip[sl]=null;if(p.refineLevel)delete p.refineLevel[sl];log(`💥 ${n} 파괴! (성공률 ${sr}%)`, 'error');notify('파괴','red');}
+  if(Math.random()*100<sr){
+    let newRefine=cur+1;
+    let newKey=buildEquipKey(it.baseName, it.slots, it.cards, newRefine);
+    p.equip[sl]=newKey;
+    p._maxRefineEver=Math.max(p._maxRefineEver||0,newRefine);
+    log(`🔨 ${getItemDisplayName(parseItem(newKey))} 성공! (성공률 ${sr}%)`, 'loot');
+  }
+  else {p.equip[sl]=null;log(`💥 ${n} 파괴! (성공률 ${sr}%)`, 'error');notify('파괴','red');}
   updateUI(); closeModal();
 }
 // ══════════════════════════════════════════════
@@ -41896,12 +41914,12 @@ function warehouseWithdraw(itemName){
 // ── 상점 모달 (구매/판매 통합)
 // ══════════════════════════════════════════════
 
-/** 판매 탭에 노출할 아이템 목록 — 장착 중인 장비는 제외 */
+/** 판매 탭에 노출할 아이템 목록 — 장착 중인 그 개체는 equipItem()이 장착 시점에
+ *  이미 인벤토리에서 빼놓으므로(강화치·카드가 다르면 키 자체가 달라 별개 항목), 여기서
+ *  이름 기준으로 따로 걸러낼 필요가 없다. 인벤토리에 남은 수량은 전부 진짜 여분이다. */
 function getSellableItems(p){
-  let equipped=p.equip?Object.values(p.equip):[];
   return Object.keys(p.inventory).filter(k=>{
     if(!(p.inventory[k]>0)) return false;
-    if(equipped.includes(k)) return false;
     let pr=parseItem(k); let it=pr?pr.base:DB.items[k];
     return it && (it.sell||0)>0 && it.type!=='퀘스트아이템';
   });
@@ -42038,7 +42056,6 @@ function shopSellStack(itemName, sellPrice, npcName){
   let p=G.player;
   let have=p.inventory[itemName]||0;
   if(have<=0){ log('아이템이 없습니다.','error'); return; }
-  if(p.equip && Object.values(p.equip).includes(itemName)){ log(`❌ <b>${itemName}</b>은(는) 장착 중이라 판매할 수 없습니다.`,'error'); return; }
   let prS=parseItem(itemName); let itS=prS?prS.base:DB.items[itemName];
   if(itS && itS.type==='퀘스트아이템'){ log(`❌ <b>${itemName}</b>은(는) 퀘스트 아이템으로 판매할 수 없습니다.`,'error'); return; }
   let gain=sellItemUnits(itemName, sellPrice, have);
@@ -42057,9 +42074,7 @@ function shopSellSelected(npcName){
   if(!targets.length){ log('선택된 아이템이 없습니다.','error'); return; }
   let ocLv=(p.skills&&p.skills["오버챠지"])||0;
   let totalGain=0, totalCount=0, soldKinds=0;
-  let equipped=p.equip?Object.values(p.equip):[];
   targets.forEach(itemName=>{
-    if(equipped.includes(itemName)) return;
     let pr=parseItem(itemName); let it=pr?pr.base:DB.items[itemName];
     if(!it || it.type==='퀘스트아이템' || !((it.sell||0)>0)) return;
     let have=p.inventory[itemName]||0;
@@ -43266,10 +43281,10 @@ function showRefineModal(){
   // 🚨 제련소 슬롯을 한글 ID로 모두 변경 완료!
   // 악세서리(악세1, 악세2)는 원작 기준 제련 불가
   ['무기','방패','갑옷','투구_상단','투구_중단','투구_하단','걸칠것','신발'].forEach(sl=>{
-    let n=p.equip&&p.equip[sl]; 
+    let n=p.equip&&p.equip[sl];
     if(n){
-      let c=p.refineLevel&&p.refineLevel[sl]||0; 
-      h+=`<div style="padding:8px;border-bottom:1px solid #3d3020;cursor:pointer" onclick="refine('${sl}')">${n} (+${c}) <span style="font-size:10px;color:var(--text-dim)">제련▶</span></div>`;
+      let parsedN=parseItem(n); let dispN=parsedN?getItemDisplayName(parsedN):n;
+      h+=`<div style="padding:8px;border-bottom:1px solid #3d3020;cursor:pointer" onclick="refine('${sl}')">${dispN} <span style="font-size:10px;color:var(--text-dim)">제련▶</span></div>`;
     }
   });
   openModal('🔨 제련',h||'장착된 장비 없음',[{label:'닫기',action:()=>{}}]);
