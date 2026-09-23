@@ -7312,6 +7312,17 @@ function warehouseWithdraw(itemName){
 // ── 상점 모달 (구매/판매 통합)
 // ══════════════════════════════════════════════
 
+/** 판매 탭에 노출할 아이템 목록 — 장착 중인 장비는 제외 */
+function getSellableItems(p){
+  let equipped=p.equip?Object.values(p.equip):[];
+  return Object.keys(p.inventory).filter(k=>{
+    if(!(p.inventory[k]>0)) return false;
+    if(equipped.includes(k)) return false;
+    let pr=parseItem(k); let it=pr?pr.base:DB.items[k];
+    return it && (it.sell||0)>0 && it.type!=='퀘스트아이템';
+  });
+}
+
 function showShopModal(npcName, npcData){
   let p=G.player;
   let sells=npcData.sells||[];
@@ -7358,12 +7369,8 @@ function showShopModal(npcName, npcData){
     });
     h+=`</div>`;
   } else {
-    // 판매 탭: 인벤토리에서 sellPrice 있는 것만 (퀘스트아이템 제외)
-    let sellable=Object.keys(p.inventory).filter(k=>{
-      if(!(p.inventory[k]>0)) return false;
-      let pr=parseItem(k); let it=pr?pr.base:DB.items[k];
-      return it && (it.sell||0)>0 && it.type!=='퀘스트아이템';
-    });
+    // 판매 탭: 인벤토리에서 sellPrice 있는 것만 (퀘스트아이템·장착 중인 장비 제외)
+    let sellable=getSellableItems(p);
     if(!sellable.length){
       h+=`<div style="color:var(--text-dim);text-align:center;padding:20px;font-size:11px;">판매 가능한 아이템이 없습니다.</div>`;
     } else {
@@ -7447,6 +7454,7 @@ function shopSellStack(itemName, sellPrice, npcName){
   let p=G.player;
   let have=p.inventory[itemName]||0;
   if(have<=0){ log('아이템이 없습니다.','error'); return; }
+  if(p.equip && Object.values(p.equip).includes(itemName)){ log(`❌ <b>${itemName}</b>은(는) 장착 중이라 판매할 수 없습니다.`,'error'); return; }
   let prS=parseItem(itemName); let itS=prS?prS.base:DB.items[itemName];
   if(itS && itS.type==='퀘스트아이템'){ log(`❌ <b>${itemName}</b>은(는) 퀘스트 아이템으로 판매할 수 없습니다.`,'error'); return; }
   let gain=sellItemUnits(itemName, sellPrice, have);
@@ -7465,7 +7473,9 @@ function shopSellSelected(npcName){
   if(!targets.length){ log('선택된 아이템이 없습니다.','error'); return; }
   let ocLv=(p.skills&&p.skills["오버챠지"])||0;
   let totalGain=0, totalCount=0, soldKinds=0;
+  let equipped=p.equip?Object.values(p.equip):[];
   targets.forEach(itemName=>{
+    if(equipped.includes(itemName)) return;
     let pr=parseItem(itemName); let it=pr?pr.base:DB.items[itemName];
     if(!it || it.type==='퀘스트아이템' || !((it.sell||0)>0)) return;
     let have=p.inventory[itemName]||0;
@@ -7485,11 +7495,7 @@ function shopSellSelected(npcName){
 /** 상점 판매: 판매 가능한 아이템 전부(카드·장비 포함) 일괄 판매 */
 function shopSellAll(npcName){
   let p=G.player;
-  let sellable=Object.keys(p.inventory).filter(k=>{
-    if(!(p.inventory[k]>0)) return false;
-    let pr=parseItem(k); let it=pr?pr.base:DB.items[k];
-    return it && (it.sell||0)>0 && it.type!=='퀘스트아이템';
-  });
+  let sellable=getSellableItems(p);
   if(!sellable.length){ log('판매 가능한 아이템이 없습니다.','error'); return; }
   let ocLv=(p.skills&&p.skills["오버챠지"])||0;
   let unitPriceOf=itemName=>{
