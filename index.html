@@ -109,7 +109,17 @@ body{background:var(--bg-deep);color:var(--text);font-family:'Noto Sans KR',sans
 html[data-theme="dark"] .zone-chip{background:#162030;}
 html[data-theme="dark"] .zone-chip .zc-bar{background:#2d3e50;}
 
+#log-viewport{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;}
 #game-log{flex:1;overflow-y:auto;padding:8px 12px;display:flex;flex-direction:column;gap:2px;}
+.log-jump-btn{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);z-index:5;padding:6px 16px;border-radius:14px;border:1px solid var(--border-gold);background:var(--blue-light);color:#fff;font-size:11px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);white-space:nowrap;}
+.log-jump-btn:active{opacity:.85;}
+.log-expand-btn{display:none;margin-left:auto;}
+.log-expand-btn.expanded{background:var(--blue-light);border-color:var(--blue-light);color:#fff;font-weight:600;}
+@media(max-width:700px){
+  .log-expand-btn{display:inline-block;}
+  #main-area.log-expanded #hotbar-panel,#main-area.log-expanded #mon-list{display:none;}
+  #main-area.log-expanded #action-bar{padding:4px 8px;}
+}
 .le{line-height:1.5;animation:fadeIn .15s ease;font-size:12px;}
 /* [스타일 감산] 신문 톤 — 회색 베이스 + 저채도 강조 3계열. 중요도는 색 대신 굵기로 */
 /* 중립/비중요 */
@@ -134,6 +144,11 @@ html[data-theme="dark"] .zone-chip .zc-bar{background:#2d3e50;}
 .le.quest{color:#4a5878;font-weight:600;}
 .le.npc{color:#5f567a;}
 .le.location{color:#4f7268;font-weight:500;}
+/* [세계경험 개편 3단계] 사건 블록 — 지역 진입·MVP·카드 등 "잠시 멈춰 읽어야 하는" 사건을
+   일반 전투 로그와 구분한다. 색은 기존 클래스(location/warning/loot)를 그대로 쓰고
+   여백·선만 더한다 — 과한 색·애니메이션보다 여백과 굵기로 강조하라는 원칙(§12). */
+.le.ev-block{border-top:1px dashed var(--border);border-bottom:1px dashed var(--border);padding:6px 2px;margin:3px 0;}
+.ev-title{font-weight:700;text-align:center;margin-bottom:2px;letter-spacing:.3px;}
 /* 데미지 수치 강조 */
 .hl-dmg{font-weight:700;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(3px)}to{opacity:1}}
@@ -1208,7 +1223,7 @@ body.work-mode p {
   "396": {"name": "흑사왕", "emoji": "🐍", "lv": 78, "hp": 415400, "atk": 1830, "def": 10, "mdef": 25, "softDef": 30, "hit": 164, "flee": 153, "str": 0, "agi": 75, "vit": 30, "int": 37, "dex": 86, "luk": 40, "range": 1, "atkDelay": 1072, "exp": 71500, "jexp": 28600, "size": "중형", "race": "언데드", "element": "불사속성", "elementLv": 4, "zeny": [18000, 36000], "drops": {"오래된보라상자": 20.0, "어쌔신 대거": 1.5, "크라운": 2.0, "자마다르": 6.0, "성스러운 증표": 10.0, "스핑크스 헬름": 1.5, "차크람": 1.0, "흑사왕 카드": 0.01, "오래된파란상자": 40.0, "위그드라실의 씨앗": 30.0, "오시리스인형": 5.0}},
   "397": {"name": "하티 베베", "emoji": "🐺", "lv": 45, "hp": 3500, "atk": 350, "def": 25, "softDef": 45, "hit": 110, "flee": 80, "exp": 280, "jexp": 200, "size": "소형", "element": "수속성", "zeny": [140, 280], "drops": {"늑대발톱": 30.0, "단단한얼음": 15.0, "하티 베베 카드": 0.1, "얼음 조각": 87.3, "Nursing Bottle": 15.0, "Pinafore": 25.0, "Frozen Rose": 1.0, "Level 5 Frost Diver": 1.0}},
   "398": {"name": "스노우어", "emoji": "⛄", "lv": 72, "hp": 12000, "atk": 1100, "def": 40, "softDef": 60, "hit": 185, "flee": 90, "exp": 900, "jexp": 700, "size": "대형", "element": "수속성", "zeny": [450, 900], "drops": {"단단한얼음": 35.0, "스노우어 카드": 0.1}},
-  "399": {"name": "황금도둑벌레", "emoji": "🪳", "lv": 65, "hp": 150000, "atk": 1500, "def": 80, "softDef": 105, "hit": 200, "flee": 150, "exp": 15000, "jexp": 10000, "size": "대형", "element": "화속성", "zeny": [25000, 50000], "drops": {"황금": 20.0, "황금도둑벌레 카드": 0.1}},
+  "399": {"name": "황금도둑벌레", "emoji": "🪳", "lv": 65, "hp": 150000, "atk": 1500, "def": 80, "softDef": 105, "hit": 200, "flee": 150, "exp": 15000, "jexp": 10000, "size": "대형", "element": "화속성", "zeny": [25000, 50000], "mvpAppearDesc": "수로 안쪽에서 금속을 긁는 듯한 소리가 울린다. 어둠 속에 있던 거대한 껍질이 몸을 일으키자 고인 물 위로 황금빛이 번진다.", "mvpDeathDesc": "거대한 껍질이 수로 바닥에 부딪히며 멈췄다. 조금 전까지 요란하던 물소리도 잠시 잦아든다.", "drops": {"황금": 20.0, "황금도둑벌레 카드": 0.1}},
   "400": {"name": "키메라", "emoji": "🦁", "lv": 70, "hp": 32600, "atk": 1260, "def": 30, "mdef": 10, "softDef": 110, "hit": 145, "flee": 142, "str": 0, "agi": 72, "vit": 110, "int": 88, "dex": 75, "luk": 85, "range": 1, "atkDelay": 772, "exp": 4950, "jexp": 3000, "size": "대형", "race": "동물", "element": "화속성", "elementLv": 3, "zeny": [11000, 22000], "drops": {"브리건": 53.35, "가느다란 뱀": 25.0, "레몬": 10.0, "워액스": 0.01, "황수정": 15.0, "그레이트액스": 0.01, "오리데오콘": 1.6, "키메라 카드": 0.01}},
   "401": {"name": "모로크 인카네이션", "emoji": "👿", "lv": 83, "hp": 28000, "atk": 2100, "def": 60, "softDef": 85, "hit": 215, "flee": 90, "exp": 3000, "jexp": 2200, "size": "중형", "element": "암속성", "zeny": [1200, 2400], "drops": {"모로크의 피부 조각": 30.0, "어둠의결정체": 15.0, "모로크 인카네이션 카드": 0.1, "누더기망토": 0.2, "에르늄": 3.2, "브리건": 97.0, "블러디이터": 0.3, "Crystal of Darkness": 10.0, "Fragment of Darkness": 30.0, "Cursed Hand": 0.03}},
   "402": {"name": "바이올리", "emoji": "🎻", "lv": 75, "hp": 18257, "atk": 860, "def": 37, "mdef": 36, "softDef": 54, "hit": 176, "flee": 168, "str": 0, "agi": 93, "vit": 54, "int": 58, "dex": 101, "luk": 83, "range": 10, "atkDelay": 1356, "exp": 6353, "jexp": 3529, "size": "중형", "race": "인간형", "element": "무속성", "elementLv": 2, "zeny": [280, 560], "drops": {"황금 머리카락": 63.05, "고급 요리도구": 0.5, "박제 인형": 12.0, "베이스 기타": 0.5, "로얄제리": 14.0, "어둠의 물": 10.0, "바이올린": 5.0, "바이올리 카드": 0.01}},
@@ -1302,15 +1317,15 @@ body.work-mode p {
   "490": {"name": "아크 엔젤링", "emoji": "👼", "lv": 60, "hp": 79523, "atk": 779, "def": 54, "mdef": 58, "softDef": 80, "hit": 125, "flee": 125, "str": 0, "agi": 65, "vit": 80, "int": 74, "dex": 65, "luk": 105, "range": 1, "atkDelay": 1072, "exp": 4152, "jexp": 2173, "size": "중형", "race": "천사", "element": "성속성", "elementLv": 3, "zeny": [2076, 4152], "drops": {"사타닉체인": 0.05, "위그드라실의 잎": 18.0, "위그드라실의 씨앗": 1.5, "마노석": 15.0, "엔젤릭 체인": 0.05, "플레이트 아머[1]": 0.03, "터키석": 15.0, "아크 엔젤링 카드": 0.01}}
 }</script>
 <script id="db-maps"       type="application/json">{
-  "프론테라": {"level": "0", "type": "마을", "emoji": "🏰", "desc": "룬 미드가츠의 심장.", "connected": ["프론테라 왕궁", "프론테라 성당", "프론테라 북쪽 평원", "프론테라 남쪽 평원", "프론테라 서쪽 평원", "프론테라 동쪽 평원", "프론테라 지하수로 1층"], "dirs": {"north": "프론테라 북쪽 평원", "south": "프론테라 남쪽 평원", "east": "프론테라 동쪽 평원", "west": "프론테라 서쪽 평원"}, "monsters": [], "safe": true},
-  "프론테라 왕궁": {"level": "0", "type": "마을", "emoji": "👑", "desc": "프론테라의 서쪽 왕궁. 기사단의 본부.", "connected": ["프론테라"], "dirs": {"east": "프론테라"}, "monsters": [], "safe": true},
-  "프론테라 성당": {"level": "0", "type": "마을", "emoji": "⛪", "desc": "프론테라의 동쪽 성당. 신앙의 중심.", "connected": ["프론테라"], "dirs": {"west": "프론테라"}, "monsters": [], "safe": true},
-  "프론테라 남쪽 평원": {"level": "1~5", "type": "필드", "emoji": "🌿", "desc": "초보 모험가들의 수련장.", "connected": ["프론테라", "이즈루드", "소그라트 사막 동부"], "dirs": {"north": "프론테라", "south": "이즈루드", "west": "소그라트 사막 동부"}, "monsters": [1, 2, 3, 4, 5, 6], "safe": false},
-  "프론테라 서쪽 평원": {"level": "4~12", "type": "필드", "emoji": "🌾", "desc": "게펜으로 향하는 들판.", "connected": ["프론테라", "게펜 필드"], "dirs": {"east": "프론테라", "west": "게펜 필드"}, "monsters": [10, 12, 14], "safe": false},
-  "프론테라 동쪽 평원": {"level": "9~18", "type": "필드", "emoji": "🌲", "desc": "페이욘으로 향하는 숲.", "connected": ["프론테라", "페이욘 숲 북부"], "dirs": {"west": "프론테라", "south": "페이욘 숲 북부"}, "monsters": [14, 15, 13], "safe": false},
-  "프론테라 북쪽 평원": {"level": "15~25", "type": "필드", "emoji": "⛰️", "desc": "묘르닐 산맥으로 향하는 험한 평원.", "connected": ["프론테라", "묘르닐 산맥", "미궁 숲"], "dirs": {"south": "프론테라", "north": "묘르닐 산맥"}, "monsters": [13, 15, 46], "safe": false},
-  "프론테라 지하수로 1층": {"level": "10~25", "type": "던전", "emoji": "⚙", "desc": "벌레들이 득실거리는 하수구.", "connected": ["프론테라", "프론테라 지하수로 2층"], "monsters": [11, 16, 17, 19, 45, 114], "safe": false},
-  "프론테라 지하수로 2층": {"level": "30~45", "type": "던전", "emoji": "🕳️", "desc": "황금의 도둑벌레 서식지.", "connected": ["프론테라 지하수로 1층"], "monsters": [17, 108, 109, 133, 147], "safe": false, "hasMvp": 399},
+  "프론테라": {"level": "0", "type": "마을", "emoji": "🏰", "desc": "룬 미드가츠의 심장.", "entryDesc": "성문을 지나자 낯익은 석조 거리가 펼쳐진다. 광장 주변으로 상인들의 외침과 기사들의 발소리가 뒤섞인다.", "firstVisitDesc": "왕국의 심장부에 처음 발을 들였다. 여기서부터 모든 것이 시작된다.", "connected": ["프론테라 왕궁", "프론테라 성당", "프론테라 북쪽 평원", "프론테라 남쪽 평원", "프론테라 서쪽 평원", "프론테라 동쪽 평원", "프론테라 지하수로 1층"], "dirs": {"north": "프론테라 북쪽 평원", "south": "프론테라 남쪽 평원", "east": "프론테라 동쪽 평원", "west": "프론테라 서쪽 평원"}, "monsters": [], "safe": true},
+  "프론테라 왕궁": {"level": "0", "type": "마을", "emoji": "👑", "desc": "프론테라의 서쪽 왕궁. 기사단의 본부.", "entryDesc": "광장의 소음이 멀어지고 정돈된 석조 공간이 이어진다. 갑옷을 갖춘 기사들이 오가고, 말소리보다 발굽과 군화 소리가 더 자주 들린다.", "firstVisitDesc": "프론테라의 거리와는 분위기가 확연히 다르다. 이곳에서는 모험가보다 왕국 기사단의 질서가 먼저 눈에 들어온다.", "connected": ["프론테라"], "dirs": {"east": "프론테라"}, "monsters": [], "safe": true},
+  "프론테라 성당": {"level": "0", "type": "마을", "emoji": "⛪", "desc": "프론테라의 동쪽 성당. 신앙의 중심.", "entryDesc": "두꺼운 문 안쪽으로 들어서자 바깥의 소음이 한결 낮아진다. 높은 천장 아래로 사람들의 작은 발소리와 낮은 목소리가 울린다.", "firstVisitDesc": "한쪽에서는 기도를 올리고, 다른 쪽에서는 수행자들이 사람을 맞는다. 이곳의 신앙은 예배만이 아니라 여러 직업의 수련과도 이어져 있는 모양이다.", "connected": ["프론테라"], "dirs": {"west": "프론테라"}, "monsters": [], "safe": true},
+  "프론테라 남쪽 평원": {"level": "1~5", "type": "필드", "emoji": "🌿", "desc": "초보 모험가들의 수련장.", "entryDesc": "성문을 벗어나자 낮은 풀밭이 트인다. 포링과 루나틱이 여기저기서 얼쩡거린다.", "firstVisitDesc": "처음 나선 사냥터다. 위험할 건 없어 보이지만, 아직 긴장을 놓기엔 이르다.", "connected": ["프론테라", "이즈루드", "소그라트 사막 동부"], "dirs": {"north": "프론테라", "south": "이즈루드", "west": "소그라트 사막 동부"}, "monsters": [1, 2, 3, 4, 5, 6], "safe": false},
+  "프론테라 서쪽 평원": {"level": "4~12", "type": "필드", "emoji": "🌾", "desc": "게펜으로 향하는 들판.", "entryDesc": "길 양옆으로 풀밭과 낮은 나무들이 이어진다. 윌로우 사이로 픽키가 돌아다니고, 풀숲에서는 로커 소리가 끊이지 않는다.", "firstVisitDesc": "서쪽으로 난 길은 그대로 게펜 방면으로 이어진다. 왕도 주변을 벗어나 다른 도시로 향하기 시작하는 길이다.", "connected": ["프론테라", "게펜 필드"], "dirs": {"east": "프론테라", "west": "게펜 필드"}, "monsters": [10, 12, 14], "safe": false},
+  "프론테라 동쪽 평원": {"level": "9~18", "type": "필드", "emoji": "🌲", "desc": "페이욘으로 향하는 숲.", "entryDesc": "평원이라는 이름과 달리 나무가 눈에 띄게 많아진다. 풀 사이에는 만드라고라가 자리 잡고 있고, 나무 사이로 스모키가 모습을 감췄다 드러낸다.", "firstVisitDesc": "동쪽으로 갈수록 왕도 주변의 탁 트인 들판이 점차 숲길로 바뀐다. 이 길 끝은 페이욘의 숲으로 이어진다.", "connected": ["프론테라", "페이욘 숲 북부"], "dirs": {"west": "프론테라", "south": "페이욘 숲 북부"}, "monsters": [14, 15, 13], "safe": false},
+  "프론테라 북쪽 평원": {"level": "15~25", "type": "필드", "emoji": "⛰️", "desc": "묘르닐 산맥으로 향하는 험한 평원.", "entryDesc": "땅의 경사가 조금씩 거칠어지고 풀밭 사이로 바위가 늘어난다. 숲 가장자리에는 스모키가 숨어 다니고, 커다란 아르고스가 길 가까이까지 내려와 있다.", "firstVisitDesc": "남쪽 평원과는 돌아다니는 몬스터부터 다르다. 북쪽으로 갈수록 지형이 높아지며 묘르닐 산맥으로 이어진다.", "connected": ["프론테라", "묘르닐 산맥", "미궁 숲"], "dirs": {"south": "프론테라", "north": "묘르닐 산맥"}, "monsters": [13, 15, 46], "safe": false},
+  "프론테라 지하수로 1층": {"level": "10~25", "type": "던전", "emoji": "⚙", "desc": "벌레들이 득실거리는 하수구.", "entryDesc": "돌계단을 내려가자 왕도의 소음이 금세 멀어진다. 축축한 벽을 따라 물이 흐르고, 어두운 배수로 안쪽에서 무언가 긁히는 소리가 들린다.", "firstVisitDesc": "처음 보는 지하수로는 생각보다 훨씬 깊다. 기사단이 괜히 토벌대원을 모집한 게 아닌 모양이다.", "connected": ["프론테라", "프론테라 지하수로 2층"], "monsters": [11, 16, 17, 19, 45, 114], "safe": false},
+  "프론테라 지하수로 2층": {"level": "30~45", "type": "던전", "emoji": "🕳️", "desc": "황금의 도둑벌레 서식지.", "entryDesc": "수로는 아래로 갈수록 넓어지지만 공기는 더 탁하다. 벽과 바닥을 따라 도둑벌레들이 흩어지고, 깊은 곳에서는 훨씬 무거운 것이 움직이는 소리가 들린다.", "firstVisitDesc": "위층에서 보던 작은 벌레들 사이에 크기부터 다른 것들이 섞이기 시작한다. 어둠 속에 간혹 황금빛 반사가 번쩍인다.", "connected": ["프론테라 지하수로 1층"], "monsters": [17, 108, 109, 133, 147], "safe": false, "hasMvp": 399},
   "미궁 숲": {"level": "60~80", "type": "던전", "emoji": "🌑", "desc": "길을 잃기 쉬운 숲.", "connected": ["프론테라 북쪽 평원"], "monsters": [83, 84, 85, 89, 100], "safe": false, "hasMvp": 137},
   "게펜": {"level": "0", "type": "마을", "emoji": "🔮", "desc": "마법사들의 도시.", "connected": ["게펜 필드", "게펜 지하 던전 1층", "글래스트 헤임 입구", "묘르닐 산맥"], "dirs": {"east": "게펜 필드", "south": "묘르닐 산맥"}, "monsters": [], "safe": true},
   "묘르닐 산맥": {"level": "30~45", "type": "필드", "emoji": "⛰️", "desc": "알데바란으로 향하는 험준한 산맥.", "connected": ["프론테라 북쪽 평원", "게펜", "폐광 던전 1층", "알데바란"], "dirs": {"south": "프론테라 북쪽 평원", "west": "게펜", "north": "알데바란"}, "monsters": [39, 46, 47, 67, 97, 123], "safe": false, "hasMvp": 434},
@@ -35520,7 +35535,7 @@ body.work-mode p {
   </div><div class="char-name" id="char-name">모험가</div><div class="char-job" id="char-job">노비스</div><div class="char-lv" id="char-lv">Base.1</div></div><div class="bars-sec"><div class="bar-row"><div class="bar-lbl"><span>HP</span><span id="hp-text">50/50</span></div><div class="bar-track"><div class="bar-fill hp-bar" id="hp-bar" style="width:100%"></div></div></div><div class="bar-row"><div class="bar-lbl"><span>SP</span><span id="sp-text">50/50</span></div><div class="bar-track"><div class="bar-fill sp-bar" id="sp-bar" style="width:100%"></div></div></div><div class="bar-row"><div class="bar-lbl"><span>EXP</span><span id="exp-text">0%</span></div><div class="bar-track"><div class="bar-fill exp-bar" id="exp-bar" style="width:0%"></div></div></div><div class="bar-row"><div class="bar-lbl"><span>JEXP</span><span id="jexp-text">0%</span></div><div class="bar-track"><div class="bar-fill job-bar" id="jexp-bar" style="width:0%"></div></div></div></div><div class="zeny-row"><span class="label">💰 제니</span><span class="zeny-val" id="zeny-disp">500 z</span></div><div id="vending-badge" onclick="showVendingStatus()" style="display:none;padding:3px 8px;border-bottom:1px solid var(--border);font-size:11px;color:var(--gold-light);font-weight:bold;cursor:pointer;background:#fff7e6;"></div><div class="status-row" id="status-row"></div>
 <div class="char-detail-btns"><button class="cd-open-btn" onclick="openCharDetail('stats')">📊 능력치<span class="pts-badge" id="pts-badge" style="display:none"></span></button><button class="cd-open-btn" onclick="openCharDetail('equip')">🛡 장비</button></div>
 </div>
-<div id="main-area"><div class="map-hdr"><span class="map-name-disp" id="map-name-disp">🗺 프론테라 평원</span><span id="zone-hud"></span><span class="map-info-disp" id="map-info-disp">Lv.1~10 | 필드</span></div><div id="log-filter"><button class="lf-chip active" data-lf="" onclick="setLogFilter('',this)">전체</button><button class="lf-chip" data-lf="lf-battle" onclick="setLogFilter('lf-battle',this)">⚔ 전투</button><button class="lf-chip" data-lf="lf-loot" onclick="setLogFilter('lf-loot',this)">🎁 보상</button><button class="lf-chip" data-lf="lf-sys" onclick="setLogFilter('lf-sys',this)">📋 시스템</button><button class="lf-chip" data-lf="lf-chat" onclick="setLogFilter('lf-chat',this)">💬 채팅<i class="tab-badge" id="chat-badge" style="display:none"></i></button></div><div id="game-log"></div><div id="chat-log" style="display:none"><div class="chat-empty">아직 지나간 모험가가 없습니다.<br>필드에서 자동사냥 중에 다른 모험가를 만날 수 있어요.</div></div>
+<div id="main-area"><div class="map-hdr"><span class="map-name-disp" id="map-name-disp">🗺 프론테라 평원</span><span id="zone-hud"></span><span class="map-info-disp" id="map-info-disp">Lv.1~10 | 필드</span></div><div id="log-filter"><button class="lf-chip active" data-lf="" onclick="setLogFilter('',this)">전체</button><button class="lf-chip" data-lf="lf-battle" onclick="setLogFilter('lf-battle',this)">⚔ 전투</button><button class="lf-chip" data-lf="lf-loot" onclick="setLogFilter('lf-loot',this)">🎁 보상</button><button class="lf-chip" data-lf="lf-sys" onclick="setLogFilter('lf-sys',this)">📋 시스템</button><button class="lf-chip" data-lf="lf-chat" onclick="setLogFilter('lf-chat',this)">💬 채팅<i class="tab-badge" id="chat-badge" style="display:none"></i></button><button class="lf-chip log-expand-btn" id="log-expand-btn" onclick="toggleLogExpand()" title="로그 확대">⤢</button></div><div id="log-viewport"><div id="game-log" onscroll="logOnScroll()"></div><button id="log-jump-btn" class="log-jump-btn" style="display:none;" onclick="logJumpToBottom()"></button></div><div id="chat-log" style="display:none"><div class="chat-empty">아직 지나간 모험가가 없습니다.<br>필드에서 자동사냥 중에 다른 모험가를 만날 수 있어요.</div></div>
 <!-- [P1-13] 현재 행동 상태 + 주행동 (자동사냥은 여기로 이동, id 유지) -->
 <div id="action-bar"><div class="action-status" id="action-status">대기 중</div><button class="primary-action" id="hunt-btn" onclick="primaryAction()">▶ 사냥 시작</button></div></div>
 <div id="right-panel"><div id="hotbar-panel"><div class="panel-hdr" title="슬롯 클릭으로 등록 / 키보드 QWERASDFZXCV">HOTBAR <span class="hb-hint" style="font-size:11px;font-weight:normal;color:var(--text-dim)">⌨ QWER…</span></div><div class="hotbar-grid" id="hotbar-grid"></div></div><div id="situation"></div><div class="panel-hdr" id="enc-hdr">ENCOUNTER</div><div id="mon-list"><div class="no-target">현재 전투 없음</div></div></div>
@@ -37551,6 +37566,15 @@ function normalizeSave(p){
     }
   }
   if(!p.sellLocked) p.sellLocked = {}; // [상점 개편] 판매 보호 표시된 아이템 키
+  // [세계경험 개편 2단계] 지역 최초 방문 기록. 기존 세이브 마이그레이션 —
+  // 이미 진행 중이던 캐릭터가 패치 후 첫 접속에서 현재 위치를 "처음 온 곳"으로
+  // 오인하지 않도록, 이미 뭔가 처치한 적 있다면 저장된 위치만은 방문 완료로 둔다.
+  // (그 외 맵은 실제 첫 방문 때 firstVisitDesc가 뜨며, entryDesc 미작성 맵에는
+  // 영향 없음 — 아직 프론테라 권역 4곳뿐)
+  if(!p.visitedMaps){
+    p.visitedMaps = {};
+    if((p.totalKills||0)>0 && p.savedMap) p.visitedMaps[p.savedMap]=true;
+  }
   return p;
 }
 
@@ -37641,6 +37665,7 @@ function loadCharacter(i){
       log(`📜 <b>상태 안내:</b> "${advice}"`,'quest');
   }
   logSep();
+  enterMap(G.currentMap); // [세계경험 개편 2단계] 접속 시 현재 위치 장소 묘사
 
   if(p._ghostPurged){
     log(`🧹 아이템 DB에 없던 <b>유령 아이템 ${p._ghostPurged}종</b>을 가방에서 정리했습니다.`,'system');
@@ -37986,7 +38011,7 @@ function rmgApplyImport(){
   closeModal();
   if(playing){
     // 플레이 중인 캐릭터를 교체 — exitToLobby와 같은 정리 후 새 데이터로 다시 로드(파일 저장 대화상자는 띄우지 않음)
-    clearTimeout(G.passerbyTimer); $('game-log').innerHTML = '';
+    clearTimeout(G.passerbyTimer); $('game-log').innerHTML = ''; logResetState();
     loadCharacter(i);
     log('📥 다른 기기의 데이터로 교체했습니다. 문제가 있으면 로비에서 <b>↩ 가져오기 전으로 되돌리기</b>를 누르세요.', 'system');
   } else if($('lobby').style.display !== 'none'){
@@ -38014,7 +38039,7 @@ function restorePreviousSave(){
     ]);
 }
 
-function exitToLobby(){ G.autoHunt=false; clearTimeout(G.huntTimer); saveGame(); /* [P1-11] 사냥을 먼저 끈다 — 로비로 나간 시간은 오프라인 보상 대상 아님 */ clearTimeout(G.passerbyTimer); clearInterval(regenTimer); $('game-log').innerHTML=''; initLobby(); }
+function exitToLobby(){ G.autoHunt=false; clearTimeout(G.huntTimer); saveGame(); /* [P1-11] 사냥을 먼저 끈다 — 로비로 나간 시간은 오프라인 보상 대상 아님 */ clearTimeout(G.passerbyTimer); clearInterval(regenTimer); $('game-log').innerHTML=''; logResetState(); initLobby(); }
 function confirmReset(){ openModal('초기화','모든 데이터를 삭제합니다.',[{label:'확인',cls:'danger',action:()=>{localStorage.removeItem('rmc_v3');slots=Array(6).fill(null);closeModal();initLobby();}}]); }
 // 수량 접두어 정의, 장비 이름 생성 엔진
 const cardCountPrefix = ["", "", "더블 ", "트리플 ", "쿼드로플 "];
@@ -38084,7 +38109,13 @@ function rollDrops(p, mon, opts){
     p.inventory[name] = (p.inventory[name]||0) + 1;
     if(isCard){ if(!p.cardCodex) p.cardCodex = {}; p.cardCodex[k] = true; }
     if(opts.summary) opts.summary.items[name] = (opts.summary.items[name]||0) + 1;
-    if(!opts.silent){ log(`🎁 ${name} 획득!`,'loot'); if(isCard) pbReact('card', k); }
+    if(!opts.silent){
+      // [세계경험 개편 3단계] 카드는 일반 드롭과 구분되는 사건 블록으로 먼저 알린다 —
+      // 그 아래 기존 "획득!" 로그는 그대로 유지(수치·인벤 반영 로그는 감산하지 않는다, §9)
+      if(isCard) logEvent('loot', [`쓰러진 <b>${mon.name}</b> 아래에 작은 카드 한 장이 남아 있다.`, `[${k}]`]);
+      log(`🎁 ${name} 획득!`,'loot');
+      if(isCard) pbReact('card', k);
+    }
   });
 }
 
@@ -39394,15 +39425,142 @@ function josa(word, pair){
   if(code < 0 || code > 11171) return pair[1];
   return (code % 28 !== 0) ? pair[0] : pair[1];
 }
-function log(t,c='narrate'){ if(G.silentMode) return; /* [P0-02③] 무음 모드 */ if(c.indexOf('chat')>=0) chatAppend(t,c); /* [채팅 탭] */ let el=document.createElement('div'); el.className='le '+c; el.innerHTML=t; let gl=$('game-log'); gl.appendChild(el); gl.scrollTop=gl.scrollHeight; while(gl.children.length>200)gl.removeChild(gl.firstChild); if(G.stealthOn&&c!=='sep'&&typeof stealthSetLog==='function')stealthSetLog(t); /* [3-10] 위장 상태바 로그 */ }
+// ── [세계경험 개편 1단계] 로그 읽기 UX: 따라가기/읽기 상태, 신규 로그 카운터, 중요 사건 읽기 고정 ──
+// 정확한 사건 분류(카드·MVP·던전해금 등 태깅)는 3단계(로그 사건 블록) 작업 범위.
+// 여기서는 이미 존재하는 클래스 중 명확히 "발견/전환"급인 것만 우선 표시한다.
+const LOG_IMPORTANT_CLASSES=['level-up','location'];
+let logState={following:true,newCount:0,newImportant:0,holdUntil:0,holdTimer:null};
+
+function isLogNearBottom(el){ return (el.scrollHeight-el.scrollTop-el.clientHeight)<40; }
+
+function logOnScroll(){
+  let gl=$('game-log');
+  if(isLogNearBottom(gl)){
+    if(!logState.following){
+      logState.following=true;
+      if(logState.holdTimer){ clearTimeout(logState.holdTimer); logState.holdTimer=null; }
+      logResetCounter();
+    }
+  } else if(logState.following){
+    logState.following=false;
+  }
+}
+function logResetCounter(){
+  logState.newCount=0; logState.newImportant=0;
+  $('log-jump-btn').style.display='none';
+}
+function logUpdateJumpBtn(){
+  let btn=$('log-jump-btn');
+  if(logState.following||logState.newCount<=0){ btn.style.display='none'; return; }
+  btn.textContent=`↓ 새 로그 ${logState.newCount}`+(logState.newImportant>0?` · 중요 ${logState.newImportant}`:'');
+  btn.style.display='block';
+}
+function logResetState(){ // 로그 전체 초기화(캐릭터 교체·로비 복귀 등) 시 따라가기 상태도 같이 리셋
+  logState.following=true;
+  if(logState.holdTimer){ clearTimeout(logState.holdTimer); logState.holdTimer=null; }
+  logResetCounter();
+}
+function logJumpToBottom(){
+  let gl=$('game-log');
+  logResetState();
+  gl.scrollTop=gl.scrollHeight;
+}
+function toggleLogExpand(){
+  let ma=document.getElementById('main-area'); if(!ma) return;
+  let on=ma.classList.toggle('log-expanded');
+  $('log-expand-btn').classList.toggle('expanded',on);
+}
+
+function log(t,c='narrate',important){
+  if(G.silentMode) return; /* [P0-02③] 무음 모드 */
+  if(c.indexOf('chat')>=0) chatAppend(t,c); /* [채팅 탭] */
+  let el=document.createElement('div'); el.className='le '+c; el.innerHTML=t;
+  let gl=$('game-log');
+  let wasFollowing=logState.following;
+  let isImportant=important===true||LOG_IMPORTANT_CLASSES.includes(c);
+  gl.appendChild(el);
+  while(gl.children.length>200){
+    let beforeH=gl.scrollHeight;
+    gl.removeChild(gl.firstChild);
+    if(!wasFollowing) gl.scrollTop-=(beforeH-gl.scrollHeight); // 읽는 중엔 옛 로그 정리로 화면이 밀리지 않게 보정
+  }
+  if(wasFollowing){
+    gl.scrollTop=gl.scrollHeight;
+    if(isImportant){
+      // [세계경험 개편 §14] 중요 사건은 잠시 현재 화면 위치를 고정 — 게임 로직(자동사냥)은 계속 진행
+      logState.following=false;
+      logState.holdUntil=Date.now()+2500;
+      if(logState.holdTimer) clearTimeout(logState.holdTimer);
+      logState.holdTimer=setTimeout(()=>{ logState.holdTimer=null; if(Date.now()>=logState.holdUntil-50) logJumpToBottom(); },2500);
+    }
+  } else {
+    logState.newCount++;
+    if(isImportant) logState.newImportant++;
+    logUpdateJumpBtn();
+  }
+  if(G.stealthOn&&c!=='sep'&&typeof stealthSetLog==='function')stealthSetLog(t); /* [3-10] 위장 상태바 로그 */
+}
 function logSep(){log('──────────────','sep');}
+
+/** [세계경험 개편 3단계] 여러 줄을 하나의 "사건 블록"으로 묶어 출력 — 지역 진입·MVP·
+ *  카드 등 잠시 멈춰 읽어야 하는 사건 공용. cls는 기존 로그 필터/색 클래스(location·
+ *  warning·loot 등)를 그대로 쓴다 — 새 필터 카테고리를 만들지 않기 위함. 항상 중요
+ *  사건으로 취급해 읽기 고정을 건다(log()의 4번째 인자로 명시 — 1단계에서 마련해둔
+ *  확장점). 첫 방문 추가문처럼 여러 줄이 붙는 경우도 로그 항목 하나로 묶여 카드가
+ *  여러 개로 쪼개지지 않는다(§17). */
+function logEvent(cls, lines, title){
+  let body = lines.filter(Boolean).join('<br>');
+  let head = title ? `<div class="ev-title">${title}</div>` : '';
+  log(`${head}${body}`, `${cls} ev-block`, true);
+}
+
+/** [세계경험 개편 3단계] MVP 등장/처치 사건 블록. 몬스터 DB에 mvpAppearDesc/mvpDeathDesc가
+ *  없으면(아직 대부분) 범용 문구로 폴백 — entryDesc 폴백과 같은 패턴. */
+function logMvpAppear(mon){
+  let lines = mon.mvpAppearDesc ? [mon.mvpAppearDesc, `<b>${mon.emoji}${mon.name}</b>이(가) 나타났다.`]
+                                 : [`<b>${mon.emoji}${mon.name}</b>이(가) 나타났다.`];
+  logEvent('warning', lines, mon.name);
+}
+function logMvpDefeat(mon){
+  let lines = mon.mvpDeathDesc ? [mon.mvpDeathDesc] : [];
+  logEvent('gold', lines, `MVP · ${mon.name}`);
+}
+
+/** [세계경험 개편 2단계] 공용 맵 진입 후처리 — 최초 방문 판정 + 장소 묘사 로그.
+ *  entryDesc가 아직 없는 맵(대다수)은 기존 "🗺 이동" 문구로 폴백 — §30 6단계
+ *  (메시지 전수 작성)에서 점차 대체해 나간다. 이동 가능 여부·비용·던전 해금
+ *  판정은 호출부(tryMove 등)가 그대로 담당하고, 여기서는 "도착했다" 이후만 다룬다.
+ *  [3단계] 지역 방문으로 열리는 퀘스트 발견 훅도 여기서 함께 처리한다. */
+const MAP_QUEST_DISCOVERY = { '프론테라': ['Q_CULVERTS'] }; // 프론테라 파일럿 범위 — 나머지 지역은 §30 6단계에서 확대
+function enterMap(nm){
+  let p=G.player; if(!p) return;
+  let md=DB.maps[nm]||{};
+  if(!p.visitedMaps) p.visitedMaps={};
+  let first=!p.visitedMaps[nm];
+  if(md.entryDesc){
+    let lines=[`${md.emoji||'🗺'} <b>${nm}</b>`, md.entryDesc];
+    if(first && md.firstVisitDesc) lines.push(md.firstVisitDesc);
+    logEvent('location', lines);
+  } else {
+    log(`🗺 ${nm} 이동`,'location');
+  }
+  p.visitedMaps[nm]=true;
+
+  if(MAP_QUEST_DISCOVERY[nm] && p.quests){
+    MAP_QUEST_DISCOVERY[nm].forEach(qid=>{
+      if(!p.quests[qid]) p.quests[qid]={state:'available',count:0};
+    });
+  }
+}
 // ── [UI-①] 로그 채널 필터 ──
 function setLogFilter(cls,el){
   let gl=$('game-log'); if(!gl)return;
   gl.classList.remove('lf-battle','lf-loot','lf-sys');
   // [채팅 탭] 지나가는 유저 공간 — 전투 로그 200줄 한도에 밀려나지 않게 별도 버퍼(#chat-log)를 보여준다
   let cl=document.getElementById('chat-log'), isChat=cls==='lf-chat';
-  gl.style.display=isChat?'none':'';
+  // [세계경험 개편 1단계] game-log가 #log-viewport로 감싸이면서 표시 전환은 래퍼 단위로 —
+  // gl만 숨기면 빈 #log-viewport가 여전히 flex:1을 차지해 #chat-log와 세로공간을 반씩 나눠 갖는다
+  document.getElementById('log-viewport').style.display=isChat?'none':'';
   if(cl){ cl.style.display=isChat?'':'none'; if(isChat){ G.chatUnread=0; updateChatBadge(); cl.scrollTop=cl.scrollHeight; } }
   if(cls&&!isChat)gl.classList.add(cls);
   document.querySelectorAll('.lf-chip').forEach(c=>c.classList.remove('active'));
@@ -40113,6 +40271,7 @@ function awardKillReward(p, mon, set){
   if(!p.killCount) p.killCount = {};
   p.killCount[mon.name] = (p.killCount[mon.name]||0) + 1;
   addZoneKill();
+  if(mon.isMvp) logMvpDefeat(mon); // [세계경험 개편 3단계] 사건 블록 → 그 아래 기존 EXP/제니/드롭 로그가 그대로 이어진다
   let _rm = returnerMult(p);
   let getExp = Math.floor((mon.exp||0) * (set.expRate||1) * _rm);
   let getJexp = Math.floor((mon.jexp||0) * (set.expRate||1) * _rm);
@@ -41277,7 +41436,7 @@ window.tryMove = function(nm){
 
   G.currentMap = nm;
 
-  log(`🗺 ${nm} 이동`, 'location');
+  enterMap(nm);
 
   if(t.safe){
 
@@ -44840,7 +44999,7 @@ function spawnMonsters(){
       p.seenCount[mvpMon.name] = (p.seenCount[mvpMon.name]||0) + 1;
       spawnMvpSlaves(mvpMon, initDist);
       logSep();
-      log(`⚠ ⚠ <b style="color:#9b59b6;">[MVP]</b> <b>${mvpMon.emoji}${mvpMon.name}</b> 출현!`, 'warning');
+      logMvpAppear(mvpMon);
       renderMonsters(); return;
     }
   }
@@ -44889,8 +45048,11 @@ function spawnMonsters(){
   if(!nm.length) return; logSep();
   let hasMvpInBattle = G.battles.some(b=>b.isMvp);
   if(hasMvpInBattle){
-    log(`⚠ ⚠ <b style="color:#9b59b6;">[MVP 출현!]</b> ${nm.join(', ')}`, 'warning');
-    pbReact('mvp', (G.battles.find(b=>b.isMvp)||{}).name);
+    let mvpB = G.battles.find(b=>b.isMvp);
+    logMvpAppear(mvpB);
+    let others = nm.filter(n=>!n.includes(mvpB.name));
+    if(others.length) log(`⚠ 함께 나타난 <b>${others.join(', ')}</b>`,'warning');
+    pbReact('mvp', mvpB.name);
   } else if(initDist > 1){
     log(`⚠ 야생의 <b>${nm.join(', ')}</b> 출현! <span style="color:var(--blue-light)">[거리 ${initDist}]</span>`,'warning');
   } else {
@@ -44905,11 +45067,14 @@ function checkMobile(){
   // [UI-⑤] 핫바를 모바일에서는 main-area 하단 가로 스트립으로 이동 — [P1-13] 주행동 바 바로 위
   // [P1-13] 적 정보(#mon-list)는 모바일에서 로그 위 상황 카드로 이동 (전투 탭 폐지)
   let hp=$('hotbar-panel'), ma=document.getElementById('main-area'), rp=document.getElementById('right-panel');
-  let ml=document.getElementById('mon-list'), ab=document.getElementById('action-bar'), gl=document.getElementById('game-log');
+  // [세계경험 개편 1단계] game-log가 #log-viewport로 감싸이면서, main-area의 직계 자식 기준으로
+  // 삽입해야 하는 insertBefore 참조 노드도 래퍼(lv)로 옮김 — gl은 더 이상 ma의 직계 자식이 아니라
+  // ma.insertBefore(ml, gl)이 NotFoundError를 던진다
+  let ml=document.getElementById('mon-list'), ab=document.getElementById('action-bar'), lv=document.getElementById('log-viewport');
   if(!ma||!rp) return;
   if(isM){
     if(hp&&hp.parentElement!==ma) ma.insertBefore(hp,ab);
-    if(ml&&ml.parentElement!==ma) ma.insertBefore(ml,gl);
+    if(ml&&ml.parentElement!==ma) ma.insertBefore(ml,lv);
   } else {
     if(ml&&ml.parentElement===ma) rp.appendChild(ml);
     if(hp&&hp.parentElement===ma) rp.insertBefore(hp,rp.firstChild);
@@ -46828,9 +46993,13 @@ function initTutorialQuests(p) {
     p.quests.tut_01 = { state: 'available', count: 0 };
   }
   // A·B등급 퀘스트 초기 해금 (레벨/선행 조건 없는 것들)
+  // [세계경험 개편 §30 4단계 — 프론테라 파일럿] Q_CULVERTS는 여기서 뺐다. 캐릭터
+  // 생성 즉시 전역 available이면 방문하지 않은 지역의 퀘스트가 퀘스트창에 먼저
+  // 뜨는 문제(§7.1)가 생긴다 — 대신 enterMap()의 MAP_QUEST_DISCOVERY가 프론테라
+  // 최초 진입 시점에 열어준다. 나머지 지역 퀘스트는 이번 파일럿 범위 밖이라 유지.
   const autoUnlock = [
     // A등급
-    'Q_CULVERTS','Q_PAY_RENO','Q_PAY_MRSMILE','Q_GEF_MAGE_TRAIN','Q_MOC_CONTINENTAL',
+    'Q_PAY_RENO','Q_PAY_MRSMILE','Q_GEF_MAGE_TRAIN','Q_MOC_CONTINENTAL',
     // B등급
     'Q_PAY_JUICE','Q_ALD_MESSAGE','Q_RAC_ICENECKLACE','Q_RAC_LOSTCHILD',
     'Q_LHZ_FRIENDSHIP','Q_YUN_JUPEROS_CORE','Q_HUG_MEDICINE','Q_HUG_MEMORY',
@@ -50213,7 +50382,7 @@ function stealthMenuAction(act){
     stealthSave();
     // exitToLobby와 동일한 정리 — 단 saveGame(파일 대화상자 발생) 대신 조용한 저장 사용
     G.autoHunt=false; clearTimeout(G.huntTimer); clearTimeout(G.passerbyTimer); clearInterval(regenTimer);
-    $('game-log').innerHTML=''; initLobby();
+    $('game-log').innerHTML=''; logResetState(); initLobby();
     stealthSetLog('통합 문서를 닫았습니다');
   }
 }
