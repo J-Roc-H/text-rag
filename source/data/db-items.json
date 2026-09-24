@@ -1142,54 +1142,6 @@
     "weightSrc": "official",
     "_krPending": true
   },
-  "실버로브_": {
-    "type": "갑옷",
-    "emoji": "👕",
-    "desc": "원작 데이터(rAthena pre-re).",
-    "buy": 7000,
-    "sell": 3500,
-    "def": 4,
-    "slots": 1,
-    "weight": 70,
-    "weightSrc": "official",
-    "_krPending": true
-  },
-  "타이즈_": {
-    "type": "갑옷",
-    "emoji": "👕",
-    "desc": "원작 데이터(rAthena pre-re).",
-    "buy": 71000,
-    "sell": 35500,
-    "def": 6,
-    "slots": 1,
-    "weight": 50,
-    "weightSrc": "official",
-    "_krPending": true
-  },
-  "어드밴쳐슈츠_": {
-    "type": "갑옷",
-    "emoji": "👕",
-    "desc": "원작 데이터(rAthena pre-re).",
-    "buy": 1000,
-    "sell": 500,
-    "def": 3,
-    "slots": 1,
-    "weight": 30,
-    "weightSrc": "official",
-    "_krPending": true
-  },
-  "버클러_": {
-    "type": "방패",
-    "emoji": "🛡️",
-    "desc": "원작 데이터(rAthena pre-re).",
-    "buy": 14000,
-    "sell": 7000,
-    "def": 4,
-    "slots": 1,
-    "weight": 60,
-    "weightSrc": "official",
-    "_krPending": true
-  },
   "바이킹헬름": {
     "type": "투구_상단",
     "emoji": "🎩",
@@ -3729,7 +3681,7 @@
     "desc": "커다란 왕리본. MDEF+3.",
     "def": 2,
     "mdef": 3,
-    "slots": 0,
+    "slots": 1,
     "buy": 15000,
     "sell": 7500,
     "weight": 20,
@@ -3821,7 +3773,7 @@
     "emoji": "🌻",
     "desc": "머리에 꽂는 해바라기. 곤충형 내성 10%.",
     "def": 1,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "weight": 10,
@@ -4030,7 +3982,7 @@
     "desc": "해적의 두건. STR+1.",
     "def": 3,
     "str": 1,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "weight": 10,
@@ -4165,7 +4117,7 @@
     "emoji": "🎓",
     "desc": "박사 학위의 상징.",
     "def": 3,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "weight": 20,
@@ -4204,7 +4156,7 @@
     "emoji": "🎒",
     "desc": "소년의 학생모.",
     "def": 2,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "weight": 10,
@@ -4576,17 +4528,6 @@
     "weight": 50,
     "weightSrc": "csv"
   },
-  "꼬깔모자_": {
-    "type": "투구_상단",
-    "emoji": "🥳",
-    "desc": "축제용 꼬깔모자.",
-    "def": 0,
-    "slots": 0,
-    "buy": 0,
-    "sell": 0,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "고양이모자": {
     "type": "투구_상단",
     "emoji": "🐱",
@@ -4710,17 +4651,6 @@
     "weight": 20,
     "weightSrc": "csv"
   },
-  "산타모자_": {
-    "type": "투구_상단",
-    "emoji": "🎅",
-    "desc": "안토니오의 산타 모자.",
-    "def": 2,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "갬블러햇": {
     "type": "투구_상단",
     "emoji": "🎰",
@@ -4791,17 +4721,6 @@
     "weight": 50,
     "weightSrc": "csv"
   },
-  "광대모자_": {
-    "type": "투구_상단",
-    "emoji": "🤡",
-    "desc": "발걸음이 가벼워지는 광대 모자.",
-    "def": 1,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "엔젤링핀": {
     "type": "투구_상단",
     "emoji": "😇",
@@ -4849,23 +4768,6 @@
     "weight": 70,
     "weightSrc": "csv"
   },
-  "촛불_": {
-    "type": "투구_상단",
-    "emoji": "🕯️",
-    "desc": "신비한 촛불. 전 스탯+1.",
-    "def": 0,
-    "str": 1,
-    "agi": 1,
-    "vit": 1,
-    "int": 1,
-    "dex": 1,
-    "luk": 1,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "골드티아라": {
     "type": "투구_상단",
     "emoji": "👑",
@@ -4878,18 +4780,6 @@
     "weight": 50,
     "weightSrc": "csv"
   },
-  "국경일모자_": {
-    "type": "투구_상단",
-    "emoji": "🎉",
-    "desc": "프랑스 국경일 기념 모자. VIT+1.",
-    "def": 1,
-    "vit": 1,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "낙엽": {
     "type": "투구_상단",
     "emoji": "🍂",
@@ -4897,22 +4787,11 @@
     "def": 0,
     "maxHp": 40,
     "maxSp": 40,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "weight": 10,
     "weightSrc": "csv"
-  },
-  "야구모자_": {
-    "type": "투구_상단",
-    "emoji": "🧢",
-    "desc": "독립기념 야구모자.",
-    "def": 3,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
   },
   "리본_검정": {
     "type": "투구_상단",
@@ -5045,17 +4924,6 @@
     "weight": 30,
     "weightSrc": "csv"
   },
-  "호박모자_": {
-    "type": "투구_상단",
-    "emoji": "🎃",
-    "desc": "환상적인 호박 모자. 악마형 내성 5%.",
-    "def": 2,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "금색고리": {
     "type": "투구_상단",
     "emoji": "😇",
@@ -5079,34 +4947,6 @@
     "weight": 30,
     "weightSrc": "csv"
   },
-  "천사의머리띠_": {
-    "type": "투구_상단",
-    "emoji": "😇",
-    "desc": "진화한 천사 날개 머리띠. INT+1, DEX+1, MDEF+3.",
-    "def": 2,
-    "int": 1,
-    "dex": 1,
-    "mdef": 3,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "악마의머리띠_": {
-    "type": "투구_상단",
-    "emoji": "😈",
-    "desc": "진화한 악마 날개 머리띠. STR+1, AGI+1, FLEE+3.",
-    "def": 3,
-    "str": 1,
-    "agi": 1,
-    "flee": 3,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "마제_대만": {
     "type": "투구_상단",
     "emoji": "🐐",
@@ -5118,45 +4958,6 @@
     "sell": 10,
     "weight": 80,
     "weightSrc": "csv"
-  },
-  "토끼머리띠_": {
-    "type": "투구_상단",
-    "emoji": "🐰",
-    "desc": "진화한 토끼 머리띠. INT+2.",
-    "def": 2,
-    "int": 2,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "늘어진고양이_": {
-    "type": "투구_상단",
-    "emoji": "🐈",
-    "desc": "진화한 늘어진 고양이. MDEF+18, FLEE+3.",
-    "def": 1,
-    "mdef": 18,
-    "flee": 3,
-    "slots": 0,
-    "buy": 250000,
-    "sell": 125000,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "프로펠라_": {
-    "type": "투구_상단",
-    "emoji": "🚁",
-    "desc": "개량형 프로펠러. AGI+2, DEX+1, FLEE+10.",
-    "def": 2,
-    "agi": 2,
-    "dex": 1,
-    "flee": 10,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
   },
   "흰색늘어진고양이": {
     "type": "투구_상단",
@@ -5347,18 +5148,6 @@
     "weight": 70,
     "weightSrc": "csv"
   },
-  "코끼리모자_": {
-    "type": "투구_상단",
-    "emoji": "🐘",
-    "desc": "커다란 코끼리 모자. VIT+1.",
-    "def": 3,
-    "vit": 1,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "쿠키모자": {
     "type": "투구_상단",
     "emoji": "🍪",
@@ -5370,30 +5159,6 @@
     "sell": 10,
     "weight": 50,
     "weightSrc": "csv"
-  },
-  "실버티아라_": {
-    "type": "투구_상단",
-    "emoji": "👑",
-    "desc": "빛나는 실버 티아라. INT+2.",
-    "def": 2,
-    "int": 2,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "골드티아라_": {
-    "type": "투구_상단",
-    "emoji": "👑",
-    "desc": "빛나는 골드 티아라. STR+2.",
-    "def": 2,
-    "str": 2,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
   },
   "호주국기모자": {
     "type": "투구_상단",
@@ -5421,17 +5186,6 @@
     "slots": 0,
     "buy": 1,
     "sell": 0,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "낙엽_": {
-    "type": "투구_상단",
-    "emoji": "🍂",
-    "desc": "가을 낙엽 장식. 완전회피+5.",
-    "def": 1,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
     "weight": 1,
     "weightSrc": "stub"
   },
@@ -5483,19 +5237,6 @@
     "weight": 20,
     "weightSrc": "csv"
   },
-  "늘어진토끼_": {
-    "type": "투구_상단",
-    "emoji": "🐰",
-    "desc": "축 늘어진 토끼. DEX+1, FLEE+2.",
-    "def": 1,
-    "dex": 1,
-    "flee": 2,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "라면모자": {
     "type": "투구_상단",
     "emoji": "🍜",
@@ -5503,36 +5244,6 @@
     "def": 1,
     "dex": 4,
     "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "늘어진구미호_": {
-    "type": "투구_상단",
-    "emoji": "🦊",
-    "desc": "축 늘어진 구미호. AGI+1, CRI+1.",
-    "def": 1,
-    "agi": 1,
-    "crit": 1,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "소울리스윙_": {
-    "type": "투구_상단",
-    "emoji": "🕊️",
-    "desc": "영혼의 날개. 전 스탯+1.",
-    "def": 2,
-    "str": 1,
-    "agi": 1,
-    "vit": 1,
-    "int": 1,
-    "dex": 1,
-    "luk": 1,
-    "slots": 1,
     "buy": 20,
     "sell": 10,
     "weight": 1,
@@ -5729,63 +5440,6 @@
     "sell": 0,
     "weight": 30,
     "weightSrc": "csv"
-  },
-  "학사모_": {
-    "type": "투구_상단",
-    "emoji": "🎓",
-    "desc": "슬롯이 있는 학사모.",
-    "def": 3,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "왕리본_": {
-    "type": "투구_상단",
-    "emoji": "🎀",
-    "desc": "슬롯이 있는 왕리본. MDEF+3.",
-    "def": 2,
-    "mdef": 3,
-    "slots": 1,
-    "buy": 15000,
-    "sell": 7500,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "학생모_": {
-    "type": "투구_상단",
-    "emoji": "🎒",
-    "desc": "슬롯이 있는 학생모.",
-    "def": 2,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "해적두건_": {
-    "type": "투구_상단",
-    "emoji": "🏴‍☠️",
-    "desc": "슬롯이 있는 해적 두건. STR+1.",
-    "def": 3,
-    "str": 1,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "장식용해바라기_": {
-    "type": "투구_상단",
-    "emoji": "🌻",
-    "desc": "슬롯이 있는 해바라기. 곤충형 내성 10%.",
-    "def": 1,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
   },
   "무슬림남자모": {
     "type": "투구_상단",
@@ -6323,43 +5977,6 @@
     "sell": 10,
     "weight": 20,
     "weightSrc": "csv"
-  },
-  "강아지모자_": {
-    "type": "투구_상단",
-    "emoji": "🐶",
-    "desc": "강아지 모자. STR+1, INT+1, 치명타 대폭 상승.",
-    "def": 3,
-    "str": 1,
-    "int": 1,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "장식용지오그래퍼_": {
-    "type": "투구_상단",
-    "emoji": "🌼",
-    "desc": "지오그래퍼 꽃 장식. INT+1.",
-    "def": 1,
-    "int": 1,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "바캉스모자_": {
-    "type": "투구_상단",
-    "emoji": "🏖️",
-    "desc": "여름 바캉스 모자. VIT+5.",
-    "def": 0,
-    "vit": 5,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
   },
   "바람개비모자": {
     "type": "투구_상단",
@@ -7132,20 +6749,6 @@
     "weight": 10,
     "weightSrc": "csv"
   },
-  "아얌_": {
-    "type": "투구_상단",
-    "emoji": "👑",
-    "desc": "전통 아얌. MDEF+7, FLEE+7.",
-    "def": 7,
-    "mdef": 7,
-    "flee": 7,
-    "slots": 0,
-    "buy": 0,
-    "sell": 0,
-    "reqLv": 1,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "용투구_금": {
     "type": "투구_상단",
     "emoji": "🐉",
@@ -7812,21 +7415,6 @@
     "weight": 20,
     "weightSrc": "csv"
   },
-  "비상하는천사_": {
-    "type": "투구_상단",
-    "emoji": "🕊️",
-    "desc": "파닥이는 천사 날개. AGI+1, INT+1, ASPD+3%.",
-    "def": 1,
-    "agi": 1,
-    "int": 1,
-    "aspd": 3,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "reqLv": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "병아리모자": {
     "type": "투구_상단",
     "emoji": "🐥",
@@ -8072,7 +7660,7 @@
     "def": 1,
     "agi": 1,
     "dex": 1,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "reqLv": 20,
@@ -8138,7 +7726,7 @@
     "desc": "영혼의 고리. MDEF+2.",
     "def": 2,
     "mdef": 2,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "reqLv": 20,
@@ -8310,20 +7898,6 @@
     "weight": 30,
     "weightSrc": "csv"
   },
-  "케이크모자_": {
-    "type": "투구_상단",
-    "emoji": "🎂",
-    "desc": "2주년 기념 케이크 모자. DEX+1, MaxSP+80.",
-    "def": 1,
-    "dex": 1,
-    "maxSp": 80,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "reqLv": 24,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "스카프": {
     "type": "투구_상단",
     "emoji": "🧣",
@@ -8422,7 +7996,7 @@
     "desc": "귀여운 강아지 모자. AGI+1.",
     "def": 2,
     "agi": 1,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "reqLv": 30,
@@ -8447,7 +8021,7 @@
     "desc": "지오그래퍼 꽃 장식. INT+1.",
     "def": 1,
     "int": 1,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "reqLv": 30,
@@ -8798,7 +8372,7 @@
     "emoji": "⚙️",
     "desc": "황금 톱니 헤드기어. 파손되지 않는다.",
     "def": 5,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "reqLv": 40,
@@ -8834,18 +8408,6 @@
     "reqLv": 40,
     "weight": 40,
     "weightSrc": "csv"
-  },
-  "골든헤드기어_": {
-    "type": "투구_상단",
-    "emoji": "⚙️",
-    "desc": "황금 톱니 헤드기어. 파손되지 않는다.",
-    "def": 5,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "reqLv": 40,
-    "weight": 1,
-    "weightSrc": "stub"
   },
   "라이드워드모자": {
     "type": "투구_상단",
@@ -8896,7 +8458,7 @@
     "desc": "고귀한 티아라. INT+2.",
     "def": 4,
     "int": 2,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "reqLv": 45,
@@ -8909,7 +8471,7 @@
     "desc": "위엄 있는 왕관. INT+2.",
     "def": 4,
     "int": 2,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "reqLv": 45,
@@ -8962,32 +8524,6 @@
     "reqLv": 45,
     "weight": 20,
     "weightSrc": "csv"
-  },
-  "티아라_": {
-    "type": "투구_상단",
-    "emoji": "👑",
-    "desc": "슬롯이 있는 티아라. INT+1.",
-    "def": 4,
-    "int": 1,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "reqLv": 45,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "크라운_": {
-    "type": "투구_상단",
-    "emoji": "👑",
-    "desc": "슬롯이 있는 왕관. INT+1.",
-    "def": 4,
-    "int": 1,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "reqLv": 45,
-    "weight": 1,
-    "weightSrc": "stub"
   },
   "뿔투구모자": {
     "type": "투구_상단",
@@ -9181,20 +8717,6 @@
     "reqLv": 50,
     "weight": 50,
     "weightSrc": "csv"
-  },
-  "생선모자_": {
-    "type": "투구_상단",
-    "emoji": "🐟",
-    "desc": "진화한 생선 모자. AGI+1, DEX+1.",
-    "def": 2,
-    "agi": 1,
-    "dex": 1,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "reqLv": 50,
-    "weight": 1,
-    "weightSrc": "stub"
   },
   "용의해골": {
     "type": "투구_상단",
@@ -10564,18 +10086,6 @@
     "weight": 1,
     "weightSrc": "stub"
   },
-  "3D안경_": {
-    "type": "투구_중단",
-    "emoji": "🥸",
-    "desc": "입체 영화용 3D 안경.",
-    "def": 1,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "reqLv": 1,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "악마의작은뿔": {
     "type": "투구_중단",
     "emoji": "😈",
@@ -10663,19 +10173,6 @@
     "weight": 10,
     "weightSrc": "csv"
   },
-  "양쪽귀밑리본_": {
-    "type": "투구_중단",
-    "emoji": "🎀",
-    "desc": "진화한 귀밑 리본. FLEE+5.",
-    "def": 1,
-    "flee": 5,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "reqLv": 45,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "망원경": {
     "type": "투구_중단",
     "emoji": "🔭",
@@ -10732,7 +10229,7 @@
     "emoji": "🧝",
     "desc": "뾰족한 요정의 귀.",
     "def": 0,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "reqLv": 70,
@@ -10831,18 +10328,6 @@
     "reqLv": 70,
     "weight": 10,
     "weightSrc": "csv"
-  },
-  "요정의귀_": {
-    "type": "투구_중단",
-    "emoji": "🧝",
-    "desc": "슬롯이 있는 요정의 귀.",
-    "def": 0,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "reqLv": 70,
-    "weight": 1,
-    "weightSrc": "stub"
   },
   "사이클롭스아이": {
     "type": "투구_중단",
@@ -11083,18 +10568,6 @@
     "sell": 10,
     "weight": 10,
     "weightSrc": "csv"
-  },
-  "파이프담배_": {
-    "type": "투구_하단",
-    "emoji": "🪈",
-    "desc": "진화한 파이프. VIT+1.",
-    "def": 0,
-    "vit": 1,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
   },
   "해적의대거": {
     "type": "투구_하단",
@@ -11525,7 +10998,7 @@
     "emoji": "🧟",
     "desc": "무낙의 모자. 언데드 내성 10%. (상·중·하단 겸용)",
     "def": 5,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "weight": 30,
@@ -11593,7 +11066,7 @@
     "def": 4,
     "str": 3,
     "int": 2,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "weight": 240,
@@ -11604,7 +11077,7 @@
     "emoji": "🧟",
     "desc": "본건의 모자. (상·중·하단 겸용)",
     "def": 5,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "weight": 30,
@@ -11677,28 +11150,6 @@
     "weight": 20,
     "weightSrc": "csv"
   },
-  "무낙모자_": {
-    "type": "투구_상단",
-    "emoji": "🧟",
-    "desc": "슬롯 있는 무낙 모자. 언데드 내성 10%. (상·중·하단 겸용)",
-    "def": 5,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "본건모자_": {
-    "type": "투구_상단",
-    "emoji": "🧟",
-    "desc": "슬롯 있는 본건 모자. (상·중·하단 겸용)",
-    "def": 5,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "메롱가면": {
     "type": "투구_중단",
     "emoji": "😝",
@@ -11739,29 +11190,6 @@
     "weight": 80,
     "weightSrc": "csv"
   },
-  "봉관_": {
-    "type": "투구_상단",
-    "emoji": "🦚",
-    "desc": "불사조의 관. MDEF+3. (상·중단 겸용)",
-    "def": 4,
-    "mdef": 3,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "메롱가면_": {
-    "type": "투구_중단",
-    "emoji": "😝",
-    "desc": "메롱 가면. 가끔 도발이 발동한다. (중·하단 겸용)",
-    "def": 2,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "행복한가발": {
     "type": "투구_상단",
     "emoji": "💇",
@@ -11789,7 +11217,7 @@
     "emoji": "💇",
     "desc": "놀라운 가발. DEF+4. (상·중단 겸용)",
     "def": 5,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "weight": 10,
@@ -11830,28 +11258,6 @@
     "weight": 240,
     "weightSrc": "csv"
   },
-  "놀라운가발_": {
-    "type": "투구_상단",
-    "emoji": "💇",
-    "desc": "도깨비의 가발. 무속성 내성 5%. (상·중단 겸용)",
-    "def": 1,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "아티아티모자_": {
-    "type": "투구_상단",
-    "emoji": "🎋",
-    "desc": "아티아티 모자. 가끔 스크림이 발동한다. (상·중·하단 겸용)",
-    "def": 1,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "모히칸": {
     "type": "투구_상단",
     "emoji": "🦱",
@@ -11885,19 +11291,6 @@
     "slots": 0,
     "buy": 1,
     "sell": 0,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "태양신의모자_": {
-    "type": "투구_상단",
-    "emoji": "☀️",
-    "desc": "슬롯 있는 태양신의 모자. STR+3, INT+2. (상·중단 겸용)",
-    "def": 4,
-    "str": 3,
-    "int": 2,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
     "weight": 1,
     "weightSrc": "stub"
   },
@@ -12049,7 +11442,7 @@
     "desc": "중국 전통 봉황관. INT+1. (상·중단 겸용)",
     "def": 2,
     "int": 1,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "reqLv": 1,
@@ -12183,7 +11576,7 @@
     "emoji": "🎋",
     "desc": "아티아티 모자. 여러 속성 내성 1%. (상·중·하단 겸용)",
     "def": 1,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "reqLv": 20,
@@ -12288,19 +11681,6 @@
     "reqLv": 35,
     "weight": 20,
     "weightSrc": "csv"
-  },
-  "대형금방울_": {
-    "type": "투구_상단",
-    "emoji": "🔔",
-    "desc": "진화한 대형 금방울. AGI+2. (상·중단 겸용)",
-    "def": 2,
-    "agi": 2,
-    "slots": 0,
-    "buy": 20,
-    "sell": 10,
-    "reqLv": 35,
-    "weight": 1,
-    "weightSrc": "stub"
   },
   "각시탈": {
     "type": "투구_상단",
@@ -12499,20 +11879,6 @@
     "weight": 90,
     "weightSrc": "csv"
   },
-  "오크히어로투구_": {
-    "type": "투구_상단",
-    "emoji": "🧌",
-    "desc": "진화한 오크 히어로 투구. STR+2, VIT+1. (상·중단 겸용)",
-    "def": 5,
-    "str": 2,
-    "vit": 1,
-    "slots": 0,
-    "buy": 500000,
-    "sell": 250000,
-    "reqLv": 55,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "퍼씰모자": {
     "type": "투구_상단",
     "emoji": "🦭",
@@ -12556,7 +11922,7 @@
     "desc": "스핑크스 모자. STR+2. (상·하단 겸용)",
     "def": 5,
     "str": 2,
-    "slots": 0,
+    "slots": 1,
     "buy": 20,
     "sell": 10,
     "reqLv": 65,
@@ -12568,38 +11934,12 @@
     "emoji": "🧕",
     "desc": "수녀의 두건. (상·중단 겸용)",
     "def": 5,
-    "slots": 0,
+    "slots": 1,
     "buy": 150000,
     "sell": 75000,
     "reqLv": 65,
     "weight": 30,
     "weightSrc": "csv"
-  },
-  "수녀모자_": {
-    "type": "투구_상단",
-    "emoji": "🧕",
-    "desc": "슬롯 있는 수녀의 두건. MaxSP+100. (상·중단 겸용)",
-    "def": 5,
-    "maxSp": 100,
-    "slots": 1,
-    "buy": 150000,
-    "sell": 75000,
-    "reqLv": 65,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "스핑크스모자_": {
-    "type": "투구_상단",
-    "emoji": "🐈",
-    "desc": "슬롯 있는 스핑크스 모자. STR+2. (상·하단 겸용)",
-    "def": 5,
-    "str": 2,
-    "slots": 1,
-    "buy": 20,
-    "sell": 10,
-    "reqLv": 65,
-    "weight": 1,
-    "weightSrc": "stub"
   },
   "지르타스가면": {
     "type": "투구_상단",
@@ -15339,7 +14679,7 @@
     "emoji": "💀",
     "desc": "해골 모양의 으스스한 반지.",
     "def": 0,
-    "slots": 0,
+    "slots": 1,
     "buy": 10000,
     "sell": 5000,
     "weight": 10,
@@ -15400,30 +14740,6 @@
     "weight": 1,
     "weightSrc": "stub"
   },
-  "금반지_": {
-    "type": "Accessory",
-    "emoji": "🎄",
-    "desc": "크리스마스 한정 금반지. LUK+1.",
-    "def": 0,
-    "luk": 1,
-    "slots": 0,
-    "buy": 30000,
-    "sell": 15000,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "은반지_": {
-    "type": "Accessory",
-    "emoji": "🎄",
-    "desc": "크리스마스 한정 은반지. LUK+1.",
-    "def": 0,
-    "luk": 1,
-    "slots": 0,
-    "buy": 20000,
-    "sell": 10000,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "피사향포": {
     "type": "Accessory",
     "emoji": "🏮",
@@ -15476,17 +14792,6 @@
     "sell": 10,
     "weight": 10,
     "weightSrc": "csv"
-  },
-  "세린의금반지_": {
-    "type": "Accessory",
-    "emoji": "💍",
-    "desc": "세린의 금반지. 어딘가 반짝인다.",
-    "def": 0,
-    "slots": 0,
-    "buy": 45000,
-    "sell": 22500,
-    "weight": 1,
-    "weightSrc": "stub"
   },
   "더사인_": {
     "type": "Accessory",
@@ -15727,17 +15032,6 @@
     "sell": 0,
     "weight": 10,
     "weightSrc": "csv"
-  },
-  "해골반지_": {
-    "type": "Accessory",
-    "emoji": "💀",
-    "desc": "해골 반지. 언데드에게 약간의 내성을 준다.",
-    "def": 0,
-    "slots": 1,
-    "buy": 10000,
-    "sell": 5000,
-    "weight": 1,
-    "weightSrc": "stub"
   },
   "마왕의링": {
     "type": "Accessory",
@@ -16658,7 +15952,7 @@
     "desc": "힘이 깃든 반지. STR+2.",
     "def": 0,
     "str": 2,
-    "slots": 0,
+    "slots": 1,
     "buy": 30000,
     "sell": 15000,
     "reqLv": 20,
@@ -16671,7 +15965,7 @@
     "desc": "지혜가 깃든 귀걸이. INT+2.",
     "def": 0,
     "int": 2,
-    "slots": 0,
+    "slots": 1,
     "buy": 30000,
     "sell": 15000,
     "reqLv": 20,
@@ -16684,7 +15978,7 @@
     "desc": "활력이 깃든 목걸이. VIT+2.",
     "def": 0,
     "vit": 2,
-    "slots": 0,
+    "slots": 1,
     "buy": 30000,
     "sell": 15000,
     "reqLv": 20,
@@ -16697,7 +15991,7 @@
     "desc": "정교한 솜씨의 장갑. DEX+2.",
     "def": 0,
     "dex": 2,
-    "slots": 0,
+    "slots": 1,
     "buy": 30000,
     "sell": 15000,
     "reqLv": 20,
@@ -16710,7 +16004,7 @@
     "desc": "민첩함이 깃든 브로치. AGI+2.",
     "def": 0,
     "agi": 2,
-    "slots": 0,
+    "slots": 1,
     "buy": 30000,
     "sell": 15000,
     "reqLv": 20,
@@ -16724,7 +16018,7 @@
     "def": 0,
     "luk": 2,
     "mdef": 5,
-    "slots": 0,
+    "slots": 1,
     "buy": 15000,
     "sell": 7500,
     "reqLv": 20,
@@ -17608,85 +16902,6 @@
     "weight": 20,
     "weightSrc": "csv"
   },
-  "링_": {
-    "type": "Accessory",
-    "emoji": "💍",
-    "desc": "힘이 깃든 반지. STR+1.",
-    "def": 0,
-    "str": 1,
-    "slots": 1,
-    "buy": 30000,
-    "sell": 15000,
-    "reqLv": 90,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "이어링_": {
-    "type": "Accessory",
-    "emoji": "📿",
-    "desc": "지혜가 깃든 귀걸이. INT+1.",
-    "def": 0,
-    "int": 1,
-    "slots": 1,
-    "buy": 30000,
-    "sell": 15000,
-    "reqLv": 90,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "네클리스_": {
-    "type": "Accessory",
-    "emoji": "📿",
-    "desc": "활력이 깃든 목걸이. VIT+1.",
-    "def": 0,
-    "vit": 1,
-    "slots": 1,
-    "buy": 30000,
-    "sell": 15000,
-    "reqLv": 90,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "글러브_": {
-    "type": "Accessory",
-    "emoji": "🧤",
-    "desc": "정교한 솜씨의 장갑. DEX+1.",
-    "def": 0,
-    "dex": 1,
-    "slots": 1,
-    "buy": 30000,
-    "sell": 15000,
-    "reqLv": 90,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "브로치_": {
-    "type": "Accessory",
-    "emoji": "📌",
-    "desc": "민첩함이 깃든 브로치. AGI+1.",
-    "def": 0,
-    "agi": 1,
-    "slots": 1,
-    "buy": 30000,
-    "sell": 15000,
-    "reqLv": 90,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
-  "로자리_": {
-    "type": "Accessory",
-    "emoji": "📿",
-    "desc": "행운의 묵주. LUK+1, MDEF+3.",
-    "def": 0,
-    "luk": 1,
-    "mdef": 3,
-    "slots": 1,
-    "buy": 15000,
-    "sell": 7500,
-    "reqLv": 90,
-    "weight": 1,
-    "weightSrc": "stub"
-  },
   "세크리파이스링": {
     "type": "Accessory",
     "emoji": "💍",
@@ -17839,18 +17054,6 @@
     "reqLv": 99,
     "weight": 20,
     "weightSrc": "csv"
-  },
-  "마력깃든돌_": {
-    "type": "Accessory",
-    "emoji": "🪨",
-    "desc": "마력이 깃든 돌. 특정 몬스터에게 강해진다.",
-    "def": 0,
-    "slots": 0,
-    "buy": 0,
-    "sell": 0,
-    "reqLv": 99,
-    "weight": 1,
-    "weightSrc": "stub"
   },
   "지친전사의의지": {
     "type": "Accessory",
@@ -18008,12 +17211,13 @@
   "이그드라실의 열매": {
     "type": "소모품",
     "emoji": "🍎",
-    "desc": "HP와 SP를 완전 회복한다.",
+    "desc": "HP와 SP를 완전히 회복한다.",
     "effect": "full",
-    "buy": 0,
-    "sell": 5000,
-    "weight": 7,
-    "weightSrc": "type"
+    "buy": 5000,
+    "sell": 2500,
+    "weight": 30,
+    "weightSrc": "official",
+    "_aegis": "Yggdrasilberry"
   },
   "젤로피": {
     "type": "잡템",
@@ -18717,17 +17921,6 @@
     "effect": "quiver",
     "quiverItem": "무형의 화살",
     "quiverCount": 500,
-    "buy": 1500,
-    "sell": 750,
-    "weight": 7,
-    "weightSrc": "type"
-  },
-  "각성의포션": {
-    "type": "소모품",
-    "emoji": "⚡",
-    "desc": "40레벨 이상 사용 가능. 공격 속도가 증가한다.",
-    "effect": "aspd",
-    "aspdRate": 0.15,
     "buy": 1500,
     "sell": 750,
     "weight": 7,
@@ -19974,25 +19167,16 @@
     "weight": 7,
     "weightSrc": "type"
   },
-  "이그드라실의씨앗": {
+  "이그드라실의 씨앗": {
     "type": "소모품",
-    "emoji": "🌱",
-    "desc": "HP를 500 회복한다.",
-    "heal": 500,
-    "buy": 0,
-    "sell": 1000,
-    "weight": 7,
-    "weightSrc": "type"
-  },
-  "이그드라실의열매": {
-    "type": "소모품",
-    "emoji": "🍎",
-    "desc": "HP와 SP를 완전 회복한다.",
-    "effect": "full",
-    "buy": 0,
-    "sell": 5000,
-    "weight": 7,
-    "weightSrc": "type"
+    "emoji": "🌰",
+    "desc": "HP와 SP를 절반만큼 회복한다.",
+    "effect": "half",
+    "buy": 5000,
+    "sell": 2500,
+    "weight": 30,
+    "weightSrc": "official",
+    "_aegis": "Seed_Of_Yggdrasil"
   },
   "자수정": {
     "type": "재료",
@@ -20291,16 +19475,6 @@
     "spHeal": 30,
     "buy": 50,
     "sell": 25,
-    "weight": 7,
-    "weightSrc": "type"
-  },
-  "파리의날개": {
-    "type": "소모품",
-    "emoji": "🪰",
-    "desc": "현재 맵의 무작위 위치로 텔레포트한다.",
-    "effect": "teleport",
-    "buy": 60,
-    "sell": 30,
     "weight": 7,
     "weightSrc": "type"
   },
@@ -23023,17 +22197,6 @@
     "weight": 10,
     "weightSrc": "type"
   },
-  "타나토스의절망 카드": {
-    "type": "카드",
-    "emoji": "🃏",
-    "target": "방패",
-    "prefix": "우둔함의",
-    "desc": "INT -6 / 제련도에 따라 INT 증가",
-    "buy": 0,
-    "sell": 10,
-    "weight": 10,
-    "weightSrc": "type"
-  },
   "따따초 카드": {
     "type": "카드",
     "emoji": "🃏",
@@ -23051,17 +22214,6 @@
     "target": "방패",
     "prefix": "저항의",
     "desc": "소·중·대형 받는 데미지 15% 감소 / 물리·마법 피격 시 확률로 10초간 완전회피 +30",
-    "buy": 0,
-    "sell": 10,
-    "weight": 10,
-    "weightSrc": "type"
-  },
-  "플레임스컬 카드": {
-    "type": "카드",
-    "emoji": "🃏",
-    "target": "방패",
-    "prefix": "아나데마",
-    "desc": "스턴·저주·암흑·석화 내성 30% / 물리 피격 시 확률로 적에게 스턴·저주·암흑·석화 중 하나 부여",
     "buy": 0,
     "sell": 10,
     "weight": 10,
@@ -31046,13 +30198,13 @@
   },
   "블러디 엣지": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "emoji": "🗡️",
+    "desc": "피로 물든 칼날 조각.",
+    "buy": 10000,
+    "sell": 5000,
+    "weight": 4,
+    "weightSrc": "official",
+    "_aegis": "Bloody_Edge"
   },
   "블레이디드 위프": {
     "type": "잡템",
@@ -31716,16 +30868,6 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "안경": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
-  },
   "안석의 반지": {
     "type": "잡템",
     "emoji": "❓",
@@ -32353,14 +31495,16 @@
     "weightSrc": "official"
   },
   "우유": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "type": "소모품",
+    "emoji": "🥛",
+    "desc": "HP를 27~37 회복한다.",
+    "healMin": 27,
+    "healMax": 37,
+    "buy": 25,
+    "sell": 12,
+    "weight": 3,
+    "weightSrc": "official",
+    "_aegis": "Milk"
   },
   "울르의 모자": {
     "type": "잡템",
@@ -32379,26 +31523,6 @@
     "buy": 0,
     "sell": 233,
     "weight": 1,
-    "weightSrc": "official"
-  },
-  "위그드라실의 씨앗": {
-    "type": "소모품",
-    "emoji": "🌰",
-    "desc": "생명의 나무 위그드라실의 씨앗. HP와 SP를 절반만큼 회복한다.",
-    "effect": "half",
-    "buy": 0,
-    "sell": 2500,
-    "weight": 30,
-    "weightSrc": "official"
-  },
-  "위그드라실의 열매": {
-    "type": "소모품",
-    "emoji": "🍎",
-    "desc": "생명의 나무 위그드라실이 맺는 열매. HP와 SP를 완전히 회복한다.",
-    "effect": "full",
-    "buy": 0,
-    "sell": 2500,
-    "weight": 30,
     "weightSrc": "official"
   },
   "위그드라실의 잎": {
@@ -33374,14 +32498,22 @@
     "_stub": true
   },
   "파나케아": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "type": "소모품",
+    "emoji": "💚",
+    "desc": "독·침묵·암흑·저주·혼란을 치료한다.",
+    "effect": "cure",
+    "cure": [
+      "poison",
+      "silence",
+      "blind",
+      "curse",
+      "chaos"
+    ],
+    "buy": 500,
+    "sell": 250,
+    "weight": 10,
+    "weightSrc": "official",
+    "_aegis": "Panacea"
   },
   "파이어 브랜드": {
     "type": "잡템",
