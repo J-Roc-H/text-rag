@@ -15767,20 +15767,17 @@ async function runValidationGate(){
   // ── ② 의미 검사 ────────────────────────────
   (function gate2(){
     const MVP_HP_MIN = 40000; // 업적 boss1 기준과 동일(단일 소유는 여전히 업적 쪽 — 여기선 상수 복제 대신 재확인만)
-    // P0-03 잔여 5건: 원작 MVP 불분명 + 리뉴얼 이후 3세대 대륙 맵 — DEVREF-E에서 사용자 확정,
-    // "손대지 않는다"는 방침이므로 여기서도 실패로 잡지 않고 화이트리스트 처리
-    const HASMVP_WHITELIST = ['어비스 호수 심층','용지성','포트말라야','말랑도 심해','엘 디카스테스'];
     let badMvp = [];
     Object.keys(DB.maps).forEach(mapName=>{
       let md = DB.maps[mapName];
       if(!md.hasMvp) return;
       let mon = DB.monsters[String(md.hasMvp)];
       if(!mon) return; // ①에서 이미 잡힘
-      if(mon.hp < MVP_HP_MIN && !HASMVP_WHITELIST.includes(mapName)){
+      if(mon.hp < MVP_HP_MIN){
         badMvp.push(`${mapName}→${mon.name}(hp${mon.hp})`);
       }
     });
-    add('②',`hasMvp hp>=${MVP_HP_MIN} (화이트리스트 5건 제외)`, badMvp.length===0, badMvp);
+    add('②',`hasMvp hp>=${MVP_HP_MIN}`, badMvp.length===0, badMvp);
 
     let noWeight = [];
     Object.keys(DB.items).forEach(name=>{
