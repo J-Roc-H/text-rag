@@ -2968,6 +2968,15 @@ function normalizeSave(p){
       p._ghostPurged = ghosts.length;
     }
   }
+  // [세계경험 개편 2단계] 지역 최초 방문 기록. 기존 세이브 마이그레이션 —
+  // 이미 진행 중이던 캐릭터가 패치 후 첫 접속에서 현재 위치를 "처음 온 곳"으로
+  // 오인하지 않도록, 이미 뭔가 처치한 적 있다면 저장된 위치만은 방문 완료로 둔다.
+  // (그 외 맵은 실제 첫 방문 때 firstVisitDesc가 뜨며, entryDesc 미작성 맵에는
+  // 영향 없음 — 아직 프론테라 권역 4곳뿐)
+  if(!p.visitedMaps){
+    p.visitedMaps = {};
+    if((p.totalKills||0)>0 && p.savedMap) p.visitedMaps[p.savedMap]=true;
+  }
   return p;
 }
 
@@ -3058,6 +3067,7 @@ function loadCharacter(i){
       log(`📜 <b>상태 안내:</b> "${advice}"`,'quest');
   }
   logSep();
+  enterMap(G.currentMap); // [세계경험 개편 2단계] 접속 시 현재 위치 장소 묘사
 
   if(p._ghostPurged){
     log(`🧹 아이템 DB에 없던 <b>유령 아이템 ${p._ghostPurged}종</b>을 가방에서 정리했습니다.`,'system');
@@ -4887,6 +4897,24 @@ function log(t,c='narrate',important){
   if(G.stealthOn&&c!=='sep'&&typeof stealthSetLog==='function')stealthSetLog(t); /* [3-10] 위장 상태바 로그 */
 }
 function logSep(){log('──────────────','sep');}
+
+/** [세계경험 개편 2단계] 공용 맵 진입 후처리 — 최초 방문 판정 + 장소 묘사 로그.
+ *  entryDesc가 아직 없는 맵(대다수)은 기존 "🗺 이동" 문구로 폴백 — §30 6단계
+ *  (메시지 전수 작성)에서 점차 대체해 나간다. 이동 가능 여부·비용·던전 해금
+ *  판정은 호출부(tryMove 등)가 그대로 담당하고, 여기서는 "도착했다" 이후만 다룬다. */
+function enterMap(nm){
+  let p=G.player; if(!p) return;
+  let md=DB.maps[nm]||{};
+  if(!p.visitedMaps) p.visitedMaps={};
+  let first=!p.visitedMaps[nm];
+  if(md.entryDesc){
+    log(`${md.emoji||'🗺'} <b>${nm}</b><br>${md.entryDesc}`,'location');
+    if(first && md.firstVisitDesc) log(md.firstVisitDesc,'location');
+  } else {
+    log(`🗺 ${nm} 이동`,'location');
+  }
+  p.visitedMaps[nm]=true;
+}
 // ── [UI-①] 로그 채널 필터 ──
 function setLogFilter(cls,el){
   let gl=$('game-log'); if(!gl)return;
@@ -6770,7 +6798,7 @@ window.tryMove = function(nm){
 
   G.currentMap = nm;
 
-  log(`🗺 ${nm} 이동`, 'location');
+  enterMap(nm);
 
   if(t.safe){
 

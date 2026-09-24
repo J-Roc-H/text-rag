@@ -1304,15 +1304,15 @@ body.work-mode p {
   "490": {"name": "아크 엔젤링", "emoji": "👼", "lv": 60, "hp": 79523, "atk": 779, "def": 54, "mdef": 58, "softDef": 80, "hit": 125, "flee": 125, "str": 0, "agi": 65, "vit": 80, "int": 74, "dex": 65, "luk": 105, "range": 1, "atkDelay": 1072, "exp": 4152, "jexp": 2173, "size": "중형", "race": "천사", "element": "성속성", "elementLv": 3, "zeny": [2076, 4152], "drops": {"사타닉체인": 0.05, "위그드라실의 잎": 18.0, "위그드라실의 씨앗": 1.5, "마노석": 15.0, "엔젤릭 체인": 0.05, "플레이트 아머[1]": 0.03, "터키석": 15.0, "아크 엔젤링 카드": 0.01}}
 }</script>
 <script id="db-maps"       type="application/json">{
-  "프론테라": {"level": "0", "type": "마을", "emoji": "🏰", "desc": "룬 미드가츠의 심장.", "connected": ["프론테라 왕궁", "프론테라 성당", "프론테라 북쪽 평원", "프론테라 남쪽 평원", "프론테라 서쪽 평원", "프론테라 동쪽 평원", "프론테라 지하수로 1층"], "dirs": {"north": "프론테라 북쪽 평원", "south": "프론테라 남쪽 평원", "east": "프론테라 동쪽 평원", "west": "프론테라 서쪽 평원"}, "monsters": [], "safe": true},
+  "프론테라": {"level": "0", "type": "마을", "emoji": "🏰", "desc": "룬 미드가츠의 심장.", "entryDesc": "성문을 지나자 낯익은 석조 거리가 펼쳐진다. 광장 주변으로 상인들의 외침과 기사들의 발소리가 뒤섞인다.", "firstVisitDesc": "왕국의 심장부에 처음 발을 들였다. 여기서부터 모든 것이 시작된다.", "connected": ["프론테라 왕궁", "프론테라 성당", "프론테라 북쪽 평원", "프론테라 남쪽 평원", "프론테라 서쪽 평원", "프론테라 동쪽 평원", "프론테라 지하수로 1층"], "dirs": {"north": "프론테라 북쪽 평원", "south": "프론테라 남쪽 평원", "east": "프론테라 동쪽 평원", "west": "프론테라 서쪽 평원"}, "monsters": [], "safe": true},
   "프론테라 왕궁": {"level": "0", "type": "마을", "emoji": "👑", "desc": "프론테라의 서쪽 왕궁. 기사단의 본부.", "connected": ["프론테라"], "dirs": {"east": "프론테라"}, "monsters": [], "safe": true},
   "프론테라 성당": {"level": "0", "type": "마을", "emoji": "⛪", "desc": "프론테라의 동쪽 성당. 신앙의 중심.", "connected": ["프론테라"], "dirs": {"west": "프론테라"}, "monsters": [], "safe": true},
-  "프론테라 남쪽 평원": {"level": "1~5", "type": "필드", "emoji": "🌿", "desc": "초보 모험가들의 수련장.", "connected": ["프론테라", "이즈루드", "소그라트 사막 동부"], "dirs": {"north": "프론테라", "south": "이즈루드", "west": "소그라트 사막 동부"}, "monsters": [1, 2, 3, 4, 5, 6], "safe": false},
+  "프론테라 남쪽 평원": {"level": "1~5", "type": "필드", "emoji": "🌿", "desc": "초보 모험가들의 수련장.", "entryDesc": "성문을 벗어나자 낮은 풀밭이 트인다. 포링과 루나틱이 여기저기서 얼쩡거린다.", "firstVisitDesc": "처음 나선 사냥터다. 위험할 건 없어 보이지만, 아직 긴장을 놓기엔 이르다.", "connected": ["프론테라", "이즈루드", "소그라트 사막 동부"], "dirs": {"north": "프론테라", "south": "이즈루드", "west": "소그라트 사막 동부"}, "monsters": [1, 2, 3, 4, 5, 6], "safe": false},
   "프론테라 서쪽 평원": {"level": "4~12", "type": "필드", "emoji": "🌾", "desc": "게펜으로 향하는 들판.", "connected": ["프론테라", "게펜 필드"], "dirs": {"east": "프론테라", "west": "게펜 필드"}, "monsters": [10, 12, 14], "safe": false},
   "프론테라 동쪽 평원": {"level": "9~18", "type": "필드", "emoji": "🌲", "desc": "페이욘으로 향하는 숲.", "connected": ["프론테라", "페이욘 숲 북부"], "dirs": {"west": "프론테라", "south": "페이욘 숲 북부"}, "monsters": [14, 15, 13], "safe": false},
   "프론테라 북쪽 평원": {"level": "15~25", "type": "필드", "emoji": "⛰️", "desc": "묘르닐 산맥으로 향하는 험한 평원.", "connected": ["프론테라", "묘르닐 산맥", "미궁 숲"], "dirs": {"south": "프론테라", "north": "묘르닐 산맥"}, "monsters": [13, 15, 46], "safe": false},
-  "프론테라 지하수로 1층": {"level": "10~25", "type": "던전", "emoji": "⚙", "desc": "벌레들이 득실거리는 하수구.", "connected": ["프론테라", "프론테라 지하수로 2층"], "monsters": [11, 16, 17, 19, 45, 114], "safe": false},
-  "프론테라 지하수로 2층": {"level": "30~45", "type": "던전", "emoji": "🕳️", "desc": "황금의 도둑벌레 서식지.", "connected": ["프론테라 지하수로 1층"], "monsters": [17, 108, 109, 133, 147], "safe": false, "hasMvp": 399},
+  "프론테라 지하수로 1층": {"level": "10~25", "type": "던전", "emoji": "⚙", "desc": "벌레들이 득실거리는 하수구.", "entryDesc": "돌계단을 내려가자 왕도의 소음이 금세 멀어진다. 축축한 벽을 따라 물이 흐르고, 어두운 배수로 안쪽에서 무언가 긁히는 소리가 들린다.", "firstVisitDesc": "처음 보는 지하수로는 생각보다 훨씬 깊다. 기사단이 괜히 토벌대원을 모집한 게 아닌 모양이다.", "connected": ["프론테라", "프론테라 지하수로 2층"], "monsters": [11, 16, 17, 19, 45, 114], "safe": false},
+  "프론테라 지하수로 2층": {"level": "30~45", "type": "던전", "emoji": "🕳️", "desc": "황금의 도둑벌레 서식지.", "entryDesc": "통로가 한층 더 좁아진다. 바닥 곳곳에 반짝이는 잔해가 흩어져 있고, 도둑벌레들의 움직임이 유난히 부산스럽다.", "firstVisitDesc": "더 깊은 곳까지 내려왔다. 이 안 어딘가에 심상치 않은 기운이 도사리고 있는 듯하다.", "connected": ["프론테라 지하수로 1층"], "monsters": [17, 108, 109, 133, 147], "safe": false, "hasMvp": 399},
   "미궁 숲": {"level": "60~80", "type": "던전", "emoji": "🌑", "desc": "길을 잃기 쉬운 숲.", "connected": ["프론테라 북쪽 평원"], "monsters": [83, 84, 85, 89, 100], "safe": false, "hasMvp": 137},
   "게펜": {"level": "0", "type": "마을", "emoji": "🔮", "desc": "마법사들의 도시.", "connected": ["게펜 필드", "게펜 지하 던전 1층", "글래스트 헤임 입구", "묘르닐 산맥"], "dirs": {"east": "게펜 필드", "south": "묘르닐 산맥"}, "monsters": [], "safe": true},
   "묘르닐 산맥": {"level": "30~45", "type": "필드", "emoji": "⛰️", "desc": "알데바란으로 향하는 험준한 산맥.", "connected": ["프론테라 북쪽 평원", "게펜", "폐광 던전 1층", "알데바란"], "dirs": {"south": "프론테라 북쪽 평원", "west": "게펜", "north": "알데바란"}, "monsters": [39, 46, 47, 67, 97, 123], "safe": false, "hasMvp": 434},
@@ -37552,6 +37552,15 @@ function normalizeSave(p){
       p._ghostPurged = ghosts.length;
     }
   }
+  // [세계경험 개편 2단계] 지역 최초 방문 기록. 기존 세이브 마이그레이션 —
+  // 이미 진행 중이던 캐릭터가 패치 후 첫 접속에서 현재 위치를 "처음 온 곳"으로
+  // 오인하지 않도록, 이미 뭔가 처치한 적 있다면 저장된 위치만은 방문 완료로 둔다.
+  // (그 외 맵은 실제 첫 방문 때 firstVisitDesc가 뜨며, entryDesc 미작성 맵에는
+  // 영향 없음 — 아직 프론테라 권역 4곳뿐)
+  if(!p.visitedMaps){
+    p.visitedMaps = {};
+    if((p.totalKills||0)>0 && p.savedMap) p.visitedMaps[p.savedMap]=true;
+  }
   return p;
 }
 
@@ -37642,6 +37651,7 @@ function loadCharacter(i){
       log(`📜 <b>상태 안내:</b> "${advice}"`,'quest');
   }
   logSep();
+  enterMap(G.currentMap); // [세계경험 개편 2단계] 접속 시 현재 위치 장소 묘사
 
   if(p._ghostPurged){
     log(`🧹 아이템 DB에 없던 <b>유령 아이템 ${p._ghostPurged}종</b>을 가방에서 정리했습니다.`,'system');
@@ -39471,6 +39481,24 @@ function log(t,c='narrate',important){
   if(G.stealthOn&&c!=='sep'&&typeof stealthSetLog==='function')stealthSetLog(t); /* [3-10] 위장 상태바 로그 */
 }
 function logSep(){log('──────────────','sep');}
+
+/** [세계경험 개편 2단계] 공용 맵 진입 후처리 — 최초 방문 판정 + 장소 묘사 로그.
+ *  entryDesc가 아직 없는 맵(대다수)은 기존 "🗺 이동" 문구로 폴백 — §30 6단계
+ *  (메시지 전수 작성)에서 점차 대체해 나간다. 이동 가능 여부·비용·던전 해금
+ *  판정은 호출부(tryMove 등)가 그대로 담당하고, 여기서는 "도착했다" 이후만 다룬다. */
+function enterMap(nm){
+  let p=G.player; if(!p) return;
+  let md=DB.maps[nm]||{};
+  if(!p.visitedMaps) p.visitedMaps={};
+  let first=!p.visitedMaps[nm];
+  if(md.entryDesc){
+    log(`${md.emoji||'🗺'} <b>${nm}</b><br>${md.entryDesc}`,'location');
+    if(first && md.firstVisitDesc) log(md.firstVisitDesc,'location');
+  } else {
+    log(`🗺 ${nm} 이동`,'location');
+  }
+  p.visitedMaps[nm]=true;
+}
 // ── [UI-①] 로그 채널 필터 ──
 function setLogFilter(cls,el){
   let gl=$('game-log'); if(!gl)return;
@@ -41354,7 +41382,7 @@ window.tryMove = function(nm){
 
   G.currentMap = nm;
 
-  log(`🗺 ${nm} 이동`, 'location');
+  enterMap(nm);
 
   if(t.safe){
 
