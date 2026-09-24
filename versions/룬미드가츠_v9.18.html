@@ -109,17 +109,7 @@ body{background:var(--bg-deep);color:var(--text);font-family:'Noto Sans KR',sans
 html[data-theme="dark"] .zone-chip{background:#162030;}
 html[data-theme="dark"] .zone-chip .zc-bar{background:#2d3e50;}
 
-#log-viewport{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;}
 #game-log{flex:1;overflow-y:auto;padding:8px 12px;display:flex;flex-direction:column;gap:2px;}
-.log-jump-btn{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);z-index:5;padding:6px 16px;border-radius:14px;border:1px solid var(--border-gold);background:var(--blue-light);color:#fff;font-size:11px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);white-space:nowrap;}
-.log-jump-btn:active{opacity:.85;}
-.log-expand-btn{display:none;margin-left:auto;}
-.log-expand-btn.expanded{background:var(--blue-light);border-color:var(--blue-light);color:#fff;font-weight:600;}
-@media(max-width:700px){
-  .log-expand-btn{display:inline-block;}
-  #main-area.log-expanded #hotbar-panel,#main-area.log-expanded #mon-list{display:none;}
-  #main-area.log-expanded #action-bar{padding:4px 8px;}
-}
 .le{line-height:1.5;animation:fadeIn .15s ease;font-size:12px;}
 /* [스타일 감산] 신문 톤 — 회색 베이스 + 저채도 강조 3계열. 중요도는 색 대신 굵기로 */
 /* 중립/비중요 */
@@ -35522,7 +35512,7 @@ body.work-mode p {
   </div><div class="char-name" id="char-name">모험가</div><div class="char-job" id="char-job">노비스</div><div class="char-lv" id="char-lv">Base.1</div></div><div class="bars-sec"><div class="bar-row"><div class="bar-lbl"><span>HP</span><span id="hp-text">50/50</span></div><div class="bar-track"><div class="bar-fill hp-bar" id="hp-bar" style="width:100%"></div></div></div><div class="bar-row"><div class="bar-lbl"><span>SP</span><span id="sp-text">50/50</span></div><div class="bar-track"><div class="bar-fill sp-bar" id="sp-bar" style="width:100%"></div></div></div><div class="bar-row"><div class="bar-lbl"><span>EXP</span><span id="exp-text">0%</span></div><div class="bar-track"><div class="bar-fill exp-bar" id="exp-bar" style="width:0%"></div></div></div><div class="bar-row"><div class="bar-lbl"><span>JEXP</span><span id="jexp-text">0%</span></div><div class="bar-track"><div class="bar-fill job-bar" id="jexp-bar" style="width:0%"></div></div></div></div><div class="zeny-row"><span class="label">💰 제니</span><span class="zeny-val" id="zeny-disp">500 z</span></div><div id="vending-badge" onclick="showVendingStatus()" style="display:none;padding:3px 8px;border-bottom:1px solid var(--border);font-size:11px;color:var(--gold-light);font-weight:bold;cursor:pointer;background:#fff7e6;"></div><div class="status-row" id="status-row"></div>
 <div class="char-detail-btns"><button class="cd-open-btn" onclick="openCharDetail('stats')">📊 능력치<span class="pts-badge" id="pts-badge" style="display:none"></span></button><button class="cd-open-btn" onclick="openCharDetail('equip')">🛡 장비</button></div>
 </div>
-<div id="main-area"><div class="map-hdr"><span class="map-name-disp" id="map-name-disp">🗺 프론테라 평원</span><span id="zone-hud"></span><span class="map-info-disp" id="map-info-disp">Lv.1~10 | 필드</span></div><div id="log-filter"><button class="lf-chip active" data-lf="" onclick="setLogFilter('',this)">전체</button><button class="lf-chip" data-lf="lf-battle" onclick="setLogFilter('lf-battle',this)">⚔ 전투</button><button class="lf-chip" data-lf="lf-loot" onclick="setLogFilter('lf-loot',this)">🎁 보상</button><button class="lf-chip" data-lf="lf-sys" onclick="setLogFilter('lf-sys',this)">📋 시스템</button><button class="lf-chip" data-lf="lf-chat" onclick="setLogFilter('lf-chat',this)">💬 채팅<i class="tab-badge" id="chat-badge" style="display:none"></i></button><button class="lf-chip log-expand-btn" id="log-expand-btn" onclick="toggleLogExpand()" title="로그 확대">⤢</button></div><div id="log-viewport"><div id="game-log" onscroll="logOnScroll()"></div><button id="log-jump-btn" class="log-jump-btn" style="display:none;" onclick="logJumpToBottom()"></button></div><div id="chat-log" style="display:none"><div class="chat-empty">아직 지나간 모험가가 없습니다.<br>필드에서 자동사냥 중에 다른 모험가를 만날 수 있어요.</div></div>
+<div id="main-area"><div class="map-hdr"><span class="map-name-disp" id="map-name-disp">🗺 프론테라 평원</span><span id="zone-hud"></span><span class="map-info-disp" id="map-info-disp">Lv.1~10 | 필드</span></div><div id="log-filter"><button class="lf-chip active" data-lf="" onclick="setLogFilter('',this)">전체</button><button class="lf-chip" data-lf="lf-battle" onclick="setLogFilter('lf-battle',this)">⚔ 전투</button><button class="lf-chip" data-lf="lf-loot" onclick="setLogFilter('lf-loot',this)">🎁 보상</button><button class="lf-chip" data-lf="lf-sys" onclick="setLogFilter('lf-sys',this)">📋 시스템</button><button class="lf-chip" data-lf="lf-chat" onclick="setLogFilter('lf-chat',this)">💬 채팅<i class="tab-badge" id="chat-badge" style="display:none"></i></button></div><div id="game-log"></div><div id="chat-log" style="display:none"><div class="chat-empty">아직 지나간 모험가가 없습니다.<br>필드에서 자동사냥 중에 다른 모험가를 만날 수 있어요.</div></div>
 <!-- [P1-13] 현재 행동 상태 + 주행동 (자동사냥은 여기로 이동, id 유지) -->
 <div id="action-bar"><div class="action-status" id="action-status">대기 중</div><button class="primary-action" id="hunt-btn" onclick="primaryAction()">▶ 사냥 시작</button></div></div>
 <div id="right-panel"><div id="hotbar-panel"><div class="panel-hdr" title="슬롯 클릭으로 등록 / 키보드 QWERASDFZXCV">HOTBAR <span class="hb-hint" style="font-size:11px;font-weight:normal;color:var(--text-dim)">⌨ QWER…</span></div><div class="hotbar-grid" id="hotbar-grid"></div></div><div id="situation"></div><div class="panel-hdr" id="enc-hdr">ENCOUNTER</div><div id="mon-list"><div class="no-target">현재 전투 없음</div></div></div>
@@ -37987,7 +37977,7 @@ function rmgApplyImport(){
   closeModal();
   if(playing){
     // 플레이 중인 캐릭터를 교체 — exitToLobby와 같은 정리 후 새 데이터로 다시 로드(파일 저장 대화상자는 띄우지 않음)
-    clearTimeout(G.passerbyTimer); $('game-log').innerHTML = ''; logResetState();
+    clearTimeout(G.passerbyTimer); $('game-log').innerHTML = '';
     loadCharacter(i);
     log('📥 다른 기기의 데이터로 교체했습니다. 문제가 있으면 로비에서 <b>↩ 가져오기 전으로 되돌리기</b>를 누르세요.', 'system');
   } else if($('lobby').style.display !== 'none'){
@@ -38015,7 +38005,7 @@ function restorePreviousSave(){
     ]);
 }
 
-function exitToLobby(){ G.autoHunt=false; clearTimeout(G.huntTimer); saveGame(); /* [P1-11] 사냥을 먼저 끈다 — 로비로 나간 시간은 오프라인 보상 대상 아님 */ clearTimeout(G.passerbyTimer); clearInterval(regenTimer); $('game-log').innerHTML=''; logResetState(); initLobby(); }
+function exitToLobby(){ G.autoHunt=false; clearTimeout(G.huntTimer); saveGame(); /* [P1-11] 사냥을 먼저 끈다 — 로비로 나간 시간은 오프라인 보상 대상 아님 */ clearTimeout(G.passerbyTimer); clearInterval(regenTimer); $('game-log').innerHTML=''; initLobby(); }
 function confirmReset(){ openModal('초기화','모든 데이터를 삭제합니다.',[{label:'확인',cls:'danger',action:()=>{localStorage.removeItem('rmc_v3');slots=Array(6).fill(null);closeModal();initLobby();}}]); }
 // 수량 접두어 정의, 장비 이름 생성 엔진
 const cardCountPrefix = ["", "", "더블 ", "트리플 ", "쿼드로플 "];
@@ -39395,81 +39385,7 @@ function josa(word, pair){
   if(code < 0 || code > 11171) return pair[1];
   return (code % 28 !== 0) ? pair[0] : pair[1];
 }
-// ── [세계경험 개편 1단계] 로그 읽기 UX: 따라가기/읽기 상태, 신규 로그 카운터, 중요 사건 읽기 고정 ──
-// 정확한 사건 분류(카드·MVP·던전해금 등 태깅)는 3단계(로그 사건 블록) 작업 범위.
-// 여기서는 이미 존재하는 클래스 중 명확히 "발견/전환"급인 것만 우선 표시한다.
-const LOG_IMPORTANT_CLASSES=['level-up','location'];
-let logState={following:true,newCount:0,newImportant:0,holdUntil:0,holdTimer:null};
-
-function isLogNearBottom(el){ return (el.scrollHeight-el.scrollTop-el.clientHeight)<40; }
-
-function logOnScroll(){
-  let gl=$('game-log');
-  if(isLogNearBottom(gl)){
-    if(!logState.following){
-      logState.following=true;
-      if(logState.holdTimer){ clearTimeout(logState.holdTimer); logState.holdTimer=null; }
-      logResetCounter();
-    }
-  } else if(logState.following){
-    logState.following=false;
-  }
-}
-function logResetCounter(){
-  logState.newCount=0; logState.newImportant=0;
-  $('log-jump-btn').style.display='none';
-}
-function logUpdateJumpBtn(){
-  let btn=$('log-jump-btn');
-  if(logState.following||logState.newCount<=0){ btn.style.display='none'; return; }
-  btn.textContent=`↓ 새 로그 ${logState.newCount}`+(logState.newImportant>0?` · 중요 ${logState.newImportant}`:'');
-  btn.style.display='block';
-}
-function logResetState(){ // 로그 전체 초기화(캐릭터 교체·로비 복귀 등) 시 따라가기 상태도 같이 리셋
-  logState.following=true;
-  if(logState.holdTimer){ clearTimeout(logState.holdTimer); logState.holdTimer=null; }
-  logResetCounter();
-}
-function logJumpToBottom(){
-  let gl=$('game-log');
-  logResetState();
-  gl.scrollTop=gl.scrollHeight;
-}
-function toggleLogExpand(){
-  let ma=document.getElementById('main-area'); if(!ma) return;
-  let on=ma.classList.toggle('log-expanded');
-  $('log-expand-btn').classList.toggle('expanded',on);
-}
-
-function log(t,c='narrate',important){
-  if(G.silentMode) return; /* [P0-02③] 무음 모드 */
-  if(c.indexOf('chat')>=0) chatAppend(t,c); /* [채팅 탭] */
-  let el=document.createElement('div'); el.className='le '+c; el.innerHTML=t;
-  let gl=$('game-log');
-  let wasFollowing=logState.following;
-  let isImportant=important===true||LOG_IMPORTANT_CLASSES.includes(c);
-  gl.appendChild(el);
-  while(gl.children.length>200){
-    let beforeH=gl.scrollHeight;
-    gl.removeChild(gl.firstChild);
-    if(!wasFollowing) gl.scrollTop-=(beforeH-gl.scrollHeight); // 읽는 중엔 옛 로그 정리로 화면이 밀리지 않게 보정
-  }
-  if(wasFollowing){
-    gl.scrollTop=gl.scrollHeight;
-    if(isImportant){
-      // [세계경험 개편 §14] 중요 사건은 잠시 현재 화면 위치를 고정 — 게임 로직(자동사냥)은 계속 진행
-      logState.following=false;
-      logState.holdUntil=Date.now()+2500;
-      if(logState.holdTimer) clearTimeout(logState.holdTimer);
-      logState.holdTimer=setTimeout(()=>{ logState.holdTimer=null; if(Date.now()>=logState.holdUntil-50) logJumpToBottom(); },2500);
-    }
-  } else {
-    logState.newCount++;
-    if(isImportant) logState.newImportant++;
-    logUpdateJumpBtn();
-  }
-  if(G.stealthOn&&c!=='sep'&&typeof stealthSetLog==='function')stealthSetLog(t); /* [3-10] 위장 상태바 로그 */
-}
+function log(t,c='narrate'){ if(G.silentMode) return; /* [P0-02③] 무음 모드 */ if(c.indexOf('chat')>=0) chatAppend(t,c); /* [채팅 탭] */ let el=document.createElement('div'); el.className='le '+c; el.innerHTML=t; let gl=$('game-log'); gl.appendChild(el); gl.scrollTop=gl.scrollHeight; while(gl.children.length>200)gl.removeChild(gl.firstChild); if(G.stealthOn&&c!=='sep'&&typeof stealthSetLog==='function')stealthSetLog(t); /* [3-10] 위장 상태바 로그 */ }
 function logSep(){log('──────────────','sep');}
 // ── [UI-①] 로그 채널 필터 ──
 function setLogFilter(cls,el){
@@ -39477,9 +39393,7 @@ function setLogFilter(cls,el){
   gl.classList.remove('lf-battle','lf-loot','lf-sys');
   // [채팅 탭] 지나가는 유저 공간 — 전투 로그 200줄 한도에 밀려나지 않게 별도 버퍼(#chat-log)를 보여준다
   let cl=document.getElementById('chat-log'), isChat=cls==='lf-chat';
-  // [세계경험 개편 1단계] game-log가 #log-viewport로 감싸이면서 표시 전환은 래퍼 단위로 —
-  // gl만 숨기면 빈 #log-viewport가 여전히 flex:1을 차지해 #chat-log와 세로공간을 반씩 나눠 갖는다
-  document.getElementById('log-viewport').style.display=isChat?'none':'';
+  gl.style.display=isChat?'none':'';
   if(cl){ cl.style.display=isChat?'':'none'; if(isChat){ G.chatUnread=0; updateChatBadge(); cl.scrollTop=cl.scrollHeight; } }
   if(cls&&!isChat)gl.classList.add(cls);
   document.querySelectorAll('.lf-chip').forEach(c=>c.classList.remove('active'));
@@ -44757,14 +44671,11 @@ function checkMobile(){
   // [UI-⑤] 핫바를 모바일에서는 main-area 하단 가로 스트립으로 이동 — [P1-13] 주행동 바 바로 위
   // [P1-13] 적 정보(#mon-list)는 모바일에서 로그 위 상황 카드로 이동 (전투 탭 폐지)
   let hp=$('hotbar-panel'), ma=document.getElementById('main-area'), rp=document.getElementById('right-panel');
-  // [세계경험 개편 1단계] game-log가 #log-viewport로 감싸이면서, main-area의 직계 자식 기준으로
-  // 삽입해야 하는 insertBefore 참조 노드도 래퍼(lv)로 옮김 — gl은 더 이상 ma의 직계 자식이 아니라
-  // ma.insertBefore(ml, gl)이 NotFoundError를 던진다
-  let ml=document.getElementById('mon-list'), ab=document.getElementById('action-bar'), lv=document.getElementById('log-viewport');
+  let ml=document.getElementById('mon-list'), ab=document.getElementById('action-bar'), gl=document.getElementById('game-log');
   if(!ma||!rp) return;
   if(isM){
     if(hp&&hp.parentElement!==ma) ma.insertBefore(hp,ab);
-    if(ml&&ml.parentElement!==ma) ma.insertBefore(ml,lv);
+    if(ml&&ml.parentElement!==ma) ma.insertBefore(ml,gl);
   } else {
     if(ml&&ml.parentElement===ma) rp.appendChild(ml);
     if(hp&&hp.parentElement===ma) rp.insertBefore(hp,rp.firstChild);
@@ -50068,7 +49979,7 @@ function stealthMenuAction(act){
     stealthSave();
     // exitToLobby와 동일한 정리 — 단 saveGame(파일 대화상자 발생) 대신 조용한 저장 사용
     G.autoHunt=false; clearTimeout(G.huntTimer); clearTimeout(G.passerbyTimer); clearInterval(regenTimer);
-    $('game-log').innerHTML=''; logResetState(); initLobby();
+    $('game-log').innerHTML=''; initLobby();
     stealthSetLog('통합 문서를 닫았습니다');
   }
 }
