@@ -144,6 +144,11 @@ html[data-theme="dark"] .zone-chip .zc-bar{background:#2d3e50;}
 .le.quest{color:#4a5878;font-weight:600;}
 .le.npc{color:#5f567a;}
 .le.location{color:#4f7268;font-weight:500;}
+/* [세계경험 개편 3단계] 사건 블록 — 지역 진입·MVP·카드 등 "잠시 멈춰 읽어야 하는" 사건을
+   일반 전투 로그와 구분한다. 색은 기존 클래스(location/warning/loot)를 그대로 쓰고
+   여백·선만 더한다 — 과한 색·애니메이션보다 여백과 굵기로 강조하라는 원칙(§12). */
+.le.ev-block{border-top:1px dashed var(--border);border-bottom:1px dashed var(--border);padding:6px 2px;margin:3px 0;}
+.ev-title{font-weight:700;text-align:center;margin-bottom:2px;letter-spacing:.3px;}
 /* 데미지 수치 강조 */
 .hl-dmg{font-weight:700;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(3px)}to{opacity:1}}
@@ -3511,7 +3516,13 @@ function rollDrops(p, mon, opts){
     p.inventory[name] = (p.inventory[name]||0) + 1;
     if(isCard){ if(!p.cardCodex) p.cardCodex = {}; p.cardCodex[k] = true; }
     if(opts.summary) opts.summary.items[name] = (opts.summary.items[name]||0) + 1;
-    if(!opts.silent){ log(`🎁 ${name} 획득!`,'loot'); if(isCard) pbReact('card', k); }
+    if(!opts.silent){
+      // [세계경험 개편 3단계] 카드는 일반 드롭과 구분되는 사건 블록으로 먼저 알린다 —
+      // 그 아래 기존 "획득!" 로그는 그대로 유지(수치·인벤 반영 로그는 감산하지 않는다, §9)
+      if(isCard) logEvent('loot', [`쓰러진 <b>${mon.name}</b> 아래에 작은 카드 한 장이 남아 있다.`, `[${k}]`]);
+      log(`🎁 ${name} 획득!`,'loot');
+      if(isCard) pbReact('card', k);
+    }
   });
 }
 
@@ -4898,22 +4909,55 @@ function log(t,c='narrate',important){
 }
 function logSep(){log('──────────────','sep');}
 
+/** [세계경험 개편 3단계] 여러 줄을 하나의 "사건 블록"으로 묶어 출력 — 지역 진입·MVP·
+ *  카드 등 잠시 멈춰 읽어야 하는 사건 공용. cls는 기존 로그 필터/색 클래스(location·
+ *  warning·loot 등)를 그대로 쓴다 — 새 필터 카테고리를 만들지 않기 위함. 항상 중요
+ *  사건으로 취급해 읽기 고정을 건다(log()의 4번째 인자로 명시 — 1단계에서 마련해둔
+ *  확장점). 첫 방문 추가문처럼 여러 줄이 붙는 경우도 로그 항목 하나로 묶여 카드가
+ *  여러 개로 쪼개지지 않는다(§17). */
+function logEvent(cls, lines, title){
+  let body = lines.filter(Boolean).join('<br>');
+  let head = title ? `<div class="ev-title">${title}</div>` : '';
+  log(`${head}${body}`, `${cls} ev-block`, true);
+}
+
+/** [세계경험 개편 3단계] MVP 등장/처치 사건 블록. 몬스터 DB에 mvpAppearDesc/mvpDeathDesc가
+ *  없으면(아직 대부분) 범용 문구로 폴백 — entryDesc 폴백과 같은 패턴. */
+function logMvpAppear(mon){
+  let lines = mon.mvpAppearDesc ? [mon.mvpAppearDesc, `<b>${mon.emoji}${mon.name}</b>이(가) 나타났다.`]
+                                 : [`<b>${mon.emoji}${mon.name}</b>이(가) 나타났다.`];
+  logEvent('warning', lines, mon.name);
+}
+function logMvpDefeat(mon){
+  let lines = mon.mvpDeathDesc ? [mon.mvpDeathDesc] : [];
+  logEvent('gold', lines, `MVP · ${mon.name}`);
+}
+
 /** [세계경험 개편 2단계] 공용 맵 진입 후처리 — 최초 방문 판정 + 장소 묘사 로그.
  *  entryDesc가 아직 없는 맵(대다수)은 기존 "🗺 이동" 문구로 폴백 — §30 6단계
  *  (메시지 전수 작성)에서 점차 대체해 나간다. 이동 가능 여부·비용·던전 해금
- *  판정은 호출부(tryMove 등)가 그대로 담당하고, 여기서는 "도착했다" 이후만 다룬다. */
+ *  판정은 호출부(tryMove 등)가 그대로 담당하고, 여기서는 "도착했다" 이후만 다룬다.
+ *  [3단계] 지역 방문으로 열리는 퀘스트 발견 훅도 여기서 함께 처리한다. */
+const MAP_QUEST_DISCOVERY = { '프론테라': ['Q_CULVERTS'] }; // 프론테라 파일럿 범위 — 나머지 지역은 §30 6단계에서 확대
 function enterMap(nm){
   let p=G.player; if(!p) return;
   let md=DB.maps[nm]||{};
   if(!p.visitedMaps) p.visitedMaps={};
   let first=!p.visitedMaps[nm];
   if(md.entryDesc){
-    log(`${md.emoji||'🗺'} <b>${nm}</b><br>${md.entryDesc}`,'location');
-    if(first && md.firstVisitDesc) log(md.firstVisitDesc,'location');
+    let lines=[`${md.emoji||'🗺'} <b>${nm}</b>`, md.entryDesc];
+    if(first && md.firstVisitDesc) lines.push(md.firstVisitDesc);
+    logEvent('location', lines);
   } else {
     log(`🗺 ${nm} 이동`,'location');
   }
   p.visitedMaps[nm]=true;
+
+  if(MAP_QUEST_DISCOVERY[nm] && p.quests){
+    MAP_QUEST_DISCOVERY[nm].forEach(qid=>{
+      if(!p.quests[qid]) p.quests[qid]={state:'available',count:0};
+    });
+  }
 }
 // ── [UI-①] 로그 채널 필터 ──
 function setLogFilter(cls,el){
@@ -5634,6 +5678,7 @@ function awardKillReward(p, mon, set){
   if(!p.killCount) p.killCount = {};
   p.killCount[mon.name] = (p.killCount[mon.name]||0) + 1;
   addZoneKill();
+  if(mon.isMvp) logMvpDefeat(mon); // [세계경험 개편 3단계] 사건 블록 → 그 아래 기존 EXP/제니/드롭 로그가 그대로 이어진다
   let _rm = returnerMult(p);
   let getExp = Math.floor((mon.exp||0) * (set.expRate||1) * _rm);
   let getJexp = Math.floor((mon.jexp||0) * (set.expRate||1) * _rm);
@@ -10136,7 +10181,7 @@ function spawnMonsters(){
       p.seenCount[mvpMon.name] = (p.seenCount[mvpMon.name]||0) + 1;
       spawnMvpSlaves(mvpMon, initDist);
       logSep();
-      log(`⚠ ⚠ <b style="color:#9b59b6;">[MVP]</b> <b>${mvpMon.emoji}${mvpMon.name}</b> 출현!`, 'warning');
+      logMvpAppear(mvpMon);
       renderMonsters(); return;
     }
   }
@@ -10185,8 +10230,11 @@ function spawnMonsters(){
   if(!nm.length) return; logSep();
   let hasMvpInBattle = G.battles.some(b=>b.isMvp);
   if(hasMvpInBattle){
-    log(`⚠ ⚠ <b style="color:#9b59b6;">[MVP 출현!]</b> ${nm.join(', ')}`, 'warning');
-    pbReact('mvp', (G.battles.find(b=>b.isMvp)||{}).name);
+    let mvpB = G.battles.find(b=>b.isMvp);
+    logMvpAppear(mvpB);
+    let others = nm.filter(n=>!n.includes(mvpB.name));
+    if(others.length) log(`⚠ 함께 나타난 <b>${others.join(', ')}</b>`,'warning');
+    pbReact('mvp', mvpB.name);
   } else if(initDist > 1){
     log(`⚠ 야생의 <b>${nm.join(', ')}</b> 출현! <span style="color:var(--blue-light)">[거리 ${initDist}]</span>`,'warning');
   } else {
@@ -12127,9 +12175,13 @@ function initTutorialQuests(p) {
     p.quests.tut_01 = { state: 'available', count: 0 };
   }
   // A·B등급 퀘스트 초기 해금 (레벨/선행 조건 없는 것들)
+  // [세계경험 개편 §30 4단계 — 프론테라 파일럿] Q_CULVERTS는 여기서 뺐다. 캐릭터
+  // 생성 즉시 전역 available이면 방문하지 않은 지역의 퀘스트가 퀘스트창에 먼저
+  // 뜨는 문제(§7.1)가 생긴다 — 대신 enterMap()의 MAP_QUEST_DISCOVERY가 프론테라
+  // 최초 진입 시점에 열어준다. 나머지 지역 퀘스트는 이번 파일럿 범위 밖이라 유지.
   const autoUnlock = [
     // A등급
-    'Q_CULVERTS','Q_PAY_RENO','Q_PAY_MRSMILE','Q_GEF_MAGE_TRAIN','Q_MOC_CONTINENTAL',
+    'Q_PAY_RENO','Q_PAY_MRSMILE','Q_GEF_MAGE_TRAIN','Q_MOC_CONTINENTAL',
     // B등급
     'Q_PAY_JUICE','Q_ALD_MESSAGE','Q_RAC_ICENECKLACE','Q_RAC_LOSTCHILD',
     'Q_LHZ_FRIENDSHIP','Q_YUN_JUPEROS_CORE','Q_HUG_MEDICINE','Q_HUG_MEMORY',
