@@ -4845,20 +4845,37 @@ function josa(word, pair){
 // 정확한 사건 분류(카드·MVP·던전해금 등 태깅)는 3단계(로그 사건 블록) 작업 범위.
 // 여기서는 이미 존재하는 클래스 중 명확히 "발견/전환"급인 것만 우선 표시한다.
 const LOG_IMPORTANT_CLASSES=['level-up','location'];
-let logState={following:true,newCount:0,newImportant:0,holdUntil:0,holdTimer:null};
+let logState={following:true,newCount:0,newImportant:0,holdUntil:0,holdTimer:null,_progScroll:false};
 
 function isLogNearBottom(el){ return (el.scrollHeight-el.scrollTop-el.clientHeight)<40; }
 
+// 코드가 직접 game-log의 scrollTop을 움직일 때 쓰는 헬퍼. 이후 뒤따라 발생하는
+// 'scroll' 이벤트를 logOnScroll()이 "사용자가 직접 스크롤했다"고 오인해
+// 방금 세운 따라가기/읽기 고정 상태를 스스로 되돌려버리는 걸 막는다(자기 자신이
+// 일으킨 스크롤이 자기 자신을 취소하는 경합 — §14 읽기 고정이 즉시 풀리던 원인).
+function logSetScrollTop(gl,v){
+  logState._progScroll=true;
+  gl.scrollTop=v;
+  requestAnimationFrame(()=>{ requestAnimationFrame(()=>{ logState._progScroll=false; }); });
+}
+
 function logOnScroll(){
   let gl=$('game-log');
+  if(logState._progScroll){ logState._progScroll=false; return; } // 코드가 일으킨 스크롤은 무시
   if(isLogNearBottom(gl)){
     if(!logState.following){
       logState.following=true;
       if(logState.holdTimer){ clearTimeout(logState.holdTimer); logState.holdTimer=null; }
       logResetCounter();
     }
-  } else if(logState.following){
-    logState.following=false;
+  } else {
+    if(logState.following){
+      logState.following=false;
+    }
+    // 사용자가 실제로 스크롤을 움직여 읽는 중이라면, 예약된 "N초 후 자동으로
+    // 바닥까지 복귀" 타이머는 취소한다 — 안 그러면 §14 읽기 고정 시간이 끝나는
+    // 순간 사용자가 읽고 있던 위치를 무시하고 강제로 바닥까지 튀어버린다.
+    if(logState.holdTimer){ clearTimeout(logState.holdTimer); logState.holdTimer=null; }
   }
 }
 function logResetCounter(){
@@ -4879,7 +4896,7 @@ function logResetState(){ // 로그 전체 초기화(캐릭터 교체·로비 �
 function logJumpToBottom(){
   let gl=$('game-log');
   logResetState();
-  gl.scrollTop=gl.scrollHeight;
+  logSetScrollTop(gl,gl.scrollHeight);
 }
 function toggleLogExpand(){
   let ma=document.getElementById('main-area'); if(!ma) return;
@@ -4898,10 +4915,10 @@ function log(t,c='narrate',important){
   while(gl.children.length>200){
     let beforeH=gl.scrollHeight;
     gl.removeChild(gl.firstChild);
-    if(!wasFollowing) gl.scrollTop-=(beforeH-gl.scrollHeight); // 읽는 중엔 옛 로그 정리로 화면이 밀리지 않게 보정
+    if(!wasFollowing) logSetScrollTop(gl,gl.scrollTop-(beforeH-gl.scrollHeight)); // 읽는 중엔 옛 로그 정리로 화면이 밀리지 않게 보정
   }
   if(wasFollowing){
-    gl.scrollTop=gl.scrollHeight;
+    logSetScrollTop(gl,gl.scrollHeight);
     if(isImportant){
       // [세계경험 개편 §14] 중요 사건은 잠시 현재 화면 위치를 고정 — 게임 로직(자동사냥)은 계속 진행
       logState.following=false;
@@ -4981,7 +4998,8 @@ function setLogFilter(cls,el){
   if(cls&&!isChat)gl.classList.add(cls);
   document.querySelectorAll('.lf-chip').forEach(c=>c.classList.remove('active'));
   if(el)el.classList.add('active');
-  gl.scrollTop=gl.scrollHeight;
+  logResetState();
+  logSetScrollTop(gl,gl.scrollHeight);
 }
 const CHAT_LOG_MAX = 100;
 function chatAppend(t,c){
