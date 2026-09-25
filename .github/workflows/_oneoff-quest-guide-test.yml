@@ -30,7 +30,7 @@ jobs:
         run: |
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
-          cat > /tmp/quest-smoke.js <<'JS'
+          cat > quest-smoke.js <<'JS'
           const { chromium } = require('playwright');
           const path = require('path');
           (async()=>{
@@ -53,7 +53,7 @@ jobs:
               showQuestModal();
             });
             const text=await page.locator('#modal-body').innerText();
-            const must=['퀘스트','지금 할 일','폭죽 20개 수집','보상','수락 가능한 퀘스트','친절한 노인','전직 퀘스트'];
+            const must=['지금 할 일','폭죽 20개 수집','보상','수락 가능한 퀘스트','친절한 노인','전직 퀘스트'];
             for(const s of must){ if(!text.includes(s)) throw new Error('missing '+s+'\n'+text); }
             if(!/프론테라/.test(text)) throw new Error('NPC/map guidance missing\n'+text);
             if(errors.length) throw new Error('page errors: '+errors.join('\n'));
@@ -61,7 +61,8 @@ jobs:
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
-          node /tmp/quest-smoke.js
+          node quest-smoke.js
+          rm quest-smoke.js
       - name: Commit generated HTML
         run: |
           git config user.name "github-actions[bot]"
