@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-룬미드가츠 빌드 스크립트 (P4-03 + 동적 세계지도 v1).
+룬미드가츠 빌드 스크립트 (P4-03 + 동적 세계지도 v1 + 서비스 시스템 v1).
 
 source/template.html + source/data/*.json 을 합쳐 배포용 단일 HTML을 만든다.
 db-items/db-monsters/db-maps/db-npcs 를 외부 JSON으로 관리하면서도,
@@ -8,8 +8,9 @@ db-items/db-monsters/db-maps/db-npcs 를 외부 JSON으로 관리하면서도,
 데이터가 인라인된 단일 HTML이어야 한다 — 외부 JSON은 file://에서 fetch()가
 CORS로 막힌다(DEVREF-E 보류-01).
 
-동적 세계지도는 source/world-map.js 로 분리 관리하되 빌드 시 </body> 직전에
-인라인한다. 최종 index.html / 룬미드가츠_v9.19.html 은 계속 단일 HTML이다.
+동적 세계지도는 source/world-map.js, 서비스 보강 계층은 source/services.js,
+소규모 UX 핫픽스는 source/ui-hotfix.js 로 분리 관리하되 빌드 시 </body> 직전에
+모두 인라인한다. 최종 index.html / 룬미드가츠_v9.19.html 은 계속 단일 HTML이다.
 
 사용법: python build.py
 """
@@ -20,6 +21,8 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_PATH = os.path.join(BASE, "source", "template.html")
 DATA_DIR = os.path.join(BASE, "source", "data")
 WORLD_MAP_SCRIPT_PATH = os.path.join(BASE, "source", "world-map.js")
+SERVICE_SCRIPT_PATH = os.path.join(BASE, "source", "services.js")
+UI_HOTFIX_SCRIPT_PATH = os.path.join(BASE, "source", "ui-hotfix.js")
 OUTPUT_PATH = os.path.join(BASE, "룬미드가츠_v9.19.html")
 # GitHub Pages는 루트의 index.html을 서빙한다 — 버전 올려도 폰 북마크 URL이
 # 안 바뀌게 매 빌드마다 같은 내용을 index.html에도 복사한다 (2026-09-20)
@@ -105,15 +108,22 @@ def main():
         assert count == 1, f"marker {marker} matched {count} times (expected 1)"
         template = template.replace(marker, raw[marker_key].rstrip("\n"), 1)
 
-    # 레거시 showWorldMapModal()은 template.html에 남아 있어도,
-    # 가장 마지막에 로드되는 이 스크립트가 window.showWorldMapModal을 재정의한다.
-    # 거대 template.html을 다시 비대하게 만들지 않으면서 최종 산출물은 단일 HTML 유지.
+    # 레거시 showWorldMapModal()은 template.html에 남아 있어도 뒤에 로드되는
+    # world-map-v1이 재정의한다. 서비스 계층과 UX 핫픽스도 같은 방식으로
+    # 외부 로드 없이 최종 HTML에 인라인한다.
     world_map_script = open(WORLD_MAP_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
+    service_script = open(SERVICE_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
+    ui_hotfix_script = open(UI_HOTFIX_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     body_close = "</body>"
     count = template.count(body_close)
     assert count == 1, f"{body_close} matched {count} times (expected 1)"
-    world_map_block = f'\n<script id="world-map-v1">\n{world_map_script}\n</script>\n{body_close}'
-    template = template.replace(body_close, world_map_block, 1)
+    injected = (
+        f'\n<script id="world-map-v1">\n{world_map_script}\n</script>\n'
+        f'<script id="block-service-systems">\n{service_script}\n</script>\n'
+        f'<script id="ux-hotfix">\n{ui_hotfix_script}\n</script>\n'
+        f'{body_close}'
+    )
+    template = template.replace(body_close, injected, 1)
 
     tmp_path = OUTPUT_PATH + ".tmp"
     with open(tmp_path, "w", encoding="utf-8-sig", newline="\r\n") as f:
@@ -128,6 +138,8 @@ def main():
     print(f"OK - built {OUTPUT_PATH} ({len(template)} chars)")
     print(f"OK - built {INDEX_PATH} (GitHub Pages entry point)")
     print("OK - dynamic SVG world map injected")
+    print("OK - phase 1-2 service systems injected")
+    print("OK - UX hotfix injected")
 
 
 if __name__ == "__main__":
