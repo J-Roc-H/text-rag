@@ -35,10 +35,10 @@ jobs:
           const errors=[];
           page.on('pageerror', e=>errors.push(String(e)));
           await page.goto('http://127.0.0.1:8000/index.html', {waitUntil:'domcontentloaded'});
-          await page.waitForSelector('#modal-overlay');
+          await page.waitForSelector('#modal-overlay', {state:'attached'});
           const result = await page.evaluate(() => {
             const fake = {
-              name:'smoke', job:'노비스', level:1, jobLevel:1,
+              name:'smoke', job:'노비스', baseLv:1, jobLv:1,
               hp:100, maxHp:100, sp:100, maxSp:100, zeny:20000,
               str:1,agi:1,vit:1,int:1,dex:1,luk:1,
               baseExp:0,jobExp:0,statPoints:0,skillPoints:0,
