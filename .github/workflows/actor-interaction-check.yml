@@ -4,52 +4,59 @@ on:
   push:
     branches:
       - feat/refine-reveal-and-object-canon
+  pull_request:
+    branches:
+      - main
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  normalize:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          fetch-depth: 2
+          python-version: '3.12'
 
-      - name: Restore main bytes and reapply two actorType fields
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Python syntax
+        run: python -m py_compile build.py
+
+      - name: Actor interaction JS syntax
+        run: node --check source/actor-interaction.js
+
+      - name: Refine reveal JS syntax
+        run: node --check source/refine-reveal.js
+
+      - name: Actor interaction runtime smoke
+        run: node tests/actor-interaction-smoke.js
+
+      - name: Refine reveal runtime smoke
+        run: node tests/refine-reveal-smoke.js
+
+      - name: Canonical object actors
         shell: bash
         run: |
-          git fetch origin main --depth=1
-          git checkout origin/main -- source/data/db-npcs.json
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('source/data/db-npcs.json')
-          b=p.read_bytes()
-          pairs=[
-            (
-              '"이미르의 책": {"map": "유노", "emoji": "📖", "dialog": "낡은 책장 위에 놓인 거대한 고서. 펼쳐진 면에서 희미한 빛이 새어 나온다.", "service": "ymir_book"}',
-              '"이미르의 책": {"map": "유노", "emoji": "📖", "actorType": "object", "dialog": "낡은 책장 위에 놓인 거대한 고서. 펼쳐진 면에서 희미한 빛이 새어 나온다.", "service": "ymir_book"}'
-            ),
-            (
-              '"바이오랩 트리거": {"map": "생체연구소 1층", "emoji": "⚗️", "dialog": "...어두운 공간에서 이상한 기계음이 들린다. 수갑을 소지하고 있다면 무언가를 할 수 있을 것 같다.", "service": ""}',
-              '"바이오랩 트리거": {"map": "생체연구소 1층", "emoji": "⚗️", "actorType": "object", "dialog": "...어두운 공간에서 이상한 기계음이 들린다. 수갑을 소지하고 있다면 무언가를 할 수 있을 것 같다.", "service": ""}'
-            ),
-          ]
-          for old,new in pairs:
-              oldb,newb=old.encode('utf-8'),new.encode('utf-8')
-              if b.count(oldb)!=1:
-                  raise SystemExit(f'expected one exact byte match: {old}')
-              b=b.replace(oldb,newb,1)
-          p.write_bytes(b)
-          PY
-          git diff --numstat -- source/data/db-npcs.json
+          grep -q '"이미르의 책".*"actorType": "object"' source/data/db-npcs.json
+          grep -q '"바이오랩 트리거".*"actorType": "object"' source/data/db-npcs.json
+          test "$(grep -o '"actorType": "object"' source/data/db-npcs.json | wc -l)" -eq 2
 
-      - name: Commit normalized diff
+      - name: Build single HTML
+        run: python build.py
+
+      - name: Verify injected interaction layers
         shell: bash
         run: |
-          git config user.name 'Da Bimci'
-          git config user.email '284856624+J-Roc-H@users.noreply.github.com'
-          git add source/data/db-npcs.json
-          git commit -m 'chore: preserve npc db line endings'
-          git push origin HEAD:feat/refine-reveal-and-object-canon
+          grep -q 'id="actor-interaction-v1"' index.html
+          grep -q 'id="refine-reveal-v1"' index.html
+          grep -q '으허허헉!!!!' index.html
+          test -s '룬미드가츠_v9.19.html'
