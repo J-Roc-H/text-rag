@@ -43,6 +43,9 @@ jobs:
       - name: Refine reveal runtime smoke
         run: node tests/refine-reveal-smoke.js
 
+      - name: Alberta doll exchange smoke
+        run: node tests/alberta-doll-exchange-smoke.js
+
       - name: Canonical object actors
         shell: bash
         run: |
