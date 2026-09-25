@@ -34,6 +34,9 @@ jobs:
       - name: Actor interaction JS syntax
         run: node --check source/actor-interaction.js
 
+      - name: Actor interaction runtime smoke
+        run: node tests/actor-interaction-smoke.js
+
       - name: Build single HTML
         run: python build.py
 
