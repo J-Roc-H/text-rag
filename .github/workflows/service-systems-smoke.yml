@@ -28,6 +28,12 @@ jobs:
         shell: bash
         run: |
           python -m http.server 8000 >/tmp/textrag-http.log 2>&1 &
+          for i in $(seq 1 50); do
+            if curl -fsS http://127.0.0.1:8000/index.html >/dev/null; then break; fi
+            sleep 0.2
+          done
+          curl -fsS http://127.0.0.1:8000/index.html >/dev/null
+
           cat > service-smoke.mjs <<'JS'
           import { chromium } from 'playwright';
           const browser = await chromium.launch({headless:true});
@@ -37,42 +43,94 @@ jobs:
           await page.goto('http://127.0.0.1:8000/index.html', {waitUntil:'domcontentloaded'});
           await page.waitForSelector('#modal-overlay', {state:'attached'});
           await page.waitForFunction(() => typeof DB !== 'undefined' && DB.items && DB.items['나이프'] && typeof talkNPC === 'function' && window.__serviceSystemsV2);
+
           const result = await page.evaluate(() => {
+            // 서비스 로직만 검증하도록 주변 UI/저장 부작용을 최소화한다.
+            window.updateUI=()=>{};
+            window.saveLocal=()=>{};
+            window.checkQuestGather=()=>{};
+            window.notify=()=>{};
+            window.calcStats=()=>({dex:50,luk:50,aspdDelay:300});
+            localStorage.removeItem('rmc_warehouse');
+
             const fake = {
               name:'smoke', job:'노비스', baseLv:1, jobLv:1,
-              hp:100, maxHp:100, sp:100, maxSp:100, zeny:20000,
+              hp:100, maxHp:100, sp:100, maxSp:100, zeny:30000,
               str:1,agi:1,vit:1,int:1,dex:1,luk:1,
               baseExp:0,jobExp:0,statPoints:0,skillPoints:0,
-              inventory:{'나이프 [3]':1,'프라콘':2,'루비':2,'빈병':2,'빨간 허브':2},
+              inventory:{'나이프 [3]':1,'프라콘':2,'루비':4,'빈병':2,'빨간 허브':2},
               equip:{}, skills:{'파머시':1}, quests:{}, jobQuests:{},
               unlockedMaps:{}, statusEffects:{}, settings:{}, options:{}, hotbar:{}, records:{}, cardCodex:{}
             };
             G.player=fake; G.currentMap='프론테라'; G.battles=[]; G.autoHunt=false; G.cooldowns={};
 
+            // 1. 제련: 가방 장비 표시 + 실제 +1 상태 변화.
             showRefineModal();
             const refineText=document.querySelector('#modal-body').textContent;
             if(!refineText.includes('가방') || !refineText.includes('나이프')) throw new Error('refine modal smoke failed');
+            const refineIdx=(window.__svcRefineTargets||[]).findIndex(x=>x.source==='inventory' && x.key==='나이프 [3]');
+            if(refineIdx<0) throw new Error('inventory refine target missing');
+            const oldRandom=Math.random;
+            Math.random=()=>0;
+            serviceRefineTarget(refineIdx);
+            Math.random=oldRandom;
+            const refinedKey=Object.keys(fake.inventory).find(k=>{ const p=parseItem(k); return p&&p.baseName==='나이프'&&Number(p.refine)===1; });
+            if(!refinedKey || fake._maxRefineEver!==1 || fake.inventory['프라콘']!==1) throw new Error('refine state transition failed');
             closeModal();
 
+            // 2. 카프라 창고: 2개 맡기기 + 전부 찾기.
             kafraWarehouse();
             const whText=document.querySelector('#modal-body').textContent;
             if(!whText.includes('내 인벤토리') || !whText.includes('공유 창고') || !whText.includes('전부')) throw new Error('warehouse modal smoke failed');
+            let wi=(window.__svcWarehouseTargets||[]).indexOf('루비');
+            if(wi<0) throw new Error('warehouse ruby target missing');
+            serviceWarehouseTransfer(wi,'deposit',2);
+            let wh=JSON.parse(localStorage.getItem('rmc_warehouse')||'{}');
+            if(wh['루비']!==2 || fake.inventory['루비']!==2) throw new Error('warehouse deposit failed');
+            wi=(window.__svcWarehouseTargets||[]).indexOf('루비');
+            if(wi<0) throw new Error('warehouse ruby withdraw target missing');
+            serviceWarehouseTransfer(wi,'withdraw','all');
+            wh=JSON.parse(localStorage.getItem('rmc_warehouse')||'{}');
+            if((wh['루비']||0)!==0 || fake.inventory['루비']!==4) throw new Error('warehouse withdraw failed');
             closeModal();
 
+            // 3. 던전: 최초 1회 결제·해금, 재호출 무과금.
             talkNPC('거북 할아버지');
             const dungeonText=document.querySelector('#modal-body').textContent;
             if(!dungeonText.includes('거북섬') || !dungeonText.includes('입장 허가')) throw new Error('dungeon service smoke failed');
+            const beforeDungeonZeny=fake.zeny;
+            serviceDungeonUnlock('거북 할아버지');
+            if(!fake.unlockedMaps['거북섬'] || fake.zeny!==beforeDungeonZeny-10000) throw new Error('dungeon unlock failed');
+            const afterUnlock=fake.zeny;
+            serviceDungeonUnlock('거북 할아버지');
+            if(fake.zeny!==afterUnlock) throw new Error('dungeon repeat charged twice');
             closeModal();
 
+            // 4. 공용 교환: 루비 2 → 자수정 1.
             talkNPC('제이드');
             const exchangeText=document.querySelector('#modal-body').textContent;
             if(!exchangeText.includes('루비') || !exchangeText.includes('1회') || !exchangeText.includes('최대')) throw new Error('exchange service smoke failed');
+            const rubyBefore=fake.inventory['루비'];
+            const ameBefore=fake.inventory['자수정']||0;
+            serviceRunExchange(0,1);
+            if(fake.inventory['루비']!==rubyBefore-2 || fake.inventory['자수정']!==ameBefore+1) throw new Error('exchange state transition failed');
             closeModal();
 
-            if(!window.__serviceSystemsV2 || !window.__serviceSystemsV2.scope.includes('crafting')) throw new Error('crafting service layer missing');
-            if(typeof window.useSkill!=='function' || typeof window.serviceCraftBatch!=='function') throw new Error('craft routing globals missing');
+            // 5. 파머시: 현재 DB 키(빈병+빨간 허브)로 실제 제작.
+            useSkill('파머시');
+            const craftText=document.querySelector('#modal-body').textContent;
+            if(!craftText.includes('빈병') || !craftText.includes('빨간 허브') || !craftText.includes('빨간포션')) throw new Error('pharmacy recipe modal failed');
+            const ci=(window.__svcCraftRecipes||[]).findIndex(r=>r.name==='파머시'&&r.product==='빨간포션');
+            if(ci<0) throw new Error('pharmacy recipe target missing');
+            const bottleBefore=fake.inventory['빈병'], herbBefore=fake.inventory['빨간 허브'], potionBefore=fake.inventory['빨간포션']||0, spBefore=fake.sp;
+            Math.random=()=>0;
+            serviceCraftBatch(ci,1);
+            Math.random=oldRandom;
+            if(fake.inventory['빈병']!==bottleBefore-1 || fake.inventory['빨간 허브']!==herbBefore-1 || (fake.inventory['빨간포션']||0)<=potionBefore || fake.sp>=spBefore) throw new Error('pharmacy craft transition failed');
+            closeModal();
 
-            return {refine:true,warehouse:true,dungeon:true,exchange:true,craftRouter:true,version:window.__serviceSystemsV2.version};
+            if(!window.__serviceSystemsV2.scope.includes('crafting')) throw new Error('crafting scope missing');
+            return {refine:true,warehouse:true,dungeon:true,exchange:true,pharmacy:true,version:window.__serviceSystemsV2.version};
           });
           if(errors.length) throw new Error('page errors: '+errors.join(' | '));
           console.log(JSON.stringify(result));
