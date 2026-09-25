@@ -3020,6 +3020,54 @@ $('modal-overlay').classList.add('open');
 // migrateSave -> normalizeSave 단일 경로로 통합한다.
 const SAVE_SCHEMA_VERSION = 1;
 
+// 아이템 DB 정리 후에도 기존 세이브의 인벤·장착·카드·핫바·창고를 잃지 않도록
+// 옛 키를 정식 키로 한 번만 치환한다. 무/유슬롯 원본 쌍의 '_'는 DB에서 제거됐으므로
+// 같은 기본명이 존재할 때만 자동으로 접미사를 벗긴다.
+const ITEM_KEY_ALIASES = Object.freeze({
+  "파리의날개": "파리의 날개",
+  "각성의포션": "각성의 포션",
+  "이그드라실의열매": "이그드라실의 열매",
+  "위그드라실의 열매": "이그드라실의 열매",
+  "이그드라실의씨앗": "이그드라실의 씨앗",
+  "위그드라실의 씨앗": "이그드라실의 씨앗",
+  "타나토스의절망 카드": "타나토스의 절망 카드",
+  "플레임스컬 카드": "플레임 스컬 카드",
+  "안경": "글래스"
+});
+function canonicalItemName(baseName){
+  const mapped = ITEM_KEY_ALIASES[baseName];
+  if(mapped) return mapped;
+  if(baseName.endsWith('_') && DB.items[baseName.slice(0,-1)]) return baseName.slice(0,-1);
+  return baseName;
+}
+function migrateItemKey(key){
+  if(!key || typeof key !== 'string') return key;
+  const m = key.match(/^(?:\+(\d+)\s?)?([^\[\<]+?)(?:\s?\[(\d+)\])?(?:\s?\<([^\>]+)\>)?$/);
+  if(!m) return key;
+  const original = m[2].trim();
+  const baseName = canonicalItemName(original);
+  const originalCards = m[4] ? m[4].split(',').map(s=>s.trim()) : [];
+  const cards = originalCards.map(c=>canonicalItemName(c));
+  const cardsChanged = cards.some((c,i)=>c!==originalCards[i]);
+  if(baseName===original && !cardsChanged) return key;
+  if(!m[1] && !m[3] && !m[4]) return baseName;
+  return buildEquipKey(baseName, m[3] ? parseInt(m[3]) : (DB.items[baseName]?.slots||0), cards, m[1] ? parseInt(m[1]) : 0);
+}
+function migrateItemLedger(ledger, mergeCount=true){
+  if(!ledger || typeof ledger !== 'object' || Array.isArray(ledger)) return false;
+  let changed=false, next={};
+  Object.entries(ledger).forEach(([key,value])=>{
+    const target=migrateItemKey(key);
+    if(target!==key) changed=true;
+    if(mergeCount) next[target]=(next[target]||0)+(Number(value)||0);
+    else next[target]=next[target]||value;
+  });
+  if(!changed) return false;
+  Object.keys(ledger).forEach(key=>delete ledger[key]);
+  Object.assign(ledger,next);
+  return true;
+}
+
 function validateSave(data){
   return !!(data && typeof data === 'object' && data.name && data.job);
 }
@@ -3082,6 +3130,12 @@ function normalizeSave(p){
     p.combatRecordSeq=p.combatRecords.reduce((max,r)=>Math.max(max,Number((String(r&&r.id||'').match(/^enc-(\d+)$/)||[])[1])||0),0);
   }
   if(p.combatRecords.length>COMBAT_RECORD_LIMIT) p.combatRecords=p.combatRecords.slice(-COMBAT_RECORD_LIMIT);
+
+  migrateItemLedger(p.inventory);
+  migrateItemLedger(p.cardCodex, false);
+  migrateItemLedger(p.sellLocked, false);
+  if(p.equip) Object.keys(p.equip).forEach(slot=>{ p.equip[slot]=migrateItemKey(p.equip[slot]); });
+  Object.values(p.hotbar).forEach(slot=>{ if(slot && slot.type==='item') slot.name=migrateItemKey(slot.name); });
 
   // [데이터 마이그레이션] 인벤의 유령 키 제거.
   // 드롭명이 아이템DB에 없던 시절에 쌓인 것들이라 팔 수도 쓸 수도 없는 죽은 데이터다.
@@ -3367,7 +3421,13 @@ function downloadText(text, filename){
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
-function readWarehouse(){ try{ let d = localStorage.getItem('rmc_warehouse'); return d ? JSON.parse(d) : {}; }catch(e){ return {}; } }
+function readWarehouse(){
+  try{
+    let d=localStorage.getItem('rmc_warehouse'), wh=d?JSON.parse(d):{};
+    if(migrateItemLedger(wh)) localStorage.setItem('rmc_warehouse',JSON.stringify(wh));
+    return wh;
+  }catch(e){ return {}; }
+}
 function readRestore(){ try{ let d = localStorage.getItem(RMG_RESTORE_KEY); return d ? JSON.parse(d) : null; }catch(e){ return null; } }
 function fmtSaveTime(iso){
   let d = iso ? new Date(iso) : null;
@@ -6624,7 +6684,9 @@ function useItem(n,auto=false){
   if(it.type==='소모품'&&G.itemCooldowns[n]&&now<G.itemCooldowns[n]){if(!auto)log(`⏳ 쿨타임 중`,'warning');return false;}
   p.inventory[n]--; if(p.inventory[n]<=0)delete p.inventory[n];
   if(!p.statusEffects)p.statusEffects={};
-  let hpHeal=it.heal||(it.effect==='hp'?it.value:0)||0;
+  let hpHeal=(it.healMin!=null&&it.healMax!=null)
+    ? it.healMin+Math.floor(Math.random()*(it.healMax-it.healMin+1))
+    : it.heal||(it.effect==='hp'?it.value:0)||0;
   // E. 포션 연구: HP 회복 아이템 효율 +10%×Lv
   { let prLv=(p.skills&&p.skills["포션 연구"])||0;
     if(prLv>0&&hpHeal>0) hpHeal=Math.floor(hpHeal*(1+prLv*0.1));
@@ -6634,7 +6696,10 @@ function useItem(n,auto=false){
   if(spHeal>0){let r=Math.min(spHeal,p.maxSp-p.sp);p.sp+=r;log(`${it.emoji||'💙'} <b>${n}</b> SP <span style="color:#3498db">+${r}</span>`,'heal');}
   if(it.effect==='full'){p.hp=p.maxHp;p.sp=p.maxSp;log(`${it.emoji||'🍎'} <b>${n}</b> 완전 회복!`,'heal');G.itemCooldowns[n]=now+10000;}
   else if(it.effect==='half'){let rh=Math.floor(p.maxHp*0.5),rs=Math.floor(p.maxSp*0.5);p.hp=Math.min(p.maxHp,p.hp+rh);p.sp=Math.min(p.maxSp,p.sp+rs);log(`${it.emoji||'🌰'} <b>${n}</b> HP <span style="color:#27ae60">+${rh}</span> / SP <span style="color:#3498db">+${rs}</span>`,'heal');G.itemCooldowns[n]=now+8000;}
-  else if(it.effect==='cure'){['poison','silence','blind'].forEach(s=>delete p.statusEffects[s]);log(`💚 <b>${n}</b> 상태이상 치료`,'heal');}
+  else if(it.effect==='cure'){
+    (Array.isArray(it.cure)?it.cure:['poison','silence','blind']).forEach(s=>delete p.statusEffects[s]);
+    log(`💚 <b>${n}</b> 상태이상 치료`,'heal');
+  }
   else if(it.effect==='teleport'){
     // [FIX] 마을(safe 맵)에서는 사용 불가 — 아이템 반환
     let _cm=DB.maps[G.currentMap];
@@ -7607,8 +7672,7 @@ function kafraWarpTo(dest, cost){
 /** 창고 UI (모든 캐릭터 공유) */
 function kafraWarehouse(){
   // 공유 창고: localStorage의 별도 키 사용
-  let wh={};
-  try{ let d=localStorage.getItem('rmc_warehouse'); if(d)wh=JSON.parse(d); }catch(e){}
+  let wh=readWarehouse();
 
   let p=G.player;
   let whKeys=Object.keys(wh).filter(k=>wh[k]>0);
@@ -7656,8 +7720,7 @@ function kafraWarehouse(){
 function warehouseDeposit(itemName){
   let p=G.player;
   if((p.inventory[itemName]||0)<=0){ log('해당 아이템이 없습니다.','error'); return; }
-  let wh={};
-  try{ let d=localStorage.getItem('rmc_warehouse'); if(d)wh=JSON.parse(d); }catch(e){}
+  let wh=readWarehouse();
   p.inventory[itemName]--;
   if(p.inventory[itemName]<=0) delete p.inventory[itemName];
   wh[itemName]=(wh[itemName]||0)+1;
@@ -7670,8 +7733,7 @@ function warehouseDeposit(itemName){
 /** 창고에서 아이템 1개 찾기 */
 function warehouseWithdraw(itemName){
   let p=G.player;
-  let wh={};
-  try{ let d=localStorage.getItem('rmc_warehouse'); if(d)wh=JSON.parse(d); }catch(e){}
+  let wh=readWarehouse();
   if((wh[itemName]||0)<=0){ log('창고에 해당 아이템이 없습니다.','error'); return; }
   wh[itemName]--;
   if(wh[itemName]<=0) delete wh[itemName];
