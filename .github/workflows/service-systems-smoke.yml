@@ -1,0 +1,80 @@
+name: Service systems browser smoke
+
+on:
+  push:
+    branches:
+      - feat/service-systems-v1-final
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python build.py
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Browser smoke
+        shell: bash
+        run: |
+          python -m http.server 8000 >/tmp/textrag-http.log 2>&1 &
+          cat > /tmp/service-smoke.mjs <<'JS'
+          import { chromium } from 'playwright';
+          const browser = await chromium.launch({headless:true});
+          const page = await browser.newPage({viewport:{width:390,height:844}});
+          const errors=[];
+          page.on('pageerror', e=>errors.push(String(e)));
+          await page.goto('http://127.0.0.1:8000/index.html', {waitUntil:'domcontentloaded'});
+          await page.waitForSelector('#modal-overlay');
+          const result = await page.evaluate(() => {
+            const fake = {
+              name:'smoke', job:'노비스', level:1, jobLevel:1,
+              hp:100, maxHp:100, sp:100, maxSp:100, zeny:20000,
+              str:1,agi:1,vit:1,int:1,dex:1,luk:1,
+              baseExp:0,jobExp:0,statPoints:0,skillPoints:0,
+              inventory:{'나이프 [3]':1,'프라콘':2,'루비':2,'빈병':2,'빨간 허브':2},
+              equip:{}, skills:{'파머시':1}, quests:{}, jobQuests:{},
+              unlockedMaps:{}, statusEffects:{}, settings:{}, options:{}, hotbar:{}, records:{}, cardCodex:{}
+            };
+            G.player=fake; G.currentMap='프론테라'; G.battles=[]; G.autoHunt=false; G.cooldowns={};
+
+            showRefineModal();
+            const refineText=document.querySelector('#modal-body').textContent;
+            if(!refineText.includes('가방') || !refineText.includes('나이프')) throw new Error('refine modal smoke failed');
+            closeModal();
+
+            kafraWarehouse();
+            const whText=document.querySelector('#modal-body').textContent;
+            if(!whText.includes('내 인벤토리') || !whText.includes('공유 창고') || !whText.includes('전부')) throw new Error('warehouse modal smoke failed');
+            closeModal();
+
+            talkNPC('거북 할아버지');
+            const dungeonText=document.querySelector('#modal-body').textContent;
+            if(!dungeonText.includes('거북섬') || !dungeonText.includes('입장 허가')) throw new Error('dungeon service smoke failed');
+            closeModal();
+
+            talkNPC('제이드');
+            const exchangeText=document.querySelector('#modal-body').textContent;
+            if(!exchangeText.includes('루비') || !exchangeText.includes('1회') || !exchangeText.includes('최대')) throw new Error('exchange service smoke failed');
+            closeModal();
+
+            if(!window.__serviceSystemsV2 || !window.__serviceSystemsV2.scope.includes('craft')) throw new Error('craft service layer missing');
+            if(typeof window.useSkill!=='function' || typeof window.serviceCraftBatch!=='function') throw new Error('craft routing globals missing');
+
+            return {refine:true,warehouse:true,dungeon:true,exchange:true,craftRouter:true,version:window.__serviceSystemsV2.version};
+          });
+          if(errors.length) throw new Error('page errors: '+errors.join(' | '));
+          console.log(JSON.stringify(result));
+          await browser.close();
+          JS
+          node /tmp/service-smoke.mjs
