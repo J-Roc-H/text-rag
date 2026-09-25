@@ -31,6 +31,7 @@ INDEX_PATH = os.path.join(BASE, "index.html")
 # 있다 — 역시 그대로 삽입한다(별도 재포맷 없음, 서식은 각 데이터 파일이 단독 소유).
 BLOCKS = {
     "DB_MONSTERS": "db-monsters.json",
+    "DB_MONSTER_AI_PROFILES": "db-monster-ai-profiles.json",
     "DB_MAPS": "db-maps.json",
     "DB_NPCS": "db-npcs.json",
     "DB_ITEMS": "db-items.json",

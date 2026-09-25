@@ -1,0 +1,47 @@
+{
+  "1": {
+    "schemaVersion": 1,
+    "source": {"originalId": 1002, "version": "pre-re@e985006", "refs": ["R1", "R2", "R4", "R5"]},
+    "confidence": "B",
+    "aiType": "02",
+    "behaviors": {"aggression": "passive", "looter": true},
+    "wiringState": "hold"
+  },
+  "5": {
+    "schemaVersion": 1,
+    "source": {"originalId": 1113, "version": "pre-re@e985006", "refs": ["R1", "R2"]},
+    "confidence": "B",
+    "aiType": "02",
+    "behaviors": {"aggression": "passive", "looter": true},
+    "wiringState": "hold"
+  },
+  "8": {
+    "schemaVersion": 1,
+    "source": {"originalId": 1009, "version": "pre-re@e985006", "refs": ["R1", "R2", "R3"]},
+    "confidence": "B",
+    "aiType": "03",
+    "behaviors": {"aggression": "passive", "assist": true, "targetChange": ["melee_attacked"]},
+    "wiringState": "hold"
+  },
+  "20": {
+    "schemaVersion": 1,
+    "source": {"originalId": 1031, "version": "pre-re@e985006", "refs": ["R1", "R2"]},
+    "confidence": "B",
+    "aiType": "02",
+    "behaviors": {"aggression": "passive", "looter": true},
+    "wiringState": "hold"
+  },
+  "480": {
+    "schemaVersion": 1,
+    "source": {"originalId": 1047, "version": "pre-re@e985006", "refs": ["R1", "R2", "R36"]},
+    "confidence": "B",
+    "aiType": "unknown",
+    "behaviors": {
+      "aggression": "passive",
+      "immobile": true,
+      "cannotCounterattack": true,
+      "transformOnIdle": {"rate": 0.001, "targets": [1049, 1050]}
+    },
+    "wiringState": "enabled"
+  }
+}
