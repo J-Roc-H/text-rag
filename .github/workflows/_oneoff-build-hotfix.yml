@@ -1,0 +1,36 @@
+name: oneoff-build-hotfix
+
+on:
+  push:
+    branches:
+      - fix/weight-hotbar-item-meta
+    paths:
+      - 'source/**'
+      - 'build.py'
+      - '.github/workflows/_oneoff-build-hotfix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/weight-hotbar-item-meta
+      - name: Check hotfix JavaScript
+        run: node --check source/ui-hotfix.js
+      - name: Build single HTML
+        run: python build.py
+      - name: Commit generated HTML
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html "룬미드가츠_v9.19.html"
+          if git diff --cached --quiet; then
+            echo "No generated changes"
+          else
+            git commit -m "build: regenerate single HTML for UX hotfix"
+            git push origin HEAD:fix/weight-hotbar-item-meta
+          fi
