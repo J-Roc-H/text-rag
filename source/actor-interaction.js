@@ -71,10 +71,9 @@ function aiPatchEntryButton(){
 
 function aiSceneDescription(mapName,m,p){
   if(!m) return '';
-  let mapTime=p&&p.records&&p.records.mapTime;
-  let first=!mapTime || !Object.prototype.hasOwnProperty.call(mapTime,mapName) || Number(mapTime[mapName]||0)<=0;
-  if(first && m.firstVisitDesc) return m.firstVisitDesc;
-  return m.entryDesc || m.desc || m.firstVisitDesc || '';
+  // 최초방문 연출은 enterMap()이 visitedMaps와 firstVisitDesc로 이미 처리한다.
+  // 주변 패널은 현재 장소의 지속적인 장면이므로 entryDesc를 우선한다.
+  return m.entryDesc || m.firstVisitDesc || m.desc || '';
 }
 
 function aiOwnedQuestEntries(name,p){
@@ -93,19 +92,31 @@ function aiTopQuest(name,p){
     .filter(x=>['available','active','completable'].includes(x.state))
     .sort((a,b)=>aiQuestRank(a.state)-aiQuestRank(b.state))[0] || null;
 }
+function aiInteractTargetQuest(name,p){
+  if(!p||!p.quests||typeof TUTORIAL_QUESTS==='undefined') return null;
+  for(let id in TUTORIAL_QUESTS){
+    let q=TUTORIAL_QUESTS[id], qs=p.quests[id];
+    if(!qs||qs.state!=='active'||q.type!=='interact'||!q.target_npc) continue;
+    if(name===q.target_npc||name.startsWith(q.target_npc)) return {id,q,qs};
+  }
+  return null;
+}
 function aiScenePriority(name,n,p){
   let q=aiTopQuest(name,p);
   if(q) return aiQuestRank(q.state);
+  if(aiInteractTargetQuest(name,p)) return 0.5;
   if(n.service==='job_change') return 3;
   if(!AI_FACILITY_SERVICES.has(n.service||'')) return 4;
   return 6;
 }
 function aiSceneBadge(name,p){
   let q=aiTopQuest(name,p);
-  if(!q) return '';
-  if(q.state==='completable') return '✅';
-  if(q.state==='available') return '❗';
-  return '•';
+  if(q){
+    if(q.state==='completable') return '✅';
+    if(q.state==='available') return '❗';
+    return '•';
+  }
+  return aiInteractTargetQuest(name,p) ? '❗' : '';
 }
 function aiSceneSummary(name,n,p){
   let q=aiTopQuest(name,p);
@@ -114,6 +125,8 @@ function aiSceneSummary(name,n,p){
     if(q.state==='available') return `${q.q.title} · 새로운 이야기`;
     return `${q.q.title} · 진행 중`;
   }
+  let target=aiInteractTargetQuest(name,p);
+  if(target) return `${target.q.title} · 지금 상호작용할 대상`;
   if(n.service==='job_change') return n.targetClass ? `${n.targetClass}의 길을 안내한다.` : '전직과 전승의 길을 맡고 있다.';
   if(n.service==='dungeon_access') return `${n.targetMap||'다음 지역'}로 가는 길을 안내한다.`;
   if(n.service==='exchange_gem'||n.service==='exchange_smile'||n.service==='exchange') return '물건을 교환해 준다.';
@@ -132,7 +145,8 @@ function aiFacilityLabel(name,n){
 }
 function aiSceneRow(name,n,p,idx,facility){
   let badge=aiSceneBadge(name,p), label=facility?aiFacilityLabel(name,n):aiBaseName(name);
-  let summary=facility ? (n.service==='kafra'?'저장 · 창고 · 워프':n.service==='shop'?'물품을 사고판다.':'장비를 제련한다.') : aiSceneSummary(name,n,p);
+  let target=aiInteractTargetQuest(name,p);
+  let summary=target ? `${target.q.title} · 지금 상호작용할 대상` : facility ? (n.service==='kafra'?'저장 · 창고 · 워프':n.service==='shop'?'물품을 사고판다.':'장비를 제련한다.') : aiSceneSummary(name,n,p);
   return `<button type="button" class="ai-scene-row" onclick="actorOpenFromScene(${idx})">
     <span class="ai-scene-icon">${aiEsc(n.emoji||'💬')}</span>
     <span class="ai-scene-main"><span class="ai-scene-name">${aiEsc(label)}</span>${summary?`<span class="ai-scene-summary">${aiEsc(summary)}</span>`:''}</span>
@@ -151,7 +165,8 @@ function aiRenderLocalScene(){
   let facilities=rows.filter(x=>aiActorType(x.name,x.n)!=='object'&&AI_FACILITY_SERVICES.has(x.n.service||''));
   let objects=rows.filter(x=>aiActorType(x.name,x.n)==='object');
   people.sort((a,b)=>aiScenePriority(a.name,a.n,p)-aiScenePriority(b.name,b.n,p)||a.name.localeCompare(b.name,'ko'));
-  facilities.sort((a,b)=>a.name.localeCompare(b.name,'ko')); objects.sort((a,b)=>a.name.localeCompare(b.name,'ko'));
+  facilities.sort((a,b)=>aiScenePriority(a.name,a.n,p)-aiScenePriority(b.name,b.n,p)||a.name.localeCompare(b.name,'ko'));
+  objects.sort((a,b)=>aiScenePriority(a.name,a.n,p)-aiScenePriority(b.name,b.n,p)||a.name.localeCompare(b.name,'ko'));
   AI_STATE.sceneTargets=[];
   function section(title,list,facility){
     if(!list.length) return '';
@@ -230,6 +245,51 @@ window.actorInteractionRun=function(idx){
     if(typeof notify==='function') notify('상호작용 처리 중 오류가 발생했습니다.','red');
   }
 };
+
+function aiJobContext(name,p){
+  if(typeof getJobQuestId!=='function'||typeof getJobQuest!=='function') return {ok:true,reason:'',questId:null,q:null,jq:null};
+  let questId=getJobQuestId(name,p.job);
+  if(!questId) return {ok:false,reason:'현재 직업으로 이 인물에게서 진행할 전직 절차가 없습니다.',questId:null,q:null,jq:null};
+  let q=getJobQuest(questId);
+  if(!q) return {ok:false,reason:'전직 정보를 찾을 수 없습니다.',questId,jq:null,q:null};
+  let jq=p.jobQuests&&p.jobQuests[questId];
+
+  if(q.reqRebirth&&!p.rebirth) return {ok:false,reason:'전승을 마친 뒤 받을 수 있는 시험입니다.',questId,q,jq};
+  let needJob=q.reqJob;
+  if(needJob&&q.reqRebirth&&typeof TRANS2ND_ENTRY_JOB!=='undefined'&&TRANS2ND_ENTRY_JOB[needJob]) needJob=TRANS2ND_ENTRY_JOB[needJob];
+  if(needJob&&p.job!==needJob) return {ok:false,reason:`${needJob} 상태여야 이 시험을 받을 수 있습니다.`,questId,q,jq};
+  if(q.reqJobLv&&(p.jobLv||1)<q.reqJobLv) return {ok:false,reason:`Job Lv.${q.reqJobLv} 이상 필요 · 현재 ${p.jobLv||1}`,questId,q,jq};
+  if(q.reqBaseLv&&(p.baseLv||1)<q.reqBaseLv) return {ok:false,reason:`Base Lv.${q.reqBaseLv} 이상 필요 · 현재 ${p.baseLv||1}`,questId,q,jq};
+  if(q.reqRebirthEligible&&typeof checkRebirthEligibility==='function'){
+    let reason=checkRebirthEligibility(p); if(reason) return {ok:false,reason,questId,q,jq};
+  }
+  if(jq&&jq.state==='done') return {ok:false,reason:`이미 ${q.targetJob||'이 전직'}의 절차를 마쳤습니다.`,questId,q,jq};
+  if(jq&&jq.state==='failed') return {ok:false,reason:'이미 다른 전직의 길을 선택했습니다.',questId,q,jq};
+
+  if(typeof JOB2_EXCLUSIVE_GROUPS!=='undefined'&&p.jobQuests){
+    let group=JOB2_EXCLUSIVE_GROUPS[questId];
+    if(group){
+      let competing=group.find(id=>id!==questId&&p.jobQuests[id]&&['active','done'].includes(p.jobQuests[id].state));
+      if(competing){
+        let other=getJobQuest(competing), target=other&&other.targetJob?other.targetJob:'다른 직업';
+        return {ok:false,reason:`이미 ${target}의 길을 선택했습니다.`,questId,q,jq};
+      }
+    }
+  }
+
+  if(jq&&jq.state==='active'&&q.steps){
+    let step=q.steps[jq.step];
+    if(step&&(step.type==='kill'||step.type==='gather')){
+      let cur=Number((jq.stepData&&jq.stepData.count)||0), total=Number(step.count||0);
+      if(cur<total){
+        let msg=(step.dialog_progress||'{target} {remain}개/마리 더 필요합니다.')
+          .replace('{cur}',cur).replace('{total}',total).replace('{remain}',Math.max(0,total-cur)).replace('{target}',step.target||'목표');
+        return {ok:false,reason:msg,progress:true,questId,q,jq,step};
+      }
+    }
+  }
+  return {ok:true,reason:'',questId,q,jq};
+}
 
 function aiDungeonState(n,p){
   let target=n.targetMap||'', reqLv=Math.max(0,Number(n.reqLv)||0), reqItems=n.reqItems||{}, reqQuests=[];
@@ -314,10 +374,17 @@ function aiRenderActor(name,extraNotice){
 
   if(!autoBlocked&&!languageBlocked){
     if(n.service==='job_change'){
-      aiAddAction(n.targetClass?`⚔️ ${n.targetClass} 전직에 대해 묻는다`:'⚔️ 전직에 대해 묻는다','primary',()=>{
-        if(typeof startJobChangeDialog!=='function') return AI_LEGACY_TALK&&AI_LEGACY_TALK(name);
-        let handled=startJobChangeDialog(name); if(!handled) aiRenderActor(name,'아직 그대에게 전수할 것이 없다고 한다. 더 수련이 필요하다.');
-      });
+      let gate=aiJobContext(name,p);
+      let label=n.targetClass?`⚔️ ${n.targetClass} 전직에 대해 묻는다`:'⚔️ 전직에 대해 묻는다';
+      if(!gate.ok){
+        special+=`<div class="ai-notice warn">🔒 ${aiEsc(gate.reason)}</div>`;
+        aiAddAction(gate.progress?'📋 전직 시험 진행 상황':label,'primary',()=>{}, {disabled:true,hint:gate.reason});
+      }else{
+        aiAddAction(label,'primary',()=>{
+          if(typeof startJobChangeDialog!=='function') return AI_LEGACY_TALK&&AI_LEGACY_TALK(name);
+          let handled=startJobChangeDialog(name); if(!handled) aiRenderActor(name,'아직 그대에게 전수할 것이 없다고 한다. 더 수련이 필요하다.');
+        });
+      }
     }
     if(n.service==='kafra'){
       aiAddAction('📍 귀환 지점을 여기로 설정','service',()=>{ if(typeof kafraSetSave==='function'){ kafraSetSave(); aiRenderActor(name,'귀환 지점을 설정했습니다.'); } });
@@ -372,7 +439,7 @@ aiPatchEntryButton();
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',aiPatchEntryButton,{once:true});
 
 window.__actorInteractionV1={
-  version:'1.0',
+  version:'1.1',
   showScene:aiRenderLocalScene,
   interact:aiRenderActor,
   objectFallback:Array.from(AI_OBJECT_NAMES)
