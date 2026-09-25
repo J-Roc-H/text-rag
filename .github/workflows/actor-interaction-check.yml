@@ -9,7 +9,7 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -17,6 +17,28 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: feat/actor-interaction
+
+      - name: Patch mobile summary clipping once
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('source/actor-interaction.js')
+          s = p.read_text(encoding='utf-8')
+          old = '.ai-scene-summary{font-size:10px'
+          new = '.ai-scene-summary{display:block;font-size:10px'
+          if old in s:
+              p.write_text(s.replace(old, new, 1), encoding='utf-8')
+          PY
+          if ! git diff --quiet -- source/actor-interaction.js; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add source/actor-interaction.js
+            git commit -m 'fix: clip actor scene summaries on mobile'
+            git push origin HEAD:feat/actor-interaction
+          fi
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -47,62 +69,3 @@ jobs:
           grep -q 'window.showNpcModal=aiRenderLocalScene' index.html
           grep -q 'actor interaction v1' index.html
           test -s '룬미드가츠_v9.19.html'
-
-      - name: Create visual preview
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8-sig')
-          boot = r'''
-          <script>
-          (function(){
-            var raw = {
-              name:'검증용 모험가', job:'노비스', baseLv:1, jobLv:1, baseExp:0, jobExp:0,
-              hp:65, maxHp:65, sp:50, maxSp:50,
-              str:5, agi:5, vit:5, int:5, dex:5, luk:5,
-              statPoints:18, statSystemV2:true, zeny:1500, savedMap:'프론테라',
-              equip:{'무기':'나이프','갑옷':'코튼셔츠','신발':'샌들','투구_상단':'캡','투구_중단':'안대','투구_하단':'풀잎','방패':'가드','걸칠것':'후드','악세1':'클립','악세2':'클립'},
-              weaponType:'단검',
-              inventory:{'빨간포션':10,'파리의 날개':5,'나비의 날개':3,'나이프':1,'코튼셔츠':1,'샌들':1,'캡':1,'안대':1,'풀잎':1,'가드':1,'후드':1,'클립':2},
-              skills:{'응급치료':1,'기본 스킬':1}, hotbar:{}, quests:{}, unlockedMaps:{}, statusEffects:{}, killCount:{}, totalKills:0,
-              startPreset:'노비스'
-            };
-            function forcePreview(){
-              try {
-                G.player = loadPlayerData(raw);
-                G.player.zeny = 1500;
-                G.currentMap='프론테라'; G.autoHunt=false; G.battles=[];
-                var lobby=document.getElementById('lobby'); if(lobby) lobby.style.display='none';
-                var app=document.getElementById('app'); if(app) app.style.display='block';
-                if(typeof initQuests==='function') initQuests(G.player);
-                showNpcModal();
-              } catch(e) {
-                console.error('preview boot failed', e);
-              }
-            }
-            window.addEventListener('load', function(){ setTimeout(forcePreview, 900); });
-            setTimeout(forcePreview, 1800);
-          })();
-          </script>
-          '''
-          s = s.replace('</body>', boot + '\n</body>', 1)
-          Path('actor-preview.html').write_text(s, encoding='utf-8')
-          PY
-
-          CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
-          test -n "$CHROME"
-          "$CHROME" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=1280,900 --virtual-time-budget=3200 --screenshot=actor-preview-desktop.png "file://$PWD/actor-preview.html"
-          "$CHROME" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=390,844 --virtual-time-budget=3200 --screenshot=actor-preview-mobile.png "file://$PWD/actor-preview.html"
-          test -s actor-preview-desktop.png
-          test -s actor-preview-mobile.png
-
-      - name: Upload visual preview
-        uses: actions/upload-artifact@v4
-        with:
-          name: actor-interaction-preview
-          path: |
-            actor-preview-desktop.png
-            actor-preview-mobile.png
-          retention-days: 3
