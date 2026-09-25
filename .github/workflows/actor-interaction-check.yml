@@ -9,7 +9,7 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
@@ -17,28 +17,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: feat/actor-interaction
-
-      - name: Patch mobile summary clipping once
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          p = Path('source/actor-interaction.js')
-          s = p.read_text(encoding='utf-8')
-          old = '.ai-scene-summary{font-size:10px'
-          new = '.ai-scene-summary{display:block;font-size:10px'
-          if old in s:
-              p.write_text(s.replace(old, new, 1), encoding='utf-8')
-          PY
-          if ! git diff --quiet -- source/actor-interaction.js; then
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add source/actor-interaction.js
-            git commit -m 'fix: clip actor scene summaries on mobile'
-            git push origin HEAD:feat/actor-interaction
-          fi
 
       - name: Set up Python
         uses: actions/setup-python@v5
