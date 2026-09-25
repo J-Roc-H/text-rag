@@ -67,8 +67,11 @@
       .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
 
-  function mapData(name){ return (window.DB && DB.maps) ? DB.maps[name] : null; }
-  function allNames(){ return (window.DB && DB.maps) ? Object.keys(DB.maps) : []; }
+  // DB/G는 block-engine에서 최상위 const/let로 선언된다 — 클래식 <script>의 최상위
+  // let/const 바인딩은 window에 올라가지 않는다(var와 다름). 그래서 window.DB로는
+  // 항상 undefined만 나온다 — typeof로 전역 바인딩 존재 여부를 확인해야 한다.
+  function mapData(name){ return (typeof DB!=='undefined' && DB.maps) ? DB.maps[name] : null; }
+  function allNames(){ return (typeof DB!=='undefined' && DB.maps) ? Object.keys(DB.maps) : []; }
 
   function undirectedNeighbors(name){
     const out = new Set();
@@ -162,7 +165,7 @@
   function detailHtml(name){
     const m=mapData(name);
     if(!m) return '<div class="wm-empty">지역 정보를 찾을 수 없습니다.</div>';
-    const cur=(window.G && G.currentMap) ? G.currentMap : '프론테라';
+    const cur=(typeof G!=='undefined' && G.currentMap) ? G.currentMap : '프론테라';
     const path=shortestPath(cur,name);
     const adjacent=cur!==name && mapData(cur) && Array.isArray(mapData(cur).connected) && mapData(cur).connected.includes(name);
     const mvp=m.hasMvp ? '<span class="wm-badge danger">MVP</span>' : '';
@@ -183,7 +186,7 @@
   function renderSvg(){
     const layout=visibleLayout();
     const names=Object.keys(layout);
-    const current=(window.G && G.currentMap) ? G.currentMap : '프론테라';
+    const current=(typeof G!=='undefined' && G.currentMap) ? G.currentMap : '프론테라';
     const currentAnchor=layout[current] ? current : nearestBase(current);
     const selected=WM_STATE.selected && mapData(WM_STATE.selected) ? WM_STATE.selected : current;
     const path=shortestPath(current,selected);
@@ -230,7 +233,7 @@
   }
 
   function mapHtml(){
-    const current=(window.G && G.currentMap) ? G.currentMap : '프론테라';
+    const current=(typeof G!=='undefined' && G.currentMap) ? G.currentMap : '프론테라';
     if(!WM_STATE.selected || !mapData(WM_STATE.selected)) WM_STATE.selected=current;
     const toggle=WM_STATE.showAll ? '주요 경로만' : '던전·세부지역 표시';
     return `<style>
@@ -281,11 +284,11 @@
 
   // Overrides the legacy hard-coded ASCII world map after the main bundle loads.
   window.showWorldMapModal=function(){
-    if(!window.DB || !DB.maps){
+    if(typeof DB==='undefined' || !DB.maps){
       if(typeof openModal==='function') openModal('🗺 세계지도','지도 데이터를 불러오지 못했습니다.',[{label:'닫기',action:()=>{}}]);
       return;
     }
-    if(!WM_STATE.selected || !mapData(WM_STATE.selected)) WM_STATE.selected=(window.G&&G.currentMap)||'프론테라';
+    if(!WM_STATE.selected || !mapData(WM_STATE.selected)) WM_STATE.selected=(typeof G!=='undefined'&&G.currentMap)||'프론테라';
     openModal('🗺 세계지도', mapHtml(), [{label:'닫기',action:()=>{}}]);
   };
 })();
