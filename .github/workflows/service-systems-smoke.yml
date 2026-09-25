@@ -36,6 +36,7 @@ jobs:
           page.on('pageerror', e=>errors.push(String(e)));
           await page.goto('http://127.0.0.1:8000/index.html', {waitUntil:'domcontentloaded'});
           await page.waitForSelector('#modal-overlay', {state:'attached'});
+          await page.waitForFunction(() => typeof DB !== 'undefined' && DB.items && DB.items['나이프'] && typeof talkNPC === 'function' && window.__serviceSystemsV2);
           const result = await page.evaluate(() => {
             const fake = {
               name:'smoke', job:'노비스', baseLv:1, jobLv:1,
