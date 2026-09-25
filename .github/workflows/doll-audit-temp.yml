@@ -1,0 +1,36 @@
+name: doll-audit-temp
+
+on:
+  push:
+    branches:
+      - feat/alberta-doll-quest
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect doll/candy keys
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          items=json.load(open('source/data/db-items.json',encoding='utf-8-sig'))
+          mons=json.load(open('source/data/db-monsters.json',encoding='utf-8-sig'))
+          print('CANDY KEYS')
+          for k,v in items.items():
+              if v.get('_aegis') in {'Candy','Candy_Striper'} or k in {'사탕','막대사탕'}:
+                  print(repr(k), v)
+          print('DOLL KEYS')
+          for k,v in items.items():
+              if '인형' in k or 'Doll' in str(v.get('_aegis','')):
+                  print(repr(k), v.get('_aegis'), v.get('_stub'), v.get('desc'))
+          print('DOLL DROPS')
+          names=['포링','촌촌','로커','스포아','스모키','요요','바포메트']
+          for m in mons.values():
+              if m.get('name') in names:
+                  print(m.get('name'), {k:v for k,v in (m.get('drops') or {}).items() if '인형' in k})
+          PY
