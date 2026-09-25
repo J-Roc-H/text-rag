@@ -1,0 +1,134 @@
+name: Finalize service systems
+
+on:
+  push:
+    branches:
+      - feat/service-systems-v1-final
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Reconcile service layer with latest item DB
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('source/services.js')
+          s = p.read_text(encoding='utf-8')
+
+          def replace_once(old, new):
+              global s
+              count = s.count(old)
+              assert count == 1, f'expected exactly 1 match, got {count}: {old[:80]!r}'
+              s = s.replace(old, new, 1)
+
+          replace_once(
+              'grid-template-columns:minmax(0,1fr) minmax(0,1fr);',
+              'grid-template-columns:repeat(auto-fit,minmax(220px,1fr));'
+          )
+
+          replace_once(
+              'function svcCraftMaterials(name,lv){',
+              'function svcCraftMaterials(name,lv,product){'
+          )
+          replace_once(
+              "  if(name==='파머시') return {'빈 병':3,'약초':1};",
+              "  if(name==='파머시'){\n"
+              "    let herb=product==='하얀포션'?'하얀허브':product==='노란포션'?'옐로 허브':'빨간 허브';\n"
+              "    return {'빈병':1,[herb]:1};\n"
+              "  }"
+          )
+          replace_once(
+              '  let mats=svcCraftMaterials(name,lv);\n  let sp=typeof sk.spCost===\'function\'?sk.spCost(lv):(sk.spCost||0);\n  let outputs=svcCraftOutputNames(name,lv,product);\n  let valid=svcCraftOutputValid(outputs);\n  let max=svcMaxCraft(p,mats,sp);',
+              '  let mats=svcCraftMaterials(name,lv,product);\n  let sp=typeof sk.spCost===\'function\'?sk.spCost(lv):(sk.spCost||0);\n  let outputs=svcCraftOutputNames(name,lv,product);\n  let outputValid=svcCraftOutputValid(outputs);\n  let missingMats=Object.keys(mats).filter(k=>!DB.items[k]);\n  let materialValid=missingMats.length===0;\n  let valid=outputValid&&materialValid;\n  let max=valid?svcMaxCraft(p,mats,sp):0;'
+          )
+          replace_once(
+              "    ${valid?'':`<div style=\"font-size:10px;color:var(--red-light);margin-top:3px;\">⚠ 산출물 DB 미등록 — 유령 아이템 생성을 차단했습니다.</div>`}",
+              "    ${materialValid?'':`<div style=\"font-size:10px;color:var(--red-light);margin-top:3px;\">⚠ 재료 DB 미등록: ${missingMats.map(svcHtml).join(', ')}</div>`}\n"
+              "    ${outputValid?'':`<div style=\"font-size:10px;color:var(--red-light);margin-top:3px;\">⚠ 산출물 DB 미등록 — 유령 아이템 생성을 차단했습니다.</div>`}"
+          )
+          replace_once(
+              "  let p=G.player, mats=svcCraftMaterials('파머시',learnedLv);",
+              "  let p=G.player, mats=svcCraftMaterials('파머시',learnedLv,product);"
+          )
+          replace_once(
+              '  let mats=svcCraftMaterials(name,lv);\n  let spCost=typeof sk.spCost===\'function\'?sk.spCost(lv):(sk.spCost||0);',
+              '  let mats=svcCraftMaterials(name,lv,recipe.product);\n  let missingMats=Object.keys(mats).filter(k=>!DB.items[k]);\n  if(missingMats.length){\n    log(`⚠ <b>[${name}]</b> 재료 DB 미등록: ${missingMats.join(\', \')}` ,\'error\');\n    return;\n  }\n  let spCost=typeof sk.spCost===\'function\'?sk.spCost(lv):(sk.spCost||0);'
+          )
+
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Static service data audit
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          items = json.loads(Path('source/data/db-items.json').read_text(encoding='utf-8'))
+          required = [
+              '프라콘','엠베르타콘','오리데오콘','에르늄',
+              '루비','자수정','지르콘','육류','솜털','젤로피','클로버',
+              '빈병','빨간 허브','옐로 허브','하얀허브',
+              '빨간포션','노란포션','하얀포션'
+          ]
+          missing = [x for x in required if x not in items]
+          assert not missing, f'required service item keys missing: {missing}'
+          print('OK - required refine/exchange/pharmacy item keys exist')
+          PY
+
+      - name: Check service source
+        run: node --check source/services.js
+
+      - name: Build single-file outputs
+        run: python build.py
+
+      - name: Check generated inline scripts
+        shell: bash
+        run: |
+          python - <<'PY'
+          import pathlib, re, subprocess
+          html = pathlib.Path('index.html').read_text(encoding='utf-8-sig')
+          assert 'id="world-map-v1"' in html, 'world map block missing'
+          assert 'id="block-service-systems"' in html, 'service block missing'
+          blocks = re.findall(r'<script([^>]*)>(.*?)</script>', html, flags=re.S | re.I)
+          checked = 0
+          for attrs, body in blocks:
+              if 'application/json' in attrs:
+                  continue
+              path = pathlib.Path(f'/tmp/textrag-inline-{checked}.js')
+              path.write_text(body, encoding='utf-8')
+              subprocess.run(['node', '--check', str(path)], check=True)
+              checked += 1
+          print(f'OK - node --check {checked} inline JS blocks')
+          PY
+
+      - name: Commit reconciled source and generated HTML
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add source/services.js build.py index.html "룬미드가츠_v9.19.html"
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "fix(services): reconcile crafting data and rebuild v9.19"
+            git push
+          fi
