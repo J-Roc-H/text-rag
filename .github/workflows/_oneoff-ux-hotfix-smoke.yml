@@ -1,0 +1,96 @@
+name: oneoff-ux-hotfix-smoke
+
+on:
+  push:
+    branches:
+      - fix/weight-hotbar-item-meta
+    paths:
+      - '.github/workflows/_oneoff-ux-hotfix-smoke.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/weight-hotbar-item-meta
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python build.py
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Browser smoke
+        shell: bash
+        run: |
+          python -m http.server 8000 >/tmp/textrag-http.log 2>&1 &
+          for i in $(seq 1 50); do
+            if curl -fsS http://127.0.0.1:8000/index.html >/dev/null; then break; fi
+            sleep 0.2
+          done
+          curl -fsS http://127.0.0.1:8000/index.html >/dev/null
+          cat > ux-hotfix-smoke.mjs <<'JS'
+          import { chromium } from 'playwright';
+          const browser = await chromium.launch({headless:true});
+          const page = await browser.newPage({viewport:{width:390,height:844}});
+          const errors=[];
+          page.on('pageerror', e=>errors.push(String(e)));
+          await page.goto('http://127.0.0.1:8000/index.html', {waitUntil:'domcontentloaded'});
+          await page.waitForSelector('#modal-overlay', {state:'attached'});
+          await page.waitForFunction(() => typeof DB !== 'undefined' && DB.items && DB.items['빨간포션'] && typeof calcStats==='function' && typeof renderHotbar==='function' && document.querySelector('#ux-hotfix') !== null);
+
+          const result = await page.evaluate(() => {
+            window.saveLocal=()=>{};
+            window.checkQuestGather=()=>{};
+            window.notify=()=>{};
+
+            const fake = {
+              name:'smoke', job:'소드맨', baseLv:10, jobLv:1,
+              hp:50, maxHp:100, sp:50, maxSp:50, zeny:1000,
+              str:10,agi:1,vit:1,int:1,dex:1,luk:1,
+              baseExp:0,jobExp:0,statPoints:0,skillPoints:0,
+              inventory:{'빨간포션':3}, equip:{}, skills:{}, quests:{}, jobQuests:{},
+              unlockedMaps:{}, statusEffects:{}, settings:{}, options:{}, hotbar:{q:{type:'item',name:'빨간포션'}},
+              records:{totalExp:0,totalZeny:0}, cardCodex:{}, seenCount:{}, sellLocked:{}, uiUnlock:{}
+            };
+            G.player=fake; G.currentMap='프론테라'; G.battles=[]; G.autoHunt=false; G.cooldowns={}; G.itemCooldowns={};
+
+            const swordman=calcStats();
+            if(swordman.maxWeight!==3100) throw new Error(`swordman weight expected 3100, got ${swordman.maxWeight}`);
+
+            fake.job='상인'; fake.skills={'소지량 증가':10};
+            const merchant=calcStats();
+            if(merchant.maxWeight!==5100) throw new Error(`merchant weight expected 5100, got ${merchant.maxWeight}`);
+
+            renderHotbar();
+            let badge=document.querySelector('#hb-slot-q .hb-item-count');
+            if(!badge || badge.textContent!=='×3') throw new Error('hotbar item count ×3 missing');
+            fake.inventory['빨간포션']=2;
+            renderHotbar();
+            badge=document.querySelector('#hb-slot-q .hb-item-count');
+            if(!badge || badge.textContent!=='×2') throw new Error('hotbar item count did not refresh to ×2');
+
+            showInvModal('all');
+            const bagText=document.querySelector('#modal-body').textContent;
+            const w=Number(DB.items['빨간포션'].weight)||0;
+            if(!bagText.includes('빨간포션') || !bagText.includes(`무게 ${w}`) || !bagText.includes(`합계 ${w*2}`)) throw new Error('bag item weight metadata missing');
+
+            showItemDetail('빨간포션');
+            const detailText=document.querySelector('#modal-body').textContent;
+            if(!detailText.includes(`무게 ${w}`) || !detailText.includes(`보유 2개 총 ${w*2}`)) throw new Error('item detail weight metadata missing');
+
+            return {swordmanWeight:swordman.maxWeight,merchantWeight:merchant.maxWeight,hotbar:badge.textContent,itemWeight:w};
+          });
+          if(errors.length) throw new Error('page errors: '+errors.join(' | '));
+          console.log(JSON.stringify(result));
+          await browser.close();
+          JS
+          node ux-hotfix-smoke.mjs
