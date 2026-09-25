@@ -104,13 +104,18 @@
     return out;
   }
 
+  function npcWithMap(npc,map){
+    if(!map) return npc;
+    return npc.includes(`(${map})`) ? npc : `${npc}(${map})`;
+  }
+
   function itemSourceInfo(item){
     const shops=shopSources(item);
     const drops=dropSources(item);
     let text=[];
     let maps=[];
     if(shops.length){
-      const s=shops.slice(0,2).map(x=>`${x.npc}${x.map?`(${x.map})`:''}`);
+      const s=shops.slice(0,2).map(x=>npcWithMap(x.npc,x.map));
       text.push(`상점 ${s.join(', ')}`);
       maps.push(...shops.map(x=>x.map));
     }
@@ -234,6 +239,20 @@
     return `${npc}${map?` · ${map}`:''}`;
   }
 
+  function humanStepLabel(step,index,total){
+    if(!step) return '';
+    let label=step.desc||'';
+    if(!label){
+      if(step.type==='dialog') label='시험 수락';
+      else if(step.type==='quiz') label='문답 시험';
+      else if(step.type==='reward') label='전직 완료 보고';
+      else if(step.type==='kill') label=`${step.target||'대상'} 처치`;
+      else if(step.type==='gather') label=`${step.target||'재료'} 수집`;
+      else label='현재 단계 진행';
+    }
+    return `${Math.min(index+1,total)}/${total} · ${label}`;
+  }
+
   function card(q,state,qs,opt){
     opt=opt||{};
     const step=opt.step||null;
@@ -313,7 +332,7 @@
         if(!q||!jq||jq.state==='failed') return;
         const state=jq.state;
         const step=q.steps && q.steps[jq.step];
-        const label=step ? `${Math.min((jq.step||0)+1,q.steps.length)}/${q.steps.length} · ${step.desc||step.id||step.type}` : '';
+        const label=step ? humanStepLabel(step,jq.step||0,q.steps.length) : '';
         const html=card(q,state,jq,{isJob:true,step,stepLabel:label});
         if(state==='done'){done+=html;dn++;}
         else if(state==='available'){available+=html;av++;}
