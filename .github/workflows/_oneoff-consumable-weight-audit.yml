@@ -1,0 +1,115 @@
+name: oneoff-consumable-weight-audit
+
+on:
+  push:
+    branches:
+      - fix/pre-re-consumable-weights
+    paths:
+      - '.github/workflows/_oneoff-consumable-weight-audit.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/pre-re-consumable-weights
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch rAthena pre-re item DB
+        run: |
+          mkdir -p /tmp/rathena-pre-re
+          curl -fsSL https://raw.githubusercontent.com/rathena/rathena/master/db/pre-re/item_db_usable.yml -o /tmp/rathena-pre-re/item_db_usable.yml
+          curl -fsSL https://raw.githubusercontent.com/rathena/rathena/master/db/pre-re/item_db_etc.yml -o /tmp/rathena-pre-re/item_db_etc.yml
+          curl -fsSL https://raw.githubusercontent.com/rathena/rathena/master/db/pre-re/item_db_equip.yml -o /tmp/rathena-pre-re/item_db_equip.yml
+          pip install --quiet pyyaml
+      - name: Audit consumable weights
+        run: |
+          cat > /tmp/audit_weights.py <<'PY'
+          import json, yaml, pathlib
+          from collections import Counter
+
+          repo = pathlib.Path('.')
+          items = json.loads((repo/'source/data/db-items.json').read_text(encoding='utf-8-sig'))
+
+          source = {}
+          source_file = {}
+          for fn in ['item_db_usable.yml','item_db_etc.yml','item_db_equip.yml']:
+              data = yaml.safe_load((pathlib.Path('/tmp/rathena-pre-re')/fn).read_text(encoding='utf-8')) or {}
+              for row in data.get('Body', []):
+                  a = row.get('AegisName')
+                  if a:
+                      source[a] = row
+                      source_file[a] = fn
+
+          rows=[]
+          unresolved=[]
+          exact=[]
+          mismatch=[]
+          no_weight=[]
+          for key, it in items.items():
+              if it.get('type') != '소모품':
+                  continue
+              aegis = it.get('_aegis')
+              cur = it.get('weight')
+              if not aegis or aegis not in source:
+                  unresolved.append((key,aegis,cur,it.get('weightSrc'),bool(it.get('_stub'))))
+                  continue
+              src=source[aegis]
+              raw=src.get('Weight',0)
+              exp=raw/10
+              if float(exp).is_integer(): exp=int(exp)
+              row=(key,aegis,cur,exp,src.get('Id'),src.get('Name'),source_file[aegis],it.get('weightSrc'))
+              rows.append(row)
+              if cur is None:
+                  no_weight.append(row)
+              elif abs(float(cur)-float(exp)) < 1e-9:
+                  exact.append(row)
+              else:
+                  mismatch.append(row)
+
+          lines=[]
+          lines += ['# 소모품 무게 전수 대조', '',
+                    '- 기준: rAthena `master/db/pre-re/item_db_{usable,etc,equip}.yml`',
+                    '- 변환: rAthena `Weight / 10 = TextRAG 표시 무게` (기존 프로젝트 규칙)',
+                    f'- TextRAG 소모품 총계: **{len(rows)+len(unresolved)}**',
+                    f'- `_aegis` 원본 직접 대조 가능: **{len(rows)}**',
+                    f'- 일치: **{len(exact)}**',
+                    f'- 불일치: **{len(mismatch)}**',
+                    f'- 원본 직접 연결 불가: **{len(unresolved)}**', '',
+                    '## 확정 불일치', '',
+                    '| TextRAG 키 | Aegis | 현재 | 원작 환산 | rAthena ID | 원작명 | weightSrc |',
+                    '|---|---|---:|---:|---:|---|---|']
+          for key,aegis,cur,exp,iid,name,fn,ws in sorted(mismatch, key=lambda r:(-abs(float(r[2] or 0)-float(r[3])),r[0])):
+              lines.append(f'| {key} | `{aegis}` | {cur} | **{exp}** | {iid} | {name} | {ws or "-"} |')
+          if not mismatch: lines.append('| - | - | - | - | - | - | - |')
+
+          lines += ['', '## 원본 직접 연결 불가', '',
+                    '| TextRAG 키 | `_aegis` | 현재 무게 | weightSrc | stub |',
+                    '|---|---|---:|---|---|']
+          for key,aegis,cur,ws,stub in sorted(unresolved):
+              lines.append(f'| {key} | {"`"+aegis+"`" if aegis else "-"} | {cur} | {ws or "-"} | {stub} |')
+          if not unresolved: lines.append('| - | - | - | - | - |')
+
+          lines += ['', '## 직접 대조 일치 항목', '', '<details><summary>펼치기</summary>', '',
+                    '| TextRAG 키 | Aegis | 무게 |', '|---|---|---:|']
+          for key,aegis,cur,exp,*_ in sorted(exact):
+              lines.append(f'| {key} | `{aegis}` | {cur} |')
+          lines += ['', '</details>', '']
+
+          (repo/'CONSUMABLE_WEIGHT_AUDIT.md').write_text('\n'.join(lines), encoding='utf-8')
+          print(f'consumables={len(rows)+len(unresolved)} matched={len(rows)} exact={len(exact)} mismatch={len(mismatch)} unresolved={len(unresolved)}')
+          for r in mismatch[:50]: print('MISMATCH', r)
+          PY
+          python /tmp/audit_weights.py
+      - name: Commit audit report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CONSUMABLE_WEIGHT_AUDIT.md
+          git commit -m "audit: report pre-re consumable weight mismatches"
+          git push origin HEAD:fix/pre-re-consumable-weights
