@@ -1,0 +1,46 @@
+name: actor-interaction-check
+
+on:
+  push:
+    branches:
+      - feat/actor-interaction
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Python syntax
+        run: python -m py_compile build.py
+
+      - name: Actor interaction JS syntax
+        run: node --check source/actor-interaction.js
+
+      - name: Build single HTML
+        run: python build.py
+
+      - name: Verify injected actor interaction
+        shell: bash
+        run: |
+          grep -q 'id="actor-interaction-v1"' index.html
+          grep -q 'window.showNpcModal=aiRenderLocalScene' index.html
+          grep -q 'actor interaction v1' index.html
+          test -s '룬미드가츠_v9.19.html'
