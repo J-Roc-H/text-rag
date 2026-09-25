@@ -53,7 +53,7 @@ global.DB = {
     '미스터 스마일': { map:'페이욘', emoji:'😊', dialog:'재료를 가져오게.', service:'' },
     '전직 시험관': { map:'프론테라', emoji:'⚔️', dialog:'자격을 보겠다.', service:'job_change', targetClass:'소드맨' },
     '피스크': { map:'프론테라', emoji:'⚓', dialog:'침몰선에 갈 텐가?', service:'dungeon_access', cost:250, targetMap:'침몰선' },
-    '이미르의 책': { map:'유노', emoji:'📖', dialog:'낡은 고서에서 빛이 난다.', service:'ymir_book' }
+    '이미르의 책': { map:'유노', emoji:'📖', actorType:'object', dialog:'낡은 고서에서 빛이 난다.', service:'ymir_book' }
   }
 };
 

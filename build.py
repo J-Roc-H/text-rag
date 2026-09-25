@@ -27,6 +27,7 @@ SERVICE_SCRIPT_PATH = os.path.join(BASE, "source", "services.js")
 UI_HOTFIX_SCRIPT_PATH = os.path.join(BASE, "source", "ui-hotfix.js")
 QUEST_GUIDE_SCRIPT_PATH = os.path.join(BASE, "source", "quest-guide.js")
 ACTOR_INTERACTION_SCRIPT_PATH = os.path.join(BASE, "source", "actor-interaction.js")
+REFINE_REVEAL_SCRIPT_PATH = os.path.join(BASE, "source", "refine-reveal.js")
 OUTPUT_PATH = os.path.join(BASE, "룬미드가츠_v9.19.html")
 # GitHub Pages는 루트의 index.html을 서빙한다 — 버전 올려도 폰 북마크 URL이
 # 안 바뀌게 매 빌드마다 같은 내용을 index.html에도 복사한다 (2026-09-20)
@@ -199,6 +200,7 @@ def main():
     ui_hotfix_script = open(UI_HOTFIX_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     quest_guide_script = open(QUEST_GUIDE_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     actor_interaction_script = open(ACTOR_INTERACTION_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
+    refine_reveal_script = open(REFINE_REVEAL_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     body_close = "</body>"
     count = template.count(body_close)
     assert count == 1, f"{body_close} matched {count} times (expected 1)"
@@ -208,6 +210,7 @@ def main():
         f'<script id="ux-hotfix">\n{ui_hotfix_script}\n</script>\n'
         f'<script id="quest-guide-v1">\n{quest_guide_script}\n</script>\n'
         f'<script id="actor-interaction-v1">\n{actor_interaction_script}\n</script>\n'
+        f'<script id="refine-reveal-v1">\n{refine_reveal_script}\n</script>\n'
         f'{body_close}'
     )
     template = template.replace(body_close, injected, 1)
@@ -229,6 +232,7 @@ def main():
     print("OK - UX hotfix injected")
     print("OK - quest guidance v1 injected")
     print("OK - actor interaction v1 injected")
+    print("OK - refine reveal v1 injected")
 
 
 if __name__ == "__main__":
