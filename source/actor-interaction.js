@@ -4,7 +4,7 @@
 (function(){
 'use strict';
 
-const AI_OBJECT_NAMES = new Set(['이미르의 책','바이오랩 트리거']);
+const AI_OBJECT_NAMES = new Set(); // 사물 여부는 db-npcs.json actorType을 정본으로 사용한다.
 const AI_FACILITY_SERVICES = new Set(['kafra','shop','refine']);
 const AI_STATE = { actions: [], sceneTargets: [], currentActor: null };
 const AI_LEGACY_TALK = window.talkNPC;
