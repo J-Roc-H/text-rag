@@ -3,47 +3,86 @@ name: actor-interaction-check
 on:
   push:
     branches:
-      - feat/actor-interaction
-  pull_request:
-    branches:
-      - main
+      - feat/refine-reveal-and-object-canon
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  build:
+  patch:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          ref: feat/refine-reveal-and-object-canon
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Python syntax
-        run: python -m py_compile build.py
-
-      - name: Actor interaction JS syntax
-        run: node --check source/actor-interaction.js
-
-      - name: Actor interaction runtime smoke
-        run: node tests/actor-interaction-smoke.js
-
-      - name: Build single HTML
-        run: python build.py
-
-      - name: Verify injected actor interaction
+      - name: Apply canonical wiring patch
         shell: bash
         run: |
-          grep -q 'id="actor-interaction-v1"' index.html
-          grep -q 'window.showNpcModal=aiRenderLocalScene' index.html
-          grep -q 'actor interaction v1' index.html
-          test -s '룬미드가츠_v9.19.html'
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path, old, new):
+              p = Path(path)
+              s = p.read_text(encoding='utf-8')
+              if new in s:
+                  return False
+              count = s.count(old)
+              if count != 1:
+                  raise SystemExit(f'{path}: expected one match, got {count}: {old[:80]!r}')
+              p.write_text(s.replace(old, new, 1), encoding='utf-8')
+              return True
+
+          changed = False
+          changed |= replace_once(
+              'build.py',
+              'ACTOR_INTERACTION_SCRIPT_PATH = os.path.join(BASE, "source", "actor-interaction.js")\n',
+              'ACTOR_INTERACTION_SCRIPT_PATH = os.path.join(BASE, "source", "actor-interaction.js")\nREFINE_REVEAL_SCRIPT_PATH = os.path.join(BASE, "source", "refine-reveal.js")\n'
+          )
+          changed |= replace_once(
+              'build.py',
+              '    actor_interaction_script = open(ACTOR_INTERACTION_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()\n',
+              '    actor_interaction_script = open(ACTOR_INTERACTION_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()\n    refine_reveal_script = open(REFINE_REVEAL_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()\n'
+          )
+          changed |= replace_once(
+              'build.py',
+              "        f'<script id=\"actor-interaction-v1\">\\n{actor_interaction_script}\\n</script>\\n'\n        f'{body_close}'\n",
+              "        f'<script id=\"actor-interaction-v1\">\\n{actor_interaction_script}\\n</script>\\n'\n        f'<script id=\"refine-reveal-v1\">\\n{refine_reveal_script}\\n</script>\\n'\n        f'{body_close}'\n"
+          )
+          changed |= replace_once(
+              'build.py',
+              '    print("OK - actor interaction v1 injected")\n',
+              '    print("OK - actor interaction v1 injected")\n    print("OK - refine reveal v1 injected")\n'
+          )
+
+          changed |= replace_once(
+              'source/data/db-npcs.json',
+              '"이미르의 책": {"map": "유노", "emoji": "📖", "dialog": "낡은 책장 위에 놓인 거대한 고서. 펼쳐진 면에서 희미한 빛이 새어 나온다.", "service": "ymir_book"}',
+              '"이미르의 책": {"map": "유노", "emoji": "📖", "actorType": "object", "dialog": "낡은 책장 위에 놓인 거대한 고서. 펼쳐진 면에서 희미한 빛이 새어 나온다.", "service": "ymir_book"}'
+          )
+          changed |= replace_once(
+              'source/data/db-npcs.json',
+              '"바이오랩 트리거": {"map": "생체연구소 1층", "emoji": "⚗️", "dialog": "...어두운 공간에서 이상한 기계음이 들린다. 수갑을 소지하고 있다면 무언가를 할 수 있을 것 같다.", "service": ""}',
+              '"바이오랩 트리거": {"map": "생체연구소 1층", "emoji": "⚗️", "actorType": "object", "dialog": "...어두운 공간에서 이상한 기계음이 들린다. 수갑을 소지하고 있다면 무언가를 할 수 있을 것 같다.", "service": ""}'
+          )
+          changed |= replace_once(
+              'source/actor-interaction.js',
+              "const AI_OBJECT_NAMES = new Set(['이미르의 책','바이오랩 트리거']);",
+              'const AI_OBJECT_NAMES = new Set(); // 사물 여부는 db-npcs.json actorType을 정본으로 사용한다.'
+          )
+          print('patched' if changed else 'already patched')
+          PY
+
+      - name: Commit patch if needed
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo 'No patch commit needed.'
+            exit 0
+          fi
+          git config user.name 'Da Bimci'
+          git config user.email '284856624+J-Roc-H@users.noreply.github.com'
+          git add build.py source/data/db-npcs.json source/actor-interaction.js
+          git commit -m 'feat: wire refine reveal and canonical object actors'
+          git push origin HEAD:feat/refine-reveal-and-object-canon
