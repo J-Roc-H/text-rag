@@ -1,0 +1,43 @@
+name: oneoff-consumable-details
+
+on:
+  push:
+    branches:
+      - fix/pre-re-consumable-weights
+    paths:
+      - '.github/workflows/_oneoff-consumable-details.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  details:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/pre-re-consumable-weights
+      - name: Dump unresolved consumables
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('.')
+          items=json.loads((p/'source/data/db-items.json').read_text(encoding='utf-8-sig'))
+          lines=['# 원본 미연결 소모품 상세','','| 키 | 무게 | 출처 | 구매 | 설명/효과 |','|---|---:|---|---:|---|']
+          for k,v in sorted(items.items()):
+              if v.get('type')!='소모품' or v.get('_aegis'): continue
+              desc=str(v.get('desc','')).replace('|','\\|').replace('\n',' ')
+              extras=[]
+              for f in ['heal','healMin','healMax','spHeal','spHealMin','spHealMax','effect']:
+                  if f in v: extras.append(f'{f}={v[f]}')
+              txt=(desc+'; '+'; '.join(extras)).strip('; ')
+              lines.append(f'| {k} | {v.get("weight")} | {v.get("weightSrc","-")} | {v.get("buy","-")} | {txt} |')
+          (p/'CONSUMABLE_UNRESOLVED_DETAILS.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+          PY
+      - name: Commit details
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CONSUMABLE_UNRESOLVED_DETAILS.md
+          git commit -m "audit: dump unresolved consumable metadata"
+          git push origin HEAD:fix/pre-re-consumable-weights
