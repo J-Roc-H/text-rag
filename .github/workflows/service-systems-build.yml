@@ -1,0 +1,63 @@
+name: Service systems build
+
+on:
+  push:
+    branches:
+      - feat/service-systems-v1
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check service source
+        run: node --check source/services.js
+
+      - name: Build single-file outputs
+        run: python build.py
+
+      - name: Check generated inline scripts
+        shell: bash
+        run: |
+          python - <<'PY'
+          import pathlib, re, subprocess
+          html = pathlib.Path('index.html').read_text(encoding='utf-8-sig')
+          assert 'id="block-service-systems"' in html, 'service block not in generated HTML'
+          blocks = re.findall(r'<script([^>]*)>(.*?)</script>', html, flags=re.S | re.I)
+          checked = 0
+          for attrs, body in blocks:
+              if 'application/json' in attrs:
+                  continue
+              path = pathlib.Path(f'/tmp/textrag-inline-{checked}.js')
+              path.write_text(body, encoding='utf-8')
+              subprocess.run(['node', '--check', str(path)], check=True)
+              checked += 1
+          print(f'OK - node --check {checked} inline JS blocks')
+          PY
+
+      - name: Commit generated HTML
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html "룬미드가츠_v9.19.html"
+          if git diff --cached --quiet; then
+            echo "No generated changes"
+          else
+            git commit -m "build: regenerate v9.19 with service systems"
+            git push
+          fi
