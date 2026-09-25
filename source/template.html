@@ -825,6 +825,7 @@ body.work-mode p {
 <body>
 <!-- ════ BLOCK 2: DATA (JSON) — CSV 변환 스크립트로 교체 ════ -->
 <script id="db-monsters"   type="application/json">{{__DATA_DB_MONSTERS__}}</script>
+<script id="db-monster-ai-profiles" type="application/json">{{__DATA_DB_MONSTER_AI_PROFILES__}}</script>
 <script id="db-maps"       type="application/json">{{__DATA_DB_MAPS__}}</script>
 <script id="db-element"    type="application/json">
 {"무속성":{"무속성":100,"수속성":100,"지속성":100,"화속성":100,"풍속성":100,"독속성":100,"성속성":100,"암속성":100,"염속성":25,"불사속성":100},
@@ -1180,6 +1181,7 @@ function loadDB(){
 }
   // 데이터
   DB.monsters     = j('db-monsters');
+  DB.monsterAiProfiles = j('db-monster-ai-profiles');
   DB.items        = j('db-items');
   DB.maps         = j('db-maps');
   DB.npcs         = j('db-npcs');
@@ -2705,6 +2707,114 @@ let slots=Array(6).fill(null);
 let activeSlot=-1; let regenTimer=null;
 let G={player:null,currentMap:"프론테라 남쪽 평원",battles:[],autoHunt:false,huntTimer:null,invTab:'all',cooldowns:{},itemCooldowns:{},skillTiers:null,tierIdx:null,skillTierSig:'',lastSkill:'',buffTick:0,passerbyTimer:null};
 
+// 공용 encounter 기록: processTurn과 runHeadlessTicks가 같은 기록 객체를 사용한다.
+const COMBAT_RECORD_LIMIT=30, COMBAT_EVENT_LIMIT=240;
+function ensureCombatRecord(){
+  if(G.combatRecord) return G.combatRecord;
+  let p=G.player; if(!p) return null;
+  p.combatRecordSeq=(Number(p.combatRecordSeq)||0)+1;
+  G.combatRecordSeq=p.combatRecordSeq;
+  G.combatTick=0;
+  G.combatRecord={id:`enc-${G.combatRecordSeq}`,map:G.currentMap||'',startedTick:0,endedTick:null,
+    rawEvents:[],incidents:[],summary:{kills:0,damageDealt:0,damageTaken:0,exp:0,jexp:0,zeny:0,items:{},manualOverrides:0},endReason:null};
+  let start={tick:0,type:'combat_start',monsters:(G.battles||[]).map(x=>x.name)};
+  G.combatRecord.rawEvents.push(start); G.combatRecord.incidents.push(Object.assign({},start));
+  return G.combatRecord;
+}
+function recordCombatEvent(type,detail){
+  let rec=G.combatRecord; if(!rec) return;
+  let event=Object.assign({tick:G.combatTick||0,type},detail||{});
+  rec.rawEvents.push(event); if(rec.rawEvents.length>COMBAT_EVENT_LIMIT) rec.rawEvents.shift();
+  if(['combat_start','kill','death','manual_override','escape','combat_end','monster_join','loot'].includes(type)){
+    rec.incidents.push(Object.assign({},event)); if(rec.incidents.length>80) rec.incidents.shift();
+  }
+  let n=Number(event.amount)||0;
+  if(type==='damage_dealt') rec.summary.damageDealt+=n;
+  else if(type==='damage_taken') rec.summary.damageTaken+=n;
+  else if(type==='kill') rec.summary.kills++;
+  else if(type==='reward'){rec.summary.exp+=Number(event.exp)||0;rec.summary.jexp+=Number(event.jexp)||0;rec.summary.zeny+=Number(event.zeny)||0;}
+  else if(type==='loot'&&event.item) rec.summary.items[event.item]=(rec.summary.items[event.item]||0)+1;
+  else if(type==='manual_override') rec.summary.manualOverrides++;
+}
+function finishCombatRecord(reason){
+  let rec=G.combatRecord; if(!rec) return;
+  rec.endedTick=G.combatTick||0; rec.endReason=reason||'complete';
+  recordCombatEvent('combat_end',{reason:rec.endReason});
+  let p=G.player; if(p){
+    if(!Array.isArray(p.combatRecords)) p.combatRecords=[];
+    p.combatRecords.push(rec); if(p.combatRecords.length>COMBAT_RECORD_LIMIT) p.combatRecords.splice(0,p.combatRecords.length-COMBAT_RECORD_LIMIT);
+  }
+  G.combatRecord=null;
+  // encounter 전용 최소 세계 상태다. 세이브에 넣지 않아 재시작 중 복구를 가장하지 않는다.
+  G.combatWorld=null;
+}
+
+// 원작 행동 데이터는 전투 수치 DB와 분리한다. profile이 없는 행은 추정하지 않는다.
+const MONSTER_AI_SCHEMA_VERSION=1, COMBAT_WORLD_DROP_LIMIT=120;
+function getMonsterAiProfile(sourceId){
+  let raw=(DB.monsterAiProfiles||{})[String(sourceId||'')];
+  let base={schemaVersion:MONSTER_AI_SCHEMA_VERSION,source:{originalId:null,version:'unknown',refs:[]},confidence:'unknown',aiType:'unknown',behaviors:{},wiringState:'unknown'};
+  if(!raw) return base;
+  return Object.assign(base,raw,{source:Object.assign({},base.source,raw.source||{}),behaviors:Object.assign({},raw.behaviors||{})});
+}
+function ensureCombatWorld(){
+  if(!G.combatWorld) G.combatWorld={schemaVersion:1,tick:0,nextEntitySeq:0,entities:{},groundDrops:[]};
+  let w=G.combatWorld, active={};
+  (G.battles||[]).forEach(m=>{
+    if(!m.entityId) m.entityId=`mob-${++w.nextEntitySeq}`;
+    let id=m.entityId; active[id]=true;
+    let entity=w.entities[id];
+    if(!entity){
+      let profile=getMonsterAiProfile(m.sourceId);
+      entity=w.entities[id]={id,kind:'monster',sourceId:m.sourceId!=null?String(m.sourceId):null,name:m.name||'',state:'encounter',spawnedTick:w.tick,profile};
+      recordCombatEvent('monster_entity_spawn',{entityId:id,monster:m.name||'',sourceId:entity.sourceId,aiType:profile.aiType,wiringState:profile.wiringState});
+    }
+    entity.name=m.name||entity.name;
+    entity.state=m.aiState||entity.state;
+  });
+  Object.keys(w.entities).forEach(id=>{if(!active[id]) delete w.entities[id];});
+  return w;
+}
+function createCombatMonster(sourceId, base, extra){
+  return Object.assign({},base,extra||{},{sourceId:String(sourceId),entityId:null,aiState:'encounter'});
+}
+function evaluateMonsterAi(m){
+  let profile=getMonsterAiProfile(m&&m.sourceId);
+  // enabled behavior만 계산을 바꾼다. hold/unknown은 legacy 전투식을 그대로 보낸다.
+  let enabled=profile.wiringState==='enabled';
+  return {profile,canCounterattack:!(enabled&&profile.behaviors.cannotCounterattack),canMove:!(enabled&&profile.behaviors.immobile)};
+}
+function registerLegacyAutoPickup(mon,item){
+  let world=ensureCombatWorld();
+  let drop={id:`drop-${world.tick}-${world.groundDrops.length+1}`,item,sourceEntityId:mon&&mon.entityId||null,sourceMonster:mon&&mon.name||'',state:'collected',delivery:'legacy_auto',spawnedTick:world.tick,collectedTick:world.tick,collectedBy:'player'};
+  world.groundDrops.push(drop);
+  if(world.groundDrops.length>COMBAT_WORLD_DROP_LIMIT) world.groundDrops.splice(0,world.groundDrops.length-COMBAT_WORLD_DROP_LIMIT);
+  recordCombatEvent('ground_drop',{dropId:drop.id,item:drop.item,monster:drop.sourceMonster,delivery:drop.delivery});
+  return drop;
+}
+function queueManualCombatOverride(type,name){
+  if(!G.autoHunt||!G.battles.length) return false;
+  G.pendingManualOverride={type,name};
+  ensureCombatRecord();
+  recordCombatEvent('manual_override',{actionType:type,name:String(name||'')});
+  if(typeof closeModal==='function') closeModal();
+  log(`✋ <b>[다음 행동 지정]</b> ${name} — 다음 자동 행동을 대체합니다.`,'system');
+  return true;
+}
+function hotbarPointerDown(ev,key){
+  if(G._hotbarSuppressClick===key) G._hotbarSuppressClick=null;
+  if(G._hotbarPressTimer) clearTimeout(G._hotbarPressTimer);
+  G._hotbarLongPressed=false;
+  G._hotbarPressTimer=setTimeout(()=>{G._hotbarPressTimer=null;G._hotbarLongPressed=true;G._hotbarSuppressClick=key;openHotbarModal(key);},550);
+}
+function hotbarPointerEnd(){if(G._hotbarPressTimer){clearTimeout(G._hotbarPressTimer);G._hotbarPressTimer=null;}}
+function hotbarPointerCancel(key){hotbarPointerEnd();if(G._hotbarLongPressed&&G._hotbarSuppressClick===key)G._hotbarSuppressClick=null;}
+function hotbarTap(key){
+  if(G._hotbarSuppressClick===key){G._hotbarSuppressClick=null;return;}
+  let slot=(G.player&&G.player.hotbar||{})[key];
+  if(slot) executeHotbar(key); else openHotbarModal(key);
+}
+
 // ──────────────────────────────────────────────────────────
 // [v9.08] 재료 소비 및 성공률 시스템
 // ──────────────────────────────────────────────────────────
@@ -2967,6 +3077,11 @@ function migrateSave(p){
 // 버전과 무관하게 항상 있어야 할 하위 구조 보강 ("레거시 세이브 null 체크" 원칙, DEVREF-A).
 function normalizeSave(p){
   if(!p.hotbar) p.hotbar = {};
+  if(!Array.isArray(p.combatRecords)) p.combatRecords = [];
+  if(!Number.isInteger(p.combatRecordSeq)||p.combatRecordSeq<0){
+    p.combatRecordSeq=p.combatRecords.reduce((max,r)=>Math.max(max,Number((String(r&&r.id||'').match(/^enc-(\d+)$/)||[])[1])||0),0);
+  }
+  if(p.combatRecords.length>COMBAT_RECORD_LIMIT) p.combatRecords=p.combatRecords.slice(-COMBAT_RECORD_LIMIT);
 
   // [데이터 마이그레이션] 인벤의 유령 키 제거.
   // 드롭명이 아이템DB에 없던 시절에 쌓인 것들이라 팔 수도 쓸 수도 없는 죽은 데이터다.
@@ -3523,6 +3638,9 @@ function rollDrops(p, mon, opts){
     // 실제 표시가 어긋나지 않는다
     let name = (it.slots>0) ? `${k} [${it.slots}]` : k;
     p.inventory[name] = (p.inventory[name]||0) + 1;
+    // 기존 즉시 획득 계산은 보존한다. 다만 drop entity를 남겨 향후 looter가 읽을 최소 상태를 만든다.
+    registerLegacyAutoPickup(mon,name);
+    recordCombatEvent('loot',{item:name,monster:mon.name});
     if(isCard){ if(!p.cardCodex) p.cardCodex = {}; p.cardCodex[k] = true; }
     if(opts.summary) opts.summary.items[name] = (opts.summary.items[name]||0) + 1;
     if(!opts.silent){
@@ -5614,7 +5732,8 @@ function procAggressiveSpawn(p){
         let _aid = _amd.monsters[Math.floor(Math.random() * _amd.monsters.length)];
         let _am = DB.monsters[_aid];
         if (_am) {
-          G.battles.push(Object.assign({}, _am, {currentHp:_am.hp, maxHp:_am.hp, statusEffects:{}, distance:getInitialDistance(p)}));
+          G.battles.push(createCombatMonster(_aid, _am, {currentHp:_am.hp, maxHp:_am.hp, statusEffects:{}, distance:getInitialDistance(p)}));
+          recordCombatEvent('monster_join',{monster:_am.name,source:'legacy_aggressive_spawn'});
           log(`⚠ <b>${_am.emoji}${_am.name}</b>${josa(_am.name,'이가')} 합류! <span style="color:var(--text-dim)">(현재 ${G.battles.length}마리)</span>`, 'warning');
           renderMonsters();
         }
@@ -5631,7 +5750,8 @@ function procResummonSlaves(p){
           let _se=_mvp.slaves[Math.floor(Math.random()*_mvp.slaves.length)];
           let _sm=DB.monsters[String(_se[0])];
           if(_sm){
-            G.battles.push(Object.assign({},_sm,{currentHp:_sm.hp,maxHp:_sm.hp,statusEffects:{},distance:getInitialDistance(p)}));
+            G.battles.push(createCombatMonster(_se[0],_sm,{currentHp:_sm.hp,maxHp:_sm.hp,statusEffects:{},distance:getInitialDistance(p)}));
+            recordCombatEvent('monster_join',{monster:_sm.name,source:'legacy_mvp_slave'});
             log(`👥 <b>${_mvp.emoji}${_mvp.name}</b>${josa(_mvp.name,'이가')} <b>${_sm.emoji}${_sm.name}</b>${josa(_sm.name,'을를')} 소환!`,'warning');
             renderMonsters();
           }
@@ -5692,6 +5812,7 @@ G.silentDead = false;
 // 신호값으로 바꿔야 할 이유 자체가 사라졌다(DEVREF-A 참조). 실제로 정리한 건 "복붙된 코드"뿐.
 function _endTurnIfBattlesEmpty(){
   if(G.battles.length) return false;
+  finishCombatRecord('victory');
   updateUI(); if(G.autoHunt) scheduleTickAspd(600);
   return true;
 }
@@ -5701,6 +5822,7 @@ function _endTurnIfBattlesEmpty(){
 // gainBaseExp로 반영하는 별개 방식이라 — 매 킬마다 즉시 레벨업하는 이 함수로 합치면
 // 레벨업 타이밍이 달라진다 — 의도적으로 통합하지 않았다.
 function awardKillReward(p, mon, set){
+  recordCombatEvent('kill',{monster:mon.name,id:mon.sourceId||mon.id||null,entityId:mon.entityId||null});
   p.totalKills = (p.totalKills||0) + 1;
   if(!p.killCount) p.killCount = {};
   p.killCount[mon.name] = (p.killCount[mon.name]||0) + 1;
@@ -5715,6 +5837,7 @@ function awardKillReward(p, mon, set){
   let mJ = getJobLvCap(p.job);
   while(p.jobLv < mJ && p.jobExp >= p.jobLv * 50){ p.jobExp -= p.jobLv * 50; p.jobLv++; p.skillPoints = (p.skillPoints||0) + 1; log(`🌟 Job Lv.${p.jobLv} 달성!`,'level-up'); }
   let z = mon.zeny[0] + Math.floor(Math.random()*(mon.zeny[1]-mon.zeny[0]));
+  recordCombatEvent('reward',{monster:mon.name,exp:getExp,jexp:getJexp,zeny:z});
   p.zeny += z; p.records.totalZeny += z;
   log(`💰 +${z}z`, 'system');
   idleTrack(getExp, z);
@@ -5724,7 +5847,12 @@ function awardKillReward(p, mon, set){
 }
 
 function processTurn(){
-  if(!G.battles.length)return; autoPotion(); let p=G.player; let s=calcStats(); let t=G.battles.reduce((min,m)=>m.currentHp<min.currentHp?m:min,G.battles[0]);
+  if(!G.battles.length)return;
+  ensureCombatRecord(); G.combatTick=(G.combatTick||0)+1;
+  let combatWorld=ensureCombatWorld(); combatWorld.tick=G.combatTick;
+  let manualOverride=G.pendingManualOverride||null; G.pendingManualOverride=null;
+  recordCombatEvent('player_decision',{source:manualOverride?'manual_override':'automatic',actionType:manualOverride&&manualOverride.type||null,name:manualOverride&&manualOverride.name||null});
+  if(!manualOverride) autoPotion(); let p=G.player; let s=calcStats(); let t=G.battles.reduce((min,m)=>m.currentHp<min.currentHp?m:min,G.battles[0]);
   let se=p.statusEffects||{}; let sk=false; ['stun','sleep','freeze','stone'].forEach(k=>{if(se[k])sk=true;});
   
   // ── [ 시스템 데이터 안전장치 ] ──
@@ -5748,14 +5876,21 @@ function processTurn(){
 
     // ── [ ⚙️ 옵션: 몰이 사냥 토글 로직 ] ──
     // 사냥 방식이 'wait(대기)' 이고 적이 3마리 미만이면 타격을 보류함.
-    let skipAttack = false;
-    if (p.options.huntStyle === 'wait' && G.battles.length > 0 && G.battles.length < 3) {
+    let skipAttack = !!(manualOverride&&manualOverride.type==='item');
+    if(manualOverride&&manualOverride.type==='item'){
+      G._processingManualItem=true; let _ok=false; try{_ok=useItem(manualOverride.name);}finally{G._processingManualItem=false;}
+      recordCombatEvent('item_used',{item:manualOverride.name,success:!!_ok});
+      if(_ok){
+        if(!G.battles.length) finishCombatRecord(DB.items[manualOverride.name]?.effect==='town'?'return_to_town':'teleport');
+      } else log(`⚠ 지정한 아이템 [${manualOverride.name}]을 사용할 수 없어 이번 행동을 소비했습니다.`,'warning');
+    }
+    if (p.options.huntStyle === 'wait' && !manualOverride && G.battles.length > 0 && G.battles.length < 3) {
       log(`👀 <b>[몰이 사냥]</b> 몬스터가 모일 때까지 대기합니다. (현재 ${G.battles.length}마리)`, 'system');
       skipAttack = true;
     }
 
     // [화살 시스템] 활 전용: 화살 없으면 공격 불가
-    if(!skipAttack && s.usesArrow){
+    if(!skipAttack && !manualOverride && s.usesArrow){
       let _hasArrow=false;
       for(let _an in (p.inventory||{})){
         let _ai=DB.items[_an]; if(_ai&&_ai.ammo&&(p.inventory[_an]||0)>0){_hasArrow=true;break;}
@@ -5772,6 +5907,7 @@ function processTurn(){
       let sUsed = false; let now = Date.now();
       // ── 스킬 선택 (pickPlayerSkill — 슬라이스3 추출, 동작 불변) ──
       let pick = pickPlayerSkill(p, s);
+      if(manualOverride&&manualOverride.type==='skill'&&!pick){skipAttack=true;sUsed=true;}
       function pickPlayerSkill(p, s){
       let mySkillNames = Object.keys(p.skills || {});
       // ── 쿨다운 틱 차감 (매 턴마다) ──
@@ -5779,6 +5915,13 @@ function processTurn(){
         if(G.cooldowns[sn] > 0) G.cooldowns[sn]--;
         if(G.cooldowns[sn] <= 0) delete G.cooldowns[sn];
       });
+      if(manualOverride&&manualOverride.type==='skill'){
+        let _sn=manualOverride.name, _sk=DB.skills[_sn], _lv=(p.skills||{})[_sn]||0;
+        let _cost=_sk? (typeof _sk.spCost==='function'?_sk.spCost(_lv):_sk.spCost):Infinity;
+        if(_sk&&_sk.type==='액티브'&&typeof _sk.effect==='function'&&_lv>0&&p.sp>=_cost&&!G.cooldowns[_sn]&&!(p.statusEffects&&p.statusEffects.silence)) return _sn;
+        log(`⚠ 지정한 스킬 [${_sn}]을 사용할 수 없어 이번 행동을 소비했습니다.`,'warning');
+        return null;
+      }
 
       // [P2-02] 무게 70% 초과 — 자동 스킬 사용 불가 (평타만). 쿨다운 차감은 위에서 이미 끝났음
       if(s.weightNoAutoSkill){
@@ -5945,12 +6088,15 @@ function processTurn(){
           log(`⚡ <b>[무캐스팅]</b> DEX ${s.dex} 달성! 즉시 시전!`, 'system');
         }
 
+        let _battleHpBefore=G.battles.map(_m=>[_m,_m.currentHp]);
         let res = skObj.effect(p, s, t, slv);
+        _battleHpBefore.forEach(_entry=>{let _m=_entry[0],_before=_entry[1];if(_before>_m.currentHp)recordCombatEvent('damage_dealt',{target:_m.name,amount:_before-_m.currentHp,action:'skill',skill:pick});});
         if(res){
           let spStr = cost > 0 ? ` <span style="font-size:10px;color:#3498db;opacity:0.85;">[-${cost} SP]</span>` : '';
           log(res.msg + spStr, res.type || 'combat');
           sUsed = true;
         }
+        if(manualOverride&&manualOverride.type==='skill'){sUsed=true;recordCombatEvent('skill_used',{skill:pick,target:t&&t.name||null});}
         // [화살 시스템] 활 전용: 스킬 사용 시 화살 1개 소모
         if(sUsed && s.usesArrow){
           for(let _an in (p.inventory||{})){
@@ -5978,7 +6124,7 @@ function processTurn(){
         // ── AOE 사망 처리: t 외 광역기에 사망한 몬스터 보상 처리 및 배열 정리 ──
         for(let _ai=G.battles.length-1;_ai>=0;_ai--){
           let _am=G.battles[_ai]; if(_am===t||_am.currentHp>0) continue;
-          G.battles.splice(_ai,1); logSep();
+          G.battles.splice(_ai,1); recordCombatEvent('kill',{monster:_am.name,action:'aoe'}); logSep();
           log(`✅ ${_am.emoji}${_am.name} 처치! (광역)`,'combat');
           p.totalKills=(p.totalKills||0)+1;
           if(!p.killCount)p.killCount={};p.killCount[_am.name]=(p.killCount[_am.name]||0)+1;
@@ -5987,6 +6133,7 @@ function processTurn(){
           p.baseExp+=_ae;p.jobExp+=_aj;p.records.totalExp+=_ae;
           log(`✨ EXP +${_ae} JEXP +${_aj}`,'system');
           let _az=_am.zeny[0]+Math.floor(Math.random()*(_am.zeny[1]-_am.zeny[0]));
+          recordCombatEvent('reward',{monster:_am.name,exp:_ae,jexp:_aj,zeny:_az});
           p.zeny+=_az;p.records.totalZeny+=_az;log(`💰 +${_az}z`,'system'); idleTrack(_ae,_az); // [UI-①]
           rollDrops(p, _am);
           checkQuestKill(_am.name);checkJobQuestKill(_am.name);
@@ -6042,6 +6189,7 @@ function processTurn(){
           let rawAtk = Math.floor((s.baseAtk + s.weaponAtk) * szP * elM * curseMul * raceMul * cardAtkMul);
           let tot = Math.max(1, Math.floor((rawAtk - effSoftDef) * (1 - effHardDef/100)));
           if(isC) tot = Math.floor(tot * 1.4);
+          let _targetHpBefore=t.currentHp;
           let dmg = tot; t.currentHp -= dmg;
           // 카드 프록: HP흡수 / SP흡수 / 상태이상 / 오토스펠
           { let _p=G.player;
@@ -6135,6 +6283,7 @@ function processTurn(){
             if(isC) brkParts.push(`×크리`);
             dmgBrkStr = ` <span style="font-size:10px;color:var(--text-dim);">[${brkParts.join(' ')}]</span>`;
           }
+          if(t.currentHp<_targetHpBefore) recordCombatEvent('damage_dealt',{target:t.name,amount:_targetHpBefore-t.currentHp,action:'attack'});
           if(isC){ log(`💥 <b>[크리티컬 일격]</b> ${p.name}${josa(p.name,'이가')} ${t.emoji}${t.name}에게 <span class="hl-dmg">${dmg}</span>의 치명타!${advStr}${wpStr}${dmgBrkStr}`,'crit'); }
           else { log(`⚔ <b>[일반 공격]</b> ${p.name}${josa(p.name,'이가')} ${t.emoji}${t.name}에게 <span class="hl-dmg">${dmg}</span> 피해.${advStr}${wpStr}${dmgBrkStr}`,'dmg-dealt'); }
           // 인챈트 포이즌: 평타 명중 시 독 부여 확률
@@ -6185,6 +6334,13 @@ function processTurn(){
   for(let i=0;i<G.battles.length;i++){
     let m=G.battles[i];
     if(m.currentHp<=0) continue; // 사망 몬스터 공격 차단
+    let aiDecision=evaluateMonsterAi(m);
+    if(!aiDecision.canCounterattack){
+      m.aiState='idle';
+      if(combatWorld.entities[m.entityId]) combatWorld.entities[m.entityId].state='idle';
+      recordCombatEvent('monster_action_skipped',{entityId:m.entityId,monster:m.name||'',reason:'cannot_counterattack',sourceId:m.sourceId||null});
+      continue;
+    }
     // [몬스터 SE] 스턴/수면/동빙 → 공격 불가, 턴 차감
     if(m.statusEffects){
       if(m.statusEffects.stun>0){
@@ -6222,11 +6378,19 @@ function processTurn(){
     }
     // ── [ 원거리 시스템: 거리 좁히기 ] ──
     if((m.distance||1) > 1){
+      if(!aiDecision.canMove){
+        m.aiState='idle';
+        if(combatWorld.entities[m.entityId]) combatWorld.entities[m.entityId].state='idle';
+        recordCombatEvent('monster_action_skipped',{entityId:m.entityId,monster:m.name||'',reason:'immobile',sourceId:m.sourceId||null});
+        continue;
+      }
       m.distance--;
+      m.aiState='chase'; if(combatWorld.entities[m.entityId]) combatWorld.entities[m.entityId].state='chase';
       log(`🏃 <b>${m.name}</b>${josa(m.name,'이가')} 접근 중... <span style="color:var(--text-dim)">(거리 ${m.distance+1} → ${m.distance})</span>`,'system');
       continue; // 이 턴 공격 없음
     }
 
+    m.aiState='engaged'; if(combatWorld.entities[m.entityId]) combatWorld.entities[m.entityId].state='engaged';
     // 몬스터 공격속도: lv 기반 (lv1=1400ms, lv99=400ms)
     let monDelay = Math.max(400, 1800 - m.lv * 14);
     // 속도 비율: 플레이어 딜레이 / 몬스터 딜레이
@@ -6288,6 +6452,7 @@ function processTurn(){
           if(mdg>0&&p.statusEffects&&p.statusEffects.siegfried&&isSkillMagic)mdg=Math.max(1,Math.floor(mdg*(1-(p.statusEffects.siegfried.eleRes||0))));
           if(mdg>0&&p.statusEffects&&p.statusEffects.godsBless&&m.element==='성속성')mdg=Math.max(1,Math.floor(mdg*(1-(p.statusEffects.godsBless.holyRes||0))));
           p.hp -= mdg;
+            if(mdg>0) recordCombatEvent('damage_taken',{monster:m.name,amount:mdg,action:'skill'});
             log(`💥 <b>[${m.name}의 ${skName}]</b> ${skDesc} <span class="hl-dmg">${mdg}</span>의 피해를 입었습니다!`,'dmg-recv'); skillUsed = true;
         }
         // 일반 공격 처리 (몬스터 공격: softDef로 감소)
@@ -6310,6 +6475,7 @@ function processTurn(){
           if(mdg>0&&p.statusEffects&&p.statusEffects.diamondBody)mdg=Math.max(1,Math.floor(mdg*(1-(p.statusEffects.diamondBody.dmgReduce||0))));
           if(mdg>0&&p.statusEffects&&p.statusEffects.defender)mdg=Math.max(1,Math.floor(mdg*(1-(p.statusEffects.defender.reduce||0))));
           p.hp-=mdg;
+          if(mdg>0) recordCombatEvent('damage_taken',{monster:m.name,amount:mdg,action:'attack'});
           // D. 리플렉트 쉴드: 방패 장착 시 물리 피해 일부 반사
           { let rflLv=(p.skills&&p.skills["리플렉트 쉴드"])||0;
             if(rflLv>0&&p.equip&&p.equip["방패"]){
@@ -6354,12 +6520,12 @@ function processTurn(){
     else if(p.statusEffects&&p.statusEffects.resurrectBuff){
       let revHp=p.statusEffects.resurrectBuff.hp;
       delete p.statusEffects.resurrectBuff;
-      G.battles=[]; p.hp=Math.max(1,Math.floor(p.maxHp*revHp));
+      G.battles=[]; finishCombatRecord('resurrect'); p.hp=Math.max(1,Math.floor(p.maxHp*revHp));
       log(`💫 <b>[리저렉션]</b> 현재 위치에서 HP ${Math.floor(revHp*100)}%로 부활했습니다!`,'level-up');
       updateUI(); if(G.autoHunt) scheduleTickAspd(600);
     }
     else {
-      G.battles=[]; p.hp=0; log('💀 <b>쓰러졌습니다...</b> 마을 귀환','error'); pbReact('death');
+      recordCombatEvent('death',{player:p.name}); G.battles=[]; finishCombatRecord('death'); p.hp=0; log('💀 <b>쓰러졌습니다...</b> 마을 귀환','error'); pbReact('death');
       // 경험치 손실 (Pre-Renewal: 현재 레벨 필요 EXP의 1%. Lv1·Lv99 제외. 레벨 다운 없음)
       if(p.baseLv > 1 && p.baseLv < 99){
         let expLoss = Math.floor((DB.expTable[p.baseLv]||0) * 0.01);
@@ -6453,6 +6619,7 @@ function openTreasureBox(name) {
 }
 
 function useItem(n,auto=false){
+  if(!auto&&!G._processingManualItem&&queueManualCombatOverride('item',n)) return true;
   let p=G.player; let it=DB.items[n]; if(!it||(p.inventory[n]||0)<=0)return false; let now=Date.now();
   if(it.type==='소모품'&&G.itemCooldowns[n]&&now<G.itemCooldowns[n]){if(!auto)log(`⏳ 쿨타임 중`,'warning');return false;}
   p.inventory[n]--; if(p.inventory[n]<=0)delete p.inventory[n];
@@ -6476,12 +6643,12 @@ function useItem(n,auto=false){
       log(`🪰 마을에서는 <b>[${n}]</b>을 사용할 수 없습니다.`,'warning');
       updateUI(); return false;
     }
-    G.battles=[];
+    G.battles=[]; if(!G._processingManualItem) finishCombatRecord('teleport');
     log(`🪰 <b>[${n}]</b> 무작위 텔레포트! 전투에서 이탈했다.`,'system');
     renderMonsters();
   }
   else if(it.effect==='town'){
-    G.battles=[]; clearTimeout(G.huntTimer); G.autoHunt=false;
+    G.battles=[]; if(!G._processingManualItem) finishCombatRecord('return_to_town'); clearTimeout(G.huntTimer); G.autoHunt=false;
     // [FIX] savedMap이 safe 맵인지 검증 — 아니면 프론테라로 폴백
     let _dest=(p.savedMap&&DB.maps[p.savedMap]&&DB.maps[p.savedMap].safe)?p.savedMap:'프론테라';
     G.currentMap=_dest;
@@ -8310,6 +8477,7 @@ function showCardCompoundModal(preSelectedCard) {
 
 // 스킬 사용 실행 함수
 function useSkill(name){
+  if(queueManualCombatOverride('skill',name)) return;
   let p = G.player;
   let sk = DB.skills[name];
   if(!sk) return;
@@ -10282,7 +10450,7 @@ function spawnMvpSlaves(mvpMon, initDist){
   mvpMon.slaves.forEach(([sid,cnt])=>{
     let sm = DB.monsters[String(sid)]; if(!sm) return;
     for(let i=0;i<cnt;i++){
-      G.battles.push(Object.assign({},sm,{currentHp:sm.hp,maxHp:sm.hp,statusEffects:{},distance:initDist}));
+      G.battles.push(createCombatMonster(sid,sm,{currentHp:sm.hp,maxHp:sm.hp,statusEffects:{},distance:initDist}));
       slaveNames.push(sm.emoji+sm.name);
     }
   });
@@ -10428,12 +10596,13 @@ function spawnMonsters(){
   if(bossMode === '보스만사냥' && md.hasMvp){
     let mvpMon = DB.monsters[String(md.hasMvp)];
     if(mvpMon){
-      G.battles.push(Object.assign({},mvpMon,{currentHp:mvpMon.hp,maxHp:mvpMon.hp,statusEffects:{},distance:initDist,isMvp:true}));
+      G.battles.push(createCombatMonster(md.hasMvp,mvpMon,{currentHp:mvpMon.hp,maxHp:mvpMon.hp,statusEffects:{},distance:initDist,isMvp:true}));
       nm.push(mvpMon.emoji + mvpMon.name);
       p.seenCount[mvpMon.name] = (p.seenCount[mvpMon.name]||0) + 1;
       spawnMvpSlaves(mvpMon, initDist);
       logSep();
       logMvpAppear(mvpMon);
+      ensureCombatRecord();
       renderMonsters(); return;
     }
   }
@@ -10461,7 +10630,7 @@ function spawnMonsters(){
       let id=_pool[Math.floor(Math.random()*_pool.length)];
       let m=DB.monsters[id];
       if(m){
-        G.battles.push(Object.assign({},m,{currentHp:m.hp,maxHp:m.hp,statusEffects:{},distance:initDist}));
+        G.battles.push(createCombatMonster(id,m,{currentHp:m.hp,maxHp:m.hp,statusEffects:{},distance:initDist}));
         nm.push(m.emoji+m.name);
         p.seenCount[m.name] = (p.seenCount[m.name]||0) + 1;
       }
@@ -10472,14 +10641,16 @@ function spawnMonsters(){
   if(bossMode === 'normal' && md.hasMvp && Math.random() < 0.01){
     let mvpMon = DB.monsters[String(md.hasMvp)];
     if(mvpMon){
-      G.battles.push(Object.assign({},mvpMon,{currentHp:mvpMon.hp,maxHp:mvpMon.hp,statusEffects:{},distance:initDist,isMvp:true}));
+      G.battles.push(createCombatMonster(md.hasMvp,mvpMon,{currentHp:mvpMon.hp,maxHp:mvpMon.hp,statusEffects:{},distance:initDist,isMvp:true}));
       nm.push(mvpMon.emoji + mvpMon.name);
       p.seenCount[mvpMon.name] = (p.seenCount[mvpMon.name]||0) + 1;
       spawnMvpSlaves(mvpMon, initDist);
     }
   }
 
-  if(!nm.length) return; logSep();
+  if(!nm.length) return;
+  ensureCombatRecord();
+  logSep();
   let hasMvpInBattle = G.battles.some(b=>b.isMvp);
   if(hasMvpInBattle){
     let mvpB = G.battles.find(b=>b.isMvp);
@@ -15585,7 +15756,7 @@ const HOTBAR_ACTIONS = {
 function actionFlee(){
   if(!G.battles.length){ log(`🏃 전투 중이 아닙니다.`,'warning'); return; }
   if((G.cooldowns['__flee']||0)>0){ log(`⏳ 도망 쿨타임 중 (${G.cooldowns['__flee']}턴)`,'warning'); return; }
-  G.battles=[]; G.cooldowns['__flee']=30;
+  G.battles=[]; G.cooldowns['__flee']=30; finishCombatRecord('flee');
   log(`🏃 <b>[도망]</b> 전투에서 이탈했다!`,'system');
   renderMonsters(); renderHotbar();
 }
@@ -15596,6 +15767,7 @@ function executeHotbar(key){
   // [UI-③] 발동 플래시
   let _el=$('hb-slot-'+key);
   if(_el){ _el.classList.remove('used'); void _el.offsetWidth; _el.classList.add('used'); }
+  if((slot.type==='skill'||slot.type==='item')&&queueManualCombatOverride(slot.type,slot.name)) return;
   if(slot.type==='skill') useSkill(slot.name);
   else if(slot.type==='item'){ useItem(slot.name); }
   else if(slot.type==='action'){
@@ -15635,9 +15807,9 @@ function renderHotbar(){
         let _sk=DB.skills[slot.name];
         if(_sk){ let _slv=p.skills[slot.name]||1; let _cost=typeof _sk.spCost==='function'?_sk.spCost(_slv):_sk.spCost; if(_cost&&p.sp<_cost) stCls+=' nosp'; }
       }
-      h+=`<button class="hotbar-slot${stCls}" id="hb-slot-${k}" onclick="openHotbarModal('${k}')" title="${slot.name} (${k.toUpperCase()})"><span class="hb-key">${k.toUpperCase()}</span><span class="hb-icon">${em}</span><span class="hb-name">${nm}</span>${cdTxt?`<span class="hb-cd-ov">${cdTxt}</span>`:''}</button>`;
+      h+=`<button class="hotbar-slot${stCls}" id="hb-slot-${k}" onclick="hotbarTap('${k}')" onpointerdown="hotbarPointerDown(event,'${k}')" onpointerup="hotbarPointerEnd()" onpointerleave="hotbarPointerEnd()" onpointercancel="hotbarPointerCancel('${k}')" title="${slot.name} (${k.toUpperCase()})"><span class="hb-key">${k.toUpperCase()}</span><span class="hb-icon">${em}</span><span class="hb-name">${nm}</span>${cdTxt?`<span class="hb-cd-ov">${cdTxt}</span>`:''}</button>`;
     } else {
-      h+=`<button class="hotbar-slot empty" onclick="openHotbarModal('${k}')"><span class="hb-key">${k.toUpperCase()}</span><span class="hb-icon" style="font-size:14px;color:#ccc">＋</span></button>`;
+      h+=`<button class="hotbar-slot empty" onclick="hotbarTap('${k}')" onpointerdown="hotbarPointerDown(event,'${k}')" onpointerup="hotbarPointerEnd()" onpointerleave="hotbarPointerEnd()" onpointercancel="hotbarPointerCancel('${k}')"><span class="hb-key">${k.toUpperCase()}</span><span class="hb-icon" style="font-size:14px;color:#ccc">＋</span></button>`;
     }
   });
   hg.innerHTML=h;
@@ -15974,10 +16146,10 @@ renderChar = function() {
 };
 
 // ══════════════════════════════════════════════
-// ── P1-08 자동 검증 게이트 (5종) ──────────────
+// ── P1-08 + 전투개편 자동 검증 게이트 (7종) ─────
 // 콘솔에서 await runValidationGate() 호출. 구조 리팩토링(P1-08 이후) 착수 전
 // 회귀 여부를 한 번에 확인하는 용도 — 게임 내 UI는 없음(devtools 콘솔 전용).
-// 완료조건(DEVREF-E P1-08): 한 번 실행으로 5종 전부 통과/실패가 찍힌다.
+// 완료조건: 한 번 실행으로 7종 전부 통과/실패가 찍힌다.
 // ══════════════════════════════════════════════
 async function runValidationGate(){
   const results = [];
@@ -16112,6 +16284,9 @@ async function runValidationGate(){
       ['kills','exp','jexp','zeny','deaths'].forEach(k=>{
         if(summaryA[k] !== summaryB[k]) diffDetail.push(`summary.${k}: 1회차=${summaryA[k]} 2회차=${summaryB[k]}`);
       });
+      if(JSON.stringify(stateA.player.combatRecords)!==JSON.stringify(stateB.player.combatRecords)) diffDetail.push('player.combatRecords: 1회차와 2회차가 다름');
+      if(JSON.stringify(stateA.combatRecord)!==JSON.stringify(stateB.combatRecord)) diffDetail.push('G.combatRecord: 1회차와 2회차가 다름');
+      if(JSON.stringify(stateA.combatWorld)!==JSON.stringify(stateB.combatWorld)) diffDetail.push('G.combatWorld: 1회차와 2회차가 다름');
     } finally {
       Math.random = origRandom; Date.now = realDateNow;
       restore(startSnap);
@@ -16134,6 +16309,54 @@ async function runValidationGate(){
     }catch(e){
       add('⑤','세이브 round-trip 무손실 (loadPlayerData 멱등성)', false, [String(e)]);
     }
+  })();
+
+  // ── ⑥ 수동 아이템 override는 자동 공격 한 번을 대체한다 ──
+  (function gate6(){
+    if(!G.player){ add('⑥','수동 아이템 override 행동 대체', false, ['G.player 없음']); return; }
+    const snapshot=JSON.parse(JSON.stringify(G)); let detail=[];
+    try{
+      G.player=JSON.parse(JSON.stringify(snapshot.player));
+      let p=G.player; p.inventory=p.inventory||{}; p.inventory['빨간포션']=1; p.maxHp=p.maxHp||50; p.hp=Math.max(1,p.maxHp-10);
+      p.statusEffects={}; p.options=p.options||{}; p.options.huntStyle='immediate';
+      G.autoHunt=false; G.pendingManualOverride={type:'item',name:'빨간포션'}; G.combatRecord=null; G.combatTick=0;
+      G.cooldowns={}; G.itemCooldowns={};
+      let base=DB.monsters['1']||DB.monsters[Object.keys(DB.monsters)[0]];
+      if(!base) throw new Error('테스트 몬스터 없음');
+      let m=Object.assign({},base,{hp:100000000,maxHp:100000000,currentHp:100000000,atk:0,statusEffects:{stun:1},distance:1});
+      G.battles=[m]; let hpBefore=m.currentHp;
+      processTurn();
+      if(m.currentHp!==hpBefore) detail.push('아이템 사용 턴에 플레이어 자동 공격도 실행됨');
+      if((p.inventory['빨간포션']||0)!==0) detail.push('지정 아이템이 한 번 소비되지 않음');
+      if(!G.combatRecord||!G.combatRecord.rawEvents.some(e=>e.type==='item_used'&&e.success)) detail.push('공용 전투 기록에 아이템 사용이 없음');
+    }catch(e){detail.push(String(e));}
+    finally{Object.keys(G).forEach(k=>delete G[k]);Object.assign(G,JSON.parse(JSON.stringify(snapshot)));}
+    add('⑥','수동 아이템 override 행동 대체', detail.length===0, detail);
+  })();
+
+  // ── ⑦ AI profile/world 최소 상태: 확인된 무반격·고정형만 계산에 반영 ──
+  (function gate7(){
+    if(!G.player){ add('⑦','AI profile/world 최소 상태와 무반격 몬스터', false, ['G.player 없음']); return; }
+    const snapshot=JSON.parse(JSON.stringify(G)); let detail=[];
+    try{
+      G.player=JSON.parse(JSON.stringify(snapshot.player));
+      let p=G.player; p.statusEffects={}; p.options=Object.assign({},p.options||{},{huntStyle:'wait'});
+      p.maxHp=p.maxHp||100; p.hp=Math.max(1,p.maxHp-1);
+      G.autoHunt=false; G.combatRecord=null; G.combatWorld=null; G.combatTick=0; G.cooldowns={}; G.itemCooldowns={};
+      let eggBase=DB.monsters['480'];
+      if(!eggBase) throw new Error('페코페코 알(480) 데이터 없음');
+      let egg=createCombatMonster('480',eggBase,{currentHp:100000000,maxHp:100000000,atk:999999,statusEffects:{},distance:9});
+      G.battles=[egg];
+      processTurn();
+      let entity=G.combatWorld&&G.combatWorld.entities[egg.entityId];
+      if(!entity || entity.sourceId!=='480') detail.push('combatWorld monster entity/sourceId 누락');
+      if(!entity || entity.profile.wiringState!=='enabled') detail.push('검증 profile 연결 실패');
+      if(G.combatRecord&&G.combatRecord.rawEvents.some(e=>e.type==='damage_taken'&&e.monster===egg.name)) detail.push('무반격 페코페코 알이 플레이어에게 피해를 줌');
+      if(egg.distance!==9) detail.push('고정형 페코페코 알이 이동함');
+      if(!G.combatRecord||!G.combatRecord.rawEvents.some(e=>e.type==='monster_action_skipped'&&e.reason==='cannot_counterattack')) detail.push('무반격 decision event 누락');
+    }catch(e){detail.push(String(e));}
+    finally{Object.keys(G).forEach(k=>delete G[k]);Object.assign(G,JSON.parse(JSON.stringify(snapshot)));}
+    add('⑦','AI profile/world 최소 상태와 무반격 몬스터', detail.length===0, detail);
   })();
 
   const allPass = results.every(r=>r.pass);
