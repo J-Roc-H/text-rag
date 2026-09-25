@@ -1,0 +1,72 @@
+name: oneoff-quest-guide-test
+
+on:
+  push:
+    branches:
+      - feat/quest-guide-v1
+    paths:
+      - '.github/workflows/_oneoff-quest-guide-test.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/quest-guide-v1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and build
+        run: |
+          node --check source/quest-guide.js
+          python build.py
+          grep -q 'id="quest-guide-v1"' index.html
+          grep -q '지금 할 일' index.html
+      - name: Browser smoke
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+          cat > /tmp/quest-smoke.js <<'JS'
+          const { chromium } = require('playwright');
+          const path = require('path');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage({viewport:{width:390,height:844}});
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e)));
+            await page.goto('file://' + path.resolve('index.html'));
+            await page.evaluate(()=>{
+              G.player={
+                name:'검증용',job:'노비스',baseLv:80,jobLv:10,inventory:{'폭죽':3},
+                quests:{
+                  Q_RAC_SANCTUARY:{state:'active',count:0},
+                  Q_MOC_PURGE:{state:'active',count:2},
+                  tut_01:{state:'available',count:0}
+                },
+                jobQuests:{job2_knight:{state:'available',step:0,stepData:{count:0}}}
+              };
+              G.currentMap='프론테라';
+              showQuestModal();
+            });
+            const text=await page.locator('#modal-body').innerText();
+            const must=['퀘스트','지금 할 일','폭죽 20개 수집','보상','수락 가능한 퀘스트','친절한 노인','전직 퀘스트'];
+            for(const s of must){ if(!text.includes(s)) throw new Error('missing '+s+'\n'+text); }
+            if(!/프론테라/.test(text)) throw new Error('NPC/map guidance missing\n'+text);
+            if(errors.length) throw new Error('page errors: '+errors.join('\n'));
+            console.log(text.slice(0,4000));
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          node /tmp/quest-smoke.js
+      - name: Commit generated HTML
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html "룬미드가츠_v9.19.html"
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "build: regenerate quest guidance HTML"
+          git push origin HEAD:feat/quest-guide-v1
