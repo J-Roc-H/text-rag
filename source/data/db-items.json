@@ -17239,21 +17239,21 @@
   },
   "솜털": {
     "type": "잡템",
-    "emoji": "🤍",
-    "desc": "루나틱의 부드러운 솜털.",
+    "emoji": "🧶",
+    "desc": "작고 부드러운 솜털.",
     "buy": 0,
     "sell": 4,
-    "weight": 10,
-    "weightSrc": "type"
+    "weight": 1,
+    "weightSrc": "official"
   },
-  "새깃털": {
+  "새의 깃털": {
     "type": "잡템",
     "emoji": "🪶",
-    "desc": "날카로운 새 깃털.",
+    "desc": "새에게서 나온 깃털.",
     "buy": 0,
     "sell": 5,
-    "weight": 10,
-    "weightSrc": "type"
+    "weight": 1,
+    "weightSrc": "official"
   },
   "늑대발톱": {
     "type": "잡템",
@@ -17345,7 +17345,7 @@
     "weight": 10,
     "weightSrc": "type"
   },
-  "단단한껍질": {
+  "매우 단단한 껍질": {
     "type": "잡템",
     "emoji": "🐚",
     "desc": "딱딱한 껍질 조각.",
@@ -19232,7 +19232,7 @@
     "weightSrc": "official",
     "_aegis": "Seed_Of_Yggdrasil"
   },
-  "자수정": {
+  "아메디스트": {
     "type": "재료",
     "emoji": "💜",
     "desc": "보랏빛 자수정.",
@@ -19665,7 +19665,7 @@
     "weight": 10,
     "weightSrc": "type"
   },
-  "오징어 먹물": {
+  "먹물": {
     "type": "잡템",
     "emoji": "🦑",
     "desc": "오징어에서 채취한 검은 먹물.",
@@ -19692,7 +19692,7 @@
     "weight": 10,
     "weightSrc": "type"
   },
-  "이그드라실 잎": {
+  "이그드라실의 나뭇잎": {
     "type": "잡템",
     "emoji": "🍃",
     "desc": "세계수 이그드라실의 잎사귀.",
@@ -19758,14 +19758,14 @@
     "weight": 10,
     "weightSrc": "type"
   },
-  "글라시얼 하트": {
+  "얼음 심장": {
     "type": "잡템",
-    "emoji": "💎",
-    "desc": "빙하 속에서 굳어진 심장 결정.",
+    "emoji": "🧊",
+    "desc": "차갑게 얼어붙은 심장.",
     "buy": 0,
-    "sell": 80,
-    "weight": 10,
-    "weightSrc": "type"
+    "sell": 303,
+    "weight": 1,
+    "weightSrc": "official"
   },
   "마스터 키": {
     "type": "잡템",
@@ -19830,21 +19830,12 @@
     "weight": 10,
     "weightSrc": "type"
   },
-  "살아있는 석탄": {
+  "불씨": {
     "type": "잡템",
     "emoji": "🪨",
     "desc": "용암 지대에서 채취한, 아직 이글거리는 석탄.",
     "buy": 0,
     "sell": 50,
-    "weight": 10,
-    "weightSrc": "type"
-  },
-  "빙하의 심장": {
-    "type": "잡템",
-    "emoji": "💙",
-    "desc": "얼음 폭풍 속에서 굳어진 결정체.",
-    "buy": 0,
-    "sell": 100,
     "weight": 10,
     "weightSrc": "type"
   },
@@ -19881,14 +19872,16 @@
     "weight": 10,
     "weightSrc": "type"
   },
-  "육류": {
-    "type": "잡템",
-    "emoji": "🥩",
-    "desc": "신선한 고기 덩어리.",
+  "고기": {
+    "type": "소모품",
+    "emoji": "🍖",
+    "desc": "몬스터에게서 얻은 생고기. HP를 85 즉시 회복한다.",
+    "heal": 85,
     "buy": 0,
-    "sell": 10,
-    "weight": 10,
-    "weightSrc": "type"
+    "sell": 25,
+    "weight": 15,
+    "weightSrc": "official",
+    "_aegis": "Meat"
   },
   "고렘 카드": {
     "type": "카드",
@@ -28218,17 +28211,6 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "고기": {
-    "type": "소모품",
-    "emoji": "🍖",
-    "desc": "몬스터에게서 얻은 생고기. HP를 85 즉시 회복한다.",
-    "heal": 85,
-    "buy": 0,
-    "sell": 25,
-    "weight": 15,
-    "weightSrc": "official",
-    "_aegis": "Meat"
-  },
   "고대 군주의 망토": {
     "type": "잡템",
     "emoji": "❓",
@@ -29962,16 +29944,6 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "보라색 보석": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
-  },
   "보석": {
     "type": "잡템",
     "emoji": "❓",
@@ -29991,15 +29963,6 @@
     "weight": 1,
     "weightSrc": "stub",
     "_stub": true
-  },
-  "보풀": {
-    "type": "잡템",
-    "emoji": "🧶",
-    "desc": "작고 부드러운 솜털.",
-    "buy": 0,
-    "sell": 4,
-    "weight": 1,
-    "weightSrc": "official"
   },
   "복종의 팔찌": {
     "type": "잡템",
@@ -30427,15 +30390,6 @@
     "weight": 1,
     "weightSrc": "stub",
     "_stub": true
-  },
-  "새의 깃털": {
-    "type": "잡템",
-    "emoji": "🪶",
-    "desc": "새에게서 나온 깃털.",
-    "buy": 0,
-    "sell": 5,
-    "weight": 1,
-    "weightSrc": "official"
   },
   "새의 부리": {
     "type": "잡템",
@@ -31180,15 +31134,6 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "얼어붙은 심장": {
-    "type": "잡템",
-    "emoji": "🧊",
-    "desc": "차갑게 얼어붙은 심장.",
-    "buy": 0,
-    "sell": 303,
-    "weight": 1,
-    "weightSrc": "official"
-  },
   "얼어붙은 장미": {
     "type": "잡템",
     "emoji": "❓",
@@ -31590,16 +31535,6 @@
     "sell": 233,
     "weight": 1,
     "weightSrc": "official"
-  },
-  "위그드라실의 잎": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
   },
   "위대한 자연": {
     "type": "잡템",
@@ -32438,16 +32373,6 @@
     "weight": 1,
     "weightSrc": "official"
   },
-  "타다 남은 숯": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
-  },
   "타오르는 마음": {
     "type": "잡템",
     "emoji": "🔥",
@@ -32652,7 +32577,7 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "포이즌 스포아": {
+  "독버섯 포자": {
     "type": "잡템",
     "emoji": "🍄",
     "desc": "독을 품은 포자.",
@@ -32700,7 +32625,7 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "프티 디아블의 날개": {
+  "새끼악마의 날개": {
     "type": "잡템",
     "emoji": "🦇",
     "desc": "프티 디아블의 작은 날개.",

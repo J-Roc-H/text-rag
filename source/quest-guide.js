@@ -193,6 +193,11 @@
     if(type==='gather_multi' && Array.isArray(src.targets)){
       const maps=[]; const detail=[];
       src.targets.forEach(t=>{
+        if(t.questSource){
+          if(t.questSource.map) maps.push(t.questSource.map);
+          detail.push(`${t.item} ×${t.count} — ${t.questSource.label || '현장 조사'}${t.questSource.map?`(${t.questSource.map})`:''}`);
+          return;
+        }
         const s=itemSourceInfo(t.item); maps.push(...s.maps);
         detail.push(`${t.item} ×${t.count}${s.text?` — ${s.text}`:' — 획득처 정보 없음'}`);
       });
@@ -231,6 +236,32 @@
     return '';
   }
 
+  function questSourceActions(q,state,qid){
+    if(state!=='active' || !qid || !Array.isArray(q.targets) || typeof G==='undefined' || !G.player) return '';
+    const inv=G.player.inventory||{};
+    return q.targets.filter(t=>t.questSource && t.questSource.map===G.currentMap && (Number(inv[t.item])||0)<Number(t.count||0)).map(t=>
+      `<button class="m-btn ok" style="margin:6px 4px 0 62px;padding:4px 8px;font-size:10px;" onclick="questGuideClaim('${qid}','${t.item}')">🔎 ${esc(t.questSource.label||'조사')}</button>`
+    ).join('');
+  }
+
+  window.questGuideClaim=function(qid,item){
+    const p=G.player, q=(typeof TUTORIAL_QUESTS!=='undefined'&&TUTORIAL_QUESTS[qid]), qs=p&&p.quests&&p.quests[qid];
+    if(!p || !q || !qs || qs.state!=='active' || !Array.isArray(q.targets)) return;
+    const t=q.targets.find(x=>x.item===item && x.questSource);
+    if(!t || t.questSource.map!==G.currentMap){ log('📋 조사할 장소가 아닙니다.','warning'); return; }
+    const have=Number(p.inventory[item])||0;
+    if(have>=Number(t.count||0)) return;
+    p.inventory[item]=have+1;
+    log(`🔎 [퀘스트] ${t.questSource.label||'현장 조사'} — ${item} 획득`,'quest');
+    if(q.targets.every(x=>(Number(p.inventory[x.item])||0)>=Number(x.count||0))){
+      qs.state='completable';
+      log(`✅ [퀘스트] ${q.title} — 재료 완비! ${q.npc}에게 보고하세요.`,'quest');
+      notify('퀘스트 완료 조건 달성!','gold');
+    }
+    if(typeof saveLocal==='function') saveLocal();
+    updateUI(); showQuestModal();
+  };
+
   function reportInfo(q,state,step){
     if(state==='done' || state==='available') return '';
     const npc=q.npc || (step&&step.npc);
@@ -265,6 +296,7 @@
     const report=reportInfo(q,state,step);
     const rew=rewardText(q);
     const progress=progressHtml(src,state,qs,isJob);
+    const sourceActions=questSourceActions(q,state,opt.qid||'');
     const stateMeta={
       available:['수락 가능','qg-avail'], active:[isJob?'전직 진행중':'진행중','qg-active'],
       completable:['보고 가능','qg-ready'], done:[isJob?'전직 완료':'완료','qg-done']
@@ -281,6 +313,7 @@
       ${route?`<div class="qg-row"><span>어디서</span><b>${esc(route)}</b></div>`:''}
       ${obj.source?`<div class="qg-source"><span>획득처</span><div>${obj.source}</div></div>`:''}
       ${progress}
+      ${sourceActions}
       ${report?`<div class="qg-row"><span>보고</span><b>${esc(report)}</b></div>`:''}
       <div class="qg-row"><span>보상</span><b>${esc(rew)}</b></div>
       ${extra}
