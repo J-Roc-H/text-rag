@@ -1,0 +1,146 @@
+name: oneoff-fix-consumable-weights
+
+on:
+  push:
+    branches:
+      - fix/pre-re-consumable-weights
+    paths:
+      - '.github/workflows/_oneoff-fix-consumable-weights.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/pre-re-consumable-weights
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch pinned rAthena pre-re item DB
+        run: |
+          set -euo pipefail
+          RATHENA_SHA=e985006171d2eb320ee512a653f4c83aea3d81b6
+          mkdir -p /tmp/rathena-pre-re
+          for f in usable etc equip; do
+            curl -fsSL https://raw.githubusercontent.com/rathena/rathena/${RATHENA_SHA}/db/pre-re/item_db_${f}.yml -o /tmp/rathena-pre-re/item_db_${f}.yml
+          done
+          pip install --quiet pyyaml
+      - name: Repair consumable weights
+        run: |
+          cat > /tmp/fix_weights.py <<'PY'
+          import json, yaml, pathlib
+          repo=pathlib.Path('.')
+          db_path=repo/'source/data/db-items.json'
+          items=json.loads(db_path.read_text(encoding='utf-8-sig'))
+          src={}
+          for fn in ['item_db_usable.yml','item_db_etc.yml','item_db_equip.yml']:
+              data=yaml.safe_load((pathlib.Path('/tmp/rathena-pre-re')/fn).read_text(encoding='utf-8')) or {}
+              for r in data.get('Body',[]):
+                  if r.get('AegisName'): src[r['AegisName']]=r
+
+          M={
+          '각성의 포션':'Awakening_Potion','강철의 화살':'Steel_Arrow','강철의 화살통':'Steel_Arrow_Container',
+          '고기':'Meat','고목나무 가지':'Branch_Of_Dead_Tree','그림자의 화살':'Arrow_Of_Shadow','그림자화살통':'Shadow_Arrow_Container',
+          '꿀':'Honey','나비의 날개':'Wing_Of_Butterfly','날카로운 화살':'Incisive_Arrow','낡은 카드첩':'Old_Card_Album',
+          '노란포션':'Yellow_Potion','녹슨 화살':'Rusty_Arrow','녹슨 화살통':'Rusty_Arrow_Container','독화살':'Poison_Arrow',
+          '딸기':'Strawberry','마스텔라의 열매':'Fruit_Of_Mastela','몬스터 사료':"Monster's_Feed",'무형의 화살':'Immatrial_Arrow',
+          '무형의 화살통':'Imma_Arrow_Container','바람 화살통':'Wind_Arrow_Container','바람의 화살':'Arrow_Of_Wind',
+          '불화살':'Fire_Arrow','불화살통':'Fire_Arrow_Container','빨간 허브':'Red_Herb','빨간포션':'Red_Potion','사과':'Apple',
+          '사일런스 애로우':'Silence_Arrow','사탕':'Candy','선물상자':'Gift_Box','성수':'Holy_Water','성스러운 화살':'Holy_Arrow',
+          '성스러운 화살통':'Holy_Arrow_Quiver','수정 화살':'Crystal_Arrow','수정 화살통':'Crystal_Arrow_Container',
+          '스턴 애로우':'Stun_Arrow','슬립 애로우':'Sleep_Arrow','암석 화살':'Stone_Arrow','암석 화살통':'Stone_Arrow_Container',
+          '옐로 허브':'Yellow_Herb','오래된보라상자':'Old_Violet_Box','오래된빨간상자':'Red_Box','오래된파란상자':'Old_Blue_Box',
+          '오렌지':'Orange','오리데오콘 화살':'Oridecon_Arrow','오리데오콘 화살통':'Ori_Arrow_Container','웰스쿠키':'Well_Baked_Cookie',
+          '은화살':'Silver_Arrow','은화살통':'Silver_Arrow_Container','조각케이크':'Piece_Of_Cake','주홍포션':'Orange_Potion',
+          '철 화살':'Iron_Arrow','철 화살통':'Iron_Arrow_Container','초록포션':'Green_Potion','초록허브':'Green_Herb',
+          '캔디 스트라이퍼':'Candy_Striper','커스 애로우':'Curse_Arrow','파란포션':'Blue_Potion','파란허브':'Blue_Herb',
+          '파리의 날개':'Wing_Of_Fly','파마의 화살':'Arrow_Of_Counter_Evil','프리징 애로우':'Freezing_Arrow','플래쉬 애로우':'Flash_Arrow',
+          '하얀포션':'White_Potion','하얀허브':'White_Herb','화살':'Arrow','화살통':'Arrow_Container'
+          }
+          custom_hold={'보물상자','조합 키트','황금포션'}
+
+          changed=[]
+          verified=[]
+          unresolved=[]
+          for key,it in items.items():
+              if it.get('type')!='소모품':
+                  continue
+              aegis=it.get('_aegis') or M.get(key)
+              if not aegis:
+                  unresolved.append(key)
+                  continue
+              if aegis not in src:
+                  raise SystemExit(f'원본 Aegis 미확인: {key} -> {aegis}')
+              r=src[aegis]
+              expected=(r.get('Weight',0) or 0)/10
+              if float(expected).is_integer(): expected=int(expected)
+              before=it.get('weight')
+              old_aegis=it.get('_aegis')
+              old_src=it.get('weightSrc')
+              it['_aegis']=aegis
+              it['weight']=expected
+              it['weightSrc']='official'
+              verified.append((key,aegis,expected,r.get('Id'),r.get('Name')))
+              if before!=expected or old_aegis!=aegis or old_src!='official':
+                  changed.append((key,before,expected,aegis,r.get('Id'),r.get('Name')))
+
+          if set(unresolved)!=custom_hold:
+              raise SystemExit(f'예상 밖 미연결 소모품: {unresolved}')
+
+          db_path.write_text(json.dumps(items,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+
+          lines=['# 소모품 무게 정합화 패치','',
+                 '- 기준: rAthena pre-re item DB',
+                 '- 고정 원본 SHA: `e985006171d2eb320ee512a653f4c83aea3d81b6`',
+                 '- 환산: rAthena `Weight / 10 = TextRAG 무게`',
+                 f'- 원본 직접 검증: **{len(verified)} / 90**',
+                 f'- 실제 변경: **{len(changed)}**',
+                 f'- 보류(원작 직접 대응 없음/변형): **{len(unresolved)}**', '',
+                 '## 변경 항목','',
+                 '| TextRAG | 기존 | 수정 | Aegis | rAthena ID | 원작명 |',
+                 '|---|---:|---:|---|---:|---|']
+          for k,b,a,ae,iid,nm in changed:
+              lines.append(f'| {k} | {b} | **{a}** | `{ae}` | {iid} | {nm} |')
+          lines += ['', '## 보류', '']
+          for k in sorted(unresolved):
+              it=items[k]
+              lines.append(f'- `{k}`: 현재 무게 {it.get("weight")}, `weightSrc={it.get("weightSrc")}`. 원작 동일 항목으로 단정하지 않고 별도 게임 설계값 검토.')
+          lines += ['', '## 검증 조건', '',
+                    '- `_aegis`가 연결된 모든 소모품은 고정 rAthena 원본의 `Weight/10`과 일치해야 한다.',
+                    '- 소수 무게(화살 0.1~0.3)를 반올림/절삭하지 않는다.',
+                    '- `보물상자`, `조합 키트`, `황금포션`은 이번 패치에서 임의 수정하지 않는다.', '']
+          (repo/'CONSUMABLE_WEIGHT_PATCH_NOTES.md').write_text('\n'.join(lines),encoding='utf-8')
+          print('verified',len(verified),'changed',len(changed),'hold',unresolved)
+          PY
+          python /tmp/fix_weights.py
+      - name: Verify JSON and weights
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('source/data/db-items.json',encoding='utf-8'))
+          assert p['노란포션']['weight']==13
+          assert p['파란포션']['weight']==15
+          assert p['하얀포션']['weight']==15
+          assert p['각성의 포션']['weight']==15
+          assert p['화살']['weight']==0.1
+          assert p['강철의 화살']['weight']==0.2
+          assert p['독화살']['weight']==0.3
+          assert p['화살통']['weight']==25
+          assert p['강철의 화살통']['weight']==25
+          assert p['성스러운 화살통']['weight']==25
+          assert p['오래된빨간상자']['weight']==20
+          assert p['보물상자']['weight']==7 and not p['보물상자'].get('_aegis')
+          print('OK - consumable weight regression checks')
+          PY
+          python build.py
+      - name: Commit repair and generated HTML
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add source/data/db-items.json CONSUMABLE_WEIGHT_PATCH_NOTES.md index.html "룬미드가츠_v9.19.html"
+          git commit -m "fix(items): restore pre-re consumable weights"
+          git push origin HEAD:fix/pre-re-consumable-weights
