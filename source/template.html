@@ -7764,6 +7764,12 @@ function getSellableItems(p){
   });
 }
 
+/** 판매 목록에 남은 개체와 같은 키로 현재 장착 중인 개수 — 목록엔 여분만 뜨다 보니
+ *  "왜 갯수가 하나 모자라지" 싶을 수 있어 판매 화면에 별도 표기해준다. */
+function equippedCountOf(p, itemName){
+  return Object.values(p.equip||{}).filter(v=>v===itemName).length;
+}
+
 /** 장비 후보를 슬롯에 임시 장착했을 때의 스탯 증감 미리보기.
  *  후보가 인벤토리에 없어도(상점 구매 전 미리보기) 동작한다 — calcStats()는
  *  p.equip에 들어있는 "이름"만 조회하지 인벤토리 보유 여부는 보지 않는다.
@@ -7986,13 +7992,15 @@ function renderShopSellList(){
     let lockable=SHOP_EQUIP_TYPES.includes(it.type)||it.type==='카드';
     let checked=!!shopState.sel[itemName];
     let sel=shopState.selected===itemName;
+    let eqCount=equippedCountOf(p,itemName);
+    let eqBadge=eqCount>0?`<span style="font-size:9px;color:var(--blue-light);border:1px solid var(--blue-light);border-radius:8px;padding:1px 5px;margin-left:5px;white-space:nowrap;" title="장착 중인 동일 아이템은 판매 목록에 포함되지 않습니다">⚔️ 장착중 ${eqCount}개 별도</span>`:'';
     h+=`<div onclick="shopSelectItem('${itemName}')" style="display:flex;align-items:center;gap:8px;padding:7px 8px;background:#fff;border:1px solid ${sel?'var(--gold)':'var(--border)'};border-radius:4px;cursor:pointer;">
       ${locked
         ?`<span style="width:15px;text-align:center;flex-shrink:0;" title="판매 보호 중">🔒</span>`
         :`<input type="checkbox" ${checked?'checked':''} onclick="event.stopPropagation();shopToggleSel('${itemName}',this.checked)" style="width:15px;height:15px;flex-shrink:0;cursor:pointer;">`}
       <span style="font-size:18px;">${it.emoji||'📦'}</span>
       <div style="flex:1;min-width:0;">
-        <div style="font-size:12px;font-weight:bold;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${displayName} <span style="color:var(--text-dim);font-weight:normal;">×${qty}</span></div>
+        <div style="font-size:12px;font-weight:bold;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${displayName} <span style="color:var(--text-dim);font-weight:normal;">×${qty}</span>${eqBadge}</div>
         <div style="font-size:10px;color:var(--text-dim);">${sellPrice.toLocaleString()} z/개 · 합계 ${(sellPrice*qty).toLocaleString()} z</div>
       </div>
       ${lockable?`<span onclick="event.stopPropagation();shopToggleLock('${itemName}')" style="font-size:14px;cursor:pointer;flex-shrink:0;" title="${locked?'판매 보호 해제':'판매 보호'}">${locked?'🔒':'🔓'}</span>`:''}
@@ -8114,6 +8122,7 @@ function renderShopSellDetail(itemName){
   let lockable=SHOP_EQUIP_TYPES.includes(it.type)||it.type==='카드';
   let qty=Math.max(0,Math.min(have, shopState.qty||0));
   let total=unitPrice*qty;
+  let eqCount=equippedCountOf(p,itemName);
 
   return `<div style="text-align:center;">
     <div style="font-size:28px;">${it.emoji||'📦'}</div>
@@ -8121,7 +8130,7 @@ function renderShopSellDetail(itemName){
     <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">${it.desc||''}</div>
   </div>
   <div style="font-size:11px;line-height:2;">
-    <div style="display:flex;justify-content:space-between;"><span>보유</span><b>${have}개</b></div>
+    <div style="display:flex;justify-content:space-between;"><span>보유</span><b>${have}개${eqCount>0?` <span style="font-size:10px;color:var(--blue-light);font-weight:normal;">(+장착 중 ${eqCount}개, 판매 불가)</span>`:''}</b></div>
     <div style="display:flex;justify-content:space-between;"><span>판매가</span><b>${unitPrice.toLocaleString()} z<span style="font-weight:normal;color:var(--text-dim);"> /개</span></b></div>
     ${ocLv>0?`<div style="text-align:right;color:#4caf50;font-size:10px;">오버챠지 Lv.${ocLv} · +${Math.round(ocLv*2.4)}%</div>`:''}
   </div>
