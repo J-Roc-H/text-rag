@@ -58,28 +58,32 @@ jobs:
           boot = r'''
           <script>
           (function(){
-            try {
-              var raw = {
-                name:'검증용 모험가', job:'노비스', baseLv:1, jobLv:1, baseExp:0, jobExp:0,
-                hp:65, maxHp:65, sp:50, maxSp:50,
-                str:5, agi:5, vit:5, int:5, dex:5, luk:5,
-                statPoints:18, statSystemV2:true, zeny:1500, savedMap:'프론테라',
-                equip:{'무기':'나이프','갑옷':'코튼셔츠','신발':'샌들','투구_상단':'캡','투구_중단':'안대','투구_하단':'풀잎','방패':'가드','걸칠것':'후드','악세1':'클립','악세2':'클립'},
-                weaponType:'단검',
-                inventory:{'빨간포션':10,'파리의 날개':5,'나비의 날개':3,'나이프':1,'코튼셔츠':1,'샌들':1,'캡':1,'안대':1,'풀잎':1,'가드':1,'후드':1,'클립':2},
-                skills:{'응급치료':1,'기본 스킬':1}, hotbar:{}, quests:{}, unlockedMaps:{}, statusEffects:{}, killCount:{}, totalKills:0,
-                startPreset:'노비스'
-              };
-              G.player = loadPlayerData(raw);
-              G.player.zeny = 1500;
-              G.currentMap='프론테라'; G.autoHunt=false; G.battles=[];
-              var lobby=document.getElementById('lobby'); if(lobby) lobby.style.display='none';
-              var app=document.getElementById('app'); if(app) app.style.display='block';
-              if(typeof initQuests==='function') initQuests(G.player);
-              setTimeout(function(){ showNpcModal(); }, 120);
-            } catch(e) {
-              document.body.insertAdjacentHTML('beforeend','<pre id="preview-error">'+String(e.stack||e)+'</pre>');
+            var raw = {
+              name:'검증용 모험가', job:'노비스', baseLv:1, jobLv:1, baseExp:0, jobExp:0,
+              hp:65, maxHp:65, sp:50, maxSp:50,
+              str:5, agi:5, vit:5, int:5, dex:5, luk:5,
+              statPoints:18, statSystemV2:true, zeny:1500, savedMap:'프론테라',
+              equip:{'무기':'나이프','갑옷':'코튼셔츠','신발':'샌들','투구_상단':'캡','투구_중단':'안대','투구_하단':'풀잎','방패':'가드','걸칠것':'후드','악세1':'클립','악세2':'클립'},
+              weaponType:'단검',
+              inventory:{'빨간포션':10,'파리의 날개':5,'나비의 날개':3,'나이프':1,'코튼셔츠':1,'샌들':1,'캡':1,'안대':1,'풀잎':1,'가드':1,'후드':1,'클립':2},
+              skills:{'응급치료':1,'기본 스킬':1}, hotbar:{}, quests:{}, unlockedMaps:{}, statusEffects:{}, killCount:{}, totalKills:0,
+              startPreset:'노비스'
+            };
+            function forcePreview(){
+              try {
+                G.player = loadPlayerData(raw);
+                G.player.zeny = 1500;
+                G.currentMap='프론테라'; G.autoHunt=false; G.battles=[];
+                var lobby=document.getElementById('lobby'); if(lobby) lobby.style.display='none';
+                var app=document.getElementById('app'); if(app) app.style.display='block';
+                if(typeof initQuests==='function') initQuests(G.player);
+                showNpcModal();
+              } catch(e) {
+                console.error('preview boot failed', e);
+              }
             }
+            window.addEventListener('load', function(){ setTimeout(forcePreview, 900); });
+            setTimeout(forcePreview, 1800);
           })();
           </script>
           '''
@@ -89,8 +93,8 @@ jobs:
 
           CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
           test -n "$CHROME"
-          "$CHROME" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=1280,900 --virtual-time-budget=1500 --screenshot=actor-preview-desktop.png "file://$PWD/actor-preview.html"
-          "$CHROME" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=390,844 --virtual-time-budget=1500 --screenshot=actor-preview-mobile.png "file://$PWD/actor-preview.html"
+          "$CHROME" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=1280,900 --virtual-time-budget=3200 --screenshot=actor-preview-desktop.png "file://$PWD/actor-preview.html"
+          "$CHROME" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=390,844 --virtual-time-budget=3200 --screenshot=actor-preview-mobile.png "file://$PWD/actor-preview.html"
           test -s actor-preview-desktop.png
           test -s actor-preview-mobile.png
 
