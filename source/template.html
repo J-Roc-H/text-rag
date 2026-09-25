@@ -3032,6 +3032,22 @@ const ITEM_KEY_ALIASES = Object.freeze({
   "위그드라실의 씨앗": "이그드라실의 씨앗",
   "타나토스의절망 카드": "타나토스의 절망 카드",
   "플레임스컬 카드": "플레임 스컬 카드",
+  "보풀": "솜털",
+  "새깃털": "새의 깃털",
+  "육류": "고기",
+  "오징어 먹물": "먹물",
+  "이그드라실 잎": "이그드라실의 나뭇잎",
+  "위그드라실의 잎": "이그드라실의 나뭇잎",
+  "자수정": "아메디스트",
+  "보라색 보석": "아메디스트",
+  "살아있는 석탄": "불씨",
+  "타다 남은 숯": "불씨",
+  "빙하의 심장": "얼음 심장",
+  "글라시얼 하트": "얼음 심장",
+  "얼어붙은 심장": "얼음 심장",
+  "포이즌 스포아": "독버섯 포자",
+  "단단한껍질": "매우 단단한 껍질",
+  "프티 디아블의 날개": "새끼악마의 날개",
   "안경": "글래스"
 });
 function canonicalItemName(baseName){
@@ -7342,7 +7358,7 @@ window.talkNPC = function(nm){
 
   // ── 보석 교환 NPC (제이드) ──
   if (n.service === 'exchange_gem') {
-    const gems = ['루비', '자수정', '지르콘'];
+    const gems = ['루비', '아메디스트', '지르콘'];
     let h = `<div style="font-size:12px; line-height:2; margin-bottom:8px;">같은 보석 2개 → 다른 보석 1개로 교환합니다.</div>`;
     let btns = '';
     gems.forEach((g, i) => {
@@ -7359,12 +7375,12 @@ window.talkNPC = function(nm){
 
   // ── 스마일 재료 교환 NPC (우탄 꼬마) ──
   if (n.service === 'exchange_smile') {
-    let have = p.inventory['육류'] || 0;
-    let h = `<div style="font-size:12px; margin-bottom:8px;">육류 1개 → 솜털/젤로피/클로버 중 랜덤 3개를 드립니다.<br><span style="font-size:11px; color:var(--text-dim);">보유 육류: ${have}개</span></div>`;
+    let have = p.inventory['고기'] || 0;
+    let h = `<div style="font-size:12px; margin-bottom:8px;">고기 1개 → 솜털/젤로피/클로버 중 랜덤 3개를 드립니다.<br><span style="font-size:11px; color:var(--text-dim);">보유 고기: ${have}개</span></div>`;
     openModal(`${n.emoji} 재료 교환`, h, [
-      { label: '교환하기 (육류 1개)', cls: 'ok', action: () => {
-        if (!p.inventory['육류'] || p.inventory['육류'] <= 0) { log('육류가 없습니다.', 'warning'); return; }
-        p.inventory['육류']--;
+      { label: '교환하기 (고기 1개)', cls: 'ok', action: () => {
+        if (!p.inventory['고기'] || p.inventory['고기'] <= 0) { log('고기가 없습니다.', 'warning'); return; }
+        p.inventory['고기']--;
         const pool = ['솜털', '젤로피', '클로버'];
         let gotten = {};
         for (let i = 0; i < 3; i++) {
@@ -12284,13 +12300,13 @@ const TUTORIAL_QUESTS = {
     type: "gather_multi",
     reqLv: 80,
     targets: [
-      { item: "살아있는 석탄", count: 30 },
-      { item: "빙하의 심장",   count: 50 }
+      { item: "불씨", count: 30 },
+      { item: "얼음 심장",   count: 50 }
     ],
     reward: { exp: 2000000, items: { "모로크의 피부 조각": 1 } },
     next: "Q_MOC_PURGE",
     dialog: [
-      { speaker:"대륙 전령사", text:"사탄 모로크의 봉인이 완전히 풀렸소! 대륙수비대에 입단하려면 살아있는 석탄 30개와 빙하의 심장 50개를 납품해야 합니다. Lv.80 이상 모험가만 받습니다." },
+      { speaker:"대륙 전령사", text:"사탄 모로크의 봉인이 완전히 풀렸소! 대륙수비대에 입단하려면 불씨 30개와 얼음 심장 50개를 납품해야 합니다. Lv.80 이상 모험가만 받습니다." },
       { speaker:"player", choices:[
         { label:"입단하겠습니다!", next:"accept" },
         { label:"나중에 오겠습니다.", next:"later" }
@@ -12326,18 +12342,18 @@ const TUTORIAL_QUESTS = {
     title: "과일 주스",
     npc: "모리슨",
     type: "gather",
-    target: "육류",
+    target: "고기",
     count: 1,
     reward: { zeny: 0, exp: 2000, items: {} },
     dialog: [
-      { speaker:"모리슨", text:"육류 요리를 만들고 싶은데... 육류 1개만 나눠주실 수 있나요? 보답은 꼭 하겠습니다." },
+      { speaker:"모리슨", text:"고기 요리를 만들고 싶은데... 고기 1개만 나눠주실 수 있나요? 보답은 꼭 하겠습니다." },
       { speaker:"player", choices:[
         { label:"도와드리겠습니다!", next:"accept" },
         { label:"나중에요.", next:"later" }
       ]}
     ],
     dialog_later: [{ speaker:"모리슨", text:"괜찮으시면 언제든 불러주세요." }],
-    dialog_progress: "육류가 {count}개 더 필요합니다.",
+    dialog_progress: "고기가 {count}개 더 필요합니다.",
     dialog_complete: [{ speaker:"모리슨", text:"감사합니다! 덕분에 맛있는 요리를 만들 수 있겠어요. 페이욘 마르크 한센 NPC를 소개해 드릴게요." }]
   },
 
@@ -12348,13 +12364,13 @@ const TUTORIAL_QUESTS = {
     targets: [
       { item: "기름 종이",   count: 10 },
       { item: "매끄러운 종이", count: 5 },
-      { item: "새깃털",     count: 1  },
-      { item: "오징어 먹물", count: 1  }
+      { item: "새의 깃털",     count: 1  },
+      { item: "먹물", count: 1  }
     ],
     reward: { items: { "우탄 언어": 1 } },
     next: "Q_UMB_PUCHUCHARA",
     dialog: [
-      { speaker:"카르카탄", text:"우리 우탄족의 언어를 배우고 싶소? 기름 종이 10장, 매끄러운 종이 5장, 새깃털 1개, 오징어 먹물 1개를 준비해 오시오. 도구점에서 구할 수 있소." },
+      { speaker:"카르카탄", text:"우리 우탄족의 언어를 배우고 싶소? 기름 종이와 매끄러운 종이는 도구점에서, 새의 깃털과 먹물은 주변 몬스터에게서 구해 오시오." },
       { speaker:"player", choices:[
         { label:"준비해 오겠습니다!", next:"accept" },
         { label:"나중에 오겠습니다.", next:"later" }
@@ -12370,12 +12386,12 @@ const TUTORIAL_QUESTS = {
     type: "gather_multi",
     targets: [
       { item: "루비",   count: 1 },
-      { item: "자수정", count: 1 },
+      { item: "아메디스트", count: 1 },
       { item: "지르콘", count: 1 }
     ],
     reward: { zeny: 0, items: {} },
     dialog: [
-      { speaker:"두개골 NPC", text:"...눈구멍에 보석을 넣으면 샤먼의 방으로 안내하지요. 루비, 자수정, 지르콘을 각 1개씩 드리시오." },
+      { speaker:"두개골 NPC", text:"...눈구멍에 보석을 넣으면 샤먼의 방으로 안내하지요. 루비, 아메디스트, 지르콘을 각 1개씩 드리시오." },
       { speaker:"player", choices:[
         { label:"보석을 가져오겠습니다!", next:"accept" },
         { label:"나중에요.", next:"later" }
@@ -12391,11 +12407,11 @@ const TUTORIAL_QUESTS = {
     type: "gather_multi",
     targets: [
       { item: "시들지 않는 장미", count: 1  },
-      { item: "이그드라실 잎",    count: 10 }
+      { item: "이그드라실의 나뭇잎",    count: 10 }
     ],
     reward: { exp: 30000 },
     dialog: [
-      { speaker:"에리우스", text:"죽음의 도시로 가는 길목... 시들지 않는 장미 1개와 이그드라실 잎 10개를 모아서 저에게 가져다 주시겠소? 죽은 자에게 전할 메시지가 있습니다." },
+      { speaker:"에리우스", text:"죽음의 도시로 가는 길목... 시들지 않는 장미 1개와 이그드라실의 나뭇잎 10개를 모아서 저에게 가져다 주시겠소? 죽은 자에게 전할 메시지가 있습니다." },
       { speaker:"player", choices:[
         { label:"도와드리겠습니다.", next:"accept" },
         { label:"나중에요.", next:"later" }
@@ -12472,11 +12488,11 @@ const TUTORIAL_QUESTS = {
     targets: [
       { item: "강철",       count: 5 },
       { item: "마네이터 루트", count: 5 },
-      { item: "글라시얼 하트", count: 2 }
+      { item: "얼음 심장", count: 2 }
     ],
     reward: { exp: 300000, items: { "에르늄": 3 } },
     dialog: [
-      { speaker:"아바사르", text:"베인스 연구소에 납품할 재료가 부족합니다. 강철 5개, 마네이터 루트 5개, 글라시얼 하트 2개를 구해다 주시면 크게 보답하겠습니다!" },
+      { speaker:"아바사르", text:"베인스 연구소에 납품할 재료가 부족합니다. 강철 5개, 마네이터 루트 5개, 얼음 심장 2개를 구해다 주시면 크게 보답하겠습니다!" },
       { speaker:"player", choices:[
         { label:"재료를 구해 오겠습니다!", next:"accept" },
         { label:"나중에요.", next:"later" }
@@ -12490,19 +12506,19 @@ const TUTORIAL_QUESTS = {
     title: "베인스 남매",
     npc: "카린",
     type: "gather",
-    target: "마스터 키",
+    target: "강철",
     count: 1,
     reward: { exp: 5000000, jexp: 3500000, items: { "오래된보라상자": 1 } },
     next: "Q_VEI_THORBASE",
     dialog: [
-      { speaker:"카린", text:"동생이 잠긴 문 너머에 갇혀 있어요! 마스터 키만 있으면 열 수 있는데... 어디서 구할 수 있을까요? 제발 도와주세요!" },
+      { speaker:"카린", text:"동생이 잠긴 문 너머에 갇혀 있어요! 자물쇠 장인이 열쇠를 만들려면 강철 1개가 필요하대요. 제발 구해 주세요!" },
       { speaker:"player", choices:[
-        { label:"마스터 키를 찾아보겠습니다!", next:"accept" },
+        { label:"강철을 구해 오겠습니다!", next:"accept" },
         { label:"죄송합니다, 나중에요.", next:"later" }
       ]}
     ],
     dialog_later: [{ speaker:"카린", text:"...동생이 기다리고 있어요. 부탁드립니다." }],
-    dialog_progress: "마스터 키가 {count}개 더 필요합니다.",
+    dialog_progress: "강철이 {count}개 더 필요합니다.",
     dialog_complete: [{ speaker:"카린", text:"동생을 구해냈어요!! 정말 감사합니다! 이 상자를 받아주세요. 그런데... 또 다른 문제가 생긴 것 같아요." }]
   },
 
@@ -12511,8 +12527,8 @@ const TUTORIAL_QUESTS = {
     npc: "지질학자",
     type: "gather_multi",
     targets: [
-      { item: "파일 폴더",    count: 1 },
-      { item: "부러진 온도계", count: 1 }
+      { item: "파일 폴더",    count: 1, questSource:{ map:"베인스", label:"지질학자의 방 책장 조사" } },
+      { item: "부러진 온도계", count: 1, questSource:{ map:"베인스", label:"지질학자의 방 벽장 조사" } }
     ],
     reward: { exp: 2000000 },
     dialog: [
@@ -13638,10 +13654,10 @@ const JOB_QUESTS = {
         dialog_complete:[{ speaker:"현자 루미나스", text:"독속성의 특성을 파악했군. 두 번째 시험이다." }]
       },
       {
-        id:"gather_poison", type:"gather", target:"독설", count:5,
-        desc:"독설 5개 수집",
-        dialog_start:[{ speaker:"현자 루미나스", text:"포이즌 스포아에서 독설 5개를 수집하라. 원소 재료를 수집하고 분석하는 것이 세이지 연구의 시작이다." }],
-        dialog_progress:"독설이 {cur}개 있습니다. {remain}개 더 필요합니다.",
+        id:"gather_poison", type:"gather", target:"독버섯 포자", count:5,
+        desc:"독버섯 포자 5개 수집",
+        dialog_start:[{ speaker:"현자 루미나스", text:"포이즌 스포아에서 독버섯 포자 5개를 수집하라. 원소 재료를 수집하고 분석하는 것이 세이지 연구의 시작이다." }],
+        dialog_progress:"독버섯 포자가 {cur}개 있습니다. {remain}개 더 필요합니다.",
         dialog_complete:[{ speaker:"현자 루미나스", text:"연구 재료를 잘 수집해 왔군. 마지막 시험이다." }]
       },
       {
@@ -13791,10 +13807,10 @@ const JOB_QUESTS = {
         dialog_complete:[{ speaker:"헌터 길드 마스터", text:"빠른 표적도 놓치지 않는군. 두 번째 시험이다." }]
       },
       {
-        id:"gather_wing", type:"gather", target:"투명한껍질", count:5,
-        desc:"투명한 껍질 5개 수집",
-        dialog_start:[{ speaker:"헌터 길드 마스터", text:"헌터플라이에서 투명한 껍질을 5개 수집하라. 사냥감에서 필요한 것을 취하는 것이 헌터의 방식이다." }],
-        dialog_progress:"투명한 껍질이 {cur}개 있습니다. {remain}개 더 필요합니다.",
+        id:"gather_wing", type:"gather", target:"매우 단단한 껍질", count:5,
+        desc:"매우 단단한 껍질 5개 수집",
+        dialog_start:[{ speaker:"헌터 길드 마스터", text:"헌터플라이에서 매우 단단한 껍질을 5개 수집하라. 사냥감에서 필요한 것을 취하는 것이 헌터의 방식이다." }],
+        dialog_progress:"매우 단단한 껍질이 {cur}개 있습니다. {remain}개 더 필요합니다.",
         dialog_complete:[{ speaker:"헌터 길드 마스터", text:"자원 수집까지 완료했군. 마지막 시험이다." }]
       },
       {
@@ -13894,10 +13910,10 @@ const JOB_QUESTS = {
         dialog_complete:[{ speaker:"베테랑 댄서 보르로븐", text:"몸의 흐름이 자연스럽군. 두 번째 시험이다." }]
       },
       {
-        id:"gather_accessory", type:"gather", target:"악마의헤어밴드", count:3,
-        desc:"악마의 헤어밴드 3개 수집",
-        dialog_start:[{ speaker:"베테랑 댄서 보르로븐", text:"데빌링에서 악마의 헤어밴드를 3개 구해오게. 무대에 서는 자는 의상과 소품 하나하나에도 혼을 담아야 한다네." }],
-        dialog_progress:"악마의 헤어밴드가 {cur}개 있습니다. {remain}개 더 필요합니다.",
+        id:"gather_accessory", type:"gather", target:"새끼악마의 날개", count:3,
+        desc:"새끼악마의 날개 3개 수집",
+        dialog_start:[{ speaker:"베테랑 댄서 보르로븐", text:"데빌링에서 새끼악마의 날개를 3개 구해오게. 무대에 서는 자는 의상과 소품 하나하나에도 혼을 담아야 한다네." }],
+        dialog_progress:"새끼악마의 날개가 {cur}개 있습니다. {remain}개 더 필요합니다.",
         dialog_complete:[{ speaker:"베테랑 댄서 보르로븐", text:"소품까지 완벽히 준비했군. 마지막 시험이다." }]
       },
       {

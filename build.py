@@ -17,6 +17,7 @@ CORS로 막힌다(DEVREF-E 보류-01).
 """
 import json
 import os
+import re
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_PATH = os.path.join(BASE, "source", "template.html")
@@ -129,6 +130,22 @@ def audit_npcs(npcs, maps, items):
     return errors, sorted(set(warnings))
 
 
+
+def audit_quest_item_sources(template, parsed):
+    """Fail the build when a gather quest has no real acquisition route."""
+    targets = set(re.findall(r"type\s*:\s*['\"]gather['\"][\s\S]{0,220}?target\s*:\s*['\"]([^'\"]+)['\"]", template))
+    for block in re.finditer(r"type\s*:\s*['\"]gather_multi['\"][\s\S]{0,900}?targets\s*:\s*\[([\s\S]{0,800}?)\]", template):
+        targets.update(re.findall(r"item\s*:\s*['\"]([^'\"]+)['\"]", block.group(1)))
+    quest_only = set()
+    for m in re.finditer(r"item\s*:\s*['\"]([^'\"]+)['\"][\s\S]{0,180}?questSource\s*:\s*\{", template):
+        quest_only.add(m.group(1))
+    drops = {name for mon in parsed['DB_MONSTERS'].values() for name in (mon.get('drops') or {})}
+    sells = {name for npc in parsed['DB_NPCS'].values() for name in (npc.get('sells') or [])}
+    missing = sorted(targets - drops - sells - quest_only)
+    if missing:
+        raise ValueError('획득처 없는 퀘스트 아이템: ' + ', '.join(missing))
+    print(f"OK - quest item source audit ({len(targets)} gather target(s))")
+
 def load_data_files():
     raw = {}
     parsed = {}
@@ -143,6 +160,7 @@ def load_data_files():
 def main():
     template = open(TEMPLATE_PATH, encoding="utf-8-sig", newline=None).read()
     raw, parsed = load_data_files()
+    audit_quest_item_sources(template, parsed)
 
     map_errors, map_warnings = audit_maps(parsed["DB_MAPS"])
     if map_errors:
