@@ -232,7 +232,7 @@ window.kafraWarehouse = function(){
     </div>`;
   }).join('');
 
-  let body = `<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;height:55vh;">
+  let body = `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;height:55vh;">
     <div style="display:flex;flex-direction:column;overflow:hidden;">
       <div style="font-weight:700;font-size:11px;color:var(--blue-light);padding:5px;">🎒 내 인벤토리</div>
       <div style="flex:1;overflow:auto;border:1px solid var(--border);padding:3px;">${invRows||'<div style="padding:10px;color:var(--text-dim);font-size:10px;">아이템 없음</div>'}</div>
@@ -478,10 +478,13 @@ function svcCraftRate(sk,lv,s){
   let sr=(Number(sk.successRate.base)||0)+(lv-1)*(Number(sk.successRate.perLv)||0)+(s.dex/50)*5+(s.luk/50)*3;
   return Math.max(10,Math.min(100,sr));
 }
-function svcCraftMaterials(name,lv){
+function svcCraftMaterials(name,lv,product){
   let sk=DB.skills[name];
   if(sk && sk.mats && sk.mats[lv]) return sk.mats[lv];
-  if(name==='파머시') return {'빈 병':3,'약초':1};
+  if(name==='파머시'){
+    let herb=product==='하얀포션'?'하얀허브':product==='노란포션'?'옐로 허브':'빨간 허브';
+    return {'빈병':1,[herb]:1};
+  }
   if(name==='화살 제조') return {'목재':5,'깃털':1};
   if(name==='철 제조') return {'철광석':1+lv};
   if(name==='속성석 제조') return {'속성석 원석':2+lv};
@@ -531,11 +534,14 @@ function svcCraftOutputValid(names){ return names.length>0 && names.every(k=>!!D
 function svcCraftCard(name,product){
   let p=G.player, sk=DB.skills[name], lv=(p.skills&&p.skills[name])||0, s=calcStats();
   if(!sk||lv<=0) return '';
-  let mats=svcCraftMaterials(name,lv);
+  let mats=svcCraftMaterials(name,lv,product);
   let sp=typeof sk.spCost==='function'?sk.spCost(lv):(sk.spCost||0);
   let outputs=svcCraftOutputNames(name,lv,product);
-  let valid=svcCraftOutputValid(outputs);
-  let max=svcMaxCraft(p,mats,sp);
+  let outputValid=svcCraftOutputValid(outputs);
+  let missingMats=Object.keys(mats).filter(k=>!DB.items[k]);
+  let materialValid=missingMats.length===0;
+  let valid=outputValid&&materialValid;
+  let max=valid?svcMaxCraft(p,mats,sp):0;
   let matText=Object.keys(mats).map(k=>`${svcHtml(k)} ${mats[k]} (보유 ${(p.inventory&&p.inventory[k])||0})`).join(' · ')||'재료 없음';
   let rate=svcCraftRate(sk,lv,s);
   let id=window.__svcCraftRecipes.push({name,product})-1;
@@ -546,7 +552,8 @@ function svcCraftCard(name,product){
     </div>
     <div style="font-size:10px;color:var(--text-dim);margin-top:3px;">${matText}</div>
     <div style="font-size:10px;margin-top:2px;">→ ${svcHtml(svcCraftOutputLabel(name,lv,product))} · SP ${sp}/회</div>
-    ${valid?'':`<div style="font-size:10px;color:var(--red-light);margin-top:3px;">⚠ 산출물 DB 미등록 — 유령 아이템 생성을 차단했습니다.</div>`}
+    ${materialValid?'':`<div style="font-size:10px;color:var(--red-light);margin-top:3px;">⚠ 재료 DB 미등록: ${missingMats.map(svcHtml).join(', ')}</div>`}
+    ${outputValid?'':`<div style="font-size:10px;color:var(--red-light);margin-top:3px;">⚠ 산출물 DB 미등록 — 유령 아이템 생성을 차단했습니다.</div>`}
     <div style="display:flex;gap:3px;margin-top:5px;">
       <button class="m-btn" onclick="serviceCraftBatch(${id},1)" ${!valid||max<1?'disabled':''}>1회</button>
       <button class="m-btn" onclick="serviceCraftBatch(${id},5)" ${!valid||max<1?'disabled':''}>5회</button>
@@ -571,7 +578,7 @@ function svcShowCraftHub(focusName){
   openModal('🛠️ 제조',head+(rows||'<div style="padding:10px;color:var(--text-dim);">배운 제조 스킬이 없습니다.</div>'),[{label:'닫기',action:()=>{}}]);
 }
 function svcRunPharmacy(sk,learnedLv,product,s){
-  let p=G.player, mats=svcCraftMaterials('파머시',learnedLv);
+  let p=G.player, mats=svcCraftMaterials('파머시',learnedLv,product);
   if(!svcHasMats(p,mats,1)) return {msg:'❌ 재료 부족',type:'error'};
   if(!consumeMats(p,mats)) return {msg:'❌ 재료 부족',type:'error'};
   let sr=svcCraftRate(sk,learnedLv,s);
@@ -587,7 +594,12 @@ window.serviceCraftBatch = function(idx,requested){
   if(!sk||lv<=0) return;
   if(G.cooldowns[name]>0){ log(`⏳ <b>[${name}]</b> 쿨타임 중`,'warning'); return; }
 
-  let mats=svcCraftMaterials(name,lv);
+  let mats=svcCraftMaterials(name,lv,recipe.product);
+  let missingMats=Object.keys(mats).filter(k=>!DB.items[k]);
+  if(missingMats.length){
+    log(`⚠ <b>[${name}]</b> 재료 DB 미등록: ${missingMats.join(', ')}` ,'error');
+    return;
+  }
   let spCost=typeof sk.spCost==='function'?sk.spCost(lv):(sk.spCost||0);
   let outputNames=svcCraftOutputNames(name,lv,recipe.product);
   if(!svcCraftOutputValid(outputNames)){
