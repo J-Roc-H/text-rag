@@ -169,7 +169,7 @@
     "_aegis": "Steel_Arrow",
     "buy": 4,
     "sell": 2,
-    "weight": 0,
+    "weight": 0.2,
     "weightSrc": "official"
   },
   "Arrow of Wind": {
@@ -180,7 +180,7 @@
     "_aegis": "Arrow_Of_Wind",
     "buy": 3,
     "sell": 1,
-    "weight": 0,
+    "weight": 0.2,
     "weightSrc": "official"
   },
   "Memory Book": {
@@ -1678,7 +1678,8 @@
     "buy": 50,
     "sell": 25,
     "weight": 7,
-    "weightSrc": "type"
+    "weightSrc": "official",
+    "_aegis": "Red_Potion"
   },
   "주홍포션": {
     "type": "소모품",
@@ -1687,8 +1688,9 @@
     "heal": 150,
     "buy": 200,
     "sell": 100,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 10,
+    "weightSrc": "official",
+    "_aegis": "Orange_Potion"
   },
   "노란포션": {
     "type": "소모품",
@@ -1697,8 +1699,9 @@
     "heal": 400,
     "buy": 550,
     "sell": 275,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 13,
+    "weightSrc": "official",
+    "_aegis": "Yellow_Potion"
   },
   "하얀포션": {
     "type": "소모품",
@@ -1707,8 +1710,9 @@
     "heal": 900,
     "buy": 1200,
     "sell": 600,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 15,
+    "weightSrc": "official",
+    "_aegis": "White_Potion"
   },
   "파란포션": {
     "type": "소모품",
@@ -1717,8 +1721,9 @@
     "spHeal": 60,
     "buy": 5000,
     "sell": 2500,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 15,
+    "weightSrc": "official",
+    "_aegis": "Blue_Potion"
   },
   "초록포션": {
     "type": "소모품",
@@ -1728,7 +1733,8 @@
     "buy": 40,
     "sell": 20,
     "weight": 7,
-    "weightSrc": "type"
+    "weightSrc": "official",
+    "_aegis": "Green_Potion"
   },
   "파리의 날개": {
     "type": "소모품",
@@ -1737,8 +1743,9 @@
     "effect": "teleport",
     "buy": 60,
     "sell": 30,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 5,
+    "weightSrc": "official",
+    "_aegis": "Wing_Of_Fly"
   },
   "나비의 날개": {
     "type": "소모품",
@@ -1747,8 +1754,9 @@
     "effect": "town",
     "buy": 300,
     "sell": 150,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 5,
+    "weightSrc": "official",
+    "_aegis": "Wing_Of_Butterfly"
   },
   "각성의 포션": {
     "type": "소모품",
@@ -1758,8 +1766,9 @@
     "aspdRate": 0.15,
     "buy": 1500,
     "sell": 750,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 15,
+    "weightSrc": "official",
+    "_aegis": "Awakening_Potion"
   },
   "나이프": {
     "type": "무기",
@@ -17480,8 +17489,9 @@
     "ammo": true,
     "buy": 1,
     "sell": 0,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.1,
+    "weightSrc": "official",
+    "_aegis": "Arrow"
   },
   "철 화살": {
     "type": "소모품",
@@ -17492,8 +17502,9 @@
     "ammo": true,
     "buy": 2,
     "sell": 1,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.1,
+    "weightSrc": "official",
+    "_aegis": "Iron_Arrow"
   },
   "강철의 화살": {
     "type": "소모품",
@@ -17504,8 +17515,9 @@
     "ammo": true,
     "buy": 4,
     "sell": 2,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.2,
+    "weightSrc": "official",
+    "_aegis": "Steel_Arrow"
   },
   "오리데오콘 화살": {
     "type": "소모품",
@@ -17516,8 +17528,9 @@
     "ammo": true,
     "buy": 30,
     "sell": 15,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.3,
+    "weightSrc": "official",
+    "_aegis": "Oridecon_Arrow"
   },
   "날카로운 화살": {
     "type": "소모품",
@@ -17528,8 +17541,9 @@
     "ammo": true,
     "buy": 20,
     "sell": 10,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.3,
+    "weightSrc": "official",
+    "_aegis": "Incisive_Arrow"
   },
   "녹슨 화살": {
     "type": "소모품",
@@ -17540,8 +17554,9 @@
     "ammo": true,
     "buy": 3,
     "sell": 0,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.2,
+    "weightSrc": "official",
+    "_aegis": "Rusty_Arrow"
   },
   "파마의 화살": {
     "type": "소모품",
@@ -17552,8 +17567,9 @@
     "ammo": true,
     "buy": 40,
     "sell": 20,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.3,
+    "weightSrc": "official",
+    "_aegis": "Arrow_Of_Counter_Evil"
   },
   "불화살": {
     "type": "소모품",
@@ -17564,8 +17580,9 @@
     "ammo": true,
     "buy": 3,
     "sell": 1,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.2,
+    "weightSrc": "official",
+    "_aegis": "Fire_Arrow"
   },
   "수정 화살": {
     "type": "소모품",
@@ -17576,8 +17593,9 @@
     "ammo": true,
     "buy": 3,
     "sell": 1,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.2,
+    "weightSrc": "official",
+    "_aegis": "Crystal_Arrow"
   },
   "바람의 화살": {
     "type": "소모품",
@@ -17588,8 +17606,9 @@
     "ammo": true,
     "buy": 3,
     "sell": 1,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.2,
+    "weightSrc": "official",
+    "_aegis": "Arrow_Of_Wind"
   },
   "암석 화살": {
     "type": "소모품",
@@ -17600,8 +17619,9 @@
     "ammo": true,
     "buy": 3,
     "sell": 1,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.2,
+    "weightSrc": "official",
+    "_aegis": "Stone_Arrow"
   },
   "성스러운 화살": {
     "type": "소모품",
@@ -17612,8 +17632,9 @@
     "ammo": true,
     "buy": 3,
     "sell": 1,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.2,
+    "weightSrc": "official",
+    "_aegis": "Holy_Arrow"
   },
   "은화살": {
     "type": "소모품",
@@ -17624,8 +17645,9 @@
     "ammo": true,
     "buy": 3,
     "sell": 1,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.2,
+    "weightSrc": "official",
+    "_aegis": "Silver_Arrow"
   },
   "그림자의 화살": {
     "type": "소모품",
@@ -17636,8 +17658,9 @@
     "ammo": true,
     "buy": 3,
     "sell": 1,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.2,
+    "weightSrc": "official",
+    "_aegis": "Arrow_Of_Shadow"
   },
   "무형의 화살": {
     "type": "소모품",
@@ -17648,8 +17671,9 @@
     "ammo": true,
     "buy": 3,
     "sell": 1,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.1,
+    "weightSrc": "official",
+    "_aegis": "Immatrial_Arrow"
   },
   "독화살": {
     "type": "소모품",
@@ -17665,8 +17689,9 @@
     },
     "buy": 10,
     "sell": 5,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.3,
+    "weightSrc": "official",
+    "_aegis": "Poison_Arrow"
   },
   "스턴 애로우": {
     "type": "소모품",
@@ -17682,8 +17707,9 @@
     },
     "buy": 10,
     "sell": 5,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.3,
+    "weightSrc": "official",
+    "_aegis": "Stun_Arrow"
   },
   "슬립 애로우": {
     "type": "소모품",
@@ -17699,8 +17725,9 @@
     },
     "buy": 10,
     "sell": 5,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.3,
+    "weightSrc": "official",
+    "_aegis": "Sleep_Arrow"
   },
   "프리징 애로우": {
     "type": "소모품",
@@ -17716,8 +17743,9 @@
     },
     "buy": 10,
     "sell": 5,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.3,
+    "weightSrc": "official",
+    "_aegis": "Freezing_Arrow"
   },
   "플래쉬 애로우": {
     "type": "소모품",
@@ -17733,8 +17761,9 @@
     },
     "buy": 10,
     "sell": 5,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.3,
+    "weightSrc": "official",
+    "_aegis": "Flash_Arrow"
   },
   "사일런스 애로우": {
     "type": "소모품",
@@ -17750,8 +17779,9 @@
     },
     "buy": 10,
     "sell": 5,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.3,
+    "weightSrc": "official",
+    "_aegis": "Silence_Arrow"
   },
   "커스 애로우": {
     "type": "소모품",
@@ -17767,8 +17797,9 @@
     },
     "buy": 10,
     "sell": 5,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 0.3,
+    "weightSrc": "official",
+    "_aegis": "Curse_Arrow"
   },
   "화살통": {
     "type": "소모품",
@@ -17779,8 +17810,9 @@
     "quiverCount": 500,
     "buy": 500,
     "sell": 250,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 25,
+    "weightSrc": "official",
+    "_aegis": "Arrow_Container"
   },
   "철 화살통": {
     "type": "소모품",
@@ -17791,8 +17823,9 @@
     "quiverCount": 500,
     "buy": 1000,
     "sell": 500,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 25,
+    "weightSrc": "official",
+    "_aegis": "Iron_Arrow_Container"
   },
   "강철의 화살통": {
     "type": "소모품",
@@ -17803,8 +17836,9 @@
     "quiverCount": 500,
     "buy": 2000,
     "sell": 1000,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 25,
+    "weightSrc": "official",
+    "_aegis": "Steel_Arrow_Container"
   },
   "오리데오콘 화살통": {
     "type": "소모품",
@@ -17815,8 +17849,9 @@
     "quiverCount": 500,
     "buy": 15000,
     "sell": 7500,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 25,
+    "weightSrc": "official",
+    "_aegis": "Ori_Arrow_Container"
   },
   "녹슨 화살통": {
     "type": "소모품",
@@ -17827,8 +17862,9 @@
     "quiverCount": 500,
     "buy": 1000,
     "sell": 0,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 25,
+    "weightSrc": "official",
+    "_aegis": "Rusty_Arrow_Container"
   },
   "불화살통": {
     "type": "소모품",
@@ -17839,8 +17875,9 @@
     "quiverCount": 500,
     "buy": 1500,
     "sell": 750,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 25,
+    "weightSrc": "official",
+    "_aegis": "Fire_Arrow_Container"
   },
   "수정 화살통": {
     "type": "소모품",
@@ -17851,8 +17888,9 @@
     "quiverCount": 500,
     "buy": 1500,
     "sell": 750,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 25,
+    "weightSrc": "official",
+    "_aegis": "Crystal_Arrow_Container"
   },
   "바람 화살통": {
     "type": "소모품",
@@ -17863,8 +17901,9 @@
     "quiverCount": 500,
     "buy": 1500,
     "sell": 750,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 25,
+    "weightSrc": "official",
+    "_aegis": "Wind_Arrow_Container"
   },
   "암석 화살통": {
     "type": "소모품",
@@ -17875,8 +17914,9 @@
     "quiverCount": 500,
     "buy": 1500,
     "sell": 750,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 25,
+    "weightSrc": "official",
+    "_aegis": "Stone_Arrow_Container"
   },
   "성스러운 화살통": {
     "type": "소모품",
@@ -17887,8 +17927,9 @@
     "quiverCount": 500,
     "buy": 1500,
     "sell": 750,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 25,
+    "weightSrc": "official",
+    "_aegis": "Holy_Arrow_Quiver"
   },
   "은화살통": {
     "type": "소모품",
@@ -17899,8 +17940,9 @@
     "quiverCount": 500,
     "buy": 1500,
     "sell": 750,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 25,
+    "weightSrc": "official",
+    "_aegis": "Silver_Arrow_Container"
   },
   "그림자화살통": {
     "type": "소모품",
@@ -17911,8 +17953,9 @@
     "quiverCount": 500,
     "buy": 1500,
     "sell": 750,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 25,
+    "weightSrc": "official",
+    "_aegis": "Shadow_Arrow_Container"
   },
   "무형의 화살통": {
     "type": "소모품",
@@ -17923,8 +17966,9 @@
     "quiverCount": 500,
     "buy": 1500,
     "sell": 750,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 25,
+    "weightSrc": "official",
+    "_aegis": "Imma_Arrow_Container"
   },
   "가고일의날개": {
     "type": "잡템",
@@ -18059,8 +18103,9 @@
     "effect": "deadbranch",
     "buy": 0,
     "sell": 10,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 5,
+    "weightSrc": "official",
+    "_aegis": "Branch_Of_Dead_Tree"
   },
   "고양이의발자국": {
     "type": "잡템",
@@ -18300,8 +18345,9 @@
     "effect": "cardalbum",
     "buy": 0,
     "sell": 500,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 5,
+    "weightSrc": "official",
+    "_aegis": "Old_Card_Album"
   },
   "낡은프라이팬": {
     "type": "잡템",
@@ -18761,8 +18807,9 @@
     "heal": 30,
     "buy": 15,
     "sell": 8,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 2,
+    "weightSrc": "official",
+    "_aegis": "Apple"
   },
   "사마귀의팔": {
     "type": "잡템",
@@ -18798,8 +18845,9 @@
     "effect": "treasure",
     "buy": 0,
     "sell": 500,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 20,
+    "weightSrc": "official",
+    "_aegis": "Gift_Box"
   },
   "선인장의뾰족한침": {
     "type": "잡템",
@@ -18826,8 +18874,9 @@
     "heal": 500,
     "buy": 0,
     "sell": 2000,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 3,
+    "weightSrc": "official",
+    "_aegis": "Holy_Water"
   },
   "소라": {
     "type": "잡템",
@@ -19061,8 +19110,9 @@
     "effect": "treasure",
     "buy": 0,
     "sell": 500,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 20,
+    "weightSrc": "official",
+    "_aegis": "Old_Violet_Box"
   },
   "오래된빨간상자": {
     "type": "소모품",
@@ -19071,8 +19121,9 @@
     "effect": "treasure",
     "buy": 0,
     "sell": 300,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 20,
+    "weightSrc": "official",
+    "_aegis": "Red_Box"
   },
   "오래된파란상자": {
     "type": "소모품",
@@ -19081,8 +19132,9 @@
     "effect": "treasure",
     "buy": 0,
     "sell": 200,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 20,
+    "weightSrc": "official",
+    "_aegis": "Old_Blue_Box"
   },
   "오래된표창": {
     "type": "잡템",
@@ -19109,8 +19161,9 @@
     "heal": 20,
     "buy": 10,
     "sell": 5,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 2,
+    "weightSrc": "official",
+    "_aegis": "Orange"
   },
   "오리데오콘원석": {
     "type": "재료",
@@ -19164,8 +19217,9 @@
     "heal": 100,
     "buy": 200,
     "sell": 100,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 3,
+    "weightSrc": "official",
+    "_aegis": "Well_Baked_Cookie"
   },
   "이그드라실의 씨앗": {
     "type": "소모품",
@@ -19239,8 +19293,9 @@
     "heal": 200,
     "buy": 300,
     "sell": 150,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 10,
+    "weightSrc": "official",
+    "_aegis": "Piece_Of_Cake"
   },
   "족쇄": {
     "type": "잡템",
@@ -19375,8 +19430,9 @@
     "effect": "antidote",
     "buy": 35,
     "sell": 17,
-    "weight": 7,
-    "weightSrc": "type"
+    "weight": 3,
+    "weightSrc": "official",
+    "_aegis": "Green_Herb"
   },
   "촉수": {
     "type": "잡템",
@@ -19476,7 +19532,8 @@
     "buy": 50,
     "sell": 25,
     "weight": 7,
-    "weightSrc": "type"
+    "weightSrc": "official",
+    "_aegis": "Blue_Herb"
   },
   "파충류의혀": {
     "type": "잡템",
@@ -19513,7 +19570,8 @@
     "buy": 40,
     "sell": 20,
     "weight": 7,
-    "weightSrc": "type"
+    "weightSrc": "official",
+    "_aegis": "White_Herb"
   },
   "하피의깃털": {
     "type": "잡템",
@@ -28168,7 +28226,8 @@
     "buy": 0,
     "sell": 25,
     "weight": 15,
-    "weightSrc": "official"
+    "weightSrc": "official",
+    "_aegis": "Meat"
   },
   "고대 군주의 망토": {
     "type": "잡템",
@@ -28492,7 +28551,8 @@
     "buy": 0,
     "sell": 250,
     "weight": 10,
-    "weightSrc": "official"
+    "weightSrc": "official",
+    "_aegis": "Honey"
   },
   "꿀단지": {
     "type": "잡템",
@@ -29308,7 +29368,8 @@
     "buy": 0,
     "sell": 100,
     "weight": 2,
-    "weightSrc": "official"
+    "weightSrc": "official",
+    "_aegis": "Strawberry"
   },
   "뜨거운 머리카락": {
     "type": "잡템",
@@ -29435,7 +29496,8 @@
     "buy": 0,
     "sell": 4250,
     "weight": 3,
-    "weightSrc": "official"
+    "weightSrc": "official",
+    "_aegis": "Fruit_Of_Mastela"
   },
   "마타의 벼룩 가드": {
     "type": "잡템",
@@ -29616,7 +29678,8 @@
     "buy": 0,
     "sell": 30,
     "weight": 15,
-    "weightSrc": "official"
+    "weightSrc": "official",
+    "_aegis": "Monster's_Feed"
   },
   "몬스터 주스": {
     "type": "잡템",
@@ -30302,7 +30365,8 @@
     "buy": 0,
     "sell": 9,
     "weight": 3,
-    "weightSrc": "official"
+    "weightSrc": "official",
+    "_aegis": "Red_Herb"
   },
   "사과 주스": {
     "type": "잡템",
@@ -30341,7 +30405,8 @@
     "buy": 0,
     "sell": 5,
     "weight": 3,
-    "weightSrc": "official"
+    "weightSrc": "official",
+    "_aegis": "Candy"
   },
   "산들바람의 기타": {
     "type": "잡템",
@@ -31308,7 +31373,8 @@
     "buy": 0,
     "sell": 20,
     "weight": 5,
-    "weightSrc": "official"
+    "weightSrc": "official",
+    "_aegis": "Yellow_Herb"
   },
   "오라오라": {
     "type": "잡템",
@@ -32213,7 +32279,8 @@
     "buy": 0,
     "sell": 10,
     "weight": 4,
-    "weightSrc": "official"
+    "weightSrc": "official",
+    "_aegis": "Candy_Striper"
   },
   "커다란 젤로피": {
     "type": "잡템",
