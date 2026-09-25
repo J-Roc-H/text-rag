@@ -68,7 +68,7 @@ jobs:
             if(!exchangeText.includes('루비') || !exchangeText.includes('1회') || !exchangeText.includes('최대')) throw new Error('exchange service smoke failed');
             closeModal();
 
-            if(!window.__serviceSystemsV2 || !window.__serviceSystemsV2.scope.includes('craft')) throw new Error('craft service layer missing');
+            if(!window.__serviceSystemsV2 || !window.__serviceSystemsV2.scope.includes('crafting')) throw new Error('crafting service layer missing');
             if(typeof window.useSkill!=='function' || typeof window.serviceCraftBatch!=='function') throw new Error('craft routing globals missing');
 
             return {refine:true,warehouse:true,dungeon:true,exchange:true,craftRouter:true,version:window.__serviceSystemsV2.version};
