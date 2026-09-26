@@ -8,9 +8,9 @@
   "totalSourceEntries": 105,
   "totalVariants": 156,
   "statusCounts": {
-   "verified": 38,
+   "verified": 46,
    "source-needed": 58,
-   "unsupported": 60
+   "unsupported": 52
   },
   "identityMapUsed": true,
   "identityVerifiedItemCount": 225
@@ -182,7 +182,7 @@
     {
      "rawStatement": "bonus3 bAutoSpellWhenHit,\"HP_ASSUMPTIO\",2,5",
      "constant": "bAutoSpellWhenHit",
-     "reason": "\"bonus3 bAutoSpellWhenHit,sk,y,n;\" — 위와 동일 사유(확률 단위 미검증)."
+     "reason": "\"bonus3 bAutoSpellWhenHit,sk,y,n;\" — 실코드 재확인(events.onDamaged는 항상 빈 배열, 집계 코드 자체가 없음, ITEM_EFFECT_P0_CLOSEOUT.md 재확인) 결과 trigger-model-missing으로 확정(P2-A.4 §13). bAutoSpell과 별개로, 이쪽은 스킬 식별 문제 이전에 트리거 자체가 없음."
     }
    ],
    "status": "unsupported",
@@ -225,7 +225,7 @@
     {
      "rawStatement": "bonus3 bAutoSpellWhenHit,\"HP_ASSUMPTIO\",2,5",
      "constant": "bAutoSpellWhenHit",
-     "reason": "\"bonus3 bAutoSpellWhenHit,sk,y,n;\" — 위와 동일 사유(확률 단위 미검증)."
+     "reason": "\"bonus3 bAutoSpellWhenHit,sk,y,n;\" — 실코드 재확인(events.onDamaged는 항상 빈 배열, 집계 코드 자체가 없음, ITEM_EFFECT_P0_CLOSEOUT.md 재확인) 결과 trigger-model-missing으로 확정(P2-A.4 §13). bAutoSpell과 별개로, 이쪽은 스킬 식별 문제 이전에 트리거 자체가 없음."
     }
    ],
    "status": "unsupported",
@@ -266,23 +266,22 @@
    "effects": [
     {
      "type": "combat",
+     "key": "atkPct",
+     "subKey": null,
+     "value": 4,
+     "reason": "doc: \"bonus2 bAddClass,c,x;\" Class_All -> P0 atkPct 실코드 재확인(P2-A.4 §8)"
+    },
+    {
+     "type": "combat",
      "key": "def",
      "subKey": null,
      "value": 2,
      "reason": "doc: \"bonus bDef,n; Equipment DEF + n\""
     }
    ],
-   "unsupportedEffects": [
-    {
-     "rawStatement": "bonus2 bAddClass,Class_All,4",
-     "constant": "bAddClass",
-     "reason": "\"bonus2 bAddClass,c,x;\" — Class_* enum 매핑 미검증(추측 금지)."
-    }
-   ],
-   "status": "unsupported",
-   "statusReasons": [
-    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
-   ]
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0003-02",
@@ -317,23 +316,22 @@
    "effects": [
     {
      "type": "combat",
+     "key": "atkPct",
+     "subKey": null,
+     "value": 4,
+     "reason": "doc: \"bonus2 bAddClass,c,x;\" Class_All -> P0 atkPct 실코드 재확인(P2-A.4 §8)"
+    },
+    {
+     "type": "combat",
      "key": "def",
      "subKey": null,
      "value": 2,
      "reason": "doc: \"bonus bDef,n; Equipment DEF + n\""
     }
    ],
-   "unsupportedEffects": [
-    {
-     "rawStatement": "bonus2 bAddClass,Class_All,4",
-     "constant": "bAddClass",
-     "reason": "\"bonus2 bAddClass,c,x;\" — Class_* enum 매핑 미검증(추측 금지)."
-    }
-   ],
-   "status": "unsupported",
-   "statusReasons": [
-    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
-   ]
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0003-03",
@@ -368,23 +366,22 @@
    "effects": [
     {
      "type": "combat",
+     "key": "atkPct",
+     "subKey": null,
+     "value": 4,
+     "reason": "doc: \"bonus2 bAddClass,c,x;\" Class_All -> P0 atkPct 실코드 재확인(P2-A.4 §8)"
+    },
+    {
+     "type": "combat",
      "key": "def",
      "subKey": null,
      "value": 2,
      "reason": "doc: \"bonus bDef,n; Equipment DEF + n\""
     }
    ],
-   "unsupportedEffects": [
-    {
-     "rawStatement": "bonus2 bAddClass,Class_All,4",
-     "constant": "bAddClass",
-     "reason": "\"bonus2 bAddClass,c,x;\" — Class_* enum 매핑 미검증(추측 금지)."
-    }
-   ],
-   "status": "unsupported",
-   "statusReasons": [
-    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
-   ]
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0004-01",
@@ -429,12 +426,12 @@
     {
      "rawStatement": "bonus bMatkRate,6",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bCastrate,-getequiprefinerycnt(EQI_HEAD_TOP)",
-     "constant": "bonus",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bCastrate,-getequiprefinerycnt(EQI_HEAD_TOP)"
+     "constant": "bCastrate",
+     "reason": "\"bonus2 bCastrate,\"SKILL\",n;\" (스킬 지정 2-인자 형태) — P0 castReduction은 스킬 전체에 일괄 적용되는 값이라 스킬별 캐스팅 소비처가 없음(engine-extension-required, P2-A.4 §10). 리터럴 1-인자 `bonus bCastrate,n` 형태는 VERIFIED_SIMPLE_BONUS 참조."
     }
    ],
    "status": "source-needed",
@@ -485,12 +482,12 @@
     {
      "rawStatement": "bonus bMatkRate,6",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bCastrate,-getequiprefinerycnt(EQI_HEAD_TOP)",
-     "constant": "bonus",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bCastrate,-getequiprefinerycnt(EQI_HEAD_TOP)"
+     "constant": "bCastrate",
+     "reason": "\"bonus2 bCastrate,\"SKILL\",n;\" (스킬 지정 2-인자 형태) — P0 castReduction은 스킬 전체에 일괄 적용되는 값이라 스킬별 캐스팅 소비처가 없음(engine-extension-required, P2-A.4 §10). 리터럴 1-인자 `bonus bCastrate,n` 형태는 VERIFIED_SIMPLE_BONUS 참조."
     }
    ],
    "status": "source-needed",
@@ -541,12 +538,12 @@
     {
      "rawStatement": "bonus bMatkRate,6",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bCastrate,-getequiprefinerycnt(EQI_HAND_R)",
-     "constant": "bonus",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bCastrate,-getequiprefinerycnt(EQI_HAND_R)"
+     "constant": "bCastrate",
+     "reason": "\"bonus2 bCastrate,\"SKILL\",n;\" (스킬 지정 2-인자 형태) — P0 castReduction은 스킬 전체에 일괄 적용되는 값이라 스킬별 캐스팅 소비처가 없음(engine-extension-required, P2-A.4 §10). 리터럴 1-인자 `bonus bCastrate,n` 형태는 VERIFIED_SIMPLE_BONUS 참조."
     }
    ],
    "status": "source-needed",
@@ -597,12 +594,12 @@
     {
      "rawStatement": "bonus bMatkRate,6",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bCastrate,-getequiprefinerycnt(EQI_HAND_R)",
-     "constant": "bonus",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bCastrate,-getequiprefinerycnt(EQI_HAND_R)"
+     "constant": "bCastrate",
+     "reason": "\"bonus2 bCastrate,\"SKILL\",n;\" (스킬 지정 2-인자 형태) — P0 castReduction은 스킬 전체에 일괄 적용되는 값이라 스킬별 캐스팅 소비처가 없음(engine-extension-required, P2-A.4 §10). 리터럴 1-인자 `bonus bCastrate,n` 형태는 VERIFIED_SIMPLE_BONUS 참조."
     }
    ],
    "status": "source-needed",
@@ -645,7 +642,7 @@
     {
      "rawStatement": "bonus2 bResEff,Eff_Confusion,9500",
      "constant": "bResEff",
-     "reason": "\"bonus2 bResEff,eff,n; n/100% tolerance...\" — P0에 상태 \"부분 저항\"(면역과 다름) vocabulary 없음."
+     "reason": "\"bonus2 bResEff,eff,n; n/100% tolerance...\" — 실코드 재확인(isStatusImmune은 이진 면역만, `cardImmune` 배열에 있으면 완전 면역/없으면 0% — 부분 저항 %를 표현할 자료구조 자체가 없음) 결과 engine-extension-required로 확정(P2-A.4 §16)."
     }
    ],
    "status": "source-needed",
@@ -688,7 +685,7 @@
     {
      "rawStatement": "bonus2 bResEff,Eff_Confusion,9500",
      "constant": "bResEff",
-     "reason": "\"bonus2 bResEff,eff,n; n/100% tolerance...\" — P0에 상태 \"부분 저항\"(면역과 다름) vocabulary 없음."
+     "reason": "\"bonus2 bResEff,eff,n; n/100% tolerance...\" — 실코드 재확인(isStatusImmune은 이진 면역만, `cardImmune` 배열에 있으면 완전 면역/없으면 0% — 부분 저항 %를 표현할 자료구조 자체가 없음) 결과 engine-extension-required로 확정(P2-A.4 §16)."
     }
    ],
    "status": "source-needed",
@@ -1022,22 +1019,25 @@
    ],
    "rawScript": "bonus bMatk,10*getequiprefinerycnt(EQI_HAND_R);\nbonus bCastRate,-10;\n",
    "conditionalRaw": [],
-   "effects": [],
+   "effects": [
+    {
+     "type": "combat",
+     "key": "castReduction",
+     "subKey": null,
+     "value": 0.1,
+     "reason": "doc: \"bonus bCastrate,n\" (대소문자 변형) — 위와 동일"
+    }
+   ],
    "unsupportedEffects": [
     {
      "rawStatement": "bonus bMatk,10*getequiprefinerycnt(EQI_HAND_R)",
-     "constant": "bonus",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bMatk,10*getequiprefinerycnt(EQI_HAND_R)"
-    },
-    {
-     "rawStatement": "bonus bCastRate,-10",
-     "constant": "bCastRate",
-     "reason": "알려지지 않은 rAthena bonus 상수(rawScript만 보존): bCastRate"
+     "constant": "bMatk",
+     "reason": "\"bonus bMatk,n; Magical attack power + n\" — P0 matk는 파생값이라 직접 가산 지점 불명확(bonusMAtk와 동일 의미인지 미확정)."
     }
    ],
    "status": "unsupported",
    "statusReasons": [
-    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -1070,17 +1070,20 @@
    ],
    "rawScript": "bonus bMatk,10*getequiprefinerycnt(EQI_HAND_R);\nbonus bCastRate,-10;\n",
    "conditionalRaw": [],
-   "effects": [],
+   "effects": [
+    {
+     "type": "combat",
+     "key": "castReduction",
+     "subKey": null,
+     "value": 0.1,
+     "reason": "doc: \"bonus bCastrate,n\" (대소문자 변형) — 위와 동일"
+    }
+   ],
    "unsupportedEffects": [
     {
      "rawStatement": "bonus bMatk,10*getequiprefinerycnt(EQI_HAND_R)",
-     "constant": "bonus",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bMatk,10*getequiprefinerycnt(EQI_HAND_R)"
-    },
-    {
-     "rawStatement": "bonus bCastRate,-10",
-     "constant": "bCastRate",
-     "reason": "알려지지 않은 rAthena bonus 상수(rawScript만 보존): bCastRate"
+     "constant": "bMatk",
+     "reason": "\"bonus bMatk,n; Magical attack power + n\" — P0 matk는 파생값이라 직접 가산 지점 불명확(bonusMAtk와 동일 의미인지 미확정)."
     }
    ],
    "status": "source-needed",
@@ -1173,12 +1176,12 @@
    "unsupportedEffects": [
     {
      "rawStatement": "bonus bMatkRate,min(5, getequiprefinerycnt(EQI_HAND_R)-5)",
-     "constant": "bonus",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bMatkRate,min(5, getequiprefinerycnt(EQI_HAND_R)-5)"
+     "constant": "bMatkRate",
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus2 bSubEle,Ele_Neutral,min(30, getequiprefinerycnt(EQI_GARMENT)*3)",
-     "constant": "bonus2",
+     "constant": "bSubEle",
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus2 bSubEle,Ele_Neutral,min(30, getequiprefinerycnt(EQI_G"
     }
    ],
@@ -1230,7 +1233,7 @@
     {
      "rawStatement": "bonus bMatkRate,5",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     }
    ],
    "status": "unsupported",
@@ -1281,7 +1284,7 @@
     {
      "rawStatement": "bonus bMatkRate,5",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     }
    ],
    "status": "unsupported",
@@ -1333,8 +1336,8 @@
    "unsupportedEffects": [
     {
      "rawStatement": "bonus bMatkRate,getequiprefinerycnt(EQI_HAND_R)-5",
-     "constant": "bonus",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bMatkRate,getequiprefinerycnt(EQI_HAND_R)-5"
+     "constant": "bMatkRate",
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     }
    ],
    "status": "unsupported",
@@ -1398,8 +1401,8 @@
    "unsupportedEffects": [
     {
      "rawStatement": "bonus bMatkRate,getequiprefinerycnt(EQI_HAND_R)",
-     "constant": "bonus",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bMatkRate,getequiprefinerycnt(EQI_HAND_R)"
+     "constant": "bMatkRate",
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     }
    ],
    "status": "source-needed",
@@ -1442,12 +1445,12 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"PR_MAGNUS\",20",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus3 bAutoSpellWhenHit,\"PR_TURNUNDEAD\",1,20",
      "constant": "bAutoSpellWhenHit",
-     "reason": "\"bonus3 bAutoSpellWhenHit,sk,y,n;\" — 위와 동일 사유(확률 단위 미검증)."
+     "reason": "\"bonus3 bAutoSpellWhenHit,sk,y,n;\" — 실코드 재확인(events.onDamaged는 항상 빈 배열, 집계 코드 자체가 없음, ITEM_EFFECT_P0_CLOSEOUT.md 재확인) 결과 trigger-model-missing으로 확정(P2-A.4 §13). bAutoSpell과 별개로, 이쪽은 스킬 식별 문제 이전에 트리거 자체가 없음."
     }
    ],
    "status": "source-needed",
@@ -1547,7 +1550,7 @@
     {
      "rawStatement": "bonus bLongAtkRate,25",
      "constant": "bLongAtkRate",
-     "reason": "\"bonus bLongAtkRate,n; Increases damage of long ranged attacks by n%\" — P0에 원거리 공격 가산 vocabulary 없음."
+     "reason": "\"bonus bLongAtkRate,n; Increases damage of long ranged attacks by n%\" — 실코드 재확인(calcStats: `isRangedWeapon = ['활','악기','채찍'].includes(p.weaponType)` 구조 데이터는 존재하나, 이 값을 조건으로 ATK%를 가산하는 기존 소비처가 없음) — engine-extension-required이나 필요 데이터가 이미 있어 저복잡도(P2-A.4 §18, engine-extension-backlog 참조)."
     }
    ],
    "status": "source-needed",
@@ -1590,7 +1593,7 @@
     {
      "rawStatement": "bonus bLongAtkRate,25",
      "constant": "bLongAtkRate",
-     "reason": "\"bonus bLongAtkRate,n; Increases damage of long ranged attacks by n%\" — P0에 원거리 공격 가산 vocabulary 없음."
+     "reason": "\"bonus bLongAtkRate,n; Increases damage of long ranged attacks by n%\" — 실코드 재확인(calcStats: `isRangedWeapon = ['활','악기','채찍'].includes(p.weaponType)` 구조 데이터는 존재하나, 이 값을 조건으로 ATK%를 가산하는 기존 소비처가 없음) — engine-extension-required이나 필요 데이터가 이미 있어 저복잡도(P2-A.4 §18, engine-extension-backlog 참조)."
     }
    ],
    "status": "unsupported",
@@ -1633,12 +1636,12 @@
     {
      "rawStatement": "bonus bLongAtkRate,25",
      "constant": "bLongAtkRate",
-     "reason": "\"bonus bLongAtkRate,n; Increases damage of long ranged attacks by n%\" — P0에 원거리 공격 가산 vocabulary 없음."
+     "reason": "\"bonus bLongAtkRate,n; Increases damage of long ranged attacks by n%\" — 실코드 재확인(calcStats: `isRangedWeapon = ['활','악기','채찍'].includes(p.weaponType)` 구조 데이터는 존재하나, 이 값을 조건으로 ATK%를 가산하는 기존 소비처가 없음) — engine-extension-required이나 필요 데이터가 이미 있어 저복잡도(P2-A.4 §18, engine-extension-backlog 참조)."
     },
     {
      "rawStatement": "bonus2 bAddEff,Eff_Stone,1000",
      "constant": "bAddEff",
-     "reason": "\"bonus2 bAddEff,eff,n; n/100% chance...\" — 확률 단위(n/100%) 실사례 대조 전."
+     "reason": "\"bonus2/3 bAddEff,eff,n; n/100% chance...\" — 실코드 재확인(_triggerOnHitEvent case inflict: stun/confusion/random_debuff 3종 고정 필드만 존재, turns도 하드코딩) 결과 Eff_Stun/Eff_Confusion 리터럴 2-인자 형태는 이론상 안전할 수 있으나 콤보 데이터에 실제 사례가 0건이고, 실제 관측된 Eff_Stone/Eff_Curse/Eff_Blind 등은 그 3종에 없어 engine-extension-required(P2-A.4 §14). 3-인자 ATF 공격타입 필터 형태는 그 개념 자체가 P0에 없어 항상 미지원."
     }
    ],
    "status": "unsupported",
@@ -1683,12 +1686,12 @@
     {
      "rawStatement": "bonus bLongAtkRate,25",
      "constant": "bLongAtkRate",
-     "reason": "\"bonus bLongAtkRate,n; Increases damage of long ranged attacks by n%\" — P0에 원거리 공격 가산 vocabulary 없음."
+     "reason": "\"bonus bLongAtkRate,n; Increases damage of long ranged attacks by n%\" — 실코드 재확인(calcStats: `isRangedWeapon = ['활','악기','채찍'].includes(p.weaponType)` 구조 데이터는 존재하나, 이 값을 조건으로 ATK%를 가산하는 기존 소비처가 없음) — engine-extension-required이나 필요 데이터가 이미 있어 저복잡도(P2-A.4 §18, engine-extension-backlog 참조)."
     },
     {
      "rawStatement": "bonus3 bAutoSpell,\"NJ_HUUJIN\",5,100",
      "constant": "bAutoSpell",
-     "reason": "\"bonus3 bAutoSpell,sk,y,n; n/10% chance...\" — P0 autoSpell 이벤트는 있으나 확률 단위(n/10%) 실사례 대조 전이라 P0-close 관례대로 보류."
+     "reason": "\"bonus3/4 bAutoSpell,sk,y,n;\" — 실코드 재확인(_triggerOnHitEvent case autoSpell: `DB.skills[evt.skill]`) 결과 onHit 트리거 자체는 존재하나, rAthena 스킬 ID(예: NJ_HUUJIN)가 TextRAG DB.skills의 어떤 키와도 대응하지 않음(전수 grep 0건) — identity-mapping-gap(P2-A.4 §12, 스킬명 추측 금지)."
     }
    ],
    "status": "source-needed",
@@ -1731,7 +1734,7 @@
     {
      "rawStatement": "bonus bLongAtkRate,50",
      "constant": "bLongAtkRate",
-     "reason": "\"bonus bLongAtkRate,n; Increases damage of long ranged attacks by n%\" — P0에 원거리 공격 가산 vocabulary 없음."
+     "reason": "\"bonus bLongAtkRate,n; Increases damage of long ranged attacks by n%\" — 실코드 재확인(calcStats: `isRangedWeapon = ['활','악기','채찍'].includes(p.weaponType)` 구조 데이터는 존재하나, 이 값을 조건으로 ATK%를 가산하는 기존 소비처가 없음) — engine-extension-required이나 필요 데이터가 이미 있어 저복잡도(P2-A.4 §18, engine-extension-backlog 참조)."
     }
    ],
    "status": "unsupported",
@@ -1779,7 +1782,7 @@
     {
      "rawStatement": "bonus3 bAddEff,Eff_Curse,200,ATF_WEAPON|ATF_LONG|ATF_TARGET",
      "constant": "bAddEff",
-     "reason": "\"bonus2 bAddEff,eff,n; n/100% chance...\" — 확률 단위(n/100%) 실사례 대조 전."
+     "reason": "\"bonus2/3 bAddEff,eff,n; n/100% chance...\" — 실코드 재확인(_triggerOnHitEvent case inflict: stun/confusion/random_debuff 3종 고정 필드만 존재, turns도 하드코딩) 결과 Eff_Stun/Eff_Confusion 리터럴 2-인자 형태는 이론상 안전할 수 있으나 콤보 데이터에 실제 사례가 0건이고, 실제 관측된 Eff_Stone/Eff_Curse/Eff_Blind 등은 그 3종에 없어 engine-extension-required(P2-A.4 §14). 3-인자 ATF 공격타입 필터 형태는 그 개념 자체가 P0에 없어 항상 미지원."
     }
    ],
    "status": "unsupported",
@@ -1844,7 +1847,7 @@
     {
      "rawStatement": "bonus bMatkRate,10",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     }
    ],
    "status": "unsupported",
@@ -1909,7 +1912,7 @@
     {
      "rawStatement": "bonus bMatkRate,10",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     }
    ],
    "status": "unsupported",
@@ -1976,7 +1979,7 @@
     {
      "rawStatement": "bonus bMatkRate,7",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     }
    ],
    "status": "source-needed",
@@ -2043,7 +2046,7 @@
     {
      "rawStatement": "bonus bMatkRate,7",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     }
    ],
    "status": "source-needed",
@@ -2164,12 +2167,12 @@
    "unsupportedEffects": [
     {
      "rawStatement": "bonus bDef,2-getequiprefinerycnt(EQI_HAND_L)-getequiprefinerycnt(EQI_HEAD_TOP)",
-     "constant": "bonus",
+     "constant": "bDef",
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bDef,2-getequiprefinerycnt(EQI_HAND_L)-getequiprefiner"
     },
     {
      "rawStatement": "bonus bMdef,5+getequiprefinerycnt(EQI_HAND_L)+getequiprefinerycnt(EQI_HEAD_TOP)",
-     "constant": "bonus",
+     "constant": "bMdef",
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bMdef,5+getequiprefinerycnt(EQI_HAND_L)+getequiprefine"
     }
    ],
@@ -2221,12 +2224,12 @@
    "unsupportedEffects": [
     {
      "rawStatement": "bonus bDef,2-getequiprefinerycnt(EQI_HAND_L)-getequiprefinerycnt(EQI_HEAD_TOP)",
-     "constant": "bonus",
+     "constant": "bDef",
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bDef,2-getequiprefinerycnt(EQI_HAND_L)-getequiprefiner"
     },
     {
      "rawStatement": "bonus bMdef,5+getequiprefinerycnt(EQI_HAND_L)+getequiprefinerycnt(EQI_HEAD_TOP)",
-     "constant": "bonus",
+     "constant": "bMdef",
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bMdef,5+getequiprefinerycnt(EQI_HAND_L)+getequiprefine"
     }
    ],
@@ -2312,7 +2315,7 @@
     {
      "rawStatement": "bonus3 bAutoSpellWhenHit,\"HP_ASSUMPTIO\",1,30",
      "constant": "bAutoSpellWhenHit",
-     "reason": "\"bonus3 bAutoSpellWhenHit,sk,y,n;\" — 위와 동일 사유(확률 단위 미검증)."
+     "reason": "\"bonus3 bAutoSpellWhenHit,sk,y,n;\" — 실코드 재확인(events.onDamaged는 항상 빈 배열, 집계 코드 자체가 없음, ITEM_EFFECT_P0_CLOSEOUT.md 재확인) 결과 trigger-model-missing으로 확정(P2-A.4 §13). bAutoSpell과 별개로, 이쪽은 스킬 식별 문제 이전에 트리거 자체가 없음."
     }
    ],
    "status": "unsupported",
@@ -2350,18 +2353,18 @@
    ],
    "rawScript": "bonus bCastrate,-10;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus bCastrate,-10",
-     "constant": "bCastrate",
-     "reason": "\"bonus bCastrate,n; Skill cast time rate + n%\" — 음수 가능(캐스팅 증가), P0 castReduction(0~1 fraction, 항상 감소)과 부호/단위 불일치."
+     "type": "combat",
+     "key": "castReduction",
+     "subKey": null,
+     "value": 0.1,
+     "reason": "doc: \"bonus bCastrate,n; Increases/decreases variable cast time by n%\" — fraction=-n/100, calcStats castReduction 실코드 재확인(P2-A.4 §9)"
     }
    ],
-   "status": "unsupported",
-   "statusReasons": [
-    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
-   ]
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0029-01",
@@ -2446,12 +2449,12 @@
     {
      "rawStatement": "bonus2 bAddEff,Eff_Blind,500",
      "constant": "bAddEff",
-     "reason": "\"bonus2 bAddEff,eff,n; n/100% chance...\" — 확률 단위(n/100%) 실사례 대조 전."
+     "reason": "\"bonus2/3 bAddEff,eff,n; n/100% chance...\" — 실코드 재확인(_triggerOnHitEvent case inflict: stun/confusion/random_debuff 3종 고정 필드만 존재, turns도 하드코딩) 결과 Eff_Stun/Eff_Confusion 리터럴 2-인자 형태는 이론상 안전할 수 있으나 콤보 데이터에 실제 사례가 0건이고, 실제 관측된 Eff_Stone/Eff_Curse/Eff_Blind 등은 그 3종에 없어 engine-extension-required(P2-A.4 §14). 3-인자 ATF 공격타입 필터 형태는 그 개념 자체가 P0에 없어 항상 미지원."
     },
     {
      "rawStatement": "autobonus \"{ bonus bFlee,20; }\",200,10000,BF_WEAPON,\"{ specialeffect2 EF_INCAGILITY; }\"",
      "constant": "autobonus",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): autobonus \"{ bonus bFlee,20; }\",200,10000,BF_WEAPON,\"{ speci"
+     "reason": "\"autobonus <script>,rate,ms,flag,<icon-script>;\" — 공격 시 확률적 자기 버프 스크립트 실행 메커닉 자체가 P0에 없음(중첩 스크립트 내부는 파싱하지 않음, §16/§20)."
     }
    ],
    "status": "unsupported",
@@ -2493,8 +2496,8 @@
    "unsupportedEffects": [
     {
      "rawStatement": "bonus2 bAddMonsterDropItem,12192,1",
-     "constant": "bonus2",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus2 bAddMonsterDropItem,12192,1"
+     "constant": "bAddMonsterDropItem",
+     "reason": "\"bonus2 bAddMonsterDropItem,iid,n;\" — P0 dropBonus는 기존 드롭 테이블 가산일 뿐 \"신규 드롭 추가\" 메커닉이 P0에 없음."
     }
    ],
    "status": "unsupported",
@@ -2545,7 +2548,7 @@
     {
      "rawStatement": "bonus2 bAddEff,Eff_Stun,1000",
      "constant": "bAddEff",
-     "reason": "\"bonus2 bAddEff,eff,n; n/100% chance...\" — 확률 단위(n/100%) 실사례 대조 전."
+     "reason": "\"bonus2/3 bAddEff,eff,n; n/100% chance...\" — 실코드 재확인(_triggerOnHitEvent case inflict: stun/confusion/random_debuff 3종 고정 필드만 존재, turns도 하드코딩) 결과 Eff_Stun/Eff_Confusion 리터럴 2-인자 형태는 이론상 안전할 수 있으나 콤보 데이터에 실제 사례가 0건이고, 실제 관측된 Eff_Stone/Eff_Curse/Eff_Blind 등은 그 3종에 없어 engine-extension-required(P2-A.4 §14). 3-인자 ATF 공격타입 필터 형태는 그 개념 자체가 P0에 없어 항상 미지원."
     }
    ],
    "status": "source-needed",
@@ -2583,14 +2586,16 @@
    ],
    "rawScript": "bonus bUseSPrate,-3;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus bUseSPrate,-3",
-     "constant": "bUseSPrate",
-     "reason": "\"bonus bUseSPrate,n; SP consumption + n%\" — P0 spCostMul은 배율(0.7=30%감소)이라 %가산과 단위가 다름, 변환식 미확정."
+     "type": "combat",
+     "key": "spCostMul",
+     "subKey": null,
+     "value": 0.97,
+     "reason": "doc: \"bonus bUseSPrate,n; SP consumption + n%\" — multiplier=1+n/100, getSkillSpCost 실코드 재확인(P2-A.4 §11)"
     }
    ],
+   "unsupportedEffects": [],
    "status": "source-needed",
    "statusReasons": [
     "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
@@ -2626,18 +2631,18 @@
    ],
    "rawScript": "bonus bUseSPrate,-3;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus bUseSPrate,-3",
-     "constant": "bUseSPrate",
-     "reason": "\"bonus bUseSPrate,n; SP consumption + n%\" — P0 spCostMul은 배율(0.7=30%감소)이라 %가산과 단위가 다름, 변환식 미확정."
+     "type": "combat",
+     "key": "spCostMul",
+     "subKey": null,
+     "value": 0.97,
+     "reason": "doc: \"bonus bUseSPrate,n; SP consumption + n%\" — multiplier=1+n/100, getSkillSpCost 실코드 재확인(P2-A.4 §11)"
     }
    ],
-   "status": "unsupported",
-   "statusReasons": [
-    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
-   ]
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0034-01",
@@ -2772,23 +2777,22 @@
    "effects": [
     {
      "type": "combat",
+     "key": "spCostMul",
+     "subKey": null,
+     "value": 0.8,
+     "reason": "doc: \"bonus bUseSPrate,n; SP consumption + n%\" — multiplier=1+n/100, getSkillSpCost 실코드 재확인(P2-A.4 §11)"
+    },
+    {
+     "type": "combat",
      "key": "maxHp",
      "subKey": null,
      "value": 300,
      "reason": "doc: \"bonus bMaxHP,n; MaxHP + n\""
     }
    ],
-   "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bUseSPrate,-20",
-     "constant": "bUseSPrate",
-     "reason": "\"bonus bUseSPrate,n; SP consumption + n%\" — P0 spCostMul은 배율(0.7=30%감소)이라 %가산과 단위가 다름, 변환식 미확정."
-    }
-   ],
-   "status": "unsupported",
-   "statusReasons": [
-    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
-   ]
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0035-02",
@@ -2823,23 +2827,22 @@
    "effects": [
     {
      "type": "combat",
+     "key": "spCostMul",
+     "subKey": null,
+     "value": 0.8,
+     "reason": "doc: \"bonus bUseSPrate,n; SP consumption + n%\" — multiplier=1+n/100, getSkillSpCost 실코드 재확인(P2-A.4 §11)"
+    },
+    {
+     "type": "combat",
      "key": "maxHp",
      "subKey": null,
      "value": 300,
      "reason": "doc: \"bonus bMaxHP,n; MaxHP + n\""
     }
    ],
-   "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bUseSPrate,-20",
-     "constant": "bUseSPrate",
-     "reason": "\"bonus bUseSPrate,n; SP consumption + n%\" — P0 spCostMul은 배율(0.7=30%감소)이라 %가산과 단위가 다름, 변환식 미확정."
-    }
-   ],
-   "status": "unsupported",
-   "statusReasons": [
-    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
-   ]
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0036-01",
@@ -3683,12 +3686,12 @@
     {
      "rawStatement": "bonus2 bResEff,Eff_Freeze,10000",
      "constant": "bResEff",
-     "reason": "\"bonus2 bResEff,eff,n; n/100% tolerance...\" — P0에 상태 \"부분 저항\"(면역과 다름) vocabulary 없음."
+     "reason": "\"bonus2 bResEff,eff,n; n/100% tolerance...\" — 실코드 재확인(isStatusImmune은 이진 면역만, `cardImmune` 배열에 있으면 완전 면역/없으면 0% — 부분 저항 %를 표현할 자료구조 자체가 없음) 결과 engine-extension-required로 확정(P2-A.4 §16)."
     },
     {
      "rawStatement": "skill \"WZ_FROSTNOVA\",10",
      "constant": "skill",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): skill \"WZ_FROSTNOVA\",10"
+     "reason": "\"skill \"SKILL_ID\",lv;\" — bonus 계열이 아닌 별도 스크립트 명령(직접 스킬 부여). P0 grantSkill과 트리거는 유사하나 rAthena 스킬 ID(예: WZ_FROSTNOVA)가 TextRAG DB.skills 키와 대응하지 않음 — bAutoSpell과 동일한 identity-mapping-gap."
     }
    ],
    "status": "unsupported",
@@ -3726,17 +3729,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,3;\nbonus bMatkRate,3;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus2 bAddClass,Class_All,3",
-     "constant": "bAddClass",
-     "reason": "\"bonus2 bAddClass,c,x;\" — Class_* enum 매핑 미검증(추측 금지)."
-    },
+     "type": "combat",
+     "key": "atkPct",
+     "subKey": null,
+     "value": 3,
+     "reason": "doc: \"bonus2 bAddClass,c,x;\" Class_All -> P0 atkPct 실코드 재확인(P2-A.4 §8)"
+    }
+   ],
+   "unsupportedEffects": [
     {
      "rawStatement": "bonus bMatkRate,3",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     }
    ],
    "status": "source-needed",
@@ -3774,17 +3780,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,3;\nbonus bMatkRate,3;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus2 bAddClass,Class_All,3",
-     "constant": "bAddClass",
-     "reason": "\"bonus2 bAddClass,c,x;\" — Class_* enum 매핑 미검증(추측 금지)."
-    },
+     "type": "combat",
+     "key": "atkPct",
+     "subKey": null,
+     "value": 3,
+     "reason": "doc: \"bonus2 bAddClass,c,x;\" Class_All -> P0 atkPct 실코드 재확인(P2-A.4 §8)"
+    }
+   ],
+   "unsupportedEffects": [
     {
      "rawStatement": "bonus bMatkRate,3",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     }
    ],
    "status": "source-needed",
@@ -3834,6 +3843,13 @@
    "effects": [
     {
      "type": "combat",
+     "key": "dmgReduceAll",
+     "subKey": null,
+     "value": -300,
+     "reason": "doc: \"bonus2 bSubRace,RC_All,x;\" RC_All(전종족)은 종족 필터 없는 P0 dmgReduceAll과 트리거 조건 일치(P2-A.4 §17)"
+    },
+    {
+     "type": "combat",
      "key": "raceDmgReduce",
      "subKey": "인간형",
      "value": 300,
@@ -3856,11 +3872,6 @@
    ],
    "unsupportedEffects": [
     {
-     "rawStatement": "bonus2 bSubRace,RC_All,-300",
-     "constant": "bSubRace",
-     "reason": "종족 enum \"RC_All\"이 TextRAG 확인된 10종(db-monsters.json)에 없음 — 추측 금지"
-    },
-    {
      "rawStatement": "bonus2 bSubRace,RC_Player_Human,300",
      "constant": "bSubRace",
      "reason": "종족 enum \"RC_Player_Human\"이 TextRAG 확인된 10종(db-monsters.json)에 없음 — 추측 금지"
@@ -3878,7 +3889,7 @@
     {
      "rawStatement": "autobonus2 \"{ bonus2 bHPRegenRate,600,1000; }\",5,10000,BF_WEAPON,\"{ specialeffect2 EF_HEAL; }\"",
      "constant": "autobonus2",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): autobonus2 \"{ bonus2 bHPRegenRate,600,1000; }\",5,10000,BF_WE"
+     "reason": "\"autobonus2 <script>,rate,ms,flag,<icon-script>;\" — 위와 동일 사유(피격 시 버전)."
     }
    ],
    "status": "unsupported",
@@ -3928,6 +3939,13 @@
    "effects": [
     {
      "type": "combat",
+     "key": "dmgReduceAll",
+     "subKey": null,
+     "value": -300,
+     "reason": "doc: \"bonus2 bSubRace,RC_All,x;\" RC_All(전종족)은 종족 필터 없는 P0 dmgReduceAll과 트리거 조건 일치(P2-A.4 §17)"
+    },
+    {
+     "type": "combat",
      "key": "raceDmgReduce",
      "subKey": "인간형",
      "value": 300,
@@ -3950,11 +3968,6 @@
    ],
    "unsupportedEffects": [
     {
-     "rawStatement": "bonus2 bSubRace,RC_All,-300",
-     "constant": "bSubRace",
-     "reason": "종족 enum \"RC_All\"이 TextRAG 확인된 10종(db-monsters.json)에 없음 — 추측 금지"
-    },
-    {
      "rawStatement": "bonus2 bSubRace,RC_Player_Human,300",
      "constant": "bSubRace",
      "reason": "종족 enum \"RC_Player_Human\"이 TextRAG 확인된 10종(db-monsters.json)에 없음 — 추측 금지"
@@ -3962,7 +3975,7 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"MC_MAMMONITE\",20",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus2 bSkillHeal,\"AM_POTIONPITCHER\",10",
@@ -3981,7 +3994,7 @@
     },
     {
      "rawStatement": "bonus bUnbreakableArmor",
-     "constant": "bonus",
+     "constant": "bUnbreakableArmor",
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bUnbreakableArmor"
     }
    ],
@@ -4032,6 +4045,13 @@
    "effects": [
     {
      "type": "combat",
+     "key": "dmgReduceAll",
+     "subKey": null,
+     "value": -300,
+     "reason": "doc: \"bonus2 bSubRace,RC_All,x;\" RC_All(전종족)은 종족 필터 없는 P0 dmgReduceAll과 트리거 조건 일치(P2-A.4 §17)"
+    },
+    {
+     "type": "combat",
      "key": "raceDmgReduce",
      "subKey": "인간형",
      "value": 300,
@@ -4061,11 +4081,6 @@
    ],
    "unsupportedEffects": [
     {
-     "rawStatement": "bonus2 bSubRace,RC_All,-300",
-     "constant": "bSubRace",
-     "reason": "종족 enum \"RC_All\"이 TextRAG 확인된 10종(db-monsters.json)에 없음 — 추측 금지"
-    },
-    {
      "rawStatement": "bonus2 bSubRace,RC_Player_Human,300",
      "constant": "bSubRace",
      "reason": "종족 enum \"RC_Player_Human\"이 TextRAG 확인된 10종(db-monsters.json)에 없음 — 추측 금지"
@@ -4078,7 +4093,7 @@
     {
      "rawStatement": "autobonus \"{ bonus2 bHPRegenRate,300,1000; }\",10,10000,BF_WEAPON,\"{ specialeffect2 EF_HEAL; }\"",
      "constant": "autobonus",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): autobonus \"{ bonus2 bHPRegenRate,300,1000; }\",10,10000,BF_WE"
+     "reason": "\"autobonus <script>,rate,ms,flag,<icon-script>;\" — 공격 시 확률적 자기 버프 스크립트 실행 메커닉 자체가 P0에 없음(중첩 스크립트 내부는 파싱하지 않음, §16/§20)."
     }
    ],
    "status": "unsupported",
@@ -4128,6 +4143,13 @@
    "effects": [
     {
      "type": "combat",
+     "key": "dmgReduceAll",
+     "subKey": null,
+     "value": -300,
+     "reason": "doc: \"bonus2 bSubRace,RC_All,x;\" RC_All(전종족)은 종족 필터 없는 P0 dmgReduceAll과 트리거 조건 일치(P2-A.4 §17)"
+    },
+    {
+     "type": "combat",
      "key": "raceDmgReduce",
      "subKey": "인간형",
      "value": 300,
@@ -4150,11 +4172,6 @@
    ],
    "unsupportedEffects": [
     {
-     "rawStatement": "bonus2 bSubRace,RC_All,-300",
-     "constant": "bSubRace",
-     "reason": "종족 enum \"RC_All\"이 TextRAG 확인된 10종(db-monsters.json)에 없음 — 추측 금지"
-    },
-    {
      "rawStatement": "bonus2 bSubRace,RC_Player_Human,300",
      "constant": "bSubRace",
      "reason": "종족 enum \"RC_Player_Human\"이 TextRAG 확인된 10종(db-monsters.json)에 없음 — 추측 금지"
@@ -4162,12 +4179,12 @@
     {
      "rawStatement": "bonus2 bResEff,Eff_Stun,2000",
      "constant": "bResEff",
-     "reason": "\"bonus2 bResEff,eff,n; n/100% tolerance...\" — P0에 상태 \"부분 저항\"(면역과 다름) vocabulary 없음."
+     "reason": "\"bonus2 bResEff,eff,n; n/100% tolerance...\" — 실코드 재확인(isStatusImmune은 이진 면역만, `cardImmune` 배열에 있으면 완전 면역/없으면 0% — 부분 저항 %를 표현할 자료구조 자체가 없음) 결과 engine-extension-required로 확정(P2-A.4 §16)."
     },
     {
      "rawStatement": "autobonus2 \"{ bonus bDefEle,Ele_Ghost; }\",30,10000,BF_WEAPON,\"{ specialeffect2 EF_ENERGYCOAT; }\"",
      "constant": "autobonus2",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): autobonus2 \"{ bonus bDefEle,Ele_Ghost; }\",30,10000,BF_WEAPON"
+     "reason": "\"autobonus2 <script>,rate,ms,flag,<icon-script>;\" — 위와 동일 사유(피격 시 버전)."
     }
    ],
    "status": "unsupported",
@@ -4217,6 +4234,13 @@
    "effects": [
     {
      "type": "combat",
+     "key": "dmgReduceAll",
+     "subKey": null,
+     "value": -300,
+     "reason": "doc: \"bonus2 bSubRace,RC_All,x;\" RC_All(전종족)은 종족 필터 없는 P0 dmgReduceAll과 트리거 조건 일치(P2-A.4 §17)"
+    },
+    {
+     "type": "combat",
      "key": "raceDmgReduce",
      "subKey": "인간형",
      "value": 300,
@@ -4239,11 +4263,6 @@
    ],
    "unsupportedEffects": [
     {
-     "rawStatement": "bonus2 bSubRace,RC_All,-300",
-     "constant": "bSubRace",
-     "reason": "종족 enum \"RC_All\"이 TextRAG 확인된 10종(db-monsters.json)에 없음 — 추측 금지"
-    },
-    {
      "rawStatement": "bonus2 bSubRace,RC_Player_Human,300",
      "constant": "bSubRace",
      "reason": "종족 enum \"RC_Player_Human\"이 TextRAG 확인된 10종(db-monsters.json)에 없음 — 추측 금지"
@@ -4251,7 +4270,7 @@
     {
      "rawStatement": "bonus2 bCastrate,\"AL_HOLYLIGHT\",-50",
      "constant": "bCastrate",
-     "reason": "\"bonus bCastrate,n; Skill cast time rate + n%\" — 음수 가능(캐스팅 증가), P0 castReduction(0~1 fraction, 항상 감소)과 부호/단위 불일치."
+     "reason": "\"bonus2 bCastrate,\"SKILL\",n;\" (스킬 지정 2-인자 형태) — P0 castReduction은 스킬 전체에 일괄 적용되는 값이라 스킬별 캐스팅 소비처가 없음(engine-extension-required, P2-A.4 §10). 리터럴 1-인자 `bonus bCastrate,n` 형태는 VERIFIED_SIMPLE_BONUS 참조."
     },
     {
      "rawStatement": "bonus bHealPower,6",
@@ -4261,7 +4280,7 @@
     {
      "rawStatement": "autobonus2 \"{ bonus bDefEle,Ele_Ghost; }\",30,10000,BF_WEAPON,\"{ specialeffect2 EF_ENERGYCOAT; }\"",
      "constant": "autobonus2",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): autobonus2 \"{ bonus bDefEle,Ele_Ghost; }\",30,10000,BF_WEAPON"
+     "reason": "\"autobonus2 <script>,rate,ms,flag,<icon-script>;\" — 위와 동일 사유(피격 시 버전)."
     }
    ],
    "status": "unsupported",
@@ -4311,6 +4330,13 @@
    "effects": [
     {
      "type": "combat",
+     "key": "dmgReduceAll",
+     "subKey": null,
+     "value": -300,
+     "reason": "doc: \"bonus2 bSubRace,RC_All,x;\" RC_All(전종족)은 종족 필터 없는 P0 dmgReduceAll과 트리거 조건 일치(P2-A.4 §17)"
+    },
+    {
+     "type": "combat",
      "key": "raceDmgReduce",
      "subKey": "인간형",
      "value": 300,
@@ -4333,11 +4359,6 @@
    ],
    "unsupportedEffects": [
     {
-     "rawStatement": "bonus2 bSubRace,RC_All,-300",
-     "constant": "bSubRace",
-     "reason": "종족 enum \"RC_All\"이 TextRAG 확인된 10종(db-monsters.json)에 없음 — 추측 금지"
-    },
-    {
      "rawStatement": "bonus2 bSubRace,RC_Player_Human,300",
      "constant": "bSubRace",
      "reason": "종족 enum \"RC_Player_Human\"이 TextRAG 확인된 10종(db-monsters.json)에 없음 — 추측 금지"
@@ -4350,7 +4371,7 @@
     {
      "rawStatement": "bonus bDelayRate,-25",
      "constant": "bDelayRate",
-     "reason": "알려지지 않은 rAthena bonus 상수(rawScript만 보존): bDelayRate"
+     "reason": "\"bonus bDelayRate,n; Attack delay + n%\" — P0에 공격 딜레이 %가산 vocabulary 없음(aspd와 별개 필드)."
     }
    ],
    "status": "unsupported",
@@ -4400,6 +4421,13 @@
    "effects": [
     {
      "type": "combat",
+     "key": "dmgReduceAll",
+     "subKey": null,
+     "value": -300,
+     "reason": "doc: \"bonus2 bSubRace,RC_All,x;\" RC_All(전종족)은 종족 필터 없는 P0 dmgReduceAll과 트리거 조건 일치(P2-A.4 §17)"
+    },
+    {
+     "type": "combat",
      "key": "raceDmgReduce",
      "subKey": "인간형",
      "value": 300,
@@ -4422,11 +4450,6 @@
    ],
    "unsupportedEffects": [
     {
-     "rawStatement": "bonus2 bSubRace,RC_All,-300",
-     "constant": "bSubRace",
-     "reason": "종족 enum \"RC_All\"이 TextRAG 확인된 10종(db-monsters.json)에 없음 — 추측 금지"
-    },
-    {
      "rawStatement": "bonus2 bSubRace,RC_Player_Human,300",
      "constant": "bSubRace",
      "reason": "종족 enum \"RC_Player_Human\"이 TextRAG 확인된 10종(db-monsters.json)에 없음 — 추측 금지"
@@ -4439,7 +4462,7 @@
     {
      "rawStatement": "bonus bDelayRate,-25",
      "constant": "bDelayRate",
-     "reason": "알려지지 않은 rAthena bonus 상수(rawScript만 보존): bDelayRate"
+     "reason": "\"bonus bDelayRate,n; Attack delay + n%\" — P0에 공격 딜레이 %가산 vocabulary 없음(aspd와 별개 필드)."
     }
    ],
    "status": "unsupported",
@@ -4500,14 +4523,16 @@
      "subKey": null,
      "value": 7,
      "reason": "doc: \"bonus bMaxSPrate,n; MaxSP + n%\""
+    },
+    {
+     "type": "combat",
+     "key": "castReduction",
+     "subKey": null,
+     "value": 0.03,
+     "reason": "doc: \"bonus bCastrate,n; Increases/decreases variable cast time by n%\" — fraction=-n/100, calcStats castReduction 실코드 재확인(P2-A.4 §9)"
     }
    ],
    "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bCastrate,-3",
-     "constant": "bCastrate",
-     "reason": "\"bonus bCastrate,n; Skill cast time rate + n%\" — 음수 가능(캐스팅 증가), P0 castReduction(0~1 fraction, 항상 감소)과 부호/단위 불일치."
-    },
     {
      "rawStatement": "bonus bDelayrate,-15",
      "constant": "bDelayrate",
@@ -4601,22 +4626,25 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,5;\nbonus bMatkRate,5;\nbonus2 bResEff,Eff_Freeze,10000;\nbonus2 bSkillHeal2,\"AM_POTIONPITCHER\",3;\nbonus2 bSkillHeal2,\"AL_HEAL\",3;\nbonus2 bSkillHeal2,\"PR_SANCTUARY\",3;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus2 bAddClass,Class_All,5",
-     "constant": "bAddClass",
-     "reason": "\"bonus2 bAddClass,c,x;\" — Class_* enum 매핑 미검증(추측 금지)."
-    },
+     "type": "combat",
+     "key": "atkPct",
+     "subKey": null,
+     "value": 5,
+     "reason": "doc: \"bonus2 bAddClass,c,x;\" Class_All -> P0 atkPct 실코드 재확인(P2-A.4 §8)"
+    }
+   ],
+   "unsupportedEffects": [
     {
      "rawStatement": "bonus bMatkRate,5",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus2 bResEff,Eff_Freeze,10000",
      "constant": "bResEff",
-     "reason": "\"bonus2 bResEff,eff,n; n/100% tolerance...\" — P0에 상태 \"부분 저항\"(면역과 다름) vocabulary 없음."
+     "reason": "\"bonus2 bResEff,eff,n; n/100% tolerance...\" — 실코드 재확인(isStatusImmune은 이진 면역만, `cardImmune` 배열에 있으면 완전 면역/없으면 0% — 부분 저항 %를 표현할 자료구조 자체가 없음) 결과 engine-extension-required로 확정(P2-A.4 §16)."
     },
     {
      "rawStatement": "bonus2 bSkillHeal2,\"AM_POTIONPITCHER\",3",
@@ -4636,7 +4664,7 @@
    ],
    "status": "unsupported",
    "statusReasons": [
-    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -4733,13 +4761,13 @@
    "unsupportedEffects": [
     {
      "rawStatement": "bonus2 bAddDefMonster,1196,20",
-     "constant": "bonus2",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus2 bAddDefMonster,1196,20"
+     "constant": "bAddDefMonster",
+     "reason": "\"bonus2 bAddDefMonster,mid,x;\" — 몬스터 ID 단위 조건, P0 vocabulary 없음."
     },
     {
      "rawStatement": "bonus2 bAddDefMonster,1197,20",
-     "constant": "bonus2",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus2 bAddDefMonster,1197,20"
+     "constant": "bAddDefMonster",
+     "reason": "\"bonus2 bAddDefMonster,mid,x;\" — 몬스터 ID 단위 조건, P0 vocabulary 없음."
     }
    ],
    "status": "unsupported",
@@ -5212,18 +5240,20 @@
      "subKey": null,
      "value": 20,
      "reason": "doc: \"bonus bMaxSPrate,n; MaxSP + n%\""
+    },
+    {
+     "type": "combat",
+     "key": "castReduction",
+     "subKey": null,
+     "value": -0.25,
+     "reason": "doc: \"bonus bCastrate,n; Increases/decreases variable cast time by n%\" — fraction=-n/100, calcStats castReduction 실코드 재확인(P2-A.4 §9)"
     }
    ],
    "unsupportedEffects": [
     {
      "rawStatement": "bonus bNoCastCancel",
-     "constant": "bonus",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bNoCastCancel"
-    },
-    {
-     "rawStatement": "bonus bCastrate,25",
-     "constant": "bCastrate",
-     "reason": "\"bonus bCastrate,n; Skill cast time rate + n%\" — 음수 가능(캐스팅 증가), P0 castReduction(0~1 fraction, 항상 감소)과 부호/단위 불일치."
+     "constant": "bNoCastCancel",
+     "reason": "\"bonus bNoCastCancel;\" — 인자 없는 플래그형 보너스, P0 vocabulary 없음."
     }
    ],
    "status": "unsupported",
@@ -5363,12 +5393,12 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"AL_HEAL\",50",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus2 bSkillAtk,\"PR_MAGNUS\",30",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     }
    ],
    "status": "unsupported",
@@ -5419,12 +5449,12 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"AL_HEAL\",50",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus2 bSkillAtk,\"PR_MAGNUS\",30",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     }
    ],
    "status": "unsupported",
@@ -5475,12 +5505,12 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"AL_HEAL\",50",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus2 bSkillAtk,\"PR_MAGNUS\",30",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     }
    ],
    "status": "unsupported",
@@ -5531,12 +5561,12 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"AL_HEAL\",50",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus2 bSkillAtk,\"PR_MAGNUS\",30",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     }
    ],
    "status": "unsupported",
@@ -5587,12 +5617,12 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"AL_HEAL\",50",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus2 bSkillAtk,\"PR_MAGNUS\",30",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     }
    ],
    "status": "unsupported",
@@ -5643,12 +5673,12 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"AL_HEAL\",50",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus2 bSkillAtk,\"PR_MAGNUS\",30",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     }
    ],
    "status": "unsupported",
@@ -5699,12 +5729,12 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"AL_HEAL\",50",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus2 bSkillAtk,\"PR_MAGNUS\",30",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     }
    ],
    "status": "source-needed",
@@ -5755,12 +5785,12 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"AL_HEAL\",50",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus2 bSkillAtk,\"PR_MAGNUS\",30",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     }
    ],
    "status": "source-needed",
@@ -5811,12 +5841,12 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"AL_HEAL\",50",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus2 bSkillAtk,\"PR_MAGNUS\",30",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     }
    ],
    "status": "source-needed",
@@ -5863,8 +5893,8 @@
     },
     {
      "rawStatement": "bonus bAspdRate,getequiprefinerycnt(EQI_HAND_R)/2",
-     "constant": "bonus",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bAspdRate,getequiprefinerycnt(EQI_HAND_R)/2"
+     "constant": "bAspdRate",
+     "reason": "\"bonus bAspdRate,n; Attack speed + n%\" — P0의 flat aspd(스탯포인트류, *20ms)와 단위/의미가 다른 %기반 공격속도 보너스. 대응 vocabulary 없음."
     }
    ],
    "status": "source-needed",
@@ -5911,13 +5941,13 @@
     },
     {
      "rawStatement": "bonus bHit,getequiprefinerycnt(EQI_HAND_R)/2",
-     "constant": "bonus",
+     "constant": "bHit",
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bHit,getequiprefinerycnt(EQI_HAND_R)/2"
     },
     {
      "rawStatement": "bonus bCastrate,-getequiprefinerycnt(EQI_HAND_R)/2",
-     "constant": "bonus",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bCastrate,-getequiprefinerycnt(EQI_HAND_R)/2"
+     "constant": "bCastrate",
+     "reason": "\"bonus2 bCastrate,\"SKILL\",n;\" (스킬 지정 2-인자 형태) — P0 castReduction은 스킬 전체에 일괄 적용되는 값이라 스킬별 캐스팅 소비처가 없음(engine-extension-required, P2-A.4 §10). 리터럴 1-인자 `bonus bCastrate,n` 형태는 VERIFIED_SIMPLE_BONUS 참조."
     }
    ],
    "status": "source-needed",
@@ -5960,27 +5990,27 @@
     {
      "rawStatement": "bonus4 bAutoSpell,\"MO_EXTREMITYFIST\",1,3,1",
      "constant": "bAutoSpell",
-     "reason": "\"bonus3 bAutoSpell,sk,y,n; n/10% chance...\" — P0 autoSpell 이벤트는 있으나 확률 단위(n/10%) 실사례 대조 전이라 P0-close 관례대로 보류."
+     "reason": "\"bonus3/4 bAutoSpell,sk,y,n;\" — 실코드 재확인(_triggerOnHitEvent case autoSpell: `DB.skills[evt.skill]`) 결과 onHit 트리거 자체는 존재하나, rAthena 스킬 ID(예: NJ_HUUJIN)가 TextRAG DB.skills의 어떤 키와도 대응하지 않음(전수 grep 0건) — identity-mapping-gap(P2-A.4 §12, 스킬명 추측 금지)."
     },
     {
      "rawStatement": "bonus3 bAutoSpell,\"PR_LEXAETERNA\",1,20",
      "constant": "bAutoSpell",
-     "reason": "\"bonus3 bAutoSpell,sk,y,n; n/10% chance...\" — P0 autoSpell 이벤트는 있으나 확률 단위(n/10%) 실사례 대조 전이라 P0-close 관례대로 보류."
+     "reason": "\"bonus3/4 bAutoSpell,sk,y,n;\" — 실코드 재확인(_triggerOnHitEvent case autoSpell: `DB.skills[evt.skill]`) 결과 onHit 트리거 자체는 존재하나, rAthena 스킬 ID(예: NJ_HUUJIN)가 TextRAG DB.skills의 어떤 키와도 대응하지 않음(전수 grep 0건) — identity-mapping-gap(P2-A.4 §12, 스킬명 추측 금지)."
     },
     {
      "rawStatement": "bonus3 bAutoSpell,\"AS_SONICBLOW\",5,50",
      "constant": "bAutoSpell",
-     "reason": "\"bonus3 bAutoSpell,sk,y,n; n/10% chance...\" — P0 autoSpell 이벤트는 있으나 확률 단위(n/10%) 실사례 대조 전이라 P0-close 관례대로 보류."
+     "reason": "\"bonus3/4 bAutoSpell,sk,y,n;\" — 실코드 재확인(_triggerOnHitEvent case autoSpell: `DB.skills[evt.skill]`) 결과 onHit 트리거 자체는 존재하나, rAthena 스킬 ID(예: NJ_HUUJIN)가 TextRAG DB.skills의 어떤 키와도 대응하지 않음(전수 grep 0건) — identity-mapping-gap(P2-A.4 §12, 스킬명 추측 금지)."
     },
     {
      "rawStatement": "bonus3 bAutoSpell,\"MO_INVESTIGATE\",5,20",
      "constant": "bAutoSpell",
-     "reason": "\"bonus3 bAutoSpell,sk,y,n; n/10% chance...\" — P0 autoSpell 이벤트는 있으나 확률 단위(n/10%) 실사례 대조 전이라 P0-close 관례대로 보류."
+     "reason": "\"bonus3/4 bAutoSpell,sk,y,n;\" — 실코드 재확인(_triggerOnHitEvent case autoSpell: `DB.skills[evt.skill]`) 결과 onHit 트리거 자체는 존재하나, rAthena 스킬 ID(예: NJ_HUUJIN)가 TextRAG DB.skills의 어떤 키와도 대응하지 않음(전수 grep 0건) — identity-mapping-gap(P2-A.4 §12, 스킬명 추측 금지)."
     },
     {
      "rawStatement": "bonus3 bAutoSpell,\"ASC_METEORASSAULT\",2,50",
      "constant": "bAutoSpell",
-     "reason": "\"bonus3 bAutoSpell,sk,y,n; n/10% chance...\" — P0 autoSpell 이벤트는 있으나 확률 단위(n/10%) 실사례 대조 전이라 P0-close 관례대로 보류."
+     "reason": "\"bonus3/4 bAutoSpell,sk,y,n;\" — 실코드 재확인(_triggerOnHitEvent case autoSpell: `DB.skills[evt.skill]`) 결과 onHit 트리거 자체는 존재하나, rAthena 스킬 ID(예: NJ_HUUJIN)가 TextRAG DB.skills의 어떤 키와도 대응하지 않음(전수 grep 0건) — identity-mapping-gap(P2-A.4 §12, 스킬명 추측 금지)."
     }
    ],
    "status": "source-needed",
@@ -6018,17 +6048,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,5;\nbonus bMatkRate,3;\nbonus bHealPower,5;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus2 bAddClass,Class_All,5",
-     "constant": "bAddClass",
-     "reason": "\"bonus2 bAddClass,c,x;\" — Class_* enum 매핑 미검증(추측 금지)."
-    },
+     "type": "combat",
+     "key": "atkPct",
+     "subKey": null,
+     "value": 5,
+     "reason": "doc: \"bonus2 bAddClass,c,x;\" Class_All -> P0 atkPct 실코드 재확인(P2-A.4 §8)"
+    }
+   ],
+   "unsupportedEffects": [
     {
      "rawStatement": "bonus bMatkRate,3",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bHealPower,5",
@@ -6071,17 +6104,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,5;\nbonus bMatkRate,3;\nbonus bHealPower,5;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus2 bAddClass,Class_All,5",
-     "constant": "bAddClass",
-     "reason": "\"bonus2 bAddClass,c,x;\" — Class_* enum 매핑 미검증(추측 금지)."
-    },
+     "type": "combat",
+     "key": "atkPct",
+     "subKey": null,
+     "value": 5,
+     "reason": "doc: \"bonus2 bAddClass,c,x;\" Class_All -> P0 atkPct 실코드 재확인(P2-A.4 §8)"
+    }
+   ],
+   "unsupportedEffects": [
     {
      "rawStatement": "bonus bMatkRate,3",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bHealPower,5",
@@ -6124,17 +6160,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,5;\nbonus bMatkRate,3;\nbonus bHealPower,5;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus2 bAddClass,Class_All,5",
-     "constant": "bAddClass",
-     "reason": "\"bonus2 bAddClass,c,x;\" — Class_* enum 매핑 미검증(추측 금지)."
-    },
+     "type": "combat",
+     "key": "atkPct",
+     "subKey": null,
+     "value": 5,
+     "reason": "doc: \"bonus2 bAddClass,c,x;\" Class_All -> P0 atkPct 실코드 재확인(P2-A.4 §8)"
+    }
+   ],
+   "unsupportedEffects": [
     {
      "rawStatement": "bonus bMatkRate,3",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bHealPower,5",
@@ -6177,17 +6216,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,5;\nbonus bMatkRate,3;\nbonus bHealPower,5;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus2 bAddClass,Class_All,5",
-     "constant": "bAddClass",
-     "reason": "\"bonus2 bAddClass,c,x;\" — Class_* enum 매핑 미검증(추측 금지)."
-    },
+     "type": "combat",
+     "key": "atkPct",
+     "subKey": null,
+     "value": 5,
+     "reason": "doc: \"bonus2 bAddClass,c,x;\" Class_All -> P0 atkPct 실코드 재확인(P2-A.4 §8)"
+    }
+   ],
+   "unsupportedEffects": [
     {
      "rawStatement": "bonus bMatkRate,3",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bHealPower,5",
@@ -6230,17 +6272,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,5;\nbonus bMatkRate,3;\nbonus bHealPower,5;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus2 bAddClass,Class_All,5",
-     "constant": "bAddClass",
-     "reason": "\"bonus2 bAddClass,c,x;\" — Class_* enum 매핑 미검증(추측 금지)."
-    },
+     "type": "combat",
+     "key": "atkPct",
+     "subKey": null,
+     "value": 5,
+     "reason": "doc: \"bonus2 bAddClass,c,x;\" Class_All -> P0 atkPct 실코드 재확인(P2-A.4 §8)"
+    }
+   ],
+   "unsupportedEffects": [
     {
      "rawStatement": "bonus bMatkRate,3",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bHealPower,5",
@@ -6283,17 +6328,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,5;\nbonus bMatkRate,3;\nbonus bHealPower,5;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus2 bAddClass,Class_All,5",
-     "constant": "bAddClass",
-     "reason": "\"bonus2 bAddClass,c,x;\" — Class_* enum 매핑 미검증(추측 금지)."
-    },
+     "type": "combat",
+     "key": "atkPct",
+     "subKey": null,
+     "value": 5,
+     "reason": "doc: \"bonus2 bAddClass,c,x;\" Class_All -> P0 atkPct 실코드 재확인(P2-A.4 §8)"
+    }
+   ],
+   "unsupportedEffects": [
     {
      "rawStatement": "bonus bMatkRate,3",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bHealPower,5",
@@ -6336,17 +6384,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,5;\nbonus bMatkRate,3;\nbonus bHealPower,5;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus2 bAddClass,Class_All,5",
-     "constant": "bAddClass",
-     "reason": "\"bonus2 bAddClass,c,x;\" — Class_* enum 매핑 미검증(추측 금지)."
-    },
+     "type": "combat",
+     "key": "atkPct",
+     "subKey": null,
+     "value": 5,
+     "reason": "doc: \"bonus2 bAddClass,c,x;\" Class_All -> P0 atkPct 실코드 재확인(P2-A.4 §8)"
+    }
+   ],
+   "unsupportedEffects": [
     {
      "rawStatement": "bonus bMatkRate,3",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bHealPower,5",
@@ -6389,14 +6440,16 @@
    ],
    "rawScript": "bonus bUseSPrate,-25;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus bUseSPrate,-25",
-     "constant": "bUseSPrate",
-     "reason": "\"bonus bUseSPrate,n; SP consumption + n%\" — P0 spCostMul은 배율(0.7=30%감소)이라 %가산과 단위가 다름, 변환식 미확정."
+     "type": "combat",
+     "key": "spCostMul",
+     "subKey": null,
+     "value": 0.75,
+     "reason": "doc: \"bonus bUseSPrate,n; SP consumption + n%\" — multiplier=1+n/100, getSkillSpCost 실코드 재확인(P2-A.4 §11)"
     }
    ],
+   "unsupportedEffects": [],
    "status": "source-needed",
    "statusReasons": [
     "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
@@ -6461,7 +6514,7 @@
     {
      "rawStatement": "bonus bMatkRate,5",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     }
    ],
    "status": "source-needed",
@@ -6528,7 +6581,7 @@
     {
      "rawStatement": "bonus bMatkRate,10",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     }
    ],
    "status": "source-needed",
@@ -6595,7 +6648,7 @@
     {
      "rawStatement": "bonus bMatkRate,10",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     }
    ],
    "status": "source-needed",
@@ -6896,7 +6949,7 @@
     {
      "rawStatement": "bonus2 bAddEffWhenHit,Eff_Sleep,600",
      "constant": "bAddEffWhenHit",
-     "reason": "\"bonus2 bAddEffWhenHit,eff,n;\" — 위와 동일 사유."
+     "reason": "\"bonus2 bAddEffWhenHit,eff,n;\" — bAutoSpellWhenHit과 동일 사유(events.onDamaged 집계 코드 없음) — trigger-model-missing(P2-A.4 §15)."
     }
    ],
    "status": "unsupported",
@@ -7083,7 +7136,7 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"MC_MAMMONITE\",20",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus bSPDrainValue,1",
@@ -7176,7 +7229,7 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"RG_BACKSTAP\",10",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     }
    ],
    "status": "unsupported",
@@ -7219,7 +7272,7 @@
     {
      "rawStatement": "bonus2 bAddEffWhenHit,Eff_Blind,600",
      "constant": "bAddEffWhenHit",
-     "reason": "\"bonus2 bAddEffWhenHit,eff,n;\" — 위와 동일 사유."
+     "reason": "\"bonus2 bAddEffWhenHit,eff,n;\" — bAutoSpellWhenHit과 동일 사유(events.onDamaged 집계 코드 없음) — trigger-model-missing(P2-A.4 §15)."
     }
    ],
    "status": "unsupported",
@@ -7305,7 +7358,7 @@
     {
      "rawStatement": "bonus2 bAddEffWhenHit,Eff_Curse,600",
      "constant": "bAddEffWhenHit",
-     "reason": "\"bonus2 bAddEffWhenHit,eff,n;\" — 위와 동일 사유."
+     "reason": "\"bonus2 bAddEffWhenHit,eff,n;\" — bAutoSpellWhenHit과 동일 사유(events.onDamaged 집계 코드 없음) — trigger-model-missing(P2-A.4 §15)."
     }
    ],
    "status": "unsupported",
@@ -7362,7 +7415,7 @@
     {
      "rawStatement": "bonus2 bAddEle,Ele_Water,30",
      "constant": "bAddEle",
-     "reason": "알려지지 않은 rAthena bonus2 상수(rawScript만 보존): bAddEle"
+     "reason": "\"bonus2 bAddEle,e,x; +x% physical damage vs attack element e\" — P0에 \"공격 시 속성별 가산\" vocabulary 없음(elemAtk는 카드 elemAtk와 트리거가 다름, 대조 전)."
     }
    ],
    "status": "unsupported",
@@ -7414,19 +7467,18 @@
      "subKey": null,
      "value": 20,
      "reason": "doc: \"bonus bMaxSPrate,n; MaxSP + n%\""
-    }
-   ],
-   "unsupportedEffects": [
+    },
     {
-     "rawStatement": "bonus bCastrate,-10",
-     "constant": "bCastrate",
-     "reason": "\"bonus bCastrate,n; Skill cast time rate + n%\" — 음수 가능(캐스팅 증가), P0 castReduction(0~1 fraction, 항상 감소)과 부호/단위 불일치."
+     "type": "combat",
+     "key": "castReduction",
+     "subKey": null,
+     "value": 0.1,
+     "reason": "doc: \"bonus bCastrate,n; Increases/decreases variable cast time by n%\" — fraction=-n/100, calcStats castReduction 실코드 재확인(P2-A.4 §9)"
     }
    ],
-   "status": "unsupported",
-   "statusReasons": [
-    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
-   ]
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0081-01",
@@ -7604,7 +7656,7 @@
     {
      "rawStatement": "bonus bLongAtkRate,20",
      "constant": "bLongAtkRate",
-     "reason": "\"bonus bLongAtkRate,n; Increases damage of long ranged attacks by n%\" — P0에 원거리 공격 가산 vocabulary 없음."
+     "reason": "\"bonus bLongAtkRate,n; Increases damage of long ranged attacks by n%\" — 실코드 재확인(calcStats: `isRangedWeapon = ['활','악기','채찍'].includes(p.weaponType)` 구조 데이터는 존재하나, 이 값을 조건으로 ATK%를 가산하는 기존 소비처가 없음) — engine-extension-required이나 필요 데이터가 이미 있어 저복잡도(P2-A.4 §18, engine-extension-backlog 참조)."
     },
     {
      "rawStatement": "bonus bPerfectHitAddRate,20",
@@ -7689,17 +7741,17 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"CG_ARROWVULCAN\",5",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus2 bSkillAtk,\"DC_THROWARROW\",10",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus2 bSkillAtk,\"BA_MUSICALSTRIKE\",10",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     }
    ],
    "status": "unsupported",
@@ -7773,20 +7825,23 @@
      "subKey": null,
      "value": 10,
      "reason": "doc: \"bonus bVit,n; VIT + n\""
-    }
-   ],
-   "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bCastrate,-10",
-     "constant": "bCastrate",
-     "reason": "\"bonus bCastrate,n; Skill cast time rate + n%\" — 음수 가능(캐스팅 증가), P0 castReduction(0~1 fraction, 항상 감소)과 부호/단위 불일치."
     },
     {
-     "rawStatement": "bonus bUseSPRate,-10",
-     "constant": "bUseSPRate",
-     "reason": "알려지지 않은 rAthena bonus 상수(rawScript만 보존): bUseSPRate"
+     "type": "combat",
+     "key": "castReduction",
+     "subKey": null,
+     "value": 0.1,
+     "reason": "doc: \"bonus bCastrate,n; Increases/decreases variable cast time by n%\" — fraction=-n/100, calcStats castReduction 실코드 재확인(P2-A.4 §9)"
+    },
+    {
+     "type": "combat",
+     "key": "spCostMul",
+     "subKey": null,
+     "value": 0.9,
+     "reason": "doc: \"bonus bUseSPrate,n\" (대소문자 변형) — 위와 동일"
     }
    ],
+   "unsupportedEffects": [],
    "status": "source-needed",
    "statusReasons": [
     "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
@@ -7869,12 +7924,12 @@
     {
      "rawStatement": "bonus3 bAutoSpell,\"AL_CRUCIS\",5,10",
      "constant": "bAutoSpell",
-     "reason": "\"bonus3 bAutoSpell,sk,y,n; n/10% chance...\" — P0 autoSpell 이벤트는 있으나 확률 단위(n/10%) 실사례 대조 전이라 P0-close 관례대로 보류."
+     "reason": "\"bonus3/4 bAutoSpell,sk,y,n;\" — 실코드 재확인(_triggerOnHitEvent case autoSpell: `DB.skills[evt.skill]`) 결과 onHit 트리거 자체는 존재하나, rAthena 스킬 ID(예: NJ_HUUJIN)가 TextRAG DB.skills의 어떤 키와도 대응하지 않음(전수 grep 0건) — identity-mapping-gap(P2-A.4 §12, 스킬명 추측 금지)."
     },
     {
      "rawStatement": "bonus2 bSkillAtk,\"MO_EXTREMITYFIST\",10",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     }
    ],
    "status": "source-needed",
@@ -7959,7 +8014,7 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"MC_MAMMONITE\",20",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     }
    ],
    "status": "source-needed",
@@ -8062,17 +8117,17 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"MG_COLDBOLT\",10",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus2 bSkillAtk,\"MG_FIREBOLT\",10",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus2 bSkillAtk,\"MG_LIGHTNINGBOLT\",10",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     }
    ],
    "status": "unsupported",
@@ -8202,12 +8257,12 @@
     {
      "rawStatement": "bonus2 bSkillAtk,\"WZ_HEAVENDRIVE\",10",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus2 bSkillAtk,\"MG_THUNDERSTORM\",10",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     }
    ],
    "status": "source-needed",
@@ -8365,12 +8420,12 @@
     {
      "rawStatement": "bonus3 bAutoSpell,\"BS_WEAPONPERFECT\",1,3",
      "constant": "bAutoSpell",
-     "reason": "\"bonus3 bAutoSpell,sk,y,n; n/10% chance...\" — P0 autoSpell 이벤트는 있으나 확률 단위(n/10%) 실사례 대조 전이라 P0-close 관례대로 보류."
+     "reason": "\"bonus3/4 bAutoSpell,sk,y,n;\" — 실코드 재확인(_triggerOnHitEvent case autoSpell: `DB.skills[evt.skill]`) 결과 onHit 트리거 자체는 존재하나, rAthena 스킬 ID(예: NJ_HUUJIN)가 TextRAG DB.skills의 어떤 키와도 대응하지 않음(전수 grep 0건) — identity-mapping-gap(P2-A.4 §12, 스킬명 추측 금지)."
     },
     {
      "rawStatement": "bonus2 bAddMonsterDropItem,501,500",
-     "constant": "bonus2",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus2 bAddMonsterDropItem,501,500"
+     "constant": "bAddMonsterDropItem",
+     "reason": "\"bonus2 bAddMonsterDropItem,iid,n;\" — P0 dropBonus는 기존 드롭 테이블 가산일 뿐 \"신규 드롭 추가\" 메커닉이 P0에 없음."
     }
    ],
    "status": "unsupported",
@@ -8481,7 +8536,7 @@
     {
      "rawStatement": "bonus3 bAutoSpell,\"MG_LIGHTNINGBOLT\",5,20",
      "constant": "bAutoSpell",
-     "reason": "\"bonus3 bAutoSpell,sk,y,n; n/10% chance...\" — P0 autoSpell 이벤트는 있으나 확률 단위(n/10%) 실사례 대조 전이라 P0-close 관례대로 보류."
+     "reason": "\"bonus3/4 bAutoSpell,sk,y,n;\" — 실코드 재확인(_triggerOnHitEvent case autoSpell: `DB.skills[evt.skill]`) 결과 onHit 트리거 자체는 존재하나, rAthena 스킬 ID(예: NJ_HUUJIN)가 TextRAG DB.skills의 어떤 키와도 대응하지 않음(전수 grep 0건) — identity-mapping-gap(P2-A.4 §12, 스킬명 추측 금지)."
     }
    ],
    "status": "unsupported",
@@ -8617,23 +8672,25 @@
      "subKey": null,
      "value": 10,
      "reason": "doc: \"bonus bSPrecovRate,n; Natural SP recovery ratio + n%\""
+    },
+    {
+     "type": "combat",
+     "key": "castReduction",
+     "subKey": null,
+     "value": 0.1,
+     "reason": "doc: \"bonus bCastrate,n; Increases/decreases variable cast time by n%\" — fraction=-n/100, calcStats castReduction 실코드 재확인(P2-A.4 §9)"
     }
    ],
    "unsupportedEffects": [
     {
      "rawStatement": "bonus2 bSkillAtk,\"PA_SHIELDCHAIN\",10",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     },
     {
      "rawStatement": "bonus2 bSkillAtk,\"PA_SACRIFICE\",10",
      "constant": "bSkillAtk",
-     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
-    },
-    {
-     "rawStatement": "bonus bCastrate,-10",
-     "constant": "bCastrate",
-     "reason": "\"bonus bCastrate,n; Skill cast time rate + n%\" — 음수 가능(캐스팅 증가), P0 castReduction(0~1 fraction, 항상 감소)과 부호/단위 불일치."
+     "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, \"명시보류\") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6)."
     }
    ],
    "status": "unsupported",
@@ -8676,7 +8733,7 @@
     {
      "rawStatement": "bonus3 bAutoSpell,\"MG_FROSTDIVER\",3,250",
      "constant": "bAutoSpell",
-     "reason": "\"bonus3 bAutoSpell,sk,y,n; n/10% chance...\" — P0 autoSpell 이벤트는 있으나 확률 단위(n/10%) 실사례 대조 전이라 P0-close 관례대로 보류."
+     "reason": "\"bonus3/4 bAutoSpell,sk,y,n;\" — 실코드 재확인(_triggerOnHitEvent case autoSpell: `DB.skills[evt.skill]`) 결과 onHit 트리거 자체는 존재하나, rAthena 스킬 ID(예: NJ_HUUJIN)가 TextRAG DB.skills의 어떤 키와도 대응하지 않음(전수 grep 0건) — identity-mapping-gap(P2-A.4 §12, 스킬명 추측 금지)."
     }
    ],
    "status": "unsupported",
@@ -8765,17 +8822,20 @@
    ],
    "rawScript": "bonus bAspdRate,3;\nbonus bCastrate,3;\n",
    "conditionalRaw": [],
-   "effects": [],
+   "effects": [
+    {
+     "type": "combat",
+     "key": "castReduction",
+     "subKey": null,
+     "value": -0.03,
+     "reason": "doc: \"bonus bCastrate,n; Increases/decreases variable cast time by n%\" — fraction=-n/100, calcStats castReduction 실코드 재확인(P2-A.4 §9)"
+    }
+   ],
    "unsupportedEffects": [
     {
      "rawStatement": "bonus bAspdRate,3",
      "constant": "bAspdRate",
      "reason": "\"bonus bAspdRate,n; Attack speed + n%\" — P0의 flat aspd(스탯포인트류, *20ms)와 단위/의미가 다른 %기반 공격속도 보너스. 대응 vocabulary 없음."
-    },
-    {
-     "rawStatement": "bonus bCastrate,3",
-     "constant": "bCastrate",
-     "reason": "\"bonus bCastrate,n; Skill cast time rate + n%\" — 음수 가능(캐스팅 증가), P0 castReduction(0~1 fraction, 항상 감소)과 부호/단위 불일치."
     }
    ],
    "status": "source-needed",
@@ -8919,23 +8979,23 @@
    "unsupportedEffects": [
     {
      "rawStatement": "bonus2 bAddMonsterDropItem,12192,1",
-     "constant": "bonus2",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus2 bAddMonsterDropItem,12192,1"
+     "constant": "bAddMonsterDropItem",
+     "reason": "\"bonus2 bAddMonsterDropItem,iid,n;\" — P0 dropBonus는 기존 드롭 테이블 가산일 뿐 \"신규 드롭 추가\" 메커닉이 P0에 없음."
     },
     {
      "rawStatement": "bonus2 bAddMonsterDropItem,538,1",
-     "constant": "bonus2",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus2 bAddMonsterDropItem,538,1"
+     "constant": "bAddMonsterDropItem",
+     "reason": "\"bonus2 bAddMonsterDropItem,iid,n;\" — P0 dropBonus는 기존 드롭 테이블 가산일 뿐 \"신규 드롭 추가\" 메커닉이 P0에 없음."
     },
     {
      "rawStatement": "bonus2 bAddItemHealRate,12192,100",
-     "constant": "bonus2",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus2 bAddItemHealRate,12192,100"
+     "constant": "bAddItemHealRate",
+     "reason": "\"bonus bAddItemHealRate,n;\" — 위와 동일 사유(healBoost 계열)."
     },
     {
      "rawStatement": "bonus2 bAddItemHealRate,538,100",
-     "constant": "bonus2",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus2 bAddItemHealRate,538,100"
+     "constant": "bAddItemHealRate",
+     "reason": "\"bonus bAddItemHealRate,n;\" — 위와 동일 사유(healBoost 계열)."
     }
    ],
    "status": "source-needed",
@@ -8983,7 +9043,7 @@
     {
      "rawStatement": "autobonus \"{ bonus bAtk,50; }\",5,10000,0,\"{ specialeffect2 EF_POTION_BERSERK; }\"",
      "constant": "autobonus",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): autobonus \"{ bonus bAtk,50; }\",5,10000,0,\"{ specialeffect2 E"
+     "reason": "\"autobonus <script>,rate,ms,flag,<icon-script>;\" — 공격 시 확률적 자기 버프 스크립트 실행 메커닉 자체가 P0에 없음(중첩 스크립트 내부는 파싱하지 않음, §16/§20)."
     }
    ],
    "status": "unsupported",
@@ -9086,7 +9146,7 @@
     {
      "rawStatement": "bonus bMatkRate,2",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
+     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     }
    ],
    "status": "source-needed",
@@ -9156,7 +9216,7 @@
     {
      "rawStatement": "autobonus \"{ bonus bAspdRate,100; }\",1,7000,BF_WEAPON,\"{ specialeffect2 EF_POTION_BERSERK; }\"",
      "constant": "autobonus",
-     "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): autobonus \"{ bonus bAspdRate,100; }\",1,7000,BF_WEAPON,\"{ spe"
+     "reason": "\"autobonus <script>,rate,ms,flag,<icon-script>;\" — 공격 시 확률적 자기 버프 스크립트 실행 메커닉 자체가 P0에 없음(중첩 스크립트 내부는 파싱하지 않음, §16/§20)."
     }
    ],
    "status": "source-needed",

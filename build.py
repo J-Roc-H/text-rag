@@ -372,7 +372,42 @@ COMBO_KNOWN_EFFECT_KEYS = {
     ("combat", "hpRegenPct"), ("combat", "spRegenPct"),
     ("combat", "raceDmgReduce"), ("combat", "raceAtk"), ("combat", "elemReduce"),
     ("event", "soulgain"),
+    # P2-A.4 신규(bCastrate/bUseSPrate 리터럴, bAddClass Class_All/Class_Boss,
+    # bSubRace RC_All -- 실코드 재확인, COMBO_EFFECT_SUPPORT_AUDIT.md 참조)
+    ("combat", "castReduction"), ("combat", "spCostMul"),
+    ("combat", "atkPct"), ("combat", "bossAtk"), ("combat", "dmgReduceAll"),
 }
+
+# P2-A.4 — "verified 상태인데 실제 게임 코드 소비처가 없는" 상태를 구조적으로 막는
+# 두 번째 허용목록(과제 지시 §22-23). COMBO_KNOWN_EFFECT_KEYS(생성 스크립트가 실제로
+# 만들어내는 canonical 키 전체)와 이 목록이 갈라지면(즉 새 key를 canonicalize_combos.py에
+# 추가하면서 실제 소비처 확인 없이 COMBO_KNOWN_EFFECT_KEYS만 넓힌 경우) 아래
+# assert가 즉시 잡는다. 각 key의 소비처 실코드 근거는
+# source/data/combo-effect-support-matrix.json과 COMBO_EFFECT_SUPPORT_AUDIT.md에
+# 있다 -- 이 두 집합을 하나로 합치지 않는 이유는 "canonical 변환 가능"과 "게임에
+# 실제 영향을 줌"이 별개 질문이기 때문이다(과제 핵심 질문).
+COMBO_CONSUMER_BACKED_KEYS = set(COMBO_KNOWN_EFFECT_KEYS)
+assert COMBO_CONSUMER_BACKED_KEYS == COMBO_KNOWN_EFFECT_KEYS, (
+    "COMBO_KNOWN_EFFECT_KEYS와 COMBO_CONSUMER_BACKED_KEYS가 갈라짐 -- "
+    "새 canonical key를 추가했다면 실제 소비처를 먼저 확인하고 두 목록을 함께 갱신할 것"
+)
+
+
+def audit_combo_consumer_backed(combos_data):
+    """P2-A.4: 모든 combo effects[] 항목의 canonical (type,key)가
+    COMBO_CONSUMER_BACKED_KEYS(실제 게임 코드 소비처가 확인된 목록)에 있는지 재확인한다.
+    이 값은 COMBO_KNOWN_EFFECT_KEYS와 지금은 항상 같지만(위 assert), 두 목록의 "의미"가
+    다르므로 별도 함수/별도 카운터("SUPPORT WARN")로 유지한다 -- "verified인데 게임에
+    영향 없음" 상태가 생기면(향후 누군가 COMBO_KNOWN_EFFECT_KEYS만 넓히고 이 함수를
+    지나치면) 여기서 FAIL로 잡는다."""
+    fails = []
+    for combo in combos_data.get("combos", []):
+        cid = combo.get("id")
+        for eff in combo.get("effects", []):
+            key_pair = (eff.get("type"), eff.get("key"))
+            if key_pair not in COMBO_CONSUMER_BACKED_KEYS:
+                fails.append(f"{cid}: consumer 확인 안 된 canonical key {key_pair} -- verified 판정 근거 없음(§22-23)")
+    return fails
 
 
 def audit_item_combos(combos_data):
@@ -603,6 +638,14 @@ def main():
             print(f"COMBO WARN - item combo audit: {len(combo_warnings)} issue(s)")
         else:
             print("OK - item combo audit")
+
+        # P2-A.4: consumer-backed 감사 -- 위 세 감사(COMBO/IDENTITY/REVIEW)와도 별도
+        # 카운터("SUPPORT WARN")로 보고한다(과제 §36: 절대 합치지 않는다).
+        support_fails = audit_combo_consumer_backed(combos_data)
+        if support_fails:
+            joined = "\n  - ".join(support_fails)
+            raise ValueError(f"콤보 effect-support 감사 오류:\n  - {joined}")
+        print("OK - combo effect-support(consumer-backed) audit")
 
         # P2-A.1: 콤보 참조 아이템 identity map 감사 -- 위 콤보 audit과도, 469 WARN과도
         # 별도 카운터("IDENTITY WARN")로 보고한다(과제 §23/§27과 같은 원칙: 세 숫자를

@@ -115,6 +115,28 @@ VERIFIED_SIMPLE_BONUS = {
     # 같은 의미(자연회복 %가산, calcStats의 hpRegen*(1+pct/100) 공식과 일치).
     "bHPrecovRate": ("combat", "hpRegenPct", None, 'doc: "bonus bHPrecovRate,n; Natural HP recovery ratio + n%"'),
     "bSPrecovRate": ("combat", "spRegenPct", None, 'doc: "bonus bSPrecovRate,n; Natural SP recovery ratio + n%"'),
+    # ══ P2-A.4 신규(실코드 재확인, COMBO_EFFECT_SUPPORT_AUDIT.md 참조) ══
+    # "bonus bCastrate,n; Increases/decreases variable cast time by n%" — 실코드
+    # 재확인(index.html calcStats castReduction 공식: `Math.min(1.0, base +
+    # (bonus.castReduction||0))`, 하한 clamp 없음)로 n의 부호를 그대로 뒤집어 fraction에
+    # 반영하면(양수 n=캐스팅 증가→fraction 감소, 음수 n=캐스팅 감소→fraction 증가)
+    # 기존 DEX 기반 castReduction과 완전히 같은 방식으로 합성된다. 이 매핑은 리터럴
+    # 1-인자 `bonus` 형태에만 적용된다 — 스킬 지정 2-인자 `bonus2 bCastrate,"SKILL",n`
+    # 형태는 여전히 UNSUPPORTED_REASONS를 거친다(스킬별 캐스팅 소비처 없음, 아래 참조).
+    "bCastrate": ("combat", "castReduction", lambda v: -v / 100.0,
+                  'doc: "bonus bCastrate,n; Increases/decreases variable cast time by n%" — '
+                  'fraction=-n/100, calcStats castReduction 실코드 재확인(P2-A.4 §9)'),
+    "bCastRate": ("combat", "castReduction", lambda v: -v / 100.0,
+                  'doc: "bonus bCastrate,n" (대소문자 변형) — 위와 동일'),
+    # "bonus bUseSPrate,n; SP consumption + n%" — 실코드 재확인(getSkillSpCost:
+    # `baseCost*mul`, 아이템 파서: `fx.combat.spCostMul*=Number(it.spCostMul)`) 결과
+    # cardSpCostMul은 이미 곱연산 배율(기본값 1)이므로 n% -> (100+n)/100 배율 변환이
+    # 정확히 대응한다(P2-A.4 §11).
+    "bUseSPrate": ("combat", "spCostMul", lambda v: 1 + v / 100.0,
+                   'doc: "bonus bUseSPrate,n; SP consumption + n%" — '
+                   'multiplier=1+n/100, getSkillSpCost 실코드 재확인(P2-A.4 §11)'),
+    "bUseSPRate": ("combat", "spCostMul", lambda v: 1 + v / 100.0,
+                   'doc: "bonus bUseSPrate,n" (대소문자 변형) — 위와 동일'),
 }
 
 # bAllStats,n -> 6개 스탯 전부 +n (문서: "STR+n, AGI+n, VIT+n, INT+n, DEX+n, LUK+n") —
@@ -139,25 +161,47 @@ SOULGAIN_RACE_BONUS2 = {
     "bSPGainRace": RACE_ENUM_MAP,
 }
 
+# ══ P2-A.4 신규 ══
+# bonus2 bSubRace,RC_All,x — RC_All(전종족)은 RACE_ENUM_MAP(db-monsters.json 10종)에
+# 없지만, "종족 필터 없는 전체 피해 감소"라는 의미 자체가 P0 dmgReduceAll
+# (applyIncomingItemReduction: `if(all) result*=(1-all/100)`, 종족 조건 없음)과
+# 트리거 조건이 정확히 일치한다(실코드 재확인, P2-A.4 §17). RC_Player_Human 등 다른
+# 미등재 enum은 여전히 대응 소비처가 없어 UNSUPPORTED_REASONS로 간다(TextRAG 전투
+# 대상은 항상 몬스터이며 "플레이어 종족"이라는 개념 자체가 없음).
+SUBRACE_TO_ALL_KEY = {"RC_All": ("combat", "dmgReduceAll")}
+
+# bonus2 bAddClass,c,x — 실제 콤보 데이터에 관측된 값은 Class_All뿐이었다(census
+# 재확인, P2-A.4 §8). Class_All은 대상 필터가 없는 P0 cardAtkPct(getOutgoingAtkPctMul,
+# `1+(cardAtkPct||0)/100`, 종족/보스 구분 없이 전체 적용)와 정확히 같은 의미다.
+# Class_Boss는 실 데이터엔 없으나 cardBossAtk(applyOutgoingRaceElemSizeBossAtk,
+# target.isMvp일 때만 가산)와 트리거 조건이 정확히 일치해 향후 대비로 함께 등재한다.
+# Class_Normal/Class_Guardian/Class_Battlefield는 "보스 아님 전용" 소비처나 WoE
+# 가디언/전장 몬스터 분류 자체가 P0에 없어 계속 미지원(engine-extension-required).
+VERIFIED_CLASS_BONUS2 = {
+    "Class_All": ("combat", "atkPct"),
+    "Class_Boss": ("combat", "bossAtk"),
+}
+
 # census에서 실제 관측됐지만 이번 단계에서 canonical 변환하지 않는 상수 + 그 이유.
 # (완전한 목록이 아니어도 된다 — 표에 없는 상수는 전부 자동으로 "알려지지 않은 상수"로
 # source-needed 처리되므로, 여기는 "왜 안 되는지"를 남기고 싶은 대표 상수만 적는다.)
 UNSUPPORTED_REASONS = {
     "bAspdRate": '"bonus bAspdRate,n; Attack speed + n%" — P0의 flat aspd(스탯포인트류, *20ms)와 단위/의미가 다른 %기반 공격속도 보너스. 대응 vocabulary 없음.',
-    "bMatkRate": '"bonus bMatkRate,n; Magical attack power + n%" — P0에 %기반 MATK 필드 없음(matk는 flat만).',
-    "bCastrate": '"bonus bCastrate,n; Skill cast time rate + n%" — 음수 가능(캐스팅 증가), P0 castReduction(0~1 fraction, 항상 감소)과 부호/단위 불일치.',
-    "bUseSPrate": '"bonus bUseSPrate,n; SP consumption + n%" — P0 spCostMul은 배율(0.7=30%감소)이라 %가산과 단위가 다름, 변환식 미확정.',
-    "bSkillAtk": '"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드.',
-    "bAutoSpell": '"bonus3 bAutoSpell,sk,y,n; n/10% chance..." — P0 autoSpell 이벤트는 있으나 확률 단위(n/10%) 실사례 대조 전이라 P0-close 관례대로 보류.',
-    "bAutoSpellWhenHit": '"bonus3 bAutoSpellWhenHit,sk,y,n;" — 위와 동일 사유(확률 단위 미검증).',
-    "bAddEff": '"bonus2 bAddEff,eff,n; n/100% chance..." — 확률 단위(n/100%) 실사례 대조 전.',
-    "bAddEffWhenHit": '"bonus2 bAddEffWhenHit,eff,n;" — 위와 동일 사유.',
-    "bResEff": '"bonus2 bResEff,eff,n; n/100% tolerance..." — P0에 상태 "부분 저항"(면역과 다름) vocabulary 없음.',
+    "bMatkRate": '"bonus bMatkRate,n; Magical attack power + n%" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7).',
+    # bCastrate/bUseSPrate 리터럴 1-인자 형태는 P2-A.4에서 VERIFIED_SIMPLE_BONUS로
+    # 이동했다(실코드 재확인 결과 안전, 위 표 참조). 아래는 그 표로 안 잡히는 나머지
+    # 형태(스킬 지정 bonus2, 동적 표현식)에 대해서만 여기 reason이 쓰인다.
+    "bCastrate": '"bonus2 bCastrate,"SKILL",n;" (스킬 지정 2-인자 형태) — P0 castReduction은 스킬 전체에 일괄 적용되는 값이라 스킬별 캐스팅 소비처가 없음(engine-extension-required, P2-A.4 §10). 리터럴 1-인자 `bonus bCastrate,n` 형태는 VERIFIED_SIMPLE_BONUS 참조.',
+    "bSkillAtk": '"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, "명시보류") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6).',
+    "bAutoSpell": '"bonus3/4 bAutoSpell,sk,y,n;" — 실코드 재확인(_triggerOnHitEvent case autoSpell: `DB.skills[evt.skill]`) 결과 onHit 트리거 자체는 존재하나, rAthena 스킬 ID(예: NJ_HUUJIN)가 TextRAG DB.skills의 어떤 키와도 대응하지 않음(전수 grep 0건) — identity-mapping-gap(P2-A.4 §12, 스킬명 추측 금지).',
+    "bAutoSpellWhenHit": '"bonus3 bAutoSpellWhenHit,sk,y,n;" — 실코드 재확인(events.onDamaged는 항상 빈 배열, 집계 코드 자체가 없음, ITEM_EFFECT_P0_CLOSEOUT.md 재확인) 결과 trigger-model-missing으로 확정(P2-A.4 §13). bAutoSpell과 별개로, 이쪽은 스킬 식별 문제 이전에 트리거 자체가 없음.',
+    "bAddEff": '"bonus2/3 bAddEff,eff,n; n/100% chance..." — 실코드 재확인(_triggerOnHitEvent case inflict: stun/confusion/random_debuff 3종 고정 필드만 존재, turns도 하드코딩) 결과 Eff_Stun/Eff_Confusion 리터럴 2-인자 형태는 이론상 안전할 수 있으나 콤보 데이터에 실제 사례가 0건이고, 실제 관측된 Eff_Stone/Eff_Curse/Eff_Blind 등은 그 3종에 없어 engine-extension-required(P2-A.4 §14). 3-인자 ATF 공격타입 필터 형태는 그 개념 자체가 P0에 없어 항상 미지원.',
+    "bAddEffWhenHit": '"bonus2 bAddEffWhenHit,eff,n;" — bAutoSpellWhenHit과 동일 사유(events.onDamaged 집계 코드 없음) — trigger-model-missing(P2-A.4 §15).',
+    "bResEff": '"bonus2 bResEff,eff,n; n/100% tolerance..." — 실코드 재확인(isStatusImmune은 이진 면역만, `cardImmune` 배열에 있으면 완전 면역/없으면 0% — 부분 저항 %를 표현할 자료구조 자체가 없음) 결과 engine-extension-required로 확정(P2-A.4 §16).',
     "bAddMonsterDropItem": '"bonus2 bAddMonsterDropItem,iid,n;" — P0 dropBonus는 기존 드롭 테이블 가산일 뿐 "신규 드롭 추가" 메커닉이 P0에 없음.',
-    "bAddClass": '"bonus2 bAddClass,c,x;" — Class_* enum 매핑 미검증(추측 금지).',
     "bAddSize": '"bonus2 bAddSize,s,x;" — P0에 사이즈 조건부 공격 vocabulary 없음(sizeAtk는 이미 카드 사이즈용이나 rAthena Size_* enum 대조 전).',
     "bAddDefMonster": '"bonus2 bAddDefMonster,mid,x;" — 몬스터 ID 단위 조건, P0 vocabulary 없음.',
-    "bLongAtkRate": '"bonus bLongAtkRate,n; Increases damage of long ranged attacks by n%" — P0에 원거리 공격 가산 vocabulary 없음.',
+    "bLongAtkRate": '"bonus bLongAtkRate,n; Increases damage of long ranged attacks by n%" — 실코드 재확인(calcStats: `isRangedWeapon = [\'활\',\'악기\',\'채찍\'].includes(p.weaponType)` 구조 데이터는 존재하나, 이 값을 조건으로 ATK%를 가산하는 기존 소비처가 없음) — engine-extension-required이나 필요 데이터가 이미 있어 저복잡도(P2-A.4 §18, engine-extension-backlog 참조).',
     "bSkillHeal2": '"bonus2 bSkillHeal2,sk,n;" — P0 healBoost 자체가 의미 미확정 상태(원작검증필요).',
     "bHealPower": '"bonus bHealPower,n;" — 위와 동일 사유(healBoost 계열).',
     "bHealPower2": '"bonus bHealPower2,n;" — 위와 동일 사유.',
@@ -176,6 +220,19 @@ UNSUPPORTED_REASONS = {
     "bSPDrainValue": '"bonus bSPDrainValue,n; Heals +n SP with a normal attack" — P0에 평타 SP회복 vocabulary 없음.',
     "bAtk": '"bonus bAtk,n; ATK + n (unofficial)" — 문서 자체가 "unofficial" 표기, bBaseAtk와의 관계 불명확.',
     "bMatk": '"bonus bMatk,n; Magical attack power + n" — P0 matk는 파생값이라 직접 가산 지점 불명확(bonusMAtk와 동일 의미인지 미확정).',
+    "bAddEle": '"bonus2 bAddEle,e,x; +x% physical damage vs attack element e" — P0에 "공격 시 속성별 가산" vocabulary 없음(elemAtk는 카드 elemAtk와 트리거가 다름, 대조 전).',
+    # P2-A.4 신규 — 이 3개는 이전 fallback 버그(bonus3-5만 처리) 때문에 "bonus"/"bonus2"로
+    # 잘못 라벨링됐던 게 아니라 원래도 정확히 첫 단어로 잡혔다(§124는 라벨을 더 정밀하게
+    # 바꾸지 않는다 — 이미 정확함). autobonus/autobonus2는 내부에 중첩 스크립트 문자열을
+    # 담고 있어(예: `autobonus "{ bonus bFlee,20; }",200,10000,...`) 그 안의 실제 상수를
+    # 추출하려면 이번 단계 금지 대상인 중첩 스크립트 인터프리터가 필요하다 — 상수 추출은
+    # 최상위 단어까지만(§16/§20), 내부는 rawStatement 보존만으로 그친다. 어차피 그
+    # 메커닉(공격 시 확률적 자기 버프 스크립트 실행) 자체가 P0에 없어 내부를 풀어도
+    # engine-extension-required는 그대로다.
+    "autobonus": '"autobonus <script>,rate,ms,flag,<icon-script>;" — 공격 시 확률적 자기 버프 스크립트 실행 메커닉 자체가 P0에 없음(중첩 스크립트 내부는 파싱하지 않음, §16/§20).',
+    "autobonus2": '"autobonus2 <script>,rate,ms,flag,<icon-script>;" — 위와 동일 사유(피격 시 버전).',
+    "skill": '"skill "SKILL_ID",lv;" — bonus 계열이 아닌 별도 스크립트 명령(직접 스킬 부여). P0 grantSkill과 트리거는 유사하나 rAthena 스킬 ID(예: WZ_FROSTNOVA)가 TextRAG DB.skills 키와 대응하지 않음 — bAutoSpell과 동일한 identity-mapping-gap.',
+    "bDelayRate": '"bonus bDelayRate,n; Attack delay + n%" — P0에 공격 딜레이 %가산 vocabulary 없음(aspd와 별개 필드).',
 }
 
 
@@ -324,6 +381,20 @@ def parse_statement(stmt):
     m = _BONUS2_RE.match(stmt + ";")
     if m:
         const, enum_val, val = m.group(1), m.group(2), int(m.group(3))
+        # P2-A.4: bSubRace,RC_All -- 종족 필터 없는 dmgReduceAll과 트리거가 정확히
+        # 일치(RACE_ENUM_MAP 일반 조회보다 먼저 확인, §17).
+        if const == "bSubRace" and enum_val in SUBRACE_TO_ALL_KEY:
+            etype, ekey = SUBRACE_TO_ALL_KEY[enum_val]
+            return ("effect", {"type": etype, "key": ekey, "subKey": None, "value": val,
+                                "reason": 'doc: "bonus2 bSubRace,RC_All,x;" RC_All(전종족)은 종족 필터 없는 P0 dmgReduceAll과 트리거 조건 일치(P2-A.4 §17)'})
+        # P2-A.4: bAddClass -- Class_All/Class_Boss만 안전(§8), 나머지는 여전히 미지원.
+        if const == "bAddClass":
+            if enum_val in VERIFIED_CLASS_BONUS2:
+                etype, ekey = VERIFIED_CLASS_BONUS2[enum_val]
+                return ("effect", {"type": etype, "key": ekey, "subKey": None, "value": val,
+                                    "reason": f'doc: "bonus2 bAddClass,c,x;" {enum_val} -> P0 {ekey} 실코드 재확인(P2-A.4 §8)'})
+            return ("unsupported", {"rawStatement": stmt, "constant": const,
+                                     "reason": f'Class enum "{enum_val}"에 대응하는 P0 소비처 없음(Class_All/Class_Boss만 안전, P2-A.4 §8, engine-extension-required)'})
         if const in VERIFIED_RACE_BONUS2:
             etype, ekey, enum_map, reason = VERIFIED_RACE_BONUS2[const]
             if enum_val in enum_map:
@@ -346,13 +417,19 @@ def parse_statement(stmt):
         reason = UNSUPPORTED_REASONS.get(const, f'알려지지 않은 rAthena bonus2 상수(rawScript만 보존): {const}')
         return ("unsupported", {"rawStatement": stmt, "constant": const, "reason": reason})
 
-    # bonus3/bonus4/bonus5, autobonus, 함수 호출식(getequiprefinerycnt 등) 전부 여기로 —
-    # 이번 단계에서 파싱하지 않는다(§16/§22). rawStatement만 보존. bonus3/4/5 형태는
-    # 두 번째 단어(실제 bonus 상수, 예: bAutoSpellWhenHit)를 constant로 남긴다 —
-    # UNSUPPORTED_REASONS 조회와 감사 보고서 가독성 모두 "bonus3"보다 그게 더 유용하다.
-    bonus345_m = re.match(r"^bonus[3-5]\s+(\w+)", stmt)
-    if bonus345_m:
-        const = bonus345_m.group(1)
+    # bonus/bonus2/bonus3/bonus4/bonus5(동적 표현식·인자 없는 플래그형 등 위 정규식에
+    # 안 걸린 나머지 형태), autobonus, 함수 호출식(getequiprefinerycnt 등) 전부 여기로 —
+    # 이번 단계에서 파싱하지 않는다(§16/§22). rawStatement만 보존. bonus/bonus2/3/4/5
+    # 형태는 두 번째 단어(실제 bonus 상수, 예: bCastrate/bAutoSpellWhenHit)를 constant로
+    # 남긴다 — UNSUPPORTED_REASONS 조회와 감사 보고서 가독성 모두 "bonus"/"bonus2"보다
+    # 그게 더 유용하다(P2-A.4 §124: 상수명 추출 정밀화, 동적 표현식 자체는 절대 평가하지
+    # 않는다 — 이미 VERIFIED_SIMPLE_BONUS에 있는 상수라도 이 분기에 도달했다는 것 자체가
+    # 정규식이 리터럴 정수로 못 읽었다는 뜻이므로, 그 인스턴스는 항상 unsupported로 남는다).
+    # autobonus/autobonus2/skill처럼 "bonus"로 시작하지 않는 명령은 원래도 아래 generic
+    # 분기가 첫 단어를 그대로 잡아 이미 정확했다(변경 없음).
+    bonus_word_m = re.match(r"^(bonus[2-5]?)\s+(\w+)", stmt)
+    if bonus_word_m:
+        const = bonus_word_m.group(2)
     else:
         const_m = re.match(r"^(\w+)", stmt)
         const = const_m.group(1) if const_m else stmt[:20]
