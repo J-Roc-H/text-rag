@@ -329,6 +329,29 @@ function mergeItemEffectsIntoBonus(fx, bonus) {
 }
 
 // ══════════════════════════════════════════════
+// P0-C2 — SP 소비 / 캐스팅 소비처 연결
+//
+// getSkillSpCost(baseCost, stats)는 스킬의 DB 기본 SP 비용에 아이템 효과의
+// spCostMul(calcStats 반환 객체의 stats.cardSpCostMul, 기본값 1 -- 곱셈 승수이지
+// 퍼센트가 아니다. 1.0=변화 없음, 0.7=30% 절감, 1.5=50% 증가)을 곱한 실제 비용을
+// 계산한다. 반올림은 Math.floor를 쓴다 -- 새로 정하는 규칙이 아니라, 이 프로젝트가
+// castReduction으로 쿨다운을 깎을 때 이미 쓰는 것과 똑같은 방식이다
+// (`Math.floor(skObj.cooldown*(1-s.castReduction))` 등, template.html 참조). 이
+// 프로젝트의 파생 수치 계산은 전부 Math.floor를 쓰고(피해/경험치/제련보너스 등),
+// Math.ceil은 시간 카운트다운류에만, Math.round는 ms→틱 단위 변환에만 쓰인다 --
+// SP 비용은 "파생 자원 수치"이지 카운트다운이나 단위 변환이 아니므로 floor가 기존
+// 스타일과 맞다.
+//
+// SP 충분 여부 판정과 실제 차감이 반드시 이 함수 하나를 거쳐야 한다 -- 자동사냥
+// 스킬 선택(4곳: 힐/티어/버프/폴백)과 실제 차감(1곳), 수동 스킬 사용의 판정·차감·환불
+// (3곳)까지 총 8개 호출부가 전부 이 값을 봐야 "판정 40인데 차감 28" 같은 불일치가
+// 생기지 않는다(P0-C2 지시 §5).
+function getSkillSpCost(baseCost, stats) {
+  var mul = (stats && stats.cardSpCostMul != null) ? stats.cardSpCostMul : 1;
+  return Math.max(0, Math.floor((baseCost || 0) * mul));
+}
+
+// ══════════════════════════════════════════════
 // P0-C1 — 전투 중 카드 사건 효과 실행 경로 단일화
 //
 // triggerItemEffects(eventName, context, events)는 collectItemEffects()가 이미 정규화해

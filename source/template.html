@@ -4276,6 +4276,14 @@ function calcStats(){
   // 스킬별 기본 캐스팅 시간은 스킬 cooldown 으로 관리
   // castReduction: 0.0 ~ 1.0 (1.0 = 무캐스팅)
   let castReduction = Math.min(1.0, totDex / 150);
+  // P0-C2: 아이템 효과의 castReduction(bonus.castReduction, DEX/bragi/suffragium과 같은
+  // 0~1 fraction 단위 -- se.bragi.castReduce/se.suffragium.castReduce와 동일 관례, 원래
+  // collector가 순수 덧셈으로만 모아 왔던 값과 같은 단위로 취급)을 DEX 다음·버프 이전에
+  // 합류시킨다. min(1, 누적+항목) 클램프는 항이 전부 음수가 아닌 한 순서 무관하게 같은
+  // 결과를 내므로(각 항 clamp 전 값이 더 작을 때만 의미가 생기고, 이미 1.0이면 이후
+  // 덧셈은 결과를 바꾸지 않는다) 위치 자체가 결과를 바꾸지 않는다 -- DEX(장비 무관 기본)
+  // 다음, 버프(bragi/suffragium) 이전이 "기본 소스 → 버프" 순서로 가장 자연스럽다.
+  castReduction = Math.min(1.0, castReduction + (bonus.castReduction||0));
   if(se.bragi)      castReduction = Math.min(1.0, castReduction + (se.bragi.castReduce||0));
   if(se.suffragium) castReduction = Math.min(1.0, castReduction + (se.suffragium.castReduce||0));
   let instantCast   = castReduction >= 1.0;
@@ -5958,7 +5966,7 @@ function processTurn(){
         ['힐','응급치료'].forEach(sn=>{
           if(!healPick&&hotbarSkillSet.has(sn)&&((p.skills||{})[sn]||0)>0&&!G.cooldowns[sn]){
             let sk=DB.skills[sn]; if(!sk) return;
-            let cost=typeof sk.spCost==='function'?sk.spCost(p.skills[sn]):sk.spCost;
+            let cost=getSkillSpCost(typeof sk.spCost==='function'?sk.spCost(p.skills[sn]):sk.spCost, s);
             if(p.sp<cost) return;
             let slv=p.skills[sn]||1;
             let recover=(sn==='응급치료')?5:Math.floor((s.matk*2+s.int*slv)*((200-p.vit)*0.005+1));
@@ -5979,7 +5987,7 @@ function processTurn(){
           let sn=arr[idx];
           let slv=p.skills[sn]||0; if(!slv) continue;
           let sk=DB.skills[sn]; if(!sk) continue;
-          let cost=typeof sk.spCost==='function'?sk.spCost(slv):sk.spCost;
+          let cost=getSkillSpCost(typeof sk.spCost==='function'?sk.spCost(slv):sk.spCost, s);
           if(p.sp<cost) continue;
           if(G.cooldowns[sn]>0) continue; // 쿨중이면 같은 티어 다음 것 시도
           // 선택됨 → 포인터를 다음으로 전진
@@ -6010,7 +6018,7 @@ function processTurn(){
           for(let sn of buffCandidates){
             if(G.cooldowns[sn]>0) continue;
             let sk=DB.skills[sn];
-            let cost=typeof sk.spCost==='function'?sk.spCost(p.skills[sn]):sk.spCost;
+            let cost=getSkillSpCost(typeof sk.spCost==='function'?sk.spCost(p.skills[sn]):sk.spCost, s);
             if(p.sp<cost) continue;
             buffPick=sn; break;
           }
@@ -6028,7 +6036,7 @@ function processTurn(){
           let sk=DB.skills[sn]; if(!sk||sk.type!=='액티브'||typeof sk.effect!=='function') return false;
           if(sn==='죽은척하기'||_NC.has(sn)||!hotbarSkillSet.has(sn)) return false;
           let slv=p.skills[sn]||0; if(!slv) return false;
-          let cost=typeof sk.spCost==='function'?sk.spCost(slv):sk.spCost;
+          let cost=getSkillSpCost(typeof sk.spCost==='function'?sk.spCost(slv):sk.spCost, s);
           return p.sp>=cost && !G.cooldowns[sn] && !(p.skillToggles&&p.skillToggles[sn]===false);
         });
         if(fallback) pick=fallback;
@@ -6041,7 +6049,7 @@ function processTurn(){
       if(finalCastable.length>0){
         pick=finalCastable[0];
         let slv = p.skills[pick]; let skObj = DB.skills[pick];
-        let cost = typeof skObj.spCost === 'function' ? skObj.spCost(slv) : skObj.spCost;
+        let cost = getSkillSpCost(typeof skObj.spCost === 'function' ? skObj.spCost(slv) : skObj.spCost, s);
         p.sp -= cost;
         // 쿨다운을 틱 단위로 변환: cooldown(ms) / aspdDelay(ms) = 틱 수
         // DEX 캐스팅 단축도 반영: 마법 스킬은 castReduction 비율로 쿨다운 단축
@@ -8445,8 +8453,11 @@ function useSkill(name){
     closeModal(); return;
   }
 
-  // SP 체크
-  let cost = typeof sk.spCost === 'function' ? sk.spCost(slv) : sk.spCost;
+  // SP 체크 (P0-C2: getSkillSpCost 하나로 판정/차감/환불/표시 전부 통일 -- calcStats를
+  // 여기로 당겨온 이유는 그것뿐이다. calcStats는 p.sp/p.hp를 읽지 않으므로 호출 시점을
+  // 옮겨도 계산 결과는 그대로다)
+  let s = calcStats();
+  let cost = getSkillSpCost(typeof sk.spCost === 'function' ? sk.spCost(slv) : sk.spCost, s);
   if(p.sp < cost){ log(`⚠ SP 부족! 필요: ${cost} / 현재: ${p.sp}`, 'error'); closeModal(); return; }
 
   // 쿨타임 체크 (틱 방식)
@@ -8463,7 +8474,6 @@ function useSkill(name){
 
   // SP 소모 및 쿨타임 등록 (틱 방식 — 자동 로테이션과 동일)
   p.sp -= cost;
-  let s = calcStats();
   if(sk.cooldown > 0) G.cooldowns[name] = Math.max(1, Math.round(sk.cooldown / (s.aspdDelay||300)));
   let t = G.battles.length > 0 ? G.battles[0] : null;
   // 공격 대상이 필요한 스킬인데 전투 중이 아니면 취소 후 SP/쿨 복구

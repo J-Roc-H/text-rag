@@ -61,6 +61,37 @@ function makeTriggerItemEffects() {
   return new Function(itemEffectsSrc + '\nreturn triggerItemEffects;')();
 }
 
+// P0-C2: getSkillSpCost()도 item-effects.js에서 그대로 가져온다.
+function makeGetSkillSpCost() {
+  return new Function(itemEffectsSrc + '\nreturn getSkillSpCost;')();
+}
+
+const useSkillSrc = extractFunction(html, 'function useSkill(name){');
+
+// 실제 useSkill()을 그대로 실행한다(재구현 아님). 전투/처치 이후 로직(퀘스트 체크·드롭·
+// EXP 등)은 SP 비용 일관성 검증과 무관하므로 no-op으로 스텁하되, SP 판정/차감/환불에
+// 관여하는 calcStats·getSkillSpCost·parseItem은 실제 함수를 그대로 쓴다.
+function runUseSkill(DB, G, name) {
+  const logs = [];
+  const getSkillSpCost = makeGetSkillSpCost();
+  const parseItemFn = makeParseItemFn(DB);
+  const fn = new Function(
+    'G', 'DB', 'calcStats', 'getSkillSpCost', 'parseItem', 'log', 'closeModal',
+    'queueManualCombatOverride', 'spawnDmg', 'gainBaseExp', 'getJobLvCap', 'addZoneKill',
+    'idleTrack', 'returnerMult', 'rollDrops', 'checkQuestKill', 'checkJobQuestKill',
+    'logSep', 'updateUI',
+    useSkillSrc + '\nreturn useSkill;'
+  );
+  const useSkillFn = fn(
+    G, DB, () => runCalcStats(DB, G), getSkillSpCost, parseItemFn,
+    (msg, type) => logs.push({ msg, type }), () => {},
+    () => false, () => {}, () => {}, () => 1, () => {},
+    () => {}, () => 1, () => {}, () => {}, () => {}, () => {}, () => {}
+  );
+  useSkillFn(name);
+  return logs;
+}
+
 function makeParseItemFn(DB) {
   return new Function('DB', normalizeJobSrc + '\n' + parseItemSrc.replace('function parseItem', 'return function parseItem'))(DB);
 }
@@ -101,5 +132,6 @@ function pickRealItems(names) {
 
 module.exports = {
   extractFunction, extractBetween, html, items,
-  runCalcStats, makeTriggerItemEffects, makeParseItemFn, makePlayer, makeDB, pickRealItems,
+  runCalcStats, makeTriggerItemEffects, makeGetSkillSpCost, runUseSkill,
+  makeParseItemFn, makePlayer, makeDB, pickRealItems,
 };
