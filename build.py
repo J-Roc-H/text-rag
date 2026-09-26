@@ -37,6 +37,9 @@ QUEST_GUIDE_SCRIPT_PATH = os.path.join(BASE, "source", "quest-guide.js")
 ACTOR_INTERACTION_SCRIPT_PATH = os.path.join(BASE, "source", "actor-interaction.js")
 REFINE_REVEAL_SCRIPT_PATH = os.path.join(BASE, "source", "refine-reveal.js")
 ITEM_EFFECTS_SCRIPT_PATH = os.path.join(BASE, "source", "item-effects.js")
+# P2-A: 콤보 정본 데이터(tools/canonicalize_combos.py 산출물) -- BLOCKS에는 넣지 않는다.
+# 이번 단계는 데이터 생성/감사만 한다(HTML runtime에 아직 inject하지 않음, §7/§40).
+COMBOS_JSON_PATH = os.path.join(DATA_DIR, "db-combos.json")
 OUTPUT_PATH = os.path.join(BASE, "룬미드가츠_v9.19.html")
 # GitHub Pages는 루트의 index.html을 서빙한다 — 버전 올려도 폰 북마크 URL이
 # 안 바뀌게 매 빌드마다 같은 내용을 index.html에도 복사한다 (2026-09-20)
@@ -346,6 +349,82 @@ def audit_quest_item_sources(template, parsed):
         raise ValueError('획득처 없는 퀘스트 아이템: ' + ', '.join(missing))
     print(f"OK - quest item source audit ({len(targets)} gather target(s))")
 
+
+# P2-A: canonical effect (type,key) 허용 목록 -- tools/canonicalize_combos.py의
+# VERIFIED_* 표와 정확히 같은 집합이어야 한다. 둘이 갈라지면(예: 생성 스크립트에
+# 새 vocabulary를 추가했는데 여기를 안 고치면) "unknown canonical effect key"로 즉시
+# FAIL한다 -- P0-close가 발견한 "조용히 새는 표시 누락" 패턴을 combo 쪽에서도 재발
+# 방지하는 최소 게이트다(과대 파서 아님, 정적 집합 대조만).
+COMBO_KNOWN_EFFECT_KEYS = {
+    ("stat", "str"), ("stat", "agi"), ("stat", "vit"),
+    ("stat", "int"), ("stat", "dex"), ("stat", "luk"),
+    ("combat", "maxHp"), ("combat", "maxSp"),
+    ("combat", "maxHpPct"), ("combat", "maxSpPct"),
+    ("combat", "def"), ("combat", "mdef"), ("combat", "hit"), ("combat", "flee"),
+    ("combat", "crit"), ("combat", "pd"), ("combat", "atk"),
+    ("combat", "hpRegenPct"), ("combat", "spRegenPct"),
+    ("combat", "raceDmgReduce"), ("combat", "raceAtk"), ("combat", "elemReduce"),
+    ("event", "soulgain"),
+}
+
+
+def audit_item_combos(combos_data):
+    """P2-A: source/data/db-combos.json 구조 감사. 기존 469 WARN(아이템/카드 효과 P0
+    backlog)과 절대 같은 숫자에 섞지 않는다 -- 완전히 별도로 "COMBO WARN"/실패로만
+    보고한다(과제 지시 §27). 이번 단계는 데이터 정합성만 본다 -- collectItemEffects/
+    calcStats 등 실제 게임 로직과는 연결되지 않은 상태를 그대로 감사한다(§25).
+
+    FAIL: 구조적 결함(생성 파이프라인 버그로 봐야 하는 것들) -- 중복 id, rawScript
+    누락, 알려지지 않은 canonical effect 키, reason 없는 unsupported/runtime-blocked.
+    WARN: 정상적으로 예상되는 상태(unresolved 아이템, source-needed 등) -- 빌드를
+    막지 않는다.
+    """
+    fails, warns = [], []
+    seen_ids = set()
+    for combo in combos_data.get("combos", []):
+        cid = combo.get("id")
+        if not cid:
+            fails.append("id 없는 combo 항목")
+            continue
+        if cid in seen_ids:
+            fails.append(f"{cid}: 중복 combo id")
+        seen_ids.add(cid)
+
+        if not combo.get("requiredItems"):
+            fails.append(f"{cid}: requiredItems 비어 있음")
+        else:
+            aegis_list = [r.get("aegisName") for r in combo["requiredItems"]]
+            if len(aegis_list) != len(set(aegis_list)):
+                warns.append(f"{cid}: requiredItems에 동일 아이템 중복(원본 보존 — §32, 의도적일 수 있음)")
+            for r in combo["requiredItems"]:
+                if not r.get("resolved") and not r.get("ambiguousTextragKeys"):
+                    warns.append(f"{cid}: 미해결 아이템 {r.get('aegisName')}(TextRAG에 매칭되는 _aegis 없음)")
+                if r.get("ambiguousTextragKeys"):
+                    warns.append(f"{cid}: 아이템 {r.get('aegisName')}이 TextRAG에서 2개 이상의 키와 충돌")
+
+        if not combo.get("rawScript"):
+            fails.append(f"{cid}: rawScript 누락(원문 보존 실패)")
+
+        for eff in combo.get("effects", []):
+            key_pair = (eff.get("type"), eff.get("key"))
+            if key_pair not in COMBO_KNOWN_EFFECT_KEYS:
+                fails.append(f"{cid}: 알려지지 않은 canonical effect 키 {key_pair} -- 생성 스크립트와 audit 허용목록 불일치")
+
+        for eff in combo.get("unsupportedEffects", []):
+            if not eff.get("reason"):
+                fails.append(f"{cid}: unsupportedEffects 항목에 reason 없음")
+
+        status = combo.get("status")
+        if status not in ("verified", "source-needed", "unsupported", "runtime-blocked"):
+            fails.append(f"{cid}: 알려지지 않은 status 값 '{status}'")
+        if status == "runtime-blocked" and not combo.get("statusReasons"):
+            fails.append(f"{cid}: runtime-blocked인데 statusReasons 없음")
+        if status == "source-needed" and not combo.get("statusReasons"):
+            warns.append(f"{cid}: source-needed인데 statusReasons 없음(정보용)")
+
+    return fails, warns
+
+
 def load_data_files():
     raw = {}
     parsed = {}
@@ -399,6 +478,22 @@ def main():
             print(f"  - {warning}")
     else:
         print("OK - item effect audit")
+
+    # P2-A: 콤보 정본 데이터 감사 -- 위 "item effect audit"(469 WARN, P0 backlog)과
+    # 절대 같은 숫자에 합치지 않는다(과제 지시 §27). db-combos.json이 아직 없으면
+    # (P2-A를 실행하지 않은 체크아웃) 조용히 건너뛴다 -- 이번 단계 산출물이 선택적임을
+    # 반영한다.
+    if os.path.exists(COMBOS_JSON_PATH):
+        with open(COMBOS_JSON_PATH, encoding="utf-8") as f:
+            combos_data = json.load(f)
+        combo_fails, combo_warnings = audit_item_combos(combos_data)
+        if combo_fails:
+            joined = "\n  - ".join(combo_fails)
+            raise ValueError(f"콤보 데이터 감사 오류:\n  - {joined}")
+        if combo_warnings:
+            print(f"COMBO WARN - item combo audit: {len(combo_warnings)} issue(s)")
+        else:
+            print("OK - item combo audit")
 
     for marker_key, filename in BLOCKS.items():
         marker = "{{__DATA_" + marker_key + "__}}"

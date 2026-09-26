@@ -1,0 +1,1670 @@
+{
+ "Alarm_Card": {
+  "id": 4244,
+  "name": "Alarm Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Alarm_Mask": {
+  "id": 5086,
+  "name": "Alarm Mask",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Alligator_Card": {
+  "id": 4252,
+  "name": "Alligator Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Ancient_Magic": {
+  "id": 1573,
+  "name": "Ancient Magic",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Ancient_Mummy_Card": {
+  "id": 4248,
+  "name": "Ancient Mummy Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Angel's_Arrival": {
+  "id": 2420,
+  "name": "Angel's Reincarnation",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Angel's_Protection": {
+  "id": 2355,
+  "name": "Angelic Protection",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Angel's_Safeguard": {
+  "id": 2116,
+  "name": "Angelic Guard",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Angel's_Warmth": {
+  "id": 2521,
+  "name": "Angelic Cardigan",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Angeling_Hairpin": {
+  "id": 5153,
+  "name": "Angeling Hairpin",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Anolian_Card": {
+  "id": 4234,
+  "name": "Anolian Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Archdam_Card": {
+  "id": 4371,
+  "name": "Archdam Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Arrow_Of_Wind": {
+  "id": 1755,
+  "name": "Arrow of Wind",
+  "srcFile": "etc",
+  "type": "Ammo"
+ },
+ "Assassin_Robe": {
+  "id": 2378,
+  "name": "Assassin Robe",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Assaulter_Plate": {
+  "id": 2376,
+  "name": "Assaulter Plate",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Assulter_Card": {
+  "id": 4246,
+  "name": "Assaulter Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Aster_Card": {
+  "id": 4247,
+  "name": "Aster Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "B_Harword_Card": {
+  "id": 4361,
+  "name": "MasterSmith Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Baby_Leopard_Card": {
+  "id": 4233,
+  "name": "Baby Leopard Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Battle_Boots": {
+  "id": 2437,
+  "name": "Battle Boots",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Battle_Greave": {
+  "id": 2435,
+  "name": "Battle Greaves",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Battle_Hook": {
+  "id": 1421,
+  "name": "Battle Hook",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Beach_Manteau": {
+  "id": 2546,
+  "name": "Beach Manteau",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Beach_Sandal": {
+  "id": 2441,
+  "name": "Beach Sandals",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "BigFoot_Card": {
+  "id": 4074,
+  "name": "Bigfoot Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Bison_Horn": {
+  "id": 2702,
+  "name": "Bison Horn",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Black_Cat": {
+  "id": 2747,
+  "name": "Black Cat",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Black_Glasses": {
+  "id": 5401,
+  "name": "Black Frame Glasses",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Black_Leather_Boots": {
+  "id": 2425,
+  "name": "Black Leather Boots",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Black_Leather_Boots_": {
+  "id": 2434,
+  "name": "Black Leather Boots",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Blood_Butterfly_Card": {
+  "id": 4327,
+  "name": "Bloody Butterfly Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Bloody_Iron_Ball": {
+  "id": 2655,
+  "name": "Bloodied Shackle Ball",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Blush": {
+  "id": 5040,
+  "name": "Blush",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Bon_Gun_Card": {
+  "id": 4212,
+  "name": "Bongun Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Bone_Wand": {
+  "id": 1615,
+  "name": "Evil Bone Wand",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Bowman_Scarf": {
+  "id": 2727,
+  "name": "Bowman Scarf",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Burning_Bow": {
+  "id": 1730,
+  "name": "Burning Bow",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "C_Tower_Manager_Card": {
+  "id": 4229,
+  "name": "Tower Keeper Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Chonchon_Card": {
+  "id": 4009,
+  "name": "Chonchon Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Clack_Of_Servival": {
+  "id": 2509,
+  "name": "Survivor's Manteau",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Clip": {
+  "id": 2607,
+  "name": "Clip",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Cloak_Of_Survival_C": {
+  "id": 2535,
+  "name": "Cloak Of Survival",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Clock_Card": {
+  "id": 4299,
+  "name": "Clock Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Cold_Heart": {
+  "id": 2746,
+  "name": "Cold Heart",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Combat_Boots": {
+  "id": 2436,
+  "name": "Combat Boots",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Commander_Manteau": {
+  "id": 2538,
+  "name": "Captain's Manteau",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Commander_Manteau_": {
+  "id": 2539,
+  "name": "Commander's Manteau",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Cookie_Card": {
+  "id": 4293,
+  "name": "Cookie Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Crab_Card": {
+  "id": 4153,
+  "name": "Crab Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Cramp_Card": {
+  "id": 4296,
+  "name": "Cramp Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Cruiser_Card": {
+  "id": 4297,
+  "name": "Cruiser Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Crystal_Arrow": {
+  "id": 1754,
+  "name": "Crystal Arrow",
+  "srcFile": "etc",
+  "type": "Ammo"
+ },
+ "Cuffs": {
+  "id": 2408,
+  "name": "Shackles",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Cursed_Lyre": {
+  "id": 1741,
+  "name": "Cursed Lyre",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Cursed_Star": {
+  "id": 2748,
+  "name": "Cursed Star",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Dancing_Dragon_Card": {
+  "id": 4272,
+  "name": "Zhu Po Long Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Dark_Illusion_Card": {
+  "id": 4169,
+  "name": "Dark Illusion Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Dark_Knight_Belt": {
+  "id": 2779,
+  "name": "Dark Knight Belt",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Dark_Knight_Glove": {
+  "id": 2780,
+  "name": "Dark Knight Glove",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Dark_Knight_Mask": {
+  "id": 5482,
+  "name": "Dark Knight Mask",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Dark_Knight_MaskB": {
+  "id": 5577,
+  "name": "Dark Knight Mask",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Dark_Lord_Card": {
+  "id": 4168,
+  "name": "Dark Lord Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Darkness_Helm_J": {
+  "id": 5653,
+  "name": "Darkness Helm",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Diabolus_Armor": {
+  "id": 2375,
+  "name": "Diabolus Armor",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Diabolus_Boots": {
+  "id": 2433,
+  "name": "Diabolus Boots",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Diabolus_Manteau": {
+  "id": 2537,
+  "name": "Diabolus Manteau",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Diabolus_Ring": {
+  "id": 2729,
+  "name": "Diabolus Ring",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Diabolus_Robe": {
+  "id": 2374,
+  "name": "Diabolus Robe",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Divine_Cross": {
+  "id": 2001,
+  "name": "Divine Cross",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Dragon_Breath": {
+  "id": 2527,
+  "name": "Dragon Breath",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Dragon_Fly_Card": {
+  "id": 4179,
+  "name": "Dragon Fly Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Dragon_Killer": {
+  "id": 13001,
+  "name": "Dragon Killer",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Dragon_Manteau": {
+  "id": 2553,
+  "name": "Dragon Manteau",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Dragon_Slayer": {
+  "id": 1166,
+  "name": "Dragon Slayer",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Dragon_Tail_Card": {
+  "id": 4178,
+  "name": "Dragon Tail Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Dragon_Vest": {
+  "id": 2399,
+  "name": "Dragon Vest",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Dress_Of_Angel": {
+  "id": 2358,
+  "name": "Angel's Dress",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Ear_Of_Angel's_Wing": {
+  "id": 5074,
+  "name": "Angel Wing Ears",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Ear_Of_Devil's_Wing": {
+  "id": 5068,
+  "name": "Evil Wing Ears",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Earth_Bow": {
+  "id": 1732,
+  "name": "Earth Bow",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Eclipse_Card": {
+  "id": 4266,
+  "name": "Eclipse Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Elite_Archer_Suit": {
+  "id": 2381,
+  "name": "Elite Archer Suit",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Elite_Engineer_Armor": {
+  "id": 2377,
+  "name": "Elite Engineer Armor",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Elite_Shooter_Suit": {
+  "id": 2382,
+  "name": "Elite Shooter Suit",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Elven_Ears": {
+  "id": 2286,
+  "name": "Elven Ears",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Elven_Ears_": {
+  "id": 18507,
+  "name": "Elven Ears",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Exorcism_Bible": {
+  "id": 2129,
+  "name": "Exorcism Bible",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Falcon_Robe": {
+  "id": 2516,
+  "name": "Falcon Muffler",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Ferus__Card": {
+  "id": 4381,
+  "name": "Green Ferus Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Fire_Arrow": {
+  "id": 1752,
+  "name": "Fire Arrow",
+  "srcFile": "etc",
+  "type": "Ammo"
+ },
+ "Freezer_Card": {
+  "id": 4319,
+  "name": "Freezer Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Freyja_Boots": {
+  "id": 2428,
+  "name": "Freyja Boots",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Freyja_Cape": {
+  "id": 2533,
+  "name": "Freyja Cape",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Freyja_Crown": {
+  "id": 5306,
+  "name": "Freya's Crown",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Freyja_Overcoat": {
+  "id": 2369,
+  "name": "Freyja Overcoat",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Fricca_Circlet": {
+  "id": 5124,
+  "name": "Fricca's Circlet",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Fricco_Shoes": {
+  "id": 2417,
+  "name": "Fricco's Shoes",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Frozen_Bow": {
+  "id": 1731,
+  "name": "Frozen Bow",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Fur_Seal_Card": {
+  "id": 4312,
+  "name": "Seal Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "G_Strings": {
+  "id": 2339,
+  "name": "Pantie",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "G_Strings_": {
+  "id": 2371,
+  "name": "Pantie",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Gae_Bolg": {
+  "id": 1474,
+  "name": "Gae Bolg",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Garm_Baby_Card": {
+  "id": 4323,
+  "name": "Hatii Babe Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Garm_Card": {
+  "id": 4324,
+  "name": "Hatii Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Geographer_Card": {
+  "id": 4280,
+  "name": "Geographer Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Goibne's_Armor": {
+  "id": 2354,
+  "name": "Goibne's Armor",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Goibne's_Combat_Boots": {
+  "id": 2419,
+  "name": "Goibne's Greaves",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Goibne's_Helmet": {
+  "id": 5128,
+  "name": "Goibne's Helm",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Goibne's_Shoulder_Arms": {
+  "id": 2520,
+  "name": "Goibne's Spaulders",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Grand_Peco_Card": {
+  "id": 4161,
+  "name": "Grand Peco Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Grizzly_Card": {
+  "id": 4162,
+  "name": "Grizzly Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Gust_Bow": {
+  "id": 1733,
+  "name": "Gust Bow",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Hahoe_Mask": {
+  "id": 5176,
+  "name": "Hahoe Mask",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Harpy_Card": {
+  "id": 4325,
+  "name": "Harpy Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Heater_Card": {
+  "id": 4331,
+  "name": "Heater Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Hollgrehenn_Hammer": {
+  "id": 1535,
+  "name": "Hollgrehenn's Hammer",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Holy_Stick": {
+  "id": 1631,
+  "name": "Holy Stick",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Hunting_Spear": {
+  "id": 1422,
+  "name": "Hunting Spear",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Hyegun_Card": {
+  "id": 4328,
+  "name": "Yao Jun Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Hylozoist_Card": {
+  "id": 4321,
+  "name": "Hylozoist Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Hyper_Changer": {
+  "id": 2656,
+  "name": "Armor Charm",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Icarus_Wing": {
+  "id": 2726,
+  "name": "Icarus Wings",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Improved_Tights": {
+  "id": 2390,
+  "name": "Improved Tights",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Incubus_Card": {
+  "id": 4269,
+  "name": "Incubus Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Injustice_Card": {
+  "id": 4268,
+  "name": "Injustice Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Kiss_Of_Angel": {
+  "id": 5125,
+  "name": "Angel's Kiss",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Krieger_Muffler1": {
+  "id": 2549,
+  "name": "Glorious Muffler",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Krieger_Ring1": {
+  "id": 2772,
+  "name": "Glorious Ring",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Krieger_Shoes1": {
+  "id": 2444,
+  "name": "Glorious Shoes",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Krieger_Suit1": {
+  "id": 2394,
+  "name": "Glorious Suit",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Librarian_Glove": {
+  "id": 2716,
+  "name": "Librarian Glove",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Linen_Glove": {
+  "id": 2749,
+  "name": "Linen Glove",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Live_Peach_Tree_Card": {
+  "id": 4217,
+  "name": "Enchanted Peach Tree Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Loli_Ruri_Card": {
+  "id": 4191,
+  "name": "Loli Ruri Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Long_Horn": {
+  "id": 1420,
+  "name": "Long Horn",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Long_Horn_M": {
+  "id": 1428,
+  "name": "Long Horn",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Lude_Card": {
+  "id": 4193,
+  "name": "Lude Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Luna_Bow": {
+  "id": 1723,
+  "name": "Luna Bow",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Lunatic_Brooch": {
+  "id": 2718,
+  "name": "Lunatic Brooch",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Lunatic_Card": {
+  "id": 4006,
+  "name": "Lunatic Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Mage_Coat": {
+  "id": 2334,
+  "name": "Mage Coat",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Mage_Coat_": {
+  "id": 2372,
+  "name": "Mage Coat",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Magician_Hat": {
+  "id": 5045,
+  "name": "Magician Hat",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Magni_Cap": {
+  "id": 5122,
+  "name": "Magni's Cap",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Mastering_Card": {
+  "id": 4197,
+  "name": "Mastering Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Medal_Acolyte": {
+  "id": 2722,
+  "name": "Medal of Honor",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Medal_Archer": {
+  "id": 2724,
+  "name": "Medal of Honor",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Medal_Gunner": {
+  "id": 2733,
+  "name": "Sheriff Badge",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Medal_Mage": {
+  "id": 2723,
+  "name": "Medal of Honor",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Medal_Merchant": {
+  "id": 2725,
+  "name": "Medal of Honor",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Medal_Swordman": {
+  "id": 2720,
+  "name": "Medal of Honor",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Medal_Thief": {
+  "id": 2721,
+  "name": "Medal of Honor",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Medic_Robe": {
+  "id": 2380,
+  "name": "Medic's Robe",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Memorize_Book": {
+  "id": 2109,
+  "name": "Memory Book",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Memorize_Book_": {
+  "id": 2121,
+  "name": "Memory Book",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Merman_Card": {
+  "id": 4199,
+  "name": "Merman Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Miyabi_Ningyo_Card": {
+  "id": 4208,
+  "name": "Miyabi Doll Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Mole_Card": {
+  "id": 4343,
+  "name": "Holden Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Morpheus's_Armlet": {
+  "id": 2649,
+  "name": "Morpheus's Bracelet",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Morpheus's_Hood": {
+  "id": 5126,
+  "name": "Morpheus's Hood",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Morpheus's_Ring": {
+  "id": 2648,
+  "name": "Morpheus's Ring",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Morpheus's_Shawl": {
+  "id": 2518,
+  "name": "Morpheus's Shawl",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Morrigane's_Belt": {
+  "id": 2650,
+  "name": "Morrigane's Belt",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Morrigane's_Helm": {
+  "id": 5127,
+  "name": "Morrigane's Helm",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Morrigane's_Manteau": {
+  "id": 2519,
+  "name": "Morrigane's Manteau",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Morrigane's_Pendant": {
+  "id": 2651,
+  "name": "Morrigane's Pendant",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Mr_Smile": {
+  "id": 2278,
+  "name": "Mr. Smile",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Muka_Card": {
+  "id": 4036,
+  "name": "Muka Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Mummy_Card": {
+  "id": 4106,
+  "name": "Mummy Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Munak_Card": {
+  "id": 4090,
+  "name": "Munak Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Mystcase_Card": {
+  "id": 4206,
+  "name": "Myst Case Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Necktie": {
+  "id": 5442,
+  "name": "Necktie",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Nightmare_Card": {
+  "id": 4127,
+  "name": "Nightmare Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Nightmare_Terror_Card": {
+  "id": 4166,
+  "name": "Nightmare Terror Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Ninja_Suit": {
+  "id": 2337,
+  "name": "Ninja Suit",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Ninja_Suit_": {
+  "id": 2359,
+  "name": "Ninja Suit",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Novus__Card": {
+  "id": 4382,
+  "name": "Yellow Novus Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Odin's_Blessing": {
+  "id": 2353,
+  "name": "Odin's Blessing",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "One_Eyed_Glass": {
+  "id": 2239,
+  "name": "Monocle",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Orc_Archer_Bow": {
+  "id": 1734,
+  "name": "Orc Archer Bow",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Orleans_Glove": {
+  "id": 2701,
+  "name": "Orleans's Glove",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Orleans_Server": {
+  "id": 2123,
+  "name": "Orleans's Server",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Owl_Baron_Card": {
+  "id": 4238,
+  "name": "Owl Baron Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Owl_Duke_Card": {
+  "id": 4237,
+  "name": "Owl Duke Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Padded_Armor": {
+  "id": 2312,
+  "name": "Padded Armor",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Padded_Armor_": {
+  "id": 2313,
+  "name": "Padded Armor",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Parasite_Card": {
+  "id": 4309,
+  "name": "Parasite Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Pecopeco_Card": {
+  "id": 4031,
+  "name": "Peco Peco Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Pecopeco_Wing_Ears": {
+  "id": 5358,
+  "name": "Peco Ears",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Permeter_Card": {
+  "id": 4311,
+  "name": "Permeter Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Phantom_Of_Opera": {
+  "id": 2281,
+  "name": "Opera Masque",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Pocket_Watch_": {
+  "id": 2717,
+  "name": "Pocket Watch",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Poring_Card": {
+  "id": 4001,
+  "name": "Poring Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Principles_Of_Magic": {
+  "id": 1572,
+  "name": "Principles of Magic",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Punk_Card": {
+  "id": 4313,
+  "name": "Punk Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Quve_Card": {
+  "id": 4294,
+  "name": "Quve Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Ragged_Zombie_Card": {
+  "id": 4436,
+  "name": "Ragged Zombie Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Raggler_Card": {
+  "id": 4186,
+  "name": "Raggler Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Red_Silk_Seal": {
+  "id": 2700,
+  "name": "Red Silk Seal",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Rider_Insignia": {
+  "id": 2529,
+  "name": "Rider Insignia",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Rider_Insignia_": {
+  "id": 2530,
+  "name": "Rider Insignia",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Rider_Insignia_M": {
+  "id": 2551,
+  "name": "Crest of the Rider",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Rideword_Card": {
+  "id": 4185,
+  "name": "Rideword Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Ring_Of_Flame_Lord": {
+  "id": 2678,
+  "name": "Ring Of Flame Lord",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Ring_Of_Resonance": {
+  "id": 2679,
+  "name": "Ring Of Resonance",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Ring_Of_Rogue": {
+  "id": 2620,
+  "name": "Rogue's Treasure",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Rocker_Card": {
+  "id": 4021,
+  "name": "Rocker Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Roda_Frog_Card": {
+  "id": 4014,
+  "name": "Roda Frog Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Rosary": {
+  "id": 2608,
+  "name": "Rosary",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Rosary_": {
+  "id": 2626,
+  "name": "Rosary",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Sandstorm": {
+  "id": 13035,
+  "name": "Sandstorm",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Shadow_Guard": {
+  "id": 2135,
+  "name": "Shadow Guard",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Shadow_Walk": {
+  "id": 2426,
+  "name": "Shadow Walk",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Shaman's_Hair_Ornament": {
+  "id": 5479,
+  "name": "Shaman's Hair Decoration",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Shaman_Earing": {
+  "id": 2778,
+  "name": "Shaman Earrings",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Shaman_Ring": {
+  "id": 2777,
+  "name": "Shaman Ring",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Shellfish_Card": {
+  "id": 4273,
+  "name": "Shell Fish Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Sheriff_Manteau": {
+  "id": 2540,
+  "name": "Sheriff's Manteau",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Shinobi's_Sash": {
+  "id": 2654,
+  "name": "Shinobi Sash",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Shinobi_Card": {
+  "id": 4230,
+  "name": "Shinobi Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Skel_Prisoner_Card": {
+  "id": 4222,
+  "name": "Skeleton Prisoner Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Skeleton_Card": {
+  "id": 4025,
+  "name": "Skeleton Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Skull_Cap": {
+  "id": 18539,
+  "name": "Skull Cap",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Solider_Card": {
+  "id": 4220,
+  "name": "Solider Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Spectral_Spear": {
+  "id": 1477,
+  "name": "Spectral Spear",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Spectral_Spear_": {
+  "id": 1479,
+  "name": "Spectral Spear",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Spiritual_Ring": {
+  "id": 2677,
+  "name": "Spiritual Ring",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Spiritual_Ring_C": {
+  "id": 2711,
+  "name": "Spiritual Ring",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Spiritual_Ring_M": {
+  "id": 2786,
+  "name": "Spiritual Ring",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Sprint_Mail": {
+  "id": 2387,
+  "name": "Sprint Mail",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Sprint_Ring": {
+  "id": 2744,
+  "name": "Sprint Ring",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Sprint_Shoes": {
+  "id": 2440,
+  "name": "Sprint Shoes",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Staff_Of_Soul": {
+  "id": 1472,
+  "name": "Soul Staff",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Staff_Of_Wing": {
+  "id": 1616,
+  "name": "Wing Staff",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Stainer_Card": {
+  "id": 4039,
+  "name": "Stainer Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Steel_Arrow": {
+  "id": 1753,
+  "name": "Steel Arrow",
+  "srcFile": "etc",
+  "type": "Ammo"
+ },
+ "Stone_Arrow": {
+  "id": 1756,
+  "name": "Stone Arrow",
+  "srcFile": "etc",
+  "type": "Ammo"
+ },
+ "Stone_Buckler": {
+  "id": 2114,
+  "name": "Stone Buckler",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Succubus_Card": {
+  "id": 4218,
+  "name": "Succubus Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Survival_Rod2_": {
+  "id": 1620,
+  "name": "Survivor's Rod",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Survival_Rod_": {
+  "id": 1618,
+  "name": "Survivor's Rod",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Tarou_Card": {
+  "id": 4028,
+  "name": "Tarou Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "The_Paper_Card": {
+  "id": 4172,
+  "name": "The Paper Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Thorn_Staff": {
+  "id": 1636,
+  "name": "Thorn Staff of Darkness",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Thorny_Buckler": {
+  "id": 2124,
+  "name": "Thorny Buckler",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Tidal_Shoes": {
+  "id": 2424,
+  "name": "Tidal Shoes",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Toad_Card": {
+  "id": 4306,
+  "name": "Toad Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Tournament_Shield": {
+  "id": 2133,
+  "name": "Tournament Shield",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Twilight_Desert": {
+  "id": 13034,
+  "name": "Desert Twilight",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Ulle_Cap": {
+  "id": 5123,
+  "name": "Ulle's Cap",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Ulle_Cap_I": {
+  "id": 5493,
+  "name": "Ulle's Cap",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Undershirt": {
+  "id": 2522,
+  "name": "Undershirt",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Undershirt_": {
+  "id": 2523,
+  "name": "Undershirt",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Vagabond_Wolf_Card": {
+  "id": 4183,
+  "name": "Vagabond Wolf Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Vali's_Manteau": {
+  "id": 2517,
+  "name": "Vali's Manteau",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Valkyrie_Armor": {
+  "id": 2357,
+  "name": "Valkyrian Armor",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Valkyrie_Helm": {
+  "id": 5171,
+  "name": "Valkyrie Helm",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Valkyrie_Manteau": {
+  "id": 2524,
+  "name": "Valkyrian Manteau",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Valkyrie_Shoes": {
+  "id": 2421,
+  "name": "Valkyrian Shoes",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Valkyrja's_Shield": {
+  "id": 2115,
+  "name": "Valkyrja's Shield",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Valkyrja's_Shield_C": {
+  "id": 2137,
+  "name": "Neo Valkyrja's Shield",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Vidar's_Boots": {
+  "id": 2418,
+  "name": "Vidar's Boots",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Vocal_Card": {
+  "id": 4211,
+  "name": "Vocal Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Walking_Stick": {
+  "id": 1629,
+  "name": "Gentleman's Staff",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Wander_Man_Card": {
+  "id": 4210,
+  "name": "Wanderer Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Warlock_Battle_Robe": {
+  "id": 2379,
+  "name": "Warlock's Battle Robe",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Waste_Stove_Card": {
+  "id": 4332,
+  "name": "Waste Stove Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Whikebain_Card": {
+  "id": 4348,
+  "name": "Wickebine Tres Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Wicked_Nymph_Card": {
+  "id": 4258,
+  "name": "Evil Nymph Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Wild_Rose_Card": {
+  "id": 4257,
+  "name": "Wild Rose Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Wing_Of_Eagle": {
+  "id": 2515,
+  "name": "Eagle Wing",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Wit_Pumpkin_Hat": {
+  "id": 18656,
+  "name": "Witch's Pumpkin Hat",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Wizardy_Staff": {
+  "id": 1473,
+  "name": "Wizardry Staff",
+  "srcFile": "equip",
+  "type": "Weapon"
+ },
+ "Wolf_Card": {
+  "id": 4029,
+  "name": "Wolf Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Wool_Scarf": {
+  "id": 2528,
+  "name": "Wool Scarf",
+  "srcFile": "equip",
+  "type": "Armor"
+ },
+ "Zherlthsh_Card": {
+  "id": 4277,
+  "name": "Zealotus Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Zipper_Bear_Card": {
+  "id": 4281,
+  "name": "Zipper Bear Card",
+  "srcFile": "etc",
+  "type": "Card"
+ },
+ "Zombie_Slaughter_Card": {
+  "id": 4435,
+  "name": "Zombie Slaughter Card",
+  "srcFile": "etc",
+  "type": "Card"
+ }
+}
