@@ -39949,15 +39949,14 @@ function processTurn(){
           { let dgLv=(p.skills&&p.skills["드래고놀로지"])||0;
             if(dgLv>0&&t.element==='용속성') raceMul+=dgLv*0.1;
           }
-          // 카드 종족/속성/크기/보스 배율
-          if(s.cardRaceAtk && t.race && s.cardRaceAtk[t.race]) raceMul += s.cardRaceAtk[t.race]/100;
-          if(s.cardElemAtk && s.cardElemAtk[t.element]) raceMul += s.cardElemAtk[t.element]/100;
-          if(s.cardSizeAtk && s.cardSizeAtk[t.size]) raceMul += s.cardSizeAtk[t.size]/100;
-          if(s.cardBossAtk && t.isMvp) raceMul += s.cardBossAtk/100;
-          let cardAtkMul = 1 + (s.cardAtkPct||0)/100;
+          // 카드 종족/속성/크기/보스 배율 (P0-C5: item-effects.js로 이동, 계산 순서/반올림
+          // 위치는 그대로 -- rawAtk 계산 직전, DEF 감산 이전에서만 호출)
+          raceMul = applyOutgoingRaceElemSizeBossAtk(raceMul, t, s);
+          let cardAtkMul = getOutgoingAtkPctMul(s);
           // 방어 무시 (원령무사 카드)
-          let effSoftDef = s.cardDefIgnore ? 0 : (t.softDef||0);
-          let effHardDef = s.cardDefIgnore ? 0 : (t.def||0);
+          let _defIgnore = getOutgoingDefIgnore(t, s);
+          let effSoftDef = _defIgnore.softDef;
+          let effHardDef = _defIgnore.hardDef;
           let rawAtk = Math.floor((s.baseAtk + s.weaponAtk) * szP * elM * curseMul * raceMul * cardAtkMul);
           let tot = Math.max(1, Math.floor((rawAtk - effSoftDef) * (1 - effHardDef/100)));
           if(isC) tot = Math.floor(tot * 1.4);
@@ -50227,6 +50226,12 @@ function collectItemEffects(p, DB, parseItem) {
       var daN = Number(it.doubleAtk);
       fx.combat.doubleAtkCard += daN;
       ledger({ source: source, sourceType: sourceType, type: 'combat', key: 'doubleAtkCard', value: daN, active: true });
+      // P0-C5: 값은 정상 집계하지만(미래 단계가 바로 쓸 수 있게) 소비처는 아직 없다 -- 단위
+      // (확률%/고정추가타), 기존 더블어택(스킬+단검/카타르 전용) 확률과의 중첩 방식, 상한이
+      // 전부 원작/기존 데이터 근거 없이는 확정할 수 없어 이번 단계에서 보류했다
+      // (ITEM_EFFECT_OFFENSE_PATCH_NOTES.md 참조). ledger는 active:true(집계 성공)이지만
+      // unsupported[]에도 남겨 "지원한다고 표시하면서 실행 안 되는" 상태를 구분되게 한다.
+      fx.unsupported.push({ source: source, sourceType: sourceType, label: 'doubleAtkCard: 소비처 없음(P0-C5 보류 -- 단위/중첩방식/상한 근거 부족)' });
     }
     if (it.perfectFlee) {
       var pdN = Number(it.perfectFlee);
@@ -50262,6 +50267,13 @@ function collectItemEffects(p, DB, parseItem) {
         fx.combat[key][pair[0]] = (fx.combat[key][pair[0]] || 0) + Number(pair[1]);
       });
       ledger({ source: source, sourceType: sourceType, type: 'combat', key: key, value: it[key], active: true });
+      // P0-C5: magicRaceAtk는 값은 정상 집계하지만 소비처가 없다 -- 마법 피해는 30여 개
+      // 스킬 각자의 effect() 함수 안에 개별 공식으로 하드코딩돼 있고 공통 마법 피해 계산
+      // 지점이 존재하지 않는다. 그 함수들 각각에 종족 배율을 심는 것은 이번 단계가 명시적
+      // 으로 금지한 범위(개별 스킬 30~40개를 전부 손대는 것)라 보류했다.
+      if (key === 'magicRaceAtk') {
+        fx.unsupported.push({ source: source, sourceType: sourceType, label: 'magicRaceAtk: 소비처 없음(P0-C5 보류 -- 공통 마법 피해 계산 지점 부재)' });
+      }
     });
     if (it.skillDmg) {
       if (!fx.skill.skillDmg) fx.skill.skillDmg = {};
@@ -50269,6 +50281,11 @@ function collectItemEffects(p, DB, parseItem) {
         fx.skill.skillDmg[pair[0]] = (fx.skill.skillDmg[pair[0]] || 0) + Number(pair[1]);
       });
       ledger({ source: source, sourceType: sourceType, type: 'skill', key: 'skillDmg', value: it.skillDmg, active: true });
+      // P0-C5: 값은 정상 집계하지만 소비처가 없다 -- 각 스킬은 effect() 안에서 데미지를
+      // 계산과 동시에 t.currentHp에 바로 반영하므로, useSkill()/processTurn()이 돌려받는
+      // 시점엔 이미 적용이 끝나 있다. 스킬별로 30~40개 함수를 전부 고치거나 damage
+      // 계산/적용을 분리하는 엔진을 새로 만들어야 하는데 둘 다 이번 단계가 금지한 범위다.
+      fx.unsupported.push({ source: source, sourceType: sourceType, label: 'skillDmg: 소비처 없음(P0-C5 보류 -- 스킬 effect()가 계산과 적용을 함께 하는 구조)' });
     }
     if (it.grantSkill) {
       if (!fx.skill.grantSkill) fx.skill.grantSkill = {};
@@ -50590,6 +50607,48 @@ function getItemDropBonus(stats) {
   var sum = 0;
   list.forEach(function (v) { sum += Number(v) || 0; });
   return sum;
+}
+
+// ══════════════════════════════════════════════
+// P0-C5 — 공격 측(player→monster) 아이템/카드 효과 정리
+//
+// raceAtk/elemAtk/sizeAtk/bossAtk/atkPct/defIgnore 6개는 이번 단계 이전부터 이미
+// processTurn()의 평타(정상 공격) 블록에서 실제로 소비되고 있었다(calcStats() 반환의
+// cardRaceAtk/cardElemAtk/cardSizeAtk/cardBossAtk/cardAtkPct/cardDefIgnore를 그 자리에서
+// 직접 읽음). 이번 단계는 새 동작을 추가하는 게 아니라, 그 자리에 있던 계산을 그대로(순서·
+// 반올림 위치 불변) 여기로 옮겨 이름을 붙인 것뿐이다 -- 실행 위치가 바뀌면(예: DEF 감산 전
+// 적용이던 것을 감산 후로 옮기면) 결과가 달라질 수 있어서, 호출부는 원래와 정확히 같은
+// 지점(rawAtk를 만들기 직전, DEF 감산 이전)에서만 이 함수들을 부른다.
+//
+// magicRaceAtk/skillDmg/doubleAtkCard는 이번 단계에서 연결하지 않는다(위 collectItemEffects
+// 안의 각 필드별 주석과 ITEM_EFFECT_OFFENSE_PATCH_NOTES.md 참조) -- 공통 소비 지점이 없거나
+// (마법 피해는 스킬마다 개별 하드코딩), 단위/중첩 규칙을 뒷받침할 근거가 없다
+// (doubleAtkCard). collector는 계속 값을 모아 두므로 근거가 확보되면 나중에 연결한다.
+
+// 카드 종족/속성/크기/보스 배율 -- 기존 평타 raceMul에 이미 더해지던 4줄 그대로.
+// target(t)에 없는 정보(예: race 미지정 몬스터)는 자동으로 미적용된다(추정하지 않음).
+function applyOutgoingRaceElemSizeBossAtk(mul, target, stats) {
+  if (!stats || !target) return mul;
+  if (stats.cardRaceAtk && target.race && stats.cardRaceAtk[target.race]) mul += stats.cardRaceAtk[target.race] / 100;
+  if (stats.cardElemAtk && stats.cardElemAtk[target.element]) mul += stats.cardElemAtk[target.element] / 100;
+  if (stats.cardSizeAtk && stats.cardSizeAtk[target.size]) mul += stats.cardSizeAtk[target.size] / 100;
+  if (stats.cardBossAtk && target.isMvp) mul += stats.cardBossAtk / 100;
+  return mul;
+}
+
+// ATK% -- 기존 cardAtkMul 그대로. 10=10%(퍼센트 값, 형제 필드 atkPct와 같은 관례).
+function getOutgoingAtkPctMul(stats) {
+  return 1 + ((stats && stats.cardAtkPct) || 0) / 100;
+}
+
+// DEF 무시 -- 기존 effSoftDef/effHardDef 그대로. soft/hard DEF를 완전히 0으로 만드는 전부
+// 아니면 전무(all-or-nothing) 방식이며(부분 무시 아님), 이 기존 동작을 그대로 옮긴다.
+function getOutgoingDefIgnore(target, stats) {
+  var ignore = !!(stats && stats.cardDefIgnore);
+  return {
+    softDef: ignore ? 0 : ((target && target.softDef) || 0),
+    hardDef: ignore ? 0 : ((target && target.def) || 0),
+  };
 }
 
 // ══════════════════════════════════════════════

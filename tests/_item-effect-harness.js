@@ -35,6 +35,18 @@ const html = fs.readFileSync(HTML_PATH, 'utf8');
 const itemEffectsSrc = fs.readFileSync(ITEM_EFFECTS_PATH, 'utf8');
 const items = JSON.parse(fs.readFileSync(ITEMS_PATH, 'utf8'));
 
+// template.html에 인라인으로 박혀 있는 <script id="...">JSON</script> 정본 데이터를
+// 그대로 읽는다(재구현 아님) -- db-size/db-element는 별도 source/data/*.json 파일이 아니라
+// template.html 안에 직접 박혀 있다.
+function extractInlineJson(src, scriptId) {
+  const re = new RegExp('<script id="' + scriptId + '"[^>]*>([\\s\\S]*?)</script>');
+  const m = src.match(re);
+  assert(m, `inline script not found: ${scriptId}`);
+  return JSON.parse(m[1]);
+}
+const sizeMatrix = extractInlineJson(html, 'db-size');
+const elementMatrix = extractInlineJson(html, 'db-element');
+
 const parseItemSrc = extractFunction(html, 'function parseItem(name) {');
 const calcStatsSrc = extractFunction(html, 'function calcStats(){');
 const normalizeJobSrc = extractFunction(html, 'function normalizeJob(name){');
@@ -102,6 +114,37 @@ function runRollDrops(DB, G, p, mon, stats) {
   rollDropsFn(p, mon, null, stats);
 }
 
+// P0-C5: processTurn()의 평타(정상 공격) 데미지 공식을 실제 소스 텍스트 그대로 추출한다.
+// processTurn() 전체는 거대한 함수라 통째로 실행할 수 없으므로, "── [ 플레이어: 평타 및
+// 크리티컬 처리 ] ──" 주석부터 "카드 프록" 주석 직전(= 실제 dmg 계산이 끝나는 지점,
+// t.currentHp -= dmg; 까지)만 잘라 쓴다 -- 이 지점 이후는 상태이상/흡혈 등 데미지 계산과
+// 무관한 후속 처리라 잘라내도 데미지 공식 자체의 실행에는 영향이 없다.
+const normalAttackBody = extractBetween(
+  html,
+  '// ── [ 플레이어: 평타 및 크리티컬 처리 ] ──',
+  '// 카드 프록: HP흡수 / SP흡수 / 상태이상 / 오토스펠'
+);
+
+// 실제 평타 공식을 그대로 실행한다(재구현 아님). 명중/크리 굴림에 쓰는 Math.random은
+// 함수 파라미터로 그림자 처리해 완전히 통제한다(전역 Math를 건드리지 않는다).
+// 반환: 명중 실패 시 {missed:true}, 명중 시 {missed:false, dmg, isC}.
+function runNormalAttackFormula(p, t, s, se, DB, randomFn) {
+  const fnSrc =
+    itemEffectsSrc + '\n' +
+    'let sUsed = false;\n' +
+    normalAttackBody +
+    'return { dmg: dmg, isC: isC, missed: false };\n' +
+    '}\n}\n' +
+    'return { missed: true };';
+  const fn = new Function('p', 't', 's', 'se', 'DB', 'Math', fnSrc);
+  // Math의 메서드(min/max/floor 등)는 비열거형이라 Object.assign으로는 복사되지 않는다 --
+  // getOwnPropertyNames로 전부 끌어온 뒤 random만 통제된 함수로 덮어쓴다.
+  const shadowedMath = {};
+  Object.getOwnPropertyNames(Math).forEach(function (k) { shadowedMath[k] = Math[k]; });
+  shadowedMath.random = randomFn;
+  return fn(p, t, s, se, DB, shadowedMath);
+}
+
 const useSkillSrc = extractFunction(html, 'function useSkill(name){');
 
 // 실제 useSkill()을 그대로 실행한다(재구현 아님). 전투/처치 이후 로직(퀘스트 체크·드롭·
@@ -159,6 +202,8 @@ function makeDB(extraItems) {
     ),
     jobAlias: {},
     statusEffects: {},
+    sizeMatrix: sizeMatrix,
+    elementMatrix: elementMatrix,
   };
 }
 
@@ -176,5 +221,6 @@ module.exports = {
   runCalcStats, makeTriggerItemEffects, makeGetSkillSpCost, runUseSkill,
   makeApplyIncomingItemReduction, makeIsStatusImmune,
   makeGetEffectiveSkills, makeGetItemDropBonus, runRollDrops,
+  runNormalAttackFormula,
   makeParseItemFn, makePlayer, makeDB, pickRealItems,
 };

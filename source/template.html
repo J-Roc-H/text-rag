@@ -6171,15 +6171,14 @@ function processTurn(){
           { let dgLv=(p.skills&&p.skills["드래고놀로지"])||0;
             if(dgLv>0&&t.element==='용속성') raceMul+=dgLv*0.1;
           }
-          // 카드 종족/속성/크기/보스 배율
-          if(s.cardRaceAtk && t.race && s.cardRaceAtk[t.race]) raceMul += s.cardRaceAtk[t.race]/100;
-          if(s.cardElemAtk && s.cardElemAtk[t.element]) raceMul += s.cardElemAtk[t.element]/100;
-          if(s.cardSizeAtk && s.cardSizeAtk[t.size]) raceMul += s.cardSizeAtk[t.size]/100;
-          if(s.cardBossAtk && t.isMvp) raceMul += s.cardBossAtk/100;
-          let cardAtkMul = 1 + (s.cardAtkPct||0)/100;
+          // 카드 종족/속성/크기/보스 배율 (P0-C5: item-effects.js로 이동, 계산 순서/반올림
+          // 위치는 그대로 -- rawAtk 계산 직전, DEF 감산 이전에서만 호출)
+          raceMul = applyOutgoingRaceElemSizeBossAtk(raceMul, t, s);
+          let cardAtkMul = getOutgoingAtkPctMul(s);
           // 방어 무시 (원령무사 카드)
-          let effSoftDef = s.cardDefIgnore ? 0 : (t.softDef||0);
-          let effHardDef = s.cardDefIgnore ? 0 : (t.def||0);
+          let _defIgnore = getOutgoingDefIgnore(t, s);
+          let effSoftDef = _defIgnore.softDef;
+          let effHardDef = _defIgnore.hardDef;
           let rawAtk = Math.floor((s.baseAtk + s.weaponAtk) * szP * elM * curseMul * raceMul * cardAtkMul);
           let tot = Math.max(1, Math.floor((rawAtk - effSoftDef) * (1 - effHardDef/100)));
           if(isC) tot = Math.floor(tot * 1.4);
