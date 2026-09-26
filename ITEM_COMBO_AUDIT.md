@@ -7,13 +7,15 @@
 
 ## 1. 소스
 
-- repo: `https://github.com/rathena/rathena`, branch `master`, mode `pre-re`
-  (Pre-Renewal). commit SHA는 얻지 못함 — 이 세션 네트워크 정책이
-  `raw.githubusercontent.com`만 허용하고 `api.github.com`/`github.com`은
-  차단하기 때문(`rathena/rathena`는 `add_repo`로 붙이지 않은 저장소).
-  대신 파일 원문 전체 보존(`source/reference/rathena-pre-re/item_combos.yml`,
-  28,860 bytes) + 응답 ETag(`d9b79d105285ce2ba858b4ab399d445d3d9f0d97740b924ed6d852799871a137`,
-  2026-09-26 UTC 수신)를 콘텐츠 지문으로 남김. 상세는
+- repo: `https://github.com/rathena/rathena`, mode `pre-re` (Pre-Renewal).
+  **commit `e985006171d2eb320ee512a653f4c83aea3d81b6`**,
+  path `db/pre-re/item_combos.yml`,
+  **blob SHA `f720ec0de4a0cacaf0131c9fad3938aff7ba280a`**. 저장된 스냅샷
+  (`source/reference/rathena-pre-re/item_combos.yml`, 28,860 bytes)이 이
+  commit의 파일과 바이트 단위로 동일함을 두 가지로 독립 검증함:
+  (1) `git hash-object`로 계산한 로컬 파일의 blob SHA가 위 값과 일치,
+  (2) 이 commit SHA를 직접 지정한 raw.githubusercontent.com URL을 재조회해
+  같은 크기/blob SHA/내용(`diff` 완전 일치)을 재확인. 상세는
   `source/reference/rathena-pre-re/README.md` 참조.
 - 항목 ID/타입 조회용 `item_db_aegis_lookup.json`은 `item_db_equip.yml` +
   `item_db_etc.yml` + `item_db_usable.yml`(합계 약 1.67MB)에서 콤보가

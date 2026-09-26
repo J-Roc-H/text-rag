@@ -483,6 +483,8 @@ def main():
             "sourceSystem": "rathena",
             "mode": "pre-re",
             "sourceFile": "source/reference/rathena-pre-re/item_combos.yml",
+            "sourceCommit": "e985006171d2eb320ee512a653f4c83aea3d81b6",
+            "sourceBlobSha": "f720ec0de4a0cacaf0131c9fad3938aff7ba280a",
             "totalSourceEntries": len(body),
             "totalVariants": total_variants,
             "statusCounts": status_counts,
