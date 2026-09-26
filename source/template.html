@@ -6168,23 +6168,10 @@ function processTurn(){
           if(isC) tot = Math.floor(tot * 1.4);
           let _targetHpBefore=t.currentHp;
           let dmg = tot; t.currentHp -= dmg;
-          // 카드 프록: HP흡수 / SP흡수 / 상태이상 / 오토스펠
+          // 카드 프록: HP흡수 / SP흡수 / 상태이상 / 오토스펠 (P0-C1: s.itemEffects.events 소비로 통합 -- 카드 DB 직접 재파싱 없음)
           { let _p=G.player;
-            Object.values(_p.equip||{}).forEach(eqName=>{ if(!eqName)return;
-              let _parsed=(typeof parseItem==='function')?parseItem(eqName):null;
-              if(!_parsed||!_parsed.cards)return;
-              _parsed.cards.forEach(cn=>{
-                let c=DB?.items?.[cn+" 카드"]; if(!c)return;
-                if(c.hpDrain&&Math.random()<c.hpDrain.rate){ let h=Math.floor(dmg*c.hpDrain.pct); _p.hp=Math.min(_p.maxHp,_p.hp+h); if(h>0)log(`🩸 <b>[흡혈]</b> HP <span style="color:#27ae60">+${h}</span>`,'heal'); }
-                if(c.spDrain&&Math.random()<c.spDrain.rate){ let sp2=Math.floor(dmg*c.spDrain.pct); _p.sp=Math.min(_p.maxSp,_p.sp+sp2); if(sp2>0)log(`💜 <b>[SP흡수]</b> SP <span style="color:#3498db">+${sp2}</span>`,'system'); }
-                if(c.inflict){
-                  if(c.inflict.stun&&Math.random()<c.inflict.stun){ if(!t.statusEffects)t.statusEffects={}; t.statusEffects.stun=3; log(`⚡ <b>[스턴]</b> ${t.name} 스턴!`,'system'); }
-                  if(c.inflict.confusion&&Math.random()<c.inflict.confusion){ if(!t.statusEffects)t.statusEffects={}; t.statusEffects.confusion=5; log(`😵 <b>[혼란]</b> ${t.name} 혼란!`,'system'); }
-                  if(c.inflict.random_debuff&&Math.random()<c.inflict.random_debuff){ let dbs=['stun','silence','sleep','blind','confusion']; let d=dbs[Math.floor(Math.random()*dbs.length)]; if(!t.statusEffects)t.statusEffects={}; t.statusEffects[d]=3; log(`💀 <b>[로드오브데스]</b> ${t.name} [${d}]!`,'system'); }
-                }
-                if(c.autoSpell&&Math.random()<(c.autoSpell.rate||0)){ let _sk=DB?.skills?.[c.autoSpell.skill]; if(_sk&&_sk.effect){ let _r=_sk.effect(_p,s,t,c.autoSpell.lv); if(_r)log(`✨ <b>[오토스펠]</b> ${_r.msg}`,'crit'); } }
-              });
-            });
+            let _legacyEvents=(s.itemEffects&&s.itemEffects.events.onHit||[]).filter(e=>e.kind==='hpDrain'||e.kind==='spDrain'||e.kind==='inflict'||e.kind==='autoSpell');
+            triggerItemEffects('onHit', { player:_p, target:t, stats:s, DB:DB, damage:dmg, isCrit:isC, log:log }, _legacyEvents);
           }
           // D. 스내쳐: 기본 공격 명중 시 자동 스틸
           { let snatchLv=(p.skills&&p.skills["스내쳐"])||0;
@@ -6205,46 +6192,13 @@ function processTurn(){
             log(`⚡ <b>[더블 어택]</b> 추가타! <span class="hl-dmg">+${d2}</span>`, 'combat');
           }
 
-          // ── [v9.04] 카드 effect 처리 — 평타 명중 후 추가 효과 ──
+          // ── [P0-C1] 카드 이벤트 효과 실행 — 평타 명중 후 추가 효과 (raceBonus/seProc/lifesteal) ──
+          // s.itemEffects.events.onHit만 쓴다 -- 카드 DB 직접 재파싱 없음(구 v9.04 블록 제거).
           if(t.currentHp > 0 && p.equip){
-            Object.keys(p.equip).forEach(eqKey => {
-              let eqName = p.equip[eqKey]; if(!eqName) return;
-              let parsed = (typeof parseItem === 'function') ? parseItem(eqName) : null;
-              if(!parsed || !parsed.cards || !Array.isArray(parsed.cards)) return;
-
-              parsed.cards.forEach(cardName => {
-                let card = DB?.items?.[cardName + " 카드"]; if(!card || !card.effect) return;
-                let cardEff = card.effect;
-
-                // 1. raceBonus: 특정 종족 추가 데미지
-                if(cardEff.type === 'raceBonus' && cardEff.race === t.race && cardEff.dmgMult){
-                  let bonusDmg = Math.floor(dmg * (cardEff.dmgMult - 1));
-                  t.currentHp -= bonusDmg;
-                  dmg += bonusDmg;
-                  log(`🃏 <b>[${cardName}]</b> ${t.race} 추가 데미지 <span class="hl-dmg">+${bonusDmg}</span>`, 'combat');
-                }
-
-                // 2. seProc: 상태효과 확률 발동 (스턴, 포이즌 등)
-                if((cardEff.type === 'seProc' || cardEff.type === 'mixed') && cardEff.seProc){
-                  let proc = cardEff.seProc;
-                  if(Math.random() < proc.chance){
-                    if(!t.statusEffects) t.statusEffects = {};
-                    t.statusEffects[proc.se] = proc.turns;
-                    const seEmoji = {stun:'💫', poison:'☠️', sleep:'💤', freeze:'🧊', blind:'🌑', silence:'🤐', curse:'👻', bleed:'🩸'};
-                    log(`🃏 <b>[${cardName}]</b> ${seEmoji[proc.se] || '⚡'} ${proc.se} 부여! (${proc.turns}턴)`, 'system');
-                  }
-                }
-
-                // 3. lifesteal: SP 흡수 (드라큘라 카드 등)
-                if(cardEff.type === 'lifesteal' && cardEff.chance && cardEff.spRate){
-                  if(Math.random() < cardEff.chance){
-                    let spGain = Math.floor(dmg * cardEff.spRate);
-                    p.sp = Math.min(p.maxSp, p.sp + spGain);
-                    log(`🃏 <b>[${cardName}]</b> SP 흡수 <span class="hl-dmg">+${spGain}</span>`, 'system');
-                  }
-                }
-              });
-            });
+            let _procEvents=(s.itemEffects&&s.itemEffects.events.onHit||[]).filter(e=>e.kind==='raceBonus'||e.kind==='seProc'||e.kind==='lifesteal');
+            let _ctx = { player:p, target:t, stats:s, DB:DB, damage:dmg, isCrit:isC, log:log };
+            triggerItemEffects('onHit', _ctx, _procEvents);
+            dmg = _ctx.damage;
           }
 
           let advLog = [];

@@ -8,7 +8,7 @@
 // tests/_item-effect-harness.js로 공용화 — item-effects-smoke.js와 공유)
 const assert = require('assert');
 const {
-  items, runCalcStats, applyCardEffectOnHit, makeParseItemFn, makePlayer, makeDB, pickRealItems,
+  items, runCalcStats, makeTriggerItemEffects, makePlayer, makeDB, pickRealItems,
 } = require('./_item-effect-harness');
 
 const fixtures = pickRealItems(['드롭스 카드', '파브르 카드', '고렘 카드', '프리오니 카드', '아르기오페 카드', '반어인 카드']);
@@ -92,45 +92,56 @@ const fixtures = pickRealItems(['드롭스 카드', '파브르 카드', '고렘 
   console.log('OK - 아르기오페 카드(원작검증필요): INT 변화 없음 (비활성 유지 확인)');
 }
 
-// ── 5. 카드 effect-on-hit 블록(실제 processTurn 코드 추출)으로 raceBonus 선택성 검증 ──
+// ── 5. 실제 실행기(triggerItemEffects, P0-C1)로 raceBonus 선택성 검증 ──
+// P0-C1부터는 processTurn이 더 이상 카드 DB를 직접 재파싱하지 않는다 -- 실행은
+// source/item-effects.js의 triggerItemEffects() 하나뿐이다. 여기서는 실제
+// collectItemEffects()(runCalcStats가 내부에서 호출)가 만든 fx.events.onHit을
+// 그대로 그 실행기에 먹여서 검증한다(재구현 아님).
 {
   const DB = makeDB(fixtures);
-  const parseItemFn = makeParseItemFn(DB);
+  const triggerItemEffects = makeTriggerItemEffects();
   const noopLog = () => {};
 
-  // 5a. 반어인 카드는 현재 effect.effect(레거시)만 있고 effect.type이 없다 -- 비활성이어야 함
+  // 5a. 반어인 카드는 현재 effect.effect(레거시)만 있고 effect.type이 없다 -- collector가
+  //     이벤트 자체를 만들지 않아야 하고(비활성), 실행기에 넘길 이벤트도 없어야 한다.
   const pendingCard = items['반어인 카드'];
   assert.strictEqual(pendingCard.effect.type, undefined, '반어인 카드는 아직 effect.type이 없어야(비활성) 함');
   {
-    const p = makePlayer('테스트무기 [1] <반어인>');
+    const s = runCalcStats(DB, { player: makePlayer('테스트무기 [1] <반어인>') });
+    const raceBonusEvents = s.itemEffects.events.onHit.filter(e => e.kind === 'raceBonus' && e.source === '반어인 카드');
+    assert.strictEqual(raceBonusEvents.length, 0, '반어인 카드(비활성)는 raceBonus 이벤트를 만들지 않아야 함');
+
     const t = { race: '어류', currentHp: 100 };
-    const dmgOut = applyCardEffectOnHit(p, t, 100, DB, parseItemFn, noopLog);
-    assert.strictEqual(dmgOut, 100, '반어인 카드(비활성) 장착 시 어류 상대로도 추가 데미지 없음');
+    const ctx = { player: makePlayer(null), target: t, damage: 100, log: noopLog };
+    triggerItemEffects('onHit', ctx, raceBonusEvents);
+    assert.strictEqual(ctx.damage, 100, '반어인 카드(비활성) 장착 시 어류 상대로도 추가 데미지 없음');
   }
-  console.log('OK - 반어인 카드(원작검증필요, 비활성): 어류 상대 추가 데미지 없음');
+  console.log('OK - 반어인 카드(원작검증필요, 비활성): collector가 이벤트를 만들지 않고, 실행기도 추가 데미지 없음');
 
   // 5b. 같은 카드가 검증되어 effect.type='raceBonus'가 되었다고 가정하면(가상 시나리오),
-  //     올바른 종족에서는 적용되고 다른 종족에서는 적용되지 않아야 한다 -- 실제 소비 코드의
-  //     선택성 자체를 검증한다(어느 항목을 활성화할지와는 별개 문제).
+  //     collector가 실제로 이벤트를 만들고, 실행기가 일치하는 종족에서는 적용하고 다른
+  //     종족에서는 적용하지 않아야 한다 -- collector+실행기 파이프라인 전체의 선택성 검증.
   const verifiedDB = makeDB(fixtures);
   verifiedDB.items['반어인 카드'] = Object.assign({}, pendingCard, {
     effect: { type: 'raceBonus', race: '어류', dmgMult: 1.15 },
   });
   {
-    const p = makePlayer('테스트무기 [1] <반어인>');
-    const tMatch = { race: '어류', currentHp: 1000 };
-    const dmgMatch = applyCardEffectOnHit(p, tMatch, 100, verifiedDB, parseItemFn, noopLog);
+    const s = runCalcStats(verifiedDB, { player: makePlayer('테스트무기 [1] <반어인>') });
+    const raceBonusEvents = s.itemEffects.events.onHit.filter(e => e.kind === 'raceBonus' && e.source === '반어인 카드');
+    assert.strictEqual(raceBonusEvents.length, 1, '검증된 raceBonus는 collector가 이벤트 1건을 만들어야 함');
+
+    const ctxMatch = { player: makePlayer(null), target: { race: '어류', currentHp: 1000 }, damage: 100, log: noopLog };
+    triggerItemEffects('onHit', ctxMatch, raceBonusEvents);
     // 실제 소비 코드와 동일한 부동소수점 연산으로 기대값을 계산한다(1.15-1은 정확히
     // 0.15가 아니라 0.14999999999999991이라 floor 결과가 115가 아니라 114가 된다 --
     // 이 자체가 실제 게임이 하는 계산이므로 테스트도 하드코딩 대신 같은 식을 쓴다).
-    assert.strictEqual(dmgMatch, 100 + Math.floor(100 * (1.15 - 1)), '검증된 raceBonus는 일치하는 종족(어류)에 dmgMult만큼 추가 데미지');
+    assert.strictEqual(ctxMatch.damage, 100 + Math.floor(100 * (1.15 - 1)), '검증된 raceBonus는 일치하는 종족(어류)에 dmgMult만큼 추가 데미지');
 
-    const p2 = makePlayer('테스트무기 [1] <반어인>');
-    const tOther = { race: '악마', currentHp: 1000 };
-    const dmgOther = applyCardEffectOnHit(p2, tOther, 100, verifiedDB, parseItemFn, noopLog);
-    assert.strictEqual(dmgOther, 100, '검증된 raceBonus는 다른 종족(악마)에는 적용되지 않음');
+    const ctxOther = { player: makePlayer(null), target: { race: '악마', currentHp: 1000 }, damage: 100, log: noopLog };
+    triggerItemEffects('onHit', ctxOther, raceBonusEvents);
+    assert.strictEqual(ctxOther.damage, 100, '검증된 raceBonus는 다른 종족(악마)에는 적용되지 않음');
   }
-  console.log('OK - raceBonus 소비 코드 선택성: 일치 종족만 +15%, 다른 종족은 미적용');
+  console.log('OK - raceBonus collector+실행기 파이프라인: 일치 종족만 +15%, 다른 종족은 미적용');
 }
 
 console.log('ALL TESTS PASS - item-effect-canon-correction-smoke');

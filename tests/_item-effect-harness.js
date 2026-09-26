@@ -38,11 +38,6 @@ const items = JSON.parse(fs.readFileSync(ITEMS_PATH, 'utf8'));
 const parseItemSrc = extractFunction(html, 'function parseItem(name) {');
 const calcStatsSrc = extractFunction(html, 'function calcStats(){');
 const normalizeJobSrc = extractFunction(html, 'function normalizeJob(name){');
-const cardOnHitBlockSrc = extractBetween(
-  html,
-  '// ── [v9.04] 카드 effect 처리 — 평타 명중 후 추가 효과 ──',
-  '\n          let advLog = [];'
-);
 
 // calcStats()의 마지막 s.statBreakdowns 계산은 UI 표시용 상세 브레이크다운이라
 // 최종 수치(s.dex/s.hit/...) 검증과는 무관하다 -- no-op으로 스텁.
@@ -60,9 +55,10 @@ function runCalcStats(DB, G) {
   return fn(G, DB);
 }
 
-function applyCardEffectOnHit(p, t, dmgIn, DB, parseItemFn, log) {
-  const fn = new Function('p', 't', 'dmg', 'DB', 'parseItem', 'log', cardOnHitBlockSrc + '\nreturn dmg;');
-  return fn(p, t, dmgIn, DB, parseItemFn, log || (() => {}));
+// P0-C1: 실제 실행기(triggerItemEffects)를 item-effects.js에서 그대로 가져온다.
+// processTurn()의 인라인 재파싱 블록은 제거됐으므로, 실행 로직은 이제 이 함수 하나뿐이다.
+function makeTriggerItemEffects() {
+  return new Function(itemEffectsSrc + '\nreturn triggerItemEffects;')();
 }
 
 function makeParseItemFn(DB) {
@@ -105,5 +101,5 @@ function pickRealItems(names) {
 
 module.exports = {
   extractFunction, extractBetween, html, items,
-  runCalcStats, applyCardEffectOnHit, makeParseItemFn, makePlayer, makeDB, pickRealItems,
+  runCalcStats, makeTriggerItemEffects, makeParseItemFn, makePlayer, makeDB, pickRealItems,
 };

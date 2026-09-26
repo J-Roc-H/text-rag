@@ -158,9 +158,19 @@ function collectItemEffects(p, DB, parseItem) {
     }
   }
 
+  // processTurn()의 실제 실행 코드는 두 개의 별도 루프다: 레거시 경로
+  // (hpDrain/spDrain/inflict/autoSpell)가 장비/카드 전체를 한 바퀴 먼저 돌고, 그 다음에야
+  // proc 경로(raceBonus/seProc/lifesteal)가 장비/카드를 다시 한 바퀴 돈다. 이 순서를 그대로
+  //지키지 않으면 카드가 여러 장 있을 때 Math.random() 호출 순서가 원본과 달라져 같은 시드로도
+  // 결과가 달라진다(P0-C1 지시 §7). 그래서 onHitEvent는 kind에 따라 두 버퍼 중 하나에 쌓아
+  // 두고, collectItemEffects가 끝날 때 "레거시 전체 → proc 전체" 순서로 한 번만 합친다.
+  var ONHIT_LEGACY_KINDS = { hpDrain: true, spDrain: true, inflict: true, autoSpell: true };
+  var onHitLegacyBuffer = [];
+  var onHitProcBuffer = [];
+
   function onHitEvent(source, sourceType, kind, payload) {
     var evt = Object.assign({ source: source, sourceType: sourceType, kind: kind }, payload);
-    fx.events.onHit.push(evt);
+    (ONHIT_LEGACY_KINDS[kind] ? onHitLegacyBuffer : onHitProcBuffer).push(evt);
     ledger({ source: source, sourceType: sourceType, type: 'event', key: kind, value: payload, active: true });
   }
 
@@ -260,6 +270,10 @@ function collectItemEffects(p, DB, parseItem) {
     }
   });
 
+  // 레거시 경로 전체 → proc 경로 전체 순서로 합친다(원본 processTurn의 두 별도 루프 순서와
+  // 동일 -- 위 onHitEvent 주석 참조). 각 버퍼 내부는 이미 장비→카드 순서 그대로다.
+  fx.events.onHit = onHitLegacyBuffer.concat(onHitProcBuffer);
+
   return fx;
 }
 
@@ -311,5 +325,121 @@ function mergeItemEffectsIntoBonus(fx, bonus) {
       if (!bonus.dropBonus) bonus.dropBonus = [];
       bonus.dropBonus.push(d);
     });
+  }
+}
+
+// ══════════════════════════════════════════════
+// P0-C1 — 전투 중 카드 사건 효과 실행 경로 단일화
+//
+// triggerItemEffects(eventName, context, events)는 collectItemEffects()가 이미 정규화해
+// 둔 fx.events.onHit(등)을 그대로 실행한다. processTurn()은 더 이상 장착 카드를
+// parseItem()/DB.items로 다시 파싱하지 않는다 — 한 턴의 calcStats() 결과(s.itemEffects)만
+// 쓴다.
+//
+// 원본 processTurn()에는 이 실행이 "레거시 경로"(hpDrain/spDrain/inflict/autoSpell, 항상
+// 실행)와 "proc 경로"(raceBonus/seProc/lifesteal, target.currentHp>0일 때만 실행)라는
+// 서로 다른 가드 조건의 두 별도 루프로 있었다. 이 차이는 실수가 아니라 원본 그대로 보존해야
+// 하는 동작이라, triggerItemEffects 자체는 가드를 걸지 않고(어떤 이벤트든 넘어오면 실행),
+// 호출부(processTurn)가 이벤트 목록을 kind로 갈라 두 번 호출하면서 각자의 가드 조건을
+// 유지한다. collectItemEffects()는 이미 onHit 배열을 "레거시 전체 → proc 전체" 순서로
+// 만들어 두므로(§ onHitEvent 주석), kind로 필터링해도 각 부분 집합 내부 순서는
+// 원본과 동일한 장비→카드 순서가 유지된다.
+//
+// Math.random() 호출 횟수와 순서를 원본과 정확히 맞추는 것이 최우선이다 — 새로운 판정을
+// 추가하거나 "더 올바른 방식"으로 고치지 않는다(P0-C1 지시 §6·§7).
+var ITEM_EFFECT_STATUS_EMOJI = {
+  stun: '💫', poison: '☠️', sleep: '💤', freeze: '🧊',
+  blind: '🌑', silence: '🤐', curse: '👻', bleed: '🩸',
+};
+
+function triggerItemEffects(eventName, context, events) {
+  if (!events || !events.length) return;
+  var log = context.log || function () {};
+  var random = context.random || Math.random;
+  events.forEach(function (evt) {
+    if (eventName === 'onHit') _triggerOnHitEvent(context, evt, log, random);
+    // onDamaged/onKill/onTick: 현재 실행 데이터/소비처가 없다 -- P0-C 후속 단계.
+  });
+}
+
+function _triggerOnHitEvent(context, evt, log, random) {
+  var p = context.player, t = context.target;
+  switch (evt.kind) {
+    case 'raceBonus':
+      // 원본: cardEff.type==='raceBonus' && cardEff.race===t.race && cardEff.dmgMult 일 때만.
+      // random() 호출 없음 -- 결정적 배율 적용.
+      if (evt.race === t.race && evt.dmgMult) {
+        var bonusDmg = Math.floor(context.damage * (evt.dmgMult - 1));
+        t.currentHp -= bonusDmg;
+        context.damage += bonusDmg;
+        log('🃏 <b>[' + evt.source + ']</b> ' + t.race + ' 추가 데미지 <span class="hl-dmg">+' + bonusDmg + '</span>', 'combat');
+      }
+      break;
+    case 'seProc':
+      // 원본: 이벤트가 존재하면(=원래 cardEff.seProc가 있었으면) 항상 random() 1회 호출.
+      if (random() < evt.chance) {
+        if (!t.statusEffects) t.statusEffects = {};
+        t.statusEffects[evt.se] = evt.turns;
+        var emoji = ITEM_EFFECT_STATUS_EMOJI[evt.se] || '⚡';
+        log('🃏 <b>[' + evt.source + ']</b> ' + emoji + ' ' + evt.se + ' 부여! (' + evt.turns + '턴)', 'system');
+      }
+      break;
+    case 'lifesteal':
+      // 원본 가드(chance&&spRate)는 이미 collectCardEffectObject가 이벤트를 만들 때
+      // 확인했으므로, 이벤트가 존재하면 항상 random() 1회 호출.
+      if (random() < evt.chance) {
+        var spGain = Math.floor(context.damage * evt.spRate);
+        p.sp = Math.min(p.maxSp, p.sp + spGain);
+        log('🃏 <b>[' + evt.source + ']</b> SP 흡수 <span class="hl-dmg">+' + spGain + '</span>', 'system');
+      }
+      break;
+    case 'hpDrain':
+      // 원본: c.hpDrain이 존재하면(=이벤트 존재) 항상 random() 1회 호출.
+      if (random() < evt.rate) {
+        var h = Math.floor(context.damage * evt.pct);
+        p.hp = Math.min(p.maxHp, p.hp + h);
+        if (h > 0) log('🩸 <b>[흡혈]</b> HP <span style="color:#27ae60">+' + h + '</span>', 'heal');
+      }
+      break;
+    case 'spDrain':
+      if (random() < evt.rate) {
+        var sp2 = Math.floor(context.damage * evt.pct);
+        p.sp = Math.min(p.maxSp, p.sp + sp2);
+        if (sp2 > 0) log('💜 <b>[SP흡수]</b> SP <span style="color:#3498db">+' + sp2 + '</span>', 'system');
+      }
+      break;
+    case 'inflict':
+      // 원본은 stun/confusion/random_debuff 각각 자기 하위 필드가 있을 때만 random()을
+      // 부른다(세 필드가 모두 있으면 최대 3~4회 호출) -- 하위 필드 존재 여부로 개별 가드.
+      if (evt.stun && random() < evt.stun) {
+        if (!t.statusEffects) t.statusEffects = {};
+        t.statusEffects.stun = 3;
+        log('⚡ <b>[스턴]</b> ' + t.name + ' 스턴!', 'system');
+      }
+      if (evt.confusion && random() < evt.confusion) {
+        if (!t.statusEffects) t.statusEffects = {};
+        t.statusEffects.confusion = 5;
+        log('😵 <b>[혼란]</b> ' + t.name + ' 혼란!', 'system');
+      }
+      if (evt.random_debuff && random() < evt.random_debuff) {
+        var dbs = ['stun', 'silence', 'sleep', 'blind', 'confusion'];
+        var d = dbs[Math.floor(random() * dbs.length)];
+        if (!t.statusEffects) t.statusEffects = {};
+        t.statusEffects[d] = 3;
+        log('💀 <b>[로드오브데스]</b> ' + t.name + ' [' + d + ']!', 'system');
+      }
+      break;
+    case 'autoSpell':
+      // 원본: c.autoSpell이 존재하면 항상 random() 1회 호출(rate는 ||0 폴백).
+      if (random() < (evt.rate || 0)) {
+        var sk = context.DB && context.DB.skills && context.DB.skills[evt.skill];
+        if (sk && sk.effect) {
+          var r = sk.effect(p, context.stats, t, evt.lv);
+          if (r) log('✨ <b>[오토스펠]</b> ' + r.msg, 'crit');
+        }
+      }
+      break;
+    default:
+      break;
   }
 }
