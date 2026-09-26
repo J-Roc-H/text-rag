@@ -158,14 +158,16 @@ def main():
 
     # ══════════════════════════════════════════════
     # J -- fuzzy/수작업 candidate(MANUAL_CARD_CANDIDATES)는 candidate로만 남고
-    # 절대 자동으로 status=verified가 되지 않는다. 실제 생성된 identity map으로 확인.
+    # 절대 자동으로 status=verified가 되지 않는다. MANUAL_CARD_CANDIDATES 자체는
+    # P2-A.1 시점 그대로 남아 있고(코드 삭제 안 함), 어떤 aegisName에도 decision을
+    # 직접 대입하지 않는다는 구조를 확인한다(P2-A.2 review manifest가 이 두 건을
+    # 실제 rAthena Script 대조로 재검증해 반박했다는 것은 별개의, 더 강한 사실이고
+    # -- combo-item-identity-review-test.py 쪽에서 검증한다).
     # ══════════════════════════════════════════════
-    real_identity = bci.build_identity_map()
-    manual_targets = {it['aegisName']: it for it in real_identity['items'] if it['aegisName'] in bci.MANUAL_CARD_CANDIDATES}
-    check('J: MANUAL_CARD_CANDIDATES 대상 2건이 실제 identity map에 존재', len(manual_targets) == 2)
-    for aegis, it in manual_targets.items():
-        check(f'J: {aegis}는 candidate만 있고 verified가 아님', it['status'] != 'verified')
-        check(f'J: {aegis}의 candidates에 manual-paraphrase-review 신호 존재', any('manual-paraphrase-review' in c['signals'] for c in it['candidates']))
+    check('J: MANUAL_CARD_CANDIDATES 상수 자체가 여전히 존재(삭제 안 함)', len(bci.MANUAL_CARD_CANDIDATES) == 2)
+    for aegis, manual in bci.MANUAL_CARD_CANDIDATES.items():
+        check(f'J: {aegis}의 manual candidate 항목에 textragKey/note만 있고 status/decision 필드가 없음(자동 확정 아님)',
+              set(manual.keys()) == {'textragKey', 'note'})
 
     # ══════════════════════════════════════════════
     # 최종 -- 실제 source/data/combo-item-identity.json에 대해 audit_combo_item_identity를

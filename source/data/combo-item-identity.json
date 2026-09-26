@@ -2,9 +2,10 @@
  "sourceCommit": "e985006171d2eb320ee512a653f4c83aea3d81b6",
  "totalItems": 278,
  "statusCounts": {
-  "verified": 93,
-  "unresolved-existing": 172,
-  "missing": 13
+  "verified": 150,
+  "unresolved-existing": 113,
+  "ambiguous": 1,
+  "missing": 14
  },
  "items": [
   {
@@ -101,11 +102,17 @@
    "rathenaItemId": 1573,
    "rathenaName": "Ancient Magic",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "고대의마법",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 1573 (Ancient Magic), type Weapon",
+    "weight 700/10=70.0 == TextRAG 70",
+    "buy 20 == TextRAG 20",
+    "atk 30 == TextRAG 30",
+    "slots 2 == TextRAG 2",
+    "weaponLv 3 == TextRAG 3",
+    "rAthena Name 'Ancient Magic' == TextRAG desc 첫 어절 '고대의마법'(직역)"
    ],
    "candidates": [
     {
@@ -172,11 +179,16 @@
    "rathenaItemId": 2420,
    "rathenaName": "Angel's Reincarnation",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "천사의재래",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2420 (Angel's Reincarnation), type Armor",
+    "weight 300/10=30.0 == TextRAG 30",
+    "buy 10000 == TextRAG 10000",
+    "def 2 == TextRAG 2",
+    "slots 1 == TextRAG 1",
+    "rAthena Name \"Angel's Reincarnation\"; TextRAG desc '노비스를 위한 천사의 신발'이 천사 세트(Angel Set) 테마와 정확히 일치"
    ],
    "candidates": [
     {
@@ -235,11 +247,16 @@
    "rathenaItemId": 2116,
    "rathenaName": "Angelic Guard",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "천사의보호",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2116 (Angelic Guard), type Armor",
+    "weight 400/10=40.0 == TextRAG 40",
+    "buy 10000 == TextRAG 10000",
+    "def 3 == TextRAG 3",
+    "slots 1 == TextRAG 1",
+    "rAthena Name 'Angelic Guard'; TextRAG desc '노비스를 지키는 천사의 방패'가 천사 세트 테마와 정확히 일치"
    ],
    "candidates": [
     {
@@ -290,11 +307,16 @@
    "rathenaItemId": 2521,
    "rathenaName": "Angelic Cardigan",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "천사의온기",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2521 (Angelic Cardigan), type Armor",
+    "weight 400/10=40.0 == TextRAG 40",
+    "buy 10000 == TextRAG 10000",
+    "def 2 == TextRAG 2",
+    "slots 1 == TextRAG 1",
+    "AegisName 'Angel's_Warmth'와 TextRAG desc '노비스를 감싸는 천사의 온기'가 직역 일치(rAthena 공식 Name은 'Angelic Cardigan'으로 갱신됐지만 AegisName은 레거시 그대로 유지 -- 같은 천사 세트 부재)"
    ],
    "candidates": [
     {
@@ -530,12 +552,26 @@
    "rathenaName": "MasterSmith Card",
    "rathenaType": "Card",
    "textragKey": null,
-   "status": "missing",
+   "status": "ambiguous",
    "evidenceCase": null,
    "evidence": [
-    "드롭 원작 몬스터 ID [1648] 전부 MONSTER_AI_AUDIT.md에 확정된 원작 ID로 등재돼 있지 않음(몬스터 identity 감사가 이 ID들까지 아직 안 갔음 — 이번 아이템 identity 작업의 범위 밖)"
+    "rAthena mob_db.yml Id 1648 AegisName=B_HARWORD Name='Whitesmith Howard' -- 이 이름 자체는 TextRAG 몬스터 '화이트스미스 하워드'(id 241)/'화이트스미스 하워드(일반)'(id 333) 둘 다와 부합해 어느 쪽 TextRAG 몬스터가 rAthena Id 1648인지 확정할 근거가 없음(MONSTER_AI_AUDIT.md 감사표에 1648 원작 ID 행 자체가 없음).",
+    "추가로 실제 rAthena Script(`bonus bBreakWeaponRate,1000;` -- 무기파괴 10%만)를 '화이트스미스 하워드 카드'의 TextRAG desc('무기파괴10%+방어구파괴7%')와 대조하면 효과 내용이 정확히 일치하지 않음 -- 이 카드가 진짜 대응인지도 불확실해져 verified 승격 근거가 약하다고 판단, ambiguous로 유지."
    ],
-   "candidates": []
+   "candidates": [
+    {
+     "textragKey": "화이트스미스 하워드 카드",
+     "signals": [
+      "case-d-review-ambiguous"
+     ]
+    },
+    {
+     "textragKey": "화이트스미스 하워드(일반) 카드",
+     "signals": [
+      "case-d-review-ambiguous"
+     ]
+    }
+   ]
   },
   {
    "aegisName": "Baby_Leopard_Card",
@@ -609,11 +645,17 @@
    "rathenaItemId": 1421,
    "rathenaName": "Battle Hook",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "배틀훅",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 1421 (Battle Hook), type Weapon",
+    "weight 900/10=90.0 == TextRAG 90",
+    "buy 20 == TextRAG 20",
+    "atk 140 == TextRAG 140",
+    "slots 1 == TextRAG 1",
+    "weaponLv 4 == TextRAG 4",
+    "rAthena Name 'Battle Hook' -> 음역 '배틀훅'"
    ],
    "candidates": [
     {
@@ -907,11 +949,16 @@
    "rathenaItemId": 2425,
    "rathenaName": "Black Leather Boots",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "생명나무줄기슈즈",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2425 (Black Leather Boots), type Armor",
+    "weight 500/10=50.0 == TextRAG 50",
+    "buy 20 == TextRAG 20",
+    "def 4 == TextRAG 4",
+    "slots 0 == TextRAG 0",
+    "rAthena Name 'Black Leather Boots'와 직접적 이름 일치는 약하지만, 이 AegisName은 World Tree(생명의 나무) 세트 신발의 레거시 코드명이며 TextRAG desc '생명 나무 줄기로 엮은 신발'이 그 세트 테마와 정확히 일치 + 구조 신호 4개 전부 일치"
    ],
    "candidates": [
     {
@@ -962,11 +1009,16 @@
    "rathenaItemId": 2434,
    "rathenaName": "Black Leather Boots",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "검은가죽부츠",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2434 (Black Leather Boots), type Armor",
+    "weight 500/10=50.0 == TextRAG 50",
+    "buy 20 == TextRAG 20",
+    "def 4 == TextRAG 4",
+    "slots 1 == TextRAG 1",
+    "rAthena Name 'Black Leather Boots' == TextRAG desc '검은 가죽으로 만든 부츠'(직역)"
    ],
    "candidates": [
     {
@@ -1106,11 +1158,17 @@
    "rathenaItemId": 1615,
    "rathenaName": "Evil Bone Wand",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "이블 본 완드",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 1615 (Evil Bone Wand), type Weapon",
+    "weight 불일치(rAthena 700/10=70.0 vs TextRAG 1, weightSrc=stub -- TextRAG 값 자체가 placeholder라 비교 제외, 다른 신호로 판정)",
+    "buy 20 == TextRAG 20",
+    "atk 40 == TextRAG 40",
+    "slots 0 == TextRAG 0",
+    "weaponLv 3 == TextRAG 3",
+    "rAthena Name 'Evil Bone Wand' -> 음역 '이블 본 완드'"
    ],
    "candidates": [
     {
@@ -1584,11 +1642,16 @@
    "rathenaItemId": 2408,
    "rathenaName": "Shackles",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "족쇠",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2408 (Shackles), type Armor",
+    "weight 3000/10=300.0 == TextRAG 300",
+    "buy 5000 == TextRAG 5000",
+    "def 3 == TextRAG 3",
+    "slots 0 == TextRAG 0",
+    "rAthena Name 'Shackles' == TextRAG desc '무거운 쇠사슬 족쇄'(직역, '족쇠'='shackles')"
    ],
    "candidates": [
     {
@@ -1607,11 +1670,17 @@
    "rathenaItemId": 1741,
    "rathenaName": "Cursed Lyre",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "커즈드라이어",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 1741 (Cursed Lyre), type Weapon",
+    "weight 1250/10=125.0 == TextRAG 125",
+    "buy 20 == TextRAG 20",
+    "atk 125 == TextRAG 125",
+    "slots 1 == TextRAG 1",
+    "weaponLv 4 == TextRAG 4",
+    "rAthena Name 'Cursed Lyre' -> 음역 '커즈드라이어'"
    ],
    "candidates": [
     {
@@ -1918,11 +1987,16 @@
    "rathenaItemId": 5653,
    "rathenaName": "Darkness Helm",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "다크네스헬름_J",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 5653 (Darkness Helm), type Armor",
+    "weight 500/10=50.0 == TextRAG 50",
+    "buy 20 == TextRAG 20",
+    "def 3 == TextRAG 3",
+    "slots 1 == TextRAG 1",
+    "rAthena Name 'Darkness Helm' -> 음역 '다크네스헬름', AegisName의 '_J' 접미사까지 TextRAG 키에 보존"
    ],
    "candidates": [
     {
@@ -2028,11 +2102,16 @@
    "rathenaItemId": 2433,
    "rathenaName": "Diabolus Boots",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "마왕의부츠",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2433 (Diabolus Boots), type Armor",
+    "weight 250/10=25.0 == TextRAG 25",
+    "buy 20 == TextRAG 20",
+    "def 4 == TextRAG 4",
+    "slots 1 == TextRAG 1",
+    "rAthena Name 'Diabolus Boots'; TextRAG desc '마왕의 힘이 깃든 부츠'('마왕'='Diabolus/demon king')가 정확히 일치"
    ],
    "candidates": [
     {
@@ -2059,11 +2138,16 @@
    "rathenaItemId": 2537,
    "rathenaName": "Diabolus Manteau",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "마왕의망토",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2537 (Diabolus Manteau), type Armor",
+    "weight 250/10=25.0 == TextRAG 25",
+    "buy 20 == TextRAG 20",
+    "def 5 == TextRAG 5",
+    "slots 1 == TextRAG 1",
+    "Diabolus_Boots와 동일 세트, desc '마왕의 힘이 깃든 망토' 정확히 일치"
    ],
    "candidates": [
     {
@@ -2223,11 +2307,17 @@
    "rathenaItemId": 2001,
    "rathenaName": "Divine Cross",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "디바인크로스",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2001 (Divine Cross), type Weapon",
+    "weight 1500/10=150.0 == TextRAG 150",
+    "buy 20 == TextRAG 20",
+    "atk 120 == TextRAG 120",
+    "slots 0 == TextRAG 0",
+    "weaponLv 4 == TextRAG 4",
+    "rAthena Name 'Divine Cross' -> 음역 '디바인크로스'"
    ],
    "candidates": [
     {
@@ -2283,11 +2373,16 @@
    "rathenaItemId": 2527,
    "rathenaName": "Dragon Breath",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "드래곤의숨결",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2527 (Dragon Breath), type Armor",
+    "weight 600/10=60.0 == TextRAG 60",
+    "buy 20 == TextRAG 20",
+    "def 4 == TextRAG 4",
+    "slots 1 == TextRAG 1",
+    "rAthena Name 'Dragon Breath' == TextRAG desc '용의 숨결이 깃든 망토'(직역)"
    ],
    "candidates": [
     {
@@ -2353,11 +2448,17 @@
    "rathenaItemId": 13001,
    "rathenaName": "Dragon Killer",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "드래곤킬러",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 13001 (Dragon Killer), type Weapon",
+    "weight 900/10=90.0 == TextRAG 90",
+    "buy 20 == TextRAG 20",
+    "atk 110 == TextRAG 110",
+    "slots 0 == TextRAG 0",
+    "weaponLv 4 == TextRAG 4",
+    "rAthena Name 'Dragon Killer' -> 음역 '드래곤킬러', TextRAG desc가 동일 스크립트(bIgnoreDefRace RC_Dragon) 보유"
    ],
    "candidates": [
     {
@@ -2413,11 +2514,16 @@
    "rathenaItemId": 2553,
    "rathenaName": "Dragon Manteau",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "드래곤의망토",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2553 (Dragon Manteau), type Armor",
+    "weight 1000/10=100.0 == TextRAG 100",
+    "buy 20 == TextRAG 20",
+    "def 5 == TextRAG 5",
+    "slots 1 == TextRAG 1",
+    "rAthena Name 'Dragon Manteau' == TextRAG desc '용의 힘이 깃든 망토'(직역)"
    ],
    "candidates": [
     {
@@ -2460,11 +2566,17 @@
    "rathenaItemId": 1166,
    "rathenaName": "Dragon Slayer",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "드래곤슬레이어",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 1166 (Dragon Slayer), type Weapon",
+    "weight 1300/10=130.0 == TextRAG 130",
+    "buy 20 == TextRAG 20",
+    "atk 150 == TextRAG 150",
+    "slots 0 == TextRAG 0",
+    "weaponLv 4 == TextRAG 4",
+    "rAthena Name 'Dragon Slayer' -> 음역 '드래곤슬레이어'"
    ],
    "candidates": [
     {
@@ -2575,11 +2687,16 @@
    "rathenaItemId": 2358,
    "rathenaName": "Angel's Dress",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "천사의예복",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2358 (Angel's Dress), type Armor",
+    "weight 1000/10=100.0 == TextRAG 100",
+    "buy 20 == TextRAG 20",
+    "def 5 == TextRAG 5",
+    "slots 0 == TextRAG 0",
+    "rAthena Name \"Angel's Dress\" == TextRAG desc '천사의 예복'(직역, '예복'=formal dress)"
    ],
    "candidates": [
     {
@@ -2724,11 +2841,17 @@
    "rathenaItemId": 1732,
    "rathenaName": "Earth Bow",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "대지의활",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 1732 (Earth Bow), type Weapon",
+    "weight 1400/10=140.0 == TextRAG 140",
+    "buy 20 == TextRAG 20",
+    "atk 105 == TextRAG 105",
+    "slots 1 == TextRAG 1",
+    "weaponLv 3 == TextRAG 3",
+    "rAthena Name 'Earth Bow' == TextRAG desc '대지의활'(직역)"
    ],
    "candidates": [
     {
@@ -3060,11 +3183,16 @@
    "rathenaItemId": 2516,
    "rathenaName": "Falcon Muffler",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "매의날개옷",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2516 (Falcon Muffler), type Armor",
+    "weight 400/10=40.0 == TextRAG 40",
+    "buy 30000 == TextRAG 30000",
+    "def 3 == TextRAG 3",
+    "slots 0 == TextRAG 0",
+    "rAthena Name 'Falcon Muffler'; TextRAG desc '매의 깃털로 지은 날개옷'('매'=falcon)이 테마와 일치"
    ],
    "candidates": [
     {
@@ -3238,11 +3366,16 @@
    "rathenaItemId": 5124,
    "rathenaName": "Fricca's Circlet",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "프리카서클릿",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 5124 (Fricca's Circlet), type Armor",
+    "weight 300/10=30.0 == TextRAG 30",
+    "buy 30000 == TextRAG 30000",
+    "def 3 == TextRAG 3",
+    "slots 0 == TextRAG 0",
+    "rAthena Name \"Fricca's Circlet\"; TextRAG desc '여신 프리카의 서클릿'이 북유럽 신화 이름(Fricca/Frigg) 그대로 일치"
    ],
    "candidates": [
     {
@@ -3293,11 +3426,16 @@
    "rathenaItemId": 2417,
    "rathenaName": "Fricco's Shoes",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "프리코슈즈",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2417 (Fricco's Shoes), type Armor",
+    "weight 500/10=50.0 == TextRAG 50",
+    "buy 30000 == TextRAG 30000",
+    "def 3 == TextRAG 3",
+    "slots 0 == TextRAG 0",
+    "rAthena Name \"Fricco's Shoes\"; TextRAG desc '풍요의 신 프리코의 신발'이 정확히 일치"
    ],
    "candidates": [
     {
@@ -3332,11 +3470,17 @@
    "rathenaItemId": 1731,
    "rathenaName": "Frozen Bow",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "냉각의활",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 1731 (Frozen Bow), type Weapon",
+    "weight 1400/10=140.0 == TextRAG 140",
+    "buy 20 == TextRAG 20",
+    "atk 100 == TextRAG 100",
+    "slots 1 == TextRAG 1",
+    "weaponLv 3 == TextRAG 3",
+    "rAthena Name 'Frozen Bow'; TextRAG desc의 실제 스크립트(bAddEff,Eff_Freeze,1000)가 '냉각/동결' 테마와 정확히 일치 -- 이름+효과 이중 확인"
    ],
    "candidates": [
     {
@@ -3417,11 +3561,16 @@
    "rathenaItemId": 2371,
    "rathenaName": "Pantie",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "삼각팬티",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2371 (Pantie), type Armor",
+    "weight 100/10=10.0 == TextRAG 10",
+    "buy 1000 == TextRAG 1000",
+    "def 4 == TextRAG 4",
+    "slots 1 == TextRAG 1",
+    "rAthena Name 'Pantie' -> TextRAG desc '의외로 방어력이 있는 삼각팬티'(속옷류 아이템으로 동일 테마, 직역은 아니고 의역)"
    ],
    "candidates": [
     {
@@ -3541,11 +3690,16 @@
    "rathenaItemId": 2354,
    "rathenaName": "Goibne's Armor",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "게브네이의갑옷",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2354 (Goibne's Armor), type Armor",
+    "weight 3500/10=350.0 == TextRAG 350",
+    "buy 50000 == TextRAG 50000",
+    "def 7 == TextRAG 7",
+    "slots 0 == TextRAG 0",
+    "rAthena Name \"Goibne's Armor\"; TextRAG desc '명장 게브네이가 벼려낸 갑옷'이 켈트 신화 대장장이 신 Goibniu(게브네이) 이름과 세트 테마 그대로 일치"
    ],
    "candidates": [
     {
@@ -3564,11 +3718,16 @@
    "rathenaItemId": 2419,
    "rathenaName": "Goibne's Greaves",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "게브네이의군화",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2419 (Goibne's Greaves), type Armor",
+    "weight 700/10=70.0 == TextRAG 70",
+    "buy 30000 == TextRAG 30000",
+    "def 4 == TextRAG 4",
+    "slots 0 == TextRAG 0",
+    "rAthena Name \"Goibne's Greaves\"; TextRAG desc '명장 게브네이의 군화' 일치, 같은 Goibne 세트"
    ],
    "candidates": [
     {
@@ -3595,11 +3754,16 @@
    "rathenaItemId": 5128,
    "rathenaName": "Goibne's Helm",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "게브네이투구",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 5128 (Goibne's Helm), type Armor",
+    "weight 500/10=50.0 == TextRAG 50",
+    "buy 30000 == TextRAG 30000",
+    "def 5 == TextRAG 5",
+    "slots 0 == TextRAG 0",
+    "rAthena Name \"Goibne's Helm\"; TextRAG desc '명장 게브네이의 투구' 일치"
    ],
    "candidates": [
     {
@@ -3650,11 +3814,16 @@
    "rathenaItemId": 2520,
    "rathenaName": "Goibne's Spaulders",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "게브네이어깨장식",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2520 (Goibne's Spaulders), type Armor",
+    "weight 700/10=70.0 == TextRAG 70",
+    "buy 30000 == TextRAG 30000",
+    "def 3 == TextRAG 3",
+    "slots 0 == TextRAG 0",
+    "rAthena Name \"Goibne's Spaulders\"; TextRAG desc '명장 게브네이의 어깨 장식' 일치"
    ],
    "candidates": [
     {
@@ -3787,11 +3956,16 @@
    "rathenaItemId": 5176,
    "rathenaName": "Hahoe Mask",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "하회탈",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 5176 (Hahoe Mask), type Armor",
+    "weight 100/10=10.0 == TextRAG 10",
+    "buy 30000 == TextRAG 30000",
+    "def 2 == TextRAG 2",
+    "slots 0 == TextRAG 0",
+    "rAthena Name 'Hahoe Mask' == TextRAG desc '안동 하회탈'(한국 고유명사 직역, 매우 명확)"
    ],
    "candidates": [
     {
@@ -3939,11 +4113,17 @@
    "rathenaItemId": 1422,
    "rathenaName": "Hunting Spear",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "헌팅스피어",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 1422 (Hunting Spear), type Weapon",
+    "weight 4200/10=420.0 == TextRAG 420",
+    "buy 20 == TextRAG 20",
+    "atk 180 == TextRAG 180",
+    "slots 1 == TextRAG 1",
+    "weaponLv 4 == TextRAG 4",
+    "rAthena Name 'Hunting Spear' -> 음역 '헌팅스피어'"
    ],
    "candidates": [
     {
@@ -4025,11 +4205,16 @@
    "rathenaItemId": 2656,
    "rathenaName": "Armor Charm",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "하이퍼체인저",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2656 (Armor Charm), type Armor",
+    "weight 1000/10=100.0 == TextRAG 100",
+    "buy 20000 == TextRAG 20000",
+    "def 1 == TextRAG 1",
+    "slots 0 == TextRAG 0",
+    "rAthena Name 'Armor Charm'과 직접 일치는 약하지만 AegisName 'Hyper_Changer' -> 음역 '하이퍼체인저'가 정확 일치, desc '갑옷에 부착하는 보조 장치'도 Armor Charm 컨셉과 부합"
    ],
    "candidates": [
     {
@@ -4110,11 +4295,16 @@
    "rathenaItemId": 2390,
    "rathenaName": "Improved Tights",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "개량형타이즈",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2390 (Improved Tights), type Armor",
+    "weight 400/10=40.0 == TextRAG 40",
+    "buy 20 == TextRAG 20",
+    "def 6 == TextRAG 6",
+    "slots 1 == TextRAG 1",
+    "rAthena Name 'Improved Tights' == TextRAG desc '개량을 거친 타이즈'(직역, '개량형'='improved')"
    ],
    "candidates": [
     {
@@ -4187,11 +4377,16 @@
    "rathenaItemId": 5125,
    "rathenaName": "Angel's Kiss",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "천사의입맞춤",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 5125 (Angel's Kiss), type Armor",
+    "weight 300/10=30.0 == TextRAG 30",
+    "buy 10000 == TextRAG 10000",
+    "def 3 == TextRAG 3",
+    "slots 1 == TextRAG 1",
+    "rAthena Name \"Angel's Kiss\" == TextRAG desc '천사의 입맞춤'(직역)"
    ],
    "candidates": [
     {
@@ -4348,11 +4543,16 @@
    "rathenaItemId": 2749,
    "rathenaName": "Linen Glove",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "리넨글러브",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2749 (Linen Glove), type Armor",
+    "weight 120/10=12.0 == TextRAG 12",
+    "buy 20 == TextRAG 20",
+    "def 1 == TextRAG 1",
+    "slots 1 == TextRAG 1",
+    "rAthena Name 'Linen Glove' -> 음역 '리넨글러브', desc '리넨으로 짠 장갑' 일치"
    ],
    "candidates": [
     {
@@ -4372,20 +4572,12 @@
    "rathenaName": "Enchanted Peach Tree Card",
    "rathenaType": "Card",
    "textragKey": null,
-   "status": "unresolved-existing",
+   "status": "missing",
    "evidenceCase": null,
    "evidence": [
-    "원작 몬스터 ID [1410] -> 감사된 한글명 '인챈트 피치 트리'로 '인챈트 피치 트리 카드' 키를 찾았으나 db-items.json에 없음(축약/의역 번역일 가능성 — candidate로만 기록)",
-    "원작 몬스터 이름 'Enchanted Peach Tree'(감사 검증 원작 ID 1410, 한글명 '인챈트 피치 트리')의 수식어 '인챈트'가 빠진 축약 번역으로 보이는 카드가 db-items.json에 존재. desc('식물형 몬스터 20% 추가 피해류')가 나무 몬스터 카드로서 개연성은 있으나, 정확한 '인챈트 피치 트리 카드' 문자열이 아니므로 candidate로만 기록."
+    "P2-A.1이 이름 의역 후보로 남긴 '피치 트리 카드'를 실제 rAthena Script와 대조: rAthena Live_Peach_Tree_Card(Id 4217)의 실제 효과는 `bonus3 bAutoSpell,\"AL_HEAL\",1+9*(getskilllv(\"AL_HEAL\")==10),20;`(힐 오토스펠)인데, '피치 트리 카드'의 TextRAG effect는 raceBonus(식물형 +20% 피해)로 전혀 다른 효과 -- 이름만 비슷한 다른 카드로 판단, candidate 기각."
    ],
-   "candidates": [
-    {
-     "textragKey": "피치 트리 카드",
-     "signals": [
-      "manual-paraphrase-review"
-     ]
-    }
-   ]
+   "candidates": []
   },
   {
    "aegisName": "Loli_Ruri_Card",
@@ -4407,11 +4599,17 @@
    "rathenaItemId": 1420,
    "rathenaName": "Long Horn",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "롱혼",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 1420 (Long Horn), type Weapon",
+    "weight 1000/10=100.0 == TextRAG 100",
+    "buy 20 == TextRAG 20",
+    "atk 150 == TextRAG 150",
+    "slots 1 == TextRAG 1",
+    "weaponLv 4 == TextRAG 4",
+    "rAthena Name 'Long Horn' -> 음역 '롱혼'. rAthena Id 1420과 1428(Long_Horn_M)이 전 필드 완전히 동일한 duplicate record(ITEM_EQUIPMENT_PATCH_NOTES.md의 slots-merge 관행과 같은 성격) -- 둘 다 같은 TextRAG 키에 연결하는 것이 정당함"
    ],
    "candidates": [
     {
@@ -4464,11 +4662,17 @@
    "rathenaItemId": 1428,
    "rathenaName": "Long Horn",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "롱혼",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 1428 (Long Horn), type Weapon",
+    "weight 1000/10=100.0 == TextRAG 100",
+    "buy 20 == TextRAG 20",
+    "atk 150 == TextRAG 150",
+    "slots 1 == TextRAG 1",
+    "weaponLv 4 == TextRAG 4",
+    "Long_Horn과 동일 근거(전 필드 동일한 duplicate rAthena record, Id 1428)"
    ],
    "candidates": [
     {
@@ -4536,11 +4740,17 @@
    "rathenaItemId": 1723,
    "rathenaName": "Luna Bow",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "루나보우",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 1723 (Luna Bow), type Weapon",
+    "weight 2000/10=200.0 == TextRAG 200",
+    "buy 20 == TextRAG 20",
+    "atk 100 == TextRAG 100",
+    "slots 2 == TextRAG 2",
+    "weaponLv 3 == TextRAG 3",
+    "rAthena Name 'Luna Bow' -> 음역 '루나보우'"
    ],
    "candidates": [
     {
@@ -4694,11 +4904,16 @@
    "rathenaItemId": 2372,
    "rathenaName": "Mage Coat",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "매직코트",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2372 (Mage Coat), type Armor",
+    "weight 600/10=60.0 == TextRAG 60",
+    "buy 20 == TextRAG 20",
+    "def 5 == TextRAG 5",
+    "slots 1 == TextRAG 1",
+    "rAthena Name 'Mage Coat'; TextRAG desc '마력이 깃든 코트'('마력'=magic)가 테마 일치"
    ],
    "candidates": [
     {
@@ -4808,11 +5023,16 @@
    "rathenaItemId": 5122,
    "rathenaName": "Magni's Cap",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "메긴캡",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 5122 (Magni's Cap), type Armor",
+    "weight 1000/10=100.0 == TextRAG 100",
+    "buy 30000 == TextRAG 30000",
+    "def 5 == TextRAG 5",
+    "slots 0 == TextRAG 0",
+    "rAthena Name \"Magni's Cap\"; TextRAG desc '마그니의 모자'가 북유럽 신화 이름(Magni) 그대로 일치(TextRAG 키의 '메긴'은 音 변형이나 desc가 '마그니'로 명확히 확인)"
    ],
    "candidates": [
     {
@@ -5750,11 +5970,16 @@
    "rathenaItemId": 2278,
    "rathenaName": "Mr. Smile",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "스마일",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2278 (Mr. Smile), type Armor",
+    "weight 100/10=10.0 == TextRAG 10",
+    "buy 60 == TextRAG 60",
+    "def 1 == TextRAG 1",
+    "slots 0 == TextRAG 0",
+    "rAthena Name 'Mr. Smile' -> 'Mr.' 생략 음역 '스마일', desc '웃는 얼굴 가면'이 테마 일치"
    ],
    "candidates": [
     {
@@ -5976,11 +6201,16 @@
    "rathenaItemId": 2359,
    "rathenaName": "Ninja Suit",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "닌자슈츠",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2359 (Ninja Suit), type Armor",
+    "weight 1500/10=150.0 == TextRAG 150",
+    "buy 20 == TextRAG 20",
+    "def 7 == TextRAG 7",
+    "slots 1 == TextRAG 1",
+    "rAthena Name 'Ninja Suit' -> 음역 '닌자슈츠'"
    ],
    "candidates": [
     {
@@ -6032,31 +6262,28 @@
    "rathenaName": "Yellow Novus Card",
    "rathenaType": "Card",
    "textragKey": null,
-   "status": "unresolved-existing",
+   "status": "missing",
    "evidenceCase": null,
    "evidence": [
-    "원작 몬스터 ID [1718] -> 감사된 한글명 '노버스(황)'로 '노버스(황) 카드' 키를 찾았으나 db-items.json에 없음(축약/의역 번역일 가능성 — candidate로만 기록)",
-    "원작 몬스터 이름 'Yellow Novus'(감사 검증 원작 ID 1718, 한글명 '노버스(황)')의 '황' -> '황색' 표기 차이로 정확 문자열 매치에는 실패했지만 동일 카드로 보이는 레코드가 존재. candidate로만 기록."
+    "P2-A.1이 이름 의역 후보로 남긴 '황색 노버스 카드'를 실제 rAthena Script와 대조: rAthena Novus__Card(Id 4382)의 실제 효과는 `bonus bMaxHPrate,10;`(MaxHP % 증가)인데, '황색 노버스 카드'의 TextRAG desc는 'HP+500(고정치)/HP회복력+10%'로 단위·성격이 전혀 다름 -- candidate 기각."
    ],
-   "candidates": [
-    {
-     "textragKey": "황색 노버스 카드",
-     "signals": [
-      "manual-paraphrase-review"
-     ]
-    }
-   ]
+   "candidates": []
   },
   {
    "aegisName": "Odin's_Blessing",
    "rathenaItemId": 2353,
    "rathenaName": "Odin's Blessing",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "오딘의축복",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2353 (Odin's Blessing), type Armor",
+    "weight 2500/10=250.0 == TextRAG 250",
+    "buy 30000 == TextRAG 30000",
+    "def 6 == TextRAG 6",
+    "slots 1 == TextRAG 1",
+    "rAthena Name \"Odin's Blessing\" == TextRAG desc '오딘의 축복이 깃든 갑옷'(직역, 정확 일치)"
    ],
    "candidates": [
     {
@@ -6097,11 +6324,17 @@
    "rathenaItemId": 1734,
    "rathenaName": "Orc Archer Bow",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "오크아쳐의활",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 1734 (Orc Archer Bow), type Weapon",
+    "weight 1600/10=160.0 == TextRAG 160",
+    "buy 20 == TextRAG 20",
+    "atk 120 == TextRAG 120",
+    "slots 0 == TextRAG 0",
+    "weaponLv 3 == TextRAG 3",
+    "rAthena Name 'Orc Archer Bow' == TextRAG desc 계열 '오크아쳐의활'(직역)"
    ],
    "candidates": [
     {
@@ -6319,11 +6552,16 @@
    "rathenaItemId": 2313,
    "rathenaName": "Padded Armor",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "아머",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2313 (Padded Armor), type Armor",
+    "weight 2800/10=280.0 == TextRAG 280",
+    "buy 48000 == TextRAG 48000",
+    "def 7 == TextRAG 7",
+    "slots 1 == TextRAG 1",
+    "rAthena Name 'Padded Armor'; TextRAG desc '가죽 안에 철판을 덧댄 갑옷'(padding 컨셉)이 부합 -- 이름 자체는 일반적('아머'='Armor')이라 구조 신호(4개) 비중이 더 크다"
    ],
    "candidates": [
     {
@@ -6555,11 +6793,17 @@
    "rathenaItemId": 1572,
    "rathenaName": "Principles of Magic",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "마법의정석",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 1572 (Principles of Magic), type Weapon",
+    "weight 300/10=30.0 == TextRAG 30",
+    "buy 20 == TextRAG 20",
+    "atk 60 == TextRAG 60",
+    "slots 2 == TextRAG 2",
+    "weaponLv 3 == TextRAG 3",
+    "rAthena Name 'Principles of Magic' == TextRAG desc '마법의정석'(직역, '정석'='essentials/principles')"
    ],
    "candidates": [
     {
@@ -7355,11 +7599,16 @@
    "rathenaItemId": 2654,
    "rathenaName": "Shinobi Sash",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "시노비의허리띠",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2654 (Shinobi Sash), type Armor",
+    "weight 300/10=30.0 == TextRAG 30",
+    "buy 20000 == TextRAG 20000",
+    "def 1 == TextRAG 1",
+    "slots 0 == TextRAG 0",
+    "rAthena Name 'Shinobi Sash' == TextRAG desc '시노비의 허리띠'(직역)"
    ],
    "candidates": [
     {
@@ -7431,11 +7680,16 @@
    "rathenaItemId": 18539,
    "rathenaName": "Skull Cap",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "스컬캡",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 18539 (Skull Cap), type Armor",
+    "weight 200/10=20.0 == TextRAG 20",
+    "buy 40 == TextRAG 40",
+    "def 5 == TextRAG 5",
+    "slots 1 == TextRAG 1",
+    "rAthena Name 'Skull Cap' -> 음역 '스컬캡', desc '해골 문양 모자'(skull 문양) 부합"
    ],
    "candidates": [
     {
@@ -8038,11 +8292,16 @@
    "rathenaItemId": 2114,
    "rathenaName": "Stone Buckler",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "스톤버클러",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2114 (Stone Buckler), type Armor",
+    "weight 1500/10=150.0 == TextRAG 150",
+    "buy 30000 == TextRAG 30000",
+    "def 3 == TextRAG 3",
+    "slots 1 == TextRAG 1",
+    "rAthena Name 'Stone Buckler' -> 음역 '스톤버클러', desc '돌을 깎아 만든 버클러'(stone) 일치"
    ],
    "candidates": [
     {
@@ -8108,11 +8367,17 @@
    "rathenaItemId": 1620,
    "rathenaName": "Survivor's Rod",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "서바이버로드",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 1620 (Survivor's Rod), type Weapon",
+    "weight 1000/10=100.0 == TextRAG 100",
+    "buy 85000 == TextRAG 85000",
+    "atk 50 == TextRAG 50",
+    "slots 1 == TextRAG 1",
+    "weaponLv 3 == TextRAG 3",
+    "Survival_Rod_과 동일 근거(전 필드 동일한 duplicate rAthena record, Id 1620)"
    ],
    "candidates": [
     {
@@ -8156,11 +8421,17 @@
    "rathenaItemId": 1618,
    "rathenaName": "Survivor's Rod",
    "rathenaType": "Weapon",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "서바이버로드",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 1618 (Survivor's Rod), type Weapon",
+    "weight 1000/10=100.0 == TextRAG 100",
+    "buy 85000 == TextRAG 85000",
+    "atk 50 == TextRAG 50",
+    "slots 1 == TextRAG 1",
+    "weaponLv 3 == TextRAG 3",
+    "rAthena Name \"Survivor's Rod\" -> 음역 '서바이버로드'. rAthena Id 1618과 1620(Survival_Rod2_)이 전 필드 완전히 동일한 duplicate record -- Long_Horn과 같은 근거"
    ],
    "candidates": [
     {
@@ -8350,11 +8621,16 @@
    "rathenaItemId": 2424,
    "rathenaName": "Tidal Shoes",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "타이달슈즈",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2424 (Tidal Shoes), type Armor",
+    "weight 300/10=30.0 == TextRAG 30",
+    "buy 20 == TextRAG 20",
+    "def 3 == TextRAG 3",
+    "slots 1 == TextRAG 1",
+    "rAthena Name 'Tidal Shoes' -> 음역 '타이달슈즈', desc '파도의 힘이 깃든 신발'(tidal=파도) 일치"
    ],
    "candidates": [
     {
@@ -8485,11 +8761,16 @@
    "rathenaItemId": 5123,
    "rathenaName": "Ulle's Cap",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "울캡",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 5123 (Ulle's Cap), type Armor",
+    "weight 500/10=50.0 == TextRAG 50",
+    "buy 30000 == TextRAG 30000",
+    "def 3 == TextRAG 3",
+    "slots 1 == TextRAG 1",
+    "rAthena Name \"Ulle's Cap\"; TextRAG desc '사냥의 신 울의 모자'가 북유럽 신화 사냥의 신 Ullr(울) 그대로 일치"
    ],
    "candidates": [
     {
@@ -8575,11 +8856,16 @@
    "rathenaItemId": 2523,
    "rathenaName": "Undershirt",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "런닝셔츠",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2523 (Undershirt), type Armor",
+    "weight 150/10=15.0 == TextRAG 15",
+    "buy 20000 == TextRAG 20000",
+    "def 2 == TextRAG 2",
+    "slots 1 == TextRAG 1",
+    "rAthena Name 'Undershirt'; TextRAG desc '어깨에 걸치는 런닝셔츠'가 속옷/이너웨어 테마로 일치"
    ],
    "candidates": [
     {
@@ -8613,11 +8899,16 @@
    "rathenaItemId": 2517,
    "rathenaName": "Vali's Manteau",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "발리의망토",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2517 (Vali's Manteau), type Armor",
+    "weight 600/10=60.0 == TextRAG 60",
+    "buy 30000 == TextRAG 30000",
+    "def 4 == TextRAG 4",
+    "slots 0 == TextRAG 0",
+    "rAthena Name \"Vali's Manteau\"; TextRAG desc '복수의 신 발리의 망토'가 북유럽 신화 복수의 신 Vali(발리) 그대로 일치"
    ],
    "candidates": [
     {
@@ -8850,11 +9141,16 @@
    "rathenaItemId": 2418,
    "rathenaName": "Vidar's Boots",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "비다르의부츠",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 2418 (Vidar's Boots), type Armor",
+    "weight 650/10=65.0 == TextRAG 65",
+    "buy 30000 == TextRAG 30000",
+    "def 4 == TextRAG 4",
+    "slots 0 == TextRAG 0",
+    "rAthena Name \"Vidar's Boots\"; TextRAG desc '침묵의 신 비다르의 부츠'가 북유럽 신화 침묵의 신 Vidar(비다르) 그대로 일치"
    ],
    "candidates": [
     {
@@ -9084,11 +9380,16 @@
    "rathenaItemId": 18656,
    "rathenaName": "Witch's Pumpkin Hat",
    "rathenaType": "Armor",
-   "textragKey": null,
-   "status": "unresolved-existing",
-   "evidenceCase": null,
+   "textragKey": "마녀의호박모자",
+   "status": "verified",
+   "evidenceCase": "D",
    "evidence": [
-    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+    "rAthena Id 18656 (Witch's Pumpkin Hat), type Armor",
+    "weight 300/10=30.0 == TextRAG 30",
+    "buy 20 == TextRAG 20",
+    "def 10 == TextRAG 10",
+    "slots 0 == TextRAG 0",
+    "rAthena Name \"Witch's Pumpkin Hat\" == TextRAG desc '마녀의 호박 모자'(직역)"
    ],
    "candidates": [
     {

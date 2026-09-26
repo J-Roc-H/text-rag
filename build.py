@@ -43,6 +43,10 @@ COMBOS_JSON_PATH = os.path.join(DATA_DIR, "db-combos.json")
 # P2-A.1: 콤보 참조 아이템 identity map(tools/build_combo_item_identity.py 산출물) --
 # 마찬가지로 BLOCKS에는 넣지 않는다(runtime 미연결).
 COMBO_IDENTITY_JSON_PATH = os.path.join(DATA_DIR, "combo-item-identity.json")
+# P2-A.2: 사람이 검토·승인한 Case D mapping만 담은 review manifest -- 마찬가지로
+# BLOCKS에 넣지 않는다(runtime 미연결). identity builder가 이 파일을 읽어 identity
+# map에 반영한다(tools/build_combo_item_identity.py).
+COMBO_IDENTITY_REVIEW_JSON_PATH = os.path.join(DATA_DIR, "combo-item-identity-reviewed.json")
 OUTPUT_PATH = os.path.join(BASE, "룬미드가츠_v9.19.html")
 # GitHub Pages는 루트의 index.html을 서빙한다 — 버전 올려도 폰 북마크 URL이
 # 안 바뀌게 매 빌드마다 같은 내용을 index.html에도 복사한다 (2026-09-20)
@@ -485,6 +489,51 @@ def audit_combo_item_identity(identity_data, combos_data):
     return fails, warns
 
 
+def audit_review_manifest(review_data, textrag_items, referenced_aegis):
+    """P2-A.2: source/data/combo-item-identity-reviewed.json(Case D review manifest)
+    자체의 무결성 감사(과제 §17). identity map 감사(위)와는 별도 카운터로 보고한다 --
+    이 감사는 "병합되기 전" manifest 원본의 결함을 잡는다(identity map 감사는 병합
+    "이후" 결과를 본다).
+
+    FAIL: reviewed verified인데 evidence 없음, reviewed target key가 db-items.json에
+    없음, AegisName이 콤보가 참조하는 278개 대상 밖, 같은 AegisName에 review decision
+    중복, verified mapping 충돌(동일 rAthena id가 서로 다른 verified key로 두 번 이상
+    리뷰됨 -- identity map 감사의 rAthena-id 체크와 별개로 manifest 자체에서도 확인).
+    """
+    fails, warns = [], []
+    seen_aegis = {}
+    for item in review_data.get("items", []):
+        if not item.get("reviewed"):
+            continue
+        aegis = item.get("aegisName")
+        if not aegis:
+            fails.append("review manifest에 aegisName 없는 행")
+            continue
+        if aegis in seen_aegis:
+            fails.append(f"{aegis}: review manifest에 같은 AegisName 중복 decision")
+        seen_aegis[aegis] = item
+
+        if aegis not in referenced_aegis:
+            fails.append(f"{aegis}: review manifest에 있으나 콤보가 참조하는 278개 대상이 아님")
+
+        decision = item.get("decision")
+        if decision not in IDENTITY_KNOWN_STATUSES:
+            fails.append(f"{aegis}: review manifest의 알려지지 않은 decision '{decision}'")
+
+        if decision == "verified":
+            if not item.get("evidence"):
+                fails.append(f"{aegis}: reviewed verified인데 evidence 없음")
+            key = item.get("textragKey")
+            if not key:
+                fails.append(f"{aegis}: reviewed verified인데 textragKey 없음")
+            elif key not in textrag_items:
+                fails.append(f"{aegis}: reviewed textragKey '{key}'가 db-items.json에 없음")
+        elif decision == "ambiguous":
+            warns.append(f"{aegis}: review manifest ambiguous(자동 선택 보류)")
+
+    return fails, warns
+
+
 def load_data_files():
     raw = {}
     parsed = {}
@@ -570,6 +619,23 @@ def main():
                 print(f"IDENTITY WARN - combo item identity audit: {len(identity_warnings)} issue(s)")
             else:
                 print("OK - combo item identity audit")
+
+            # P2-A.2: review manifest(사람이 검토한 Case D mapping) 자체의 무결성 감사 --
+            # identity map 감사와도 별도 카운터("REVIEW WARN")로 보고한다(과제 §17).
+            if os.path.exists(COMBO_IDENTITY_REVIEW_JSON_PATH):
+                with open(COMBO_IDENTITY_REVIEW_JSON_PATH, encoding="utf-8") as f:
+                    review_data = json.load(f)
+                referenced_aegis = {
+                    r.get("aegisName") for c in combos_data.get("combos", []) for r in c.get("requiredItems", [])
+                }
+                review_fails, review_warnings = audit_review_manifest(review_data, parsed["DB_ITEMS"], referenced_aegis)
+                if review_fails:
+                    joined = "\n  - ".join(review_fails)
+                    raise ValueError(f"review manifest 감사 오류:\n  - {joined}")
+                if review_warnings:
+                    print(f"REVIEW WARN - combo item identity review audit: {len(review_warnings)} issue(s)")
+                else:
+                    print("OK - combo item identity review audit")
 
     for marker_key, filename in BLOCKS.items():
         marker = "{{__DATA_" + marker_key + "__}}"

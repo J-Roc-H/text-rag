@@ -20,6 +20,12 @@ db-combos.json은 건드리지 않는다(§3, §24).
            이번 단계에서는 Arrow_Of_Wind/Steel_Arrow 2건을 수작업으로 조사해
            하드코딩했다(각각 evidence 문자열에 근거 전체를 남긴다) — 일반화된
            자동 규칙이 아니다.
+  Case D - (P2-A.2 신설) rAthena item record ↔ TextRAG record 다중 필드 일치
+           + 이름 대응(직역/음역)까지 사람이 직접 검토해 확정한 경우.
+           source/data/combo-item-identity-reviewed.json(review manifest,
+           tools/gen_review_manifest.py로 생성)에 사람이 승인한 mapping만
+           기록돼 있고, 이 빌더는 그 결과를 그대로 읽어 반영할 뿐 자체적으로
+           score 기준 자동 승격을 하지 않는다(§15 금지 사항).
 
 그 외 전부는 candidate만 만들고 자동 확정하지 않는다(§6, §9).
 """
@@ -37,6 +43,7 @@ CARD_DROPMAP_JSON = REF_DIR / "card_monster_dropmap.json"
 MONSTER_AUDIT_MD = ROOT / "MONSTER_AI_AUDIT.md"
 TEXTRAG_ITEMS_JSON = ROOT / "source" / "data" / "db-items.json"
 TEXTRAG_MONSTERS_JSON = ROOT / "source" / "data" / "db-monsters.json"
+REVIEW_MANIFEST_JSON = ROOT / "source" / "data" / "combo-item-identity-reviewed.json"
 OUT_JSON = ROOT / "source" / "data" / "combo-item-identity.json"
 
 SOURCE_COMMIT = "e985006171d2eb320ee512a653f4c83aea3d81b6"
@@ -311,6 +318,16 @@ def generate_structural_candidates(rec, textrag_items):
     return candidates[:5]
 
 
+def load_review_manifest():
+    """P2-A.2 review manifest(source/data/combo-item-identity-reviewed.json)를 읽는다.
+    파일이 없으면(P2-A.2를 실행하지 않은 체크아웃) 조용히 빈 dict를 반환한다 — P2-A.1
+    단계까지의 동작을 그대로 보존한다."""
+    if not REVIEW_MANIFEST_JSON.exists():
+        return {}
+    data = load_json(REVIEW_MANIFEST_JSON)
+    return {item["aegisName"]: item for item in data.get("items", []) if item.get("reviewed")}
+
+
 def build_identity_map():
     aegis_set = combo_referenced_aegis()
     structural = load_json(STRUCTURAL_JSON)
@@ -321,6 +338,7 @@ def build_identity_map():
 
     card_records = {a: structural[a] for a in aegis_set if structural.get(a, {}).get("Type") == "Card"}
     case_b_results = resolve_cards_case_b(card_records, card_dropmap, audit_rows, textrag_items)
+    review_manifest = load_review_manifest()
 
     items = []
     for aegis in sorted(aegis_set):
@@ -407,6 +425,20 @@ def build_identity_map():
                 else "_aegis exact match 없음, 확정 경로 없음, 구조적 신호로도 candidate "
                 "0건(TextRAG에 대응 레코드가 아직 없을 가능성)"
             ]
+
+        # Case D(리뷰 manifest)는 Case A 다음으로 우선한다 — Case A는 절대 덮어쓰지 않는다
+        # (§15: 자동 승격 아님, 사람이 검토한 manifest만 반영. entry["evidenceCase"]=="A"인
+        # 행은 review manifest에 실수로 같은 aegisName이 들어와도 무시한다).
+        review = review_manifest.get(aegis)
+        if review and entry.get("evidenceCase") != "A":
+            entry["status"] = review["decision"]
+            entry["evidenceCase"] = review.get("evidenceCase")
+            entry["evidence"] = review["evidence"]
+            entry["textragKey"] = review.get("textragKey")
+            if review["decision"] == "ambiguous" and review.get("candidates"):
+                entry["candidates"] = [{"textragKey": k, "signals": ["case-d-review-ambiguous"]} for k in review["candidates"]]
+            elif review["decision"] in ("missing", "unresolved-existing"):
+                entry["candidates"] = []
 
         items.append(entry)
 
