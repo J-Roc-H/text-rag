@@ -277,8 +277,18 @@ def generate_structural_candidates(rec, textrag_items):
         for loc, types in LOCATION_TO_TEXTRAG_TYPES.items():
             if locs.get(loc):
                 pool_types.extend(types)
-        if locs.get("Left_Hand") and not (rec.get("Jobs") or {}):
+        if locs.get("Left_Hand"):
+            # P2-A.3에서 발견/수정: Left_Hand는 방패류뿐 아니라 마도서 같은 비-방패
+            # 오프핸드 아이템도 해당한다(예: 기존 Case A verified인 Memorize_Book).
+            # "Jobs가 비어 있으면 방패"라는 이전 휴리스틱은 틀렸다 — Tournament_Shield/
+            # Valkyrja's_Shield처럼 진짜 방패도 Jobs 제한을 갖는 경우가 흔해서, 이
+            # 조건 때문에 방패 아이템이 방패 후보군에서 아예 빠지고 "후보 0건 ->
+            # 전체 8종 fallback"으로 새 버그(엉뚱한 타입까지 candidate에 섞임)가
+            # 발생했다(§8 재조사에서 실측). Left_Hand면 무조건 방패+갑옷 둘 다
+            # 후보군에 넣고, 구조 신호로 걸러지게 한다.
             pool_types.append(SHIELD_TEXTRAG_TYPE)
+            if "갑옷" not in pool_types:
+                pool_types.append("갑옷")
         if not pool_types:
             pool_types = ["갑옷", "Accessory", "투구_상단", "투구_중단", "투구_하단", "걸칠것", "신발", "방패"]
     else:

@@ -8,12 +8,12 @@
   "totalSourceEntries": 105,
   "totalVariants": 156,
   "statusCounts": {
-   "verified": 26,
-   "source-needed": 107,
-   "unsupported": 23
+   "verified": 38,
+   "source-needed": 58,
+   "unsupported": 60
   },
   "identityMapUsed": true,
-  "identityVerifiedItemCount": 150
+  "identityVerifiedItemCount": 225
  },
  "combos": [
   {
@@ -169,8 +169,8 @@
      "aegisName": "Valkyrja's_Shield",
      "rathenaItemId": 2115,
      "rathenaName": "Valkyrja's Shield",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "발키리아쉴드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -185,9 +185,9 @@
      "reason": "\"bonus3 bAutoSpellWhenHit,sk,y,n;\" — 위와 동일 사유(확률 단위 미검증)."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -212,8 +212,8 @@
      "aegisName": "Valkyrja's_Shield",
      "rathenaItemId": 2115,
      "rathenaName": "Valkyrja's Shield",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "발키리아쉴드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -228,9 +228,9 @@
      "reason": "\"bonus3 bAutoSpellWhenHit,sk,y,n;\" — 위와 동일 사유(확률 단위 미검증)."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -255,8 +255,8 @@
      "aegisName": "Tournament_Shield",
      "rathenaItemId": 2133,
      "rathenaName": "Tournament Shield",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "토너먼트쉴드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -279,9 +279,9 @@
      "reason": "\"bonus2 bAddClass,c,x;\" — Class_* enum 매핑 미검증(추측 금지)."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -306,8 +306,8 @@
      "aegisName": "Tournament_Shield",
      "rathenaItemId": 2133,
      "rathenaName": "Tournament Shield",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "토너먼트쉴드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -330,9 +330,9 @@
      "reason": "\"bonus2 bAddClass,c,x;\" — Class_* enum 매핑 미검증(추측 금지)."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -357,8 +357,8 @@
      "aegisName": "Tournament_Shield",
      "rathenaItemId": 2133,
      "rathenaName": "Tournament Shield",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "토너먼트쉴드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -381,9 +381,9 @@
      "reason": "\"bonus2 bAddClass,c,x;\" — Class_* enum 매핑 미검증(추측 금지)."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -408,8 +408,8 @@
      "aegisName": "Spiritual_Ring",
      "rathenaItemId": 2677,
      "rathenaName": "Spiritual Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스피리츄얼링",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -464,8 +464,8 @@
      "aegisName": "Spiritual_Ring",
      "rathenaItemId": 2677,
      "rathenaName": "Spiritual Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스피리츄얼링",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -520,8 +520,8 @@
      "aegisName": "Spiritual_Ring_C",
      "rathenaItemId": 2711,
      "rathenaName": "Spiritual Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스피리츄얼링_C",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -576,8 +576,8 @@
      "aegisName": "Spiritual_Ring_C",
      "rathenaItemId": 2711,
      "rathenaName": "Spiritual Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스피리츄얼링_C",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -766,8 +766,8 @@
      "aegisName": "Librarian_Glove",
      "rathenaItemId": 2716,
      "rathenaName": "Librarian Glove",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "사서의장갑",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -833,8 +833,8 @@
      "aegisName": "Librarian_Glove",
      "rathenaItemId": 2716,
      "rathenaName": "Librarian Glove",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "사서의장갑",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -900,8 +900,8 @@
      "aegisName": "Mage_Coat",
      "rathenaItemId": 2334,
      "rathenaName": "Mage Coat",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "매직코트",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -932,10 +932,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0009-02",
@@ -1103,8 +1101,8 @@
      "aegisName": "Staff_Of_Wing",
      "rathenaItemId": 1616,
      "rathenaName": "Wing Staff",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "날개 지팡이",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -1128,9 +1126,9 @@
      "reason": "\"bonus bSpeedRate,n;\" — 이동속도, P0 vocabulary 없음."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -1155,8 +1153,8 @@
      "aegisName": "Clack_Of_Servival",
      "rathenaItemId": 2509,
      "rathenaName": "Survivor's Manteau",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "생존의망토",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -1184,9 +1182,9 @@
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus2 bSubEle,Ele_Neutral,min(30, getequiprefinerycnt(EQI_G"
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -1211,8 +1209,8 @@
      "aegisName": "Cloak_Of_Survival_C",
      "rathenaItemId": 2535,
      "rathenaName": "Cloak Of Survival",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "생존의망토_C",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -1235,9 +1233,9 @@
      "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -1262,8 +1260,8 @@
      "aegisName": "Cloak_Of_Survival_C",
      "rathenaItemId": 2535,
      "rathenaName": "Cloak Of Survival",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "생존의망토_C",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -1286,9 +1284,9 @@
      "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -1313,8 +1311,8 @@
      "aegisName": "Clack_Of_Servival",
      "rathenaItemId": 2509,
      "rathenaName": "Survivor's Manteau",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "생존의망토",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -1339,9 +1337,9 @@
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bMatkRate,getequiprefinerycnt(EQI_HAND_R)-5"
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -1431,8 +1429,8 @@
      "aegisName": "Exorcism_Bible",
      "rathenaItemId": 2129,
      "rathenaName": "Exorcism Bible",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "구마의성서",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -1479,8 +1477,8 @@
      "aegisName": "Lunatic_Brooch",
      "rathenaItemId": 2718,
      "rathenaName": "Lunatic Brooch",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "루나틱브로치",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -1511,10 +1509,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0018-01",
@@ -1765,8 +1761,8 @@
      "aegisName": "Cursed_Star",
      "rathenaItemId": 2748,
      "rathenaName": "Cursed Star",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "커즈드스타",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -1786,9 +1782,9 @@
      "reason": "\"bonus2 bAddEff,eff,n; n/100% chance...\" — 확률 단위(n/100%) 실사례 대조 전."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -1813,8 +1809,8 @@
      "aegisName": "Spiritual_Ring",
      "rathenaItemId": 2677,
      "rathenaName": "Spiritual Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스피리츄얼링",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -1851,9 +1847,9 @@
      "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -1878,8 +1874,8 @@
      "aegisName": "Spiritual_Ring_C",
      "rathenaItemId": 2711,
      "rathenaName": "Spiritual Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스피리츄얼링_C",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -1916,9 +1912,9 @@
      "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — P0에 %기반 MATK 필드 없음(matk는 flat만)."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -1952,8 +1948,8 @@
      "aegisName": "One_Eyed_Glass",
      "rathenaItemId": 2239,
      "rathenaName": "Monocle",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "외눈안경",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -2019,8 +2015,8 @@
      "aegisName": "One_Eyed_Glass",
      "rathenaItemId": 2239,
      "rathenaName": "Monocle",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "외눈안경",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -2138,8 +2134,8 @@
      "aegisName": "Valkyrja's_Shield",
      "rathenaItemId": 2115,
      "rathenaName": "Valkyrja's Shield",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "발키리아쉴드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -2177,9 +2173,9 @@
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bMdef,5+getequiprefinerycnt(EQI_HAND_L)+getequiprefine"
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -2195,8 +2191,8 @@
      "aegisName": "Valkyrja's_Shield_C",
      "rathenaItemId": 2137,
      "rathenaName": "Neo Valkyrja's Shield",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "발키리아쉴드_C",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -2234,9 +2230,9 @@
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bMdef,5+getequiprefinerycnt(EQI_HAND_L)+getequiprefine"
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -2261,8 +2257,8 @@
      "aegisName": "Angel's_Protection",
      "rathenaItemId": 2355,
      "rathenaName": "Angelic Protection",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "천사의가호",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -2319,9 +2315,9 @@
      "reason": "\"bonus3 bAutoSpellWhenHit,sk,y,n;\" — 위와 동일 사유(확률 단위 미검증)."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -2337,8 +2333,8 @@
      "aegisName": "Orleans_Server",
      "rathenaItemId": 2123,
      "rathenaName": "Orleans's Server",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "오를레앙의서버",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -2346,8 +2342,8 @@
      "aegisName": "Orleans_Glove",
      "rathenaItemId": 2701,
      "rathenaName": "Orleans's Glove",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "오를레앙의장갑",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -2362,9 +2358,9 @@
      "reason": "\"bonus bCastrate,n; Skill cast time rate + n%\" — 음수 가능(캐스팅 증가), P0 castReduction(0~1 fraction, 항상 감소)과 부호/단위 불일치."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -2380,8 +2376,8 @@
      "aegisName": "Thorny_Buckler",
      "rathenaItemId": 2124,
      "rathenaName": "Thorny Buckler",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "가시방패",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -2389,8 +2385,8 @@
      "aegisName": "Bison_Horn",
      "rathenaItemId": 2702,
      "rathenaName": "Bison Horn",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "들소의뿔",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -2410,9 +2406,9 @@
      "reason": "\"bonus bShortWeaponDamageReturn,n;\" — 반사 메커닉, P0 vocabulary 없음."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -2428,8 +2424,8 @@
      "aegisName": "Shadow_Guard",
      "rathenaItemId": 2135,
      "rathenaName": "Shadow Guard",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "쉐도우가드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -2437,8 +2433,8 @@
      "aegisName": "Shadow_Walk",
      "rathenaItemId": 2426,
      "rathenaName": "Shadow Walk",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "쉐도우워크",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -2458,9 +2454,9 @@
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): autobonus \"{ bonus bFlee,20; }\",200,10000,BF_WEAPON,\"{ speci"
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -2613,8 +2609,8 @@
      "aegisName": "Elven_Ears_",
      "rathenaItemId": 18507,
      "rathenaName": "Elven Ears",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "요정의귀",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -2638,9 +2634,9 @@
      "reason": "\"bonus bUseSPrate,n; SP consumption + n%\" — P0 spCostMul은 배율(0.7=30%감소)이라 %가산과 단위가 다름, 변환식 미확정."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -2656,8 +2652,8 @@
      "aegisName": "Padded_Armor",
      "rathenaItemId": 2312,
      "rathenaName": "Padded Armor",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "아머",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -2690,10 +2686,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0034-02",
@@ -2758,8 +2752,8 @@
      "aegisName": "Ninja_Suit",
      "rathenaItemId": 2337,
      "rathenaName": "Ninja Suit",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "닌자슈츠",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -2791,9 +2785,9 @@
      "reason": "\"bonus bUseSPrate,n; SP consumption + n%\" — P0 spCostMul은 배율(0.7=30%감소)이라 %가산과 단위가 다름, 변환식 미확정."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -2869,8 +2863,8 @@
      "aegisName": "Undershirt",
      "rathenaItemId": 2522,
      "rathenaName": "Undershirt",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "런닝셔츠",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -2894,10 +2888,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0036-02",
@@ -2971,8 +2963,8 @@
      "aegisName": "Undershirt",
      "rathenaItemId": 2522,
      "rathenaName": "Undershirt",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "런닝셔츠",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -2996,10 +2988,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0036-04",
@@ -3244,8 +3234,8 @@
      "aegisName": "Ulle_Cap_I",
      "rathenaItemId": 5493,
      "rathenaName": "Ulle's Cap",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "울캡_I",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -3258,7 +3248,7 @@
    "unsupportedEffects": [],
    "status": "source-needed",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "조건부(if/else) 구간이 있어 canonical 변환에서 제외됨(rawScript/conditionalRaw 참조)"
    ]
   },
   {
@@ -3391,8 +3381,8 @@
      "aegisName": "Valkyrie_Armor",
      "rathenaItemId": 2357,
      "rathenaName": "Valkyrian Armor",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "발키리의갑옷",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -3400,8 +3390,8 @@
      "aegisName": "Valkyrie_Shoes",
      "rathenaItemId": 2421,
      "rathenaName": "Valkyrian Shoes",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "발키리의슈즈",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -3409,8 +3399,8 @@
      "aegisName": "Valkyrie_Manteau",
      "rathenaItemId": 2524,
      "rathenaName": "Valkyrian Manteau",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "발키리의망토",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -3418,8 +3408,8 @@
      "aegisName": "Valkyrie_Helm",
      "rathenaItemId": 5171,
      "rathenaName": "Valkyrie Helm",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "발키리투구",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -3471,10 +3461,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0041-02",
@@ -3635,8 +3623,8 @@
      "aegisName": "Freyja_Overcoat",
      "rathenaItemId": 2369,
      "rathenaName": "Freyja Overcoat",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "프레이야의외투",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -3644,8 +3632,8 @@
      "aegisName": "Freyja_Boots",
      "rathenaItemId": 2428,
      "rathenaName": "Freyja Boots",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "프레이야의장화",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -3653,8 +3641,8 @@
      "aegisName": "Freyja_Cape",
      "rathenaItemId": 2533,
      "rathenaName": "Freyja Cape",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "프레이야의망토",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -3662,8 +3650,8 @@
      "aegisName": "Freyja_Crown",
      "rathenaItemId": 5306,
      "rathenaName": "Freya's Crown",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "프레이야의크라운",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -3703,9 +3691,9 @@
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): skill \"WZ_FROSTNOVA\",10"
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -3721,8 +3709,8 @@
      "aegisName": "Diabolus_Robe",
      "rathenaItemId": 2374,
      "rathenaName": "Diabolus Robe",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "마왕의로브",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -3769,8 +3757,8 @@
      "aegisName": "Diabolus_Armor",
      "rathenaItemId": 2375,
      "rathenaName": "Diabolus Armor",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "마왕의아머",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -3817,8 +3805,8 @@
      "aegisName": "Assaulter_Plate",
      "rathenaItemId": 2376,
      "rathenaName": "Assaulter Plate",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "돌격대장플레이트",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -3826,8 +3814,8 @@
      "aegisName": "Battle_Greave",
      "rathenaItemId": 2435,
      "rathenaName": "Battle Greaves",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "전투그리브",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -3835,8 +3823,8 @@
      "aegisName": "Commander_Manteau",
      "rathenaItemId": 2538,
      "rathenaName": "Captain's Manteau",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "사령관의망토",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -3893,9 +3881,9 @@
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): autobonus2 \"{ bonus2 bHPRegenRate,600,1000; }\",5,10000,BF_WE"
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -3911,8 +3899,8 @@
      "aegisName": "Elite_Engineer_Armor",
      "rathenaItemId": 2377,
      "rathenaName": "Elite Engineer Armor",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "정예공병의갑옷",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -3920,8 +3908,8 @@
      "aegisName": "Battle_Greave",
      "rathenaItemId": 2435,
      "rathenaName": "Battle Greaves",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "전투그리브",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -3929,8 +3917,8 @@
      "aegisName": "Commander_Manteau",
      "rathenaItemId": 2538,
      "rathenaName": "Captain's Manteau",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "사령관의망토",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -3997,9 +3985,9 @@
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus bUnbreakableArmor"
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -4015,8 +4003,8 @@
      "aegisName": "Assassin_Robe",
      "rathenaItemId": 2378,
      "rathenaName": "Assassin Robe",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "암살자의로브",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -4024,8 +4012,8 @@
      "aegisName": "Battle_Greave",
      "rathenaItemId": 2435,
      "rathenaName": "Battle Greaves",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "전투그리브",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -4033,8 +4021,8 @@
      "aegisName": "Commander_Manteau",
      "rathenaItemId": 2538,
      "rathenaName": "Captain's Manteau",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "사령관의망토",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -4093,9 +4081,9 @@
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): autobonus \"{ bonus2 bHPRegenRate,300,1000; }\",10,10000,BF_WE"
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -4111,8 +4099,8 @@
      "aegisName": "Warlock_Battle_Robe",
      "rathenaItemId": 2379,
      "rathenaName": "Warlock's Battle Robe",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "워락의전투로브",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -4120,8 +4108,8 @@
      "aegisName": "Combat_Boots",
      "rathenaItemId": 2436,
      "rathenaName": "Combat Boots",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "전투부츠",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -4129,8 +4117,8 @@
      "aegisName": "Commander_Manteau_",
      "rathenaItemId": 2539,
      "rathenaName": "Commander's Manteau",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "지휘관의망토",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -4182,9 +4170,9 @@
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): autobonus2 \"{ bonus bDefEle,Ele_Ghost; }\",30,10000,BF_WEAPON"
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -4200,8 +4188,8 @@
      "aegisName": "Medic_Robe",
      "rathenaItemId": 2380,
      "rathenaName": "Medic's Robe",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "위생병의로브",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -4209,8 +4197,8 @@
      "aegisName": "Combat_Boots",
      "rathenaItemId": 2436,
      "rathenaName": "Combat Boots",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "전투부츠",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -4218,8 +4206,8 @@
      "aegisName": "Commander_Manteau_",
      "rathenaItemId": 2539,
      "rathenaName": "Commander's Manteau",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "지휘관의망토",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -4276,9 +4264,9 @@
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): autobonus2 \"{ bonus bDefEle,Ele_Ghost; }\",30,10000,BF_WEAPON"
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -4294,8 +4282,8 @@
      "aegisName": "Elite_Archer_Suit",
      "rathenaItemId": 2381,
      "rathenaName": "Elite Archer Suit",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "정예궁병의슈츠",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -4303,8 +4291,8 @@
      "aegisName": "Combat_Boots",
      "rathenaItemId": 2436,
      "rathenaName": "Combat Boots",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "전투부츠",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -4312,8 +4300,8 @@
      "aegisName": "Commander_Manteau_",
      "rathenaItemId": 2539,
      "rathenaName": "Commander's Manteau",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "지휘관의망토",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -4365,9 +4353,9 @@
      "reason": "알려지지 않은 rAthena bonus 상수(rawScript만 보존): bDelayRate"
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -4383,8 +4371,8 @@
      "aegisName": "Elite_Shooter_Suit",
      "rathenaItemId": 2382,
      "rathenaName": "Elite Shooter Suit",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "정예사수의슈츠",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -4392,8 +4380,8 @@
      "aegisName": "Battle_Boots",
      "rathenaItemId": 2437,
      "rathenaName": "Battle Boots",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "군화",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -4401,8 +4389,8 @@
      "aegisName": "Sheriff_Manteau",
      "rathenaItemId": 2540,
      "rathenaName": "Sheriff's Manteau",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "보안관의망토",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -4454,9 +4442,9 @@
      "reason": "알려지지 않은 rAthena bonus 상수(rawScript만 보존): bDelayRate"
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -4472,8 +4460,8 @@
      "aegisName": "Sprint_Mail",
      "rathenaItemId": 2387,
      "rathenaName": "Sprint Mail",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스프린트메일",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -4481,8 +4469,8 @@
      "aegisName": "Sprint_Shoes",
      "rathenaItemId": 2440,
      "rathenaName": "Sprint Shoes",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스프린트슈즈",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -4587,8 +4575,8 @@
      "aegisName": "Krieger_Suit1",
      "rathenaItemId": 2394,
      "rathenaName": "Glorious Suit",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "크리거슈트1",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -4596,8 +4584,8 @@
      "aegisName": "Krieger_Shoes1",
      "rathenaItemId": 2444,
      "rathenaName": "Glorious Shoes",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "크리거슈즈1",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -4605,8 +4593,8 @@
      "aegisName": "Krieger_Muffler1",
      "rathenaItemId": 2549,
      "rathenaName": "Glorious Muffler",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "크리거머플러1",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -4646,9 +4634,9 @@
      "reason": "\"bonus2 bSkillHeal2,sk,n;\" — P0 healBoost 자체가 의미 미확정 상태(원작검증필요)."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -4781,8 +4769,8 @@
      "aegisName": "Wool_Scarf",
      "rathenaItemId": 2528,
      "rathenaName": "Wool Scarf",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "울스카프",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -4806,10 +4794,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0057-01",
@@ -4833,8 +4819,8 @@
      "aegisName": "Rider_Insignia",
      "rathenaItemId": 2529,
      "rathenaName": "Rider Insignia",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "라이더휘장",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -4851,10 +4837,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0057-02",
@@ -4921,8 +4905,8 @@
      "aegisName": "Rider_Insignia_M",
      "rathenaItemId": 2551,
      "rathenaName": "Crest of the Rider",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "라이더휘장_M",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -4939,10 +4923,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0057-04",
@@ -4966,8 +4948,8 @@
      "aegisName": "Rider_Insignia",
      "rathenaItemId": 2529,
      "rathenaName": "Rider Insignia",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "라이더휘장",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -4984,10 +4966,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0057-05",
@@ -5054,8 +5034,8 @@
      "aegisName": "Rider_Insignia_M",
      "rathenaItemId": 2551,
      "rathenaName": "Crest of the Rider",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "라이더휘장_M",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -5072,10 +5052,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0058-01",
@@ -5133,8 +5111,8 @@
      "aegisName": "Beach_Sandal",
      "rathenaItemId": 2441,
      "rathenaName": "Beach Sandals",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "비치샌들",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -5178,8 +5156,8 @@
      "aegisName": "Morpheus's_Shawl",
      "rathenaItemId": 2518,
      "rathenaName": "Morpheus's Shawl",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "모르피셔스쇼올",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -5187,8 +5165,8 @@
      "aegisName": "Morpheus's_Ring",
      "rathenaItemId": 2648,
      "rathenaName": "Morpheus's Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "모르피셔스반지",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -5196,8 +5174,8 @@
      "aegisName": "Morpheus's_Armlet",
      "rathenaItemId": 2649,
      "rathenaName": "Morpheus's Bracelet",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "모르피셔스팔찌",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -5205,8 +5183,8 @@
      "aegisName": "Morpheus's_Hood",
      "rathenaItemId": 5126,
      "rathenaName": "Morpheus's Hood",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "모르피셔스두건",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -5248,9 +5226,9 @@
      "reason": "\"bonus bCastrate,n; Skill cast time rate + n%\" — 음수 가능(캐스팅 증가), P0 castReduction(0~1 fraction, 항상 감소)과 부호/단위 불일치."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -5266,8 +5244,8 @@
      "aegisName": "Morrigane's_Manteau",
      "rathenaItemId": 2519,
      "rathenaName": "Morrigane's Manteau",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "모리아네의망토",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -5275,8 +5253,8 @@
      "aegisName": "Morrigane's_Belt",
      "rathenaItemId": 2650,
      "rathenaName": "Morrigane's Belt",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "모리아네의벨트",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -5284,8 +5262,8 @@
      "aegisName": "Morrigane's_Pendant",
      "rathenaItemId": 2651,
      "rathenaName": "Morrigane's Pendant",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "모리아네팬던트",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -5293,8 +5271,8 @@
      "aegisName": "Morrigane's_Helm",
      "rathenaItemId": 5127,
      "rathenaName": "Morrigane's Helm",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "모리아네헬름",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -5339,10 +5317,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0062-01",
@@ -5357,8 +5333,8 @@
      "aegisName": "Clip",
      "rathenaItemId": 2607,
      "rathenaName": "Clip",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "클립",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -5366,8 +5342,8 @@
      "aegisName": "Spiritual_Ring",
      "rathenaItemId": 2677,
      "rathenaName": "Spiritual Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스피리츄얼링",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -5395,9 +5371,9 @@
      "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -5413,8 +5389,8 @@
      "aegisName": "Clip",
      "rathenaItemId": 2607,
      "rathenaName": "Clip",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "클립",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -5422,8 +5398,8 @@
      "aegisName": "Spiritual_Ring_C",
      "rathenaItemId": 2711,
      "rathenaName": "Spiritual Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스피리츄얼링_C",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -5451,9 +5427,9 @@
      "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -5469,8 +5445,8 @@
      "aegisName": "Clip",
      "rathenaItemId": 2607,
      "rathenaName": "Clip",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "클립",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -5478,8 +5454,8 @@
      "aegisName": "Spiritual_Ring_M",
      "rathenaItemId": 2786,
      "rathenaName": "Spiritual Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스피리츄얼링_M",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -5507,9 +5483,9 @@
      "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -5525,8 +5501,8 @@
      "aegisName": "Rosary",
      "rathenaItemId": 2608,
      "rathenaName": "Rosary",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "로자리",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -5534,8 +5510,8 @@
      "aegisName": "Spiritual_Ring",
      "rathenaItemId": 2677,
      "rathenaName": "Spiritual Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스피리츄얼링",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -5563,9 +5539,9 @@
      "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -5581,8 +5557,8 @@
      "aegisName": "Rosary",
      "rathenaItemId": 2608,
      "rathenaName": "Rosary",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "로자리",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -5590,8 +5566,8 @@
      "aegisName": "Spiritual_Ring_C",
      "rathenaItemId": 2711,
      "rathenaName": "Spiritual Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스피리츄얼링_C",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -5619,9 +5595,9 @@
      "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -5637,8 +5613,8 @@
      "aegisName": "Rosary",
      "rathenaItemId": 2608,
      "rathenaName": "Rosary",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "로자리",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -5646,8 +5622,8 @@
      "aegisName": "Spiritual_Ring_M",
      "rathenaItemId": 2786,
      "rathenaName": "Spiritual Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스피리츄얼링_M",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -5675,9 +5651,9 @@
      "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -5702,8 +5678,8 @@
      "aegisName": "Spiritual_Ring",
      "rathenaItemId": 2677,
      "rathenaName": "Spiritual Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스피리츄얼링",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -5758,8 +5734,8 @@
      "aegisName": "Spiritual_Ring_C",
      "rathenaItemId": 2711,
      "rathenaName": "Spiritual Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스피리츄얼링_C",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -5814,8 +5790,8 @@
      "aegisName": "Spiritual_Ring_M",
      "rathenaItemId": 2786,
      "rathenaName": "Spiritual Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스피리츄얼링_M",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -5971,8 +5947,8 @@
      "aegisName": "Ring_Of_Resonance",
      "rathenaItemId": 2679,
      "rathenaName": "Ring Of Resonance",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "레조넌스링",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -6034,8 +6010,8 @@
      "aegisName": "Krieger_Ring1",
      "rathenaItemId": 2772,
      "rathenaName": "Glorious Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "크리거반지1",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -6087,8 +6063,8 @@
      "aegisName": "Krieger_Ring1",
      "rathenaItemId": 2772,
      "rathenaName": "Glorious Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "크리거반지1",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -6140,8 +6116,8 @@
      "aegisName": "Krieger_Ring1",
      "rathenaItemId": 2772,
      "rathenaName": "Glorious Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "크리거반지1",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -6193,8 +6169,8 @@
      "aegisName": "Krieger_Ring1",
      "rathenaItemId": 2772,
      "rathenaName": "Glorious Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "크리거반지1",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -6246,8 +6222,8 @@
      "aegisName": "Krieger_Ring1",
      "rathenaItemId": 2772,
      "rathenaName": "Glorious Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "크리거반지1",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -6299,8 +6275,8 @@
      "aegisName": "Krieger_Ring1",
      "rathenaItemId": 2772,
      "rathenaName": "Glorious Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "크리거반지1",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -6352,8 +6328,8 @@
      "aegisName": "Krieger_Ring1",
      "rathenaItemId": 2772,
      "rathenaName": "Glorious Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "크리거반지1",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -6405,8 +6381,8 @@
      "aegisName": "Bowman_Scarf",
      "rathenaItemId": 2727,
      "rathenaName": "Bowman Scarf",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "명궁의스카프",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -6439,8 +6415,8 @@
      "aegisName": "Shaman_Ring",
      "rathenaItemId": 2777,
      "rathenaName": "Shaman Ring",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "샤먼링",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -6506,8 +6482,8 @@
      "aegisName": "Dark_Knight_Belt",
      "rathenaItemId": 2779,
      "rathenaName": "Dark Knight Belt",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "다크나이트벨트",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -6515,8 +6491,8 @@
      "aegisName": "Dark_Knight_Glove",
      "rathenaItemId": 2780,
      "rathenaName": "Dark Knight Glove",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "다크나이트글로브",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -6573,8 +6549,8 @@
      "aegisName": "Dark_Knight_Belt",
      "rathenaItemId": 2779,
      "rathenaName": "Dark Knight Belt",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "다크나이트벨트",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -6582,8 +6558,8 @@
      "aegisName": "Dark_Knight_Glove",
      "rathenaItemId": 2780,
      "rathenaName": "Dark Knight Glove",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "다크나이트글로브",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },

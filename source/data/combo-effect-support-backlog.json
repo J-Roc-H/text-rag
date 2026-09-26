@@ -1,0 +1,322 @@
+{
+ "generatedFrom": "db-combos.json (identity-complete + no conditionalRaw + status=unsupported)",
+ "note": "soloFixRuntimeReadyPotential = 이 constant 하나만 지원하면 즉시 verified(runtime-ready)가 되는 콤보 수(그 콤보의 유일한 unsupported constant인 경우만)",
+ "backlog": [
+  {
+   "constant": "bSubRace",
+   "occurrenceCombos": 8,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0043-01",
+    "rathena-pre-0045-01",
+    "rathena-pre-0046-01",
+    "rathena-pre-0047-01",
+    "rathena-pre-0048-01",
+    "rathena-pre-0049-01",
+    "rathena-pre-0050-01",
+    "rathena-pre-0050-02"
+   ]
+  },
+  {
+   "constant": "bSkillAtk",
+   "occurrenceCombos": 7,
+   "soloFixRuntimeReadyPotential": 6,
+   "affectedComboIds": [
+    "rathena-pre-0046-01",
+    "rathena-pre-0062-01",
+    "rathena-pre-0062-02",
+    "rathena-pre-0062-03",
+    "rathena-pre-0062-04",
+    "rathena-pre-0062-05",
+    "rathena-pre-0062-06"
+   ]
+  },
+  {
+   "constant": "bonus",
+   "occurrenceCombos": 6,
+   "soloFixRuntimeReadyPotential": 2,
+   "affectedComboIds": [
+    "rathena-pre-0010-01",
+    "rathena-pre-0012-01",
+    "rathena-pre-0026-01",
+    "rathena-pre-0026-02",
+    "rathena-pre-0046-01",
+    "rathena-pre-0060-01"
+   ]
+  },
+  {
+   "constant": "bMatkRate",
+   "occurrenceCombos": 5,
+   "soloFixRuntimeReadyPotential": 4,
+   "affectedComboIds": [
+    "rathena-pre-0013-01",
+    "rathena-pre-0013-02",
+    "rathena-pre-0023-01",
+    "rathena-pre-0023-02",
+    "rathena-pre-0053-01"
+   ]
+  },
+  {
+   "constant": "bAddClass",
+   "occurrenceCombos": 4,
+   "soloFixRuntimeReadyPotential": 3,
+   "affectedComboIds": [
+    "rathena-pre-0003-01",
+    "rathena-pre-0003-02",
+    "rathena-pre-0003-03",
+    "rathena-pre-0053-01"
+   ]
+  },
+  {
+   "constant": "bCastrate",
+   "occurrenceCombos": 4,
+   "soloFixRuntimeReadyPotential": 2,
+   "affectedComboIds": [
+    "rathena-pre-0028-01",
+    "rathena-pre-0049-01",
+    "rathena-pre-0060-01",
+    "rathena-pre-0080-01"
+   ]
+  },
+  {
+   "constant": "bAutoSpellWhenHit",
+   "occurrenceCombos": 3,
+   "soloFixRuntimeReadyPotential": 3,
+   "affectedComboIds": [
+    "rathena-pre-0002-01",
+    "rathena-pre-0002-02",
+    "rathena-pre-0027-01"
+   ]
+  },
+  {
+   "constant": "bonus2",
+   "occurrenceCombos": 3,
+   "soloFixRuntimeReadyPotential": 2,
+   "affectedComboIds": [
+    "rathena-pre-0012-01",
+    "rathena-pre-0031-01",
+    "rathena-pre-0055-01"
+   ]
+  },
+  {
+   "constant": "bLongAtkRate",
+   "occurrenceCombos": 3,
+   "soloFixRuntimeReadyPotential": 2,
+   "affectedComboIds": [
+    "rathena-pre-0018-02",
+    "rathena-pre-0019-01",
+    "rathena-pre-0021-01"
+   ]
+  },
+  {
+   "constant": "bAddEff",
+   "occurrenceCombos": 3,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0019-01",
+    "rathena-pre-0022-01",
+    "rathena-pre-0030-01"
+   ]
+  },
+  {
+   "constant": "bAspdRate",
+   "occurrenceCombos": 3,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0029-01",
+    "rathena-pre-0047-01",
+    "rathena-pre-0102-01"
+   ]
+  },
+  {
+   "constant": "autobonus",
+   "occurrenceCombos": 3,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0030-01",
+    "rathena-pre-0047-01",
+    "rathena-pre-0102-01"
+   ]
+  },
+  {
+   "constant": "bUseSPrate",
+   "occurrenceCombos": 3,
+   "soloFixRuntimeReadyPotential": 3,
+   "affectedComboIds": [
+    "rathena-pre-0033-02",
+    "rathena-pre-0035-01",
+    "rathena-pre-0035-02"
+   ]
+  },
+  {
+   "constant": "bResEff",
+   "occurrenceCombos": 3,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0043-01",
+    "rathena-pre-0048-01",
+    "rathena-pre-0053-01"
+   ]
+  },
+  {
+   "constant": "autobonus2",
+   "occurrenceCombos": 3,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0045-01",
+    "rathena-pre-0048-01",
+    "rathena-pre-0049-01"
+   ]
+  },
+  {
+   "constant": "bAddEffWhenHit",
+   "occurrenceCombos": 3,
+   "soloFixRuntimeReadyPotential": 3,
+   "affectedComboIds": [
+    "rathena-pre-0071-01",
+    "rathena-pre-0076-01",
+    "rathena-pre-0078-01"
+   ]
+  },
+  {
+   "constant": "bSkillHeal2",
+   "occurrenceCombos": 2,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0046-01",
+    "rathena-pre-0053-01"
+   ]
+  },
+  {
+   "constant": "bLongAtkDef",
+   "occurrenceCombos": 2,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0050-01",
+    "rathena-pre-0050-02"
+   ]
+  },
+  {
+   "constant": "bDelayRate",
+   "occurrenceCombos": 2,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0050-01",
+    "rathena-pre-0050-02"
+   ]
+  },
+  {
+   "constant": "bAutoSpell",
+   "occurrenceCombos": 2,
+   "soloFixRuntimeReadyPotential": 2,
+   "affectedComboIds": [
+    "rathena-pre-0093-01",
+    "rathena-pre-0096-01"
+   ]
+  },
+  {
+   "constant": "bCastRate",
+   "occurrenceCombos": 1,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0010-01"
+   ]
+  },
+  {
+   "constant": "bSpeedRate",
+   "occurrenceCombos": 1,
+   "soloFixRuntimeReadyPotential": 1,
+   "affectedComboIds": [
+    "rathena-pre-0011-01"
+   ]
+  },
+  {
+   "constant": "bAtk",
+   "occurrenceCombos": 1,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0022-01"
+   ]
+  },
+  {
+   "constant": "bShortWeaponDamageReturn",
+   "occurrenceCombos": 1,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0029-01"
+   ]
+  },
+  {
+   "constant": "skill",
+   "occurrenceCombos": 1,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0043-01"
+   ]
+  },
+  {
+   "constant": "bHealpower2",
+   "occurrenceCombos": 1,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0045-01"
+   ]
+  },
+  {
+   "constant": "bAddItemHealRate",
+   "occurrenceCombos": 1,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0045-01"
+   ]
+  },
+  {
+   "constant": "bSkillHeal",
+   "occurrenceCombos": 1,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0046-01"
+   ]
+  },
+  {
+   "constant": "bHealPower",
+   "occurrenceCombos": 1,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0049-01"
+   ]
+  },
+  {
+   "constant": "bPerfectHitAddRate",
+   "occurrenceCombos": 1,
+   "soloFixRuntimeReadyPotential": 1,
+   "affectedComboIds": [
+    "rathena-pre-0077-01"
+   ]
+  },
+  {
+   "constant": "bAddEle",
+   "occurrenceCombos": 1,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0079-01"
+   ]
+  },
+  {
+   "constant": "bAddMonsterDropItem",
+   "occurrenceCombos": 1,
+   "soloFixRuntimeReadyPotential": 0,
+   "affectedComboIds": [
+    "rathena-pre-0079-01"
+   ]
+  },
+  {
+   "constant": "bSPGainRace",
+   "occurrenceCombos": 1,
+   "soloFixRuntimeReadyPotential": 1,
+   "affectedComboIds": [
+    "rathena-pre-0097-01"
+   ]
+  }
+ ]
+}

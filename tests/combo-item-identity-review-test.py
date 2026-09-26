@@ -35,13 +35,13 @@ def main():
     # ══════════════════════════════════════════════
     # A -- 고신뢰 구조 candidate라도 review manifest에 없으면 여전히
     # unresolved-existing이다(자동 score 승격 금지, §32/§15). 실제 데이터의
-    # "구조 신호 4개 tied" 사례(Angel's_Protection)로 확인: 두 후보가 구조적으로
-    # 동점이라 이번 세션에서도 review manifest에 넣지 않았다.
+    # "구조 신호 4개 tied" 사례(Alarm_Mask, P2-A.3에서도 새 증거(reqLv 등) 없이는
+    # 재판정하지 않는다는 원칙대로 그대로 보류)로 확인.
     # ══════════════════════════════════════════════
-    ap = by_aegis["Angel's_Protection"]
-    check("A: Angel's_Protection(구조 신호 tied, review manifest 미등재)은 unresolved-existing 유지",
-          ap['status'] == 'unresolved-existing')
-    check("A: candidate는 여전히 기록됨(탐색 지원 역할 유지)", len(ap['candidates']) >= 2)
+    am = by_aegis["Alarm_Mask"]
+    check("A: Alarm_Mask(구조 신호 tied, review manifest 미등재)은 unresolved-existing 유지",
+          am['status'] == 'unresolved-existing')
+    check("A: candidate는 여전히 기록됨(탐색 지원 역할 유지)", len(am['candidates']) >= 2)
 
     # ══════════════════════════════════════════════
     # B -- review manifest에 verified로 기록된 항목은 identity map에도
