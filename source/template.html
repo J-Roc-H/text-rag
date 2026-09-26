@@ -3980,126 +3980,23 @@ function calcStats(){
       let parsed = (typeof parseItem==='function') ? parseItem(itemName) : null;
       if(parsed && parsed.base){
         let i = parsed.base;
+        // 물리 기본 성능만 여기 남긴다(무기 ATK/방어구 DEF/제련/무기 타입·속성).
+        // 그 외 아이템·카드 효과(스탯/HIT·FLEE·CRIT·PD/MaxHP·MaxSP/조건부 피해/내성/특수효과/
+        // 카드 effect)는 collectItemEffects()(source/item-effects.js, P0-B)가 전담한다 —
+        // calcStats는 그 결과를 합산만 한다.
         if(i.atk)  wAtk       += (i.atk||0);
         if(i.def)  bonus.def  += (i.def||0);
         // 원작 Pre-Renewal: 방어구류(무기 제외) 제련 1당 DEF +1 — 무기는 별도 ATK 제련 보너스 블록에서 처리
         if(eqKey!=='무기' && parsed.refine>0) bonus.def += parsed.refine;
-        if(i.str)  bonus.str  += i.str;
-        if(i.agi)  bonus.agi  += i.agi;
-        if(i.vit)  bonus.vit  += i.vit;
-        if(i.int)  bonus.int  += i.int;
-        if(i.dex)  bonus.dex  += i.dex;
-        if(i.luk)  bonus.luk  += i.luk;
-        if(i.mdef)  bonus.mdef  += Number(i.mdef||0);
-        if(i.maxHp) bonus.maxHp += Number(i.maxHp||0);
-        if(i.maxSp) bonus.maxSp += Number(i.maxSp||0);
-        if(i.hit)   bonus.hit   += Number(i.hit||0);
-        if(i.crit)  bonus.crit  += Number(i.crit||0);
-        if(i.flee) bonus.flee += i.flee;
-        if(i.aspd) bonus.aspd += i.aspd;
         if(i.wType) p.weaponType = i.wType;
         if(i.element) p.weaponElement = i.element;
-        
-        // 카드 보너스 합산
-        if(parsed.cards && Array.isArray(parsed.cards)){
-          parsed.cards.forEach(cn=>{
-            let c = DB?.items?.[cn+" 카드"];
-            if(c){
-              if(c.atk)   wAtk        += Number(c.atk||0);
-              if(c.def)   bonus.def   += Number(c.def||0);
-              if(c.mdef)  bonus.mdef  += Number(c.mdef||0);
-              if(c.maxHp) bonus.maxHp += Number(c.maxHp||0);
-              if(c.maxSp) bonus.maxSp += Number(c.maxSp||0);
-              if(c.str)   bonus.str   += Number(c.str);
-              if(c.agi)   bonus.agi   += Number(c.agi);
-              if(c.vit)   bonus.vit   += Number(c.vit);
-              if(c.int)   bonus.int   += Number(c.int);
-              if(c.dex)   bonus.dex   += Number(c.dex);
-              if(c.luk)   bonus.luk   += Number(c.luk);
-              if(c.hit)   bonus.hit   += Number(c.hit||0);
-              if(c.flee)  bonus.flee  += Number(c.flee||0);
-              if(c.aspd)  bonus.aspd  += Number(c.aspd||0);
-              if(c.crit)  bonus.crit  += Number(c.crit||0);
-              if(c.maxHpPct)  bonus.maxHpPct  += Number(c.maxHpPct);
-              if(c.maxSpPct)  bonus.maxSpPct  += Number(c.maxSpPct);
-              if(c.hpRegenPct)bonus.hpRegenPct += Number(c.hpRegenPct);
-              if(c.spRegenPct)bonus.spRegenPct += Number(c.spRegenPct);
-              if(c.atkPct)    bonus.atkPct    += Number(c.atkPct);
-              if(c.raceAtk){    Object.entries(c.raceAtk).forEach(([r,v])=>{ if(!bonus.raceAtk)bonus.raceAtk={}; bonus.raceAtk[r]=(bonus.raceAtk[r]||0)+Number(v); }); }
-              if(c.elemAtk){    Object.entries(c.elemAtk).forEach(([e,v])=>{ if(!bonus.elemAtk)bonus.elemAtk={}; bonus.elemAtk[e]=(bonus.elemAtk[e]||0)+Number(v); }); }
-              if(c.sizeAtk){    Object.entries(c.sizeAtk).forEach(([s,v])=>{ if(!bonus.sizeAtk)bonus.sizeAtk={}; bonus.sizeAtk[s]=(bonus.sizeAtk[s]||0)+Number(v); }); }
-              if(c.magicRaceAtk){ Object.entries(c.magicRaceAtk).forEach(([r,v])=>{ if(!bonus.magicRaceAtk)bonus.magicRaceAtk={}; bonus.magicRaceAtk[r]=(bonus.magicRaceAtk[r]||0)+Number(v); }); }
-              if(c.bossAtk)   bonus.bossAtk  += Number(c.bossAtk);
-              if(c.raceDmgReduce){ Object.entries(c.raceDmgReduce).forEach(([r,v])=>{ if(!bonus.raceDmgReduce)bonus.raceDmgReduce={}; bonus.raceDmgReduce[r]=(bonus.raceDmgReduce[r]||0)+Number(v); }); }
-              if(c.elemReduce){   Object.entries(c.elemReduce).forEach(([e,v])=>{ if(!bonus.elemReduce)bonus.elemReduce={}; bonus.elemReduce[e]=(bonus.elemReduce[e]||0)+Number(v); }); }
-              if(c.dmgReduceAll)  bonus.dmgReduceAll  += Number(c.dmgReduceAll);
-              if(c.rangedDmgReduce) bonus.rangedDmgReduce += Number(c.rangedDmgReduce);
-              if(c.armorElement)  bonus.armorElement  = c.armorElement;
-              if(c.immune){ c.immune.forEach(im=>{ if(!bonus.immune)bonus.immune=[]; if(!bonus.immune.includes(im))bonus.immune.push(im); }); }
-              if(c.magicImmune)   bonus.magicImmune   = true;
-              if(c.spCostMul)     bonus.spCostMul     *= Number(c.spCostMul);
-              if(c.healBoost)     bonus.healBoost     += Number(c.healBoost);
-              if(c.castReduction) bonus.castReduction += Number(c.castReduction);
-              if(c.doubleAtk)     bonus.doubleAtkCard += Number(c.doubleAtk);
-              if(c.defIgnore)     bonus.defIgnore     = true;
-              if(c.hpDrainSelf)   bonus.hpDrainSelf   += Number(c.hpDrainSelf);
-              if(c.skillDmg){   Object.entries(c.skillDmg).forEach(([sn,v])=>{ if(!bonus.skillDmg)bonus.skillDmg={}; bonus.skillDmg[sn]=(bonus.skillDmg[sn]||0)+Number(v); }); }
-              if(c.grantSkill){ Object.entries(c.grantSkill).forEach(([sn,lv])=>{ if(!bonus.grantSkill)bonus.grantSkill={}; bonus.grantSkill[sn]=Math.max(bonus.grantSkill[sn]||0,lv); }); }
-              if(c.dropBonus){  if(!bonus.dropBonus)bonus.dropBonus=[]; bonus.dropBonus.push(c.dropBonus); }
-              if(c.perfectFlee) bonus.pd = (bonus.pd||0) + Number(c.perfectFlee); // [FIX 1-1] 완전회피 카드 보너스
-
-              // ── [v9.04] 카드 effect 필드 처리 (1-7 카드 효과 구현) ──
-              if(c.effect){
-                let eff = c.effect;
-                // stat type: 기본 스탯 추가
-                if((eff.type === 'stat' || eff.type === 'mixed') && eff.stats){
-                  Object.entries(eff.stats).forEach(([sk, sv]) => {
-                    if(sk === 'str') bonus.str += sv;
-                    else if(sk === 'agi') bonus.agi += sv;
-                    else if(sk === 'vit') bonus.vit += sv;
-                    else if(sk === 'int') bonus.int += sv;
-                    else if(sk === 'dex') bonus.dex += sv;
-                    else if(sk === 'luk') bonus.luk += sv;
-                  });
-                }
-                // special type: 무기 손상 무시 등
-                if(eff.type === 'special' && eff.weaponUnbreakable){
-                  if(!p.cardEffects) p.cardEffects = {};
-                  p.cardEffects.weaponUnbreakable = true;
-                }
-                // raceBonus type: 특정 종족 추가 데미지 (processTurn에서 처리)
-                if(eff.type === 'raceBonus'){
-                  if(!bonus.cardRaceBonus) bonus.cardRaceBonus = {};
-                  bonus.cardRaceBonus[eff.race] = (bonus.cardRaceBonus[eff.race] || 1.0) * eff.dmgMult;
-                }
-                // seProc type: 상태효과 확률 (processTurn에서 처리)
-                if((eff.type === 'seProc' || eff.type === 'mixed') && eff.seProc){
-                  if(!bonus.cardSeProc) bonus.cardSeProc = [];
-                  bonus.cardSeProc.push({se: eff.seProc.se, chance: eff.seProc.chance, turns: eff.seProc.turns});
-                }
-                // lifesteal type: SP 흡수 (processTurn에서 처리)
-                if(eff.type === 'lifesteal'){
-                  if(!bonus.cardLifesteal) bonus.cardLifesteal = [];
-                  bonus.cardLifesteal.push({spRate: eff.spRate, chance: eff.chance});
-                }
-                // bonus 필드: 파생 스탯 직접 추가
-                if(eff.bonus){
-                  Object.entries(eff.bonus).forEach(([bk, bv]) => {
-                    if(bk === 'atk') bonus.atk += bv;
-                    else if(bk === 'hit') bonus.hit += bv;
-                    else if(bk === 'crit') bonus.crit += bv;
-                    else if(bk === 'pd' || bk === 'perfectFlee') bonus.pd = (bonus.pd||0) + bv;
-                    else if(bk === 'maxHp') bonus.maxHp += bv;
-                    else if(bk === 'maxSp') bonus.maxSp += bv;
-                  });
-                }
-              }
-            }
-          });
-        }
       }
     });
   }
+
+  // ── [ 2-a. 아이템/카드 효과 집계 (P0-B 정본 진입점) ] ──
+  let fx = collectItemEffects(p, DB, parseItem);
+  mergeItemEffectsIntoBonus(fx, bonus);
 
   // ── [ 2-b. 탑승(mount) 효과 반영 ] ──
   if(p.mount && p.mount.effect){
@@ -4460,7 +4357,11 @@ function calcStats(){
     cardCastReduction:bonus.castReduction, cardDoubleAtkCard:bonus.doubleAtkCard,
     cardDefIgnore:bonus.defIgnore, cardHpDrainSelf:bonus.hpDrainSelf,
     cardSkillDmg:bonus.skillDmg, cardGrantSkill:bonus.grantSkill,
-    cardDropBonus:bonus.dropBonus
+    cardDropBonus:bonus.dropBonus,
+    // P0-B: 아이템/카드 효과 집계 원본(ledger/pending/unsupported/events 포함) — P0-C 이후
+    // 소비처가 이 값을 재사용한다. calcStats 자신의 위 cardXxx 필드들과 별개로, 집계
+    // 출처 추적이 필요한 소비처는 이쪽을 본다.
+    itemEffects: fx
   };
 
   // ── [ v9.10: 능력치 분석 Breakdown ] ──

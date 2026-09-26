@@ -10,8 +10,16 @@ CORS로 막힌다(DEVREF-E 보류-01).
 
 동적 세계지도는 source/world-map.js, 서비스 보강 계층은 source/services.js,
 소규모 UX 핫픽스는 source/ui-hotfix.js, 퀘스트 안내 보강은 source/quest-guide.js,
-장소/NPC 상호작용은 source/actor-interaction.js로 분리 관리하되 빌드 시 </body>
-직전에 모두 인라인한다. 최종 index.html / 룬미드가츠_v9.19.html 은 계속 단일 HTML이다.
+장소/NPC 상호작용은 source/actor-interaction.js, 아이템/카드 효과 집계(P0-B)는
+source/item-effects.js로 분리 관리하되 빌드 시 </body> 직전에 모두 인라인한다.
+최종 index.html / 룬미드가츠_v9.19.html 은 계속 단일 HTML이다.
+
+item-effects.js는 template.html 본문의 <script id="block-engine"> 안 calcStats()가
+정의된 훨씬 이전 위치보다 늦게(다른 주입 스크립트와 함께 </body> 직전에) 실행되지만,
+calcStats()는 window.onload=doLoading 이후에만 호출되므로(스크립트 파싱 시점에 즉시
+호출되는 곳 없음) 주입 순서가 런타임 오류를 만들지 않는다. 이 전제가 깨지면(예: 어떤
+스크립트가 파싱 중 즉시 calcStats를 호출하게 되면) item-effects.js를 그 이전으로
+옮겨야 한다.
 
 사용법: python build.py
 """
@@ -28,6 +36,7 @@ UI_HOTFIX_SCRIPT_PATH = os.path.join(BASE, "source", "ui-hotfix.js")
 QUEST_GUIDE_SCRIPT_PATH = os.path.join(BASE, "source", "quest-guide.js")
 ACTOR_INTERACTION_SCRIPT_PATH = os.path.join(BASE, "source", "actor-interaction.js")
 REFINE_REVEAL_SCRIPT_PATH = os.path.join(BASE, "source", "refine-reveal.js")
+ITEM_EFFECTS_SCRIPT_PATH = os.path.join(BASE, "source", "item-effects.js")
 OUTPUT_PATH = os.path.join(BASE, "룬미드가츠_v9.19.html")
 # GitHub Pages는 루트의 index.html을 서빙한다 — 버전 올려도 폰 북마크 URL이
 # 안 바뀌게 매 빌드마다 같은 내용을 index.html에도 복사한다 (2026-09-20)
@@ -168,6 +177,28 @@ def load_effect_audit_baseline():
     with open(EFFECT_AUDIT_BASELINE_PATH, encoding="utf-8") as f:
         data = json.load(f)
     return {(row["item"], row["code"]) for row in data.get("grandfathered", [])}
+
+
+def audit_item_effects_collector_sync(item_effects_js_path):
+    """P0-B: source/item-effects.js의 KNOWN_ITEM_EFFECT_TYPES가 build.py의
+    KNOWN_EFFECT_TYPES와 어긋나지 않는지만 확인한다(과대 확장 금지 -- 이 한 가지만).
+
+    두 파일이 각자 "엔진이 아는 effect.type 목록"을 따로 들고 있어서, 한쪽만 고치면
+    audit_item_effects()의 unknown-effect-type 판정과 collector의 실제 동작이 어긋난다.
+    """
+    src = open(item_effects_js_path, encoding="utf-8").read()
+    m = re.search(r"KNOWN_ITEM_EFFECT_TYPES\s*=\s*\[([^\]]*)\]", src)
+    if not m:
+        raise ValueError("item-effects.js: KNOWN_ITEM_EFFECT_TYPES 배열을 찾지 못함")
+    js_types = {t.strip().strip("'\"") for t in m.group(1).split(",") if t.strip()}
+    if js_types != KNOWN_EFFECT_TYPES:
+        only_js = js_types - KNOWN_EFFECT_TYPES
+        only_py = KNOWN_EFFECT_TYPES - js_types
+        raise ValueError(
+            "item-effects.js의 KNOWN_ITEM_EFFECT_TYPES가 build.py의 KNOWN_EFFECT_TYPES와 다름 -- "
+            f"JS에만 있음: {sorted(only_js)}, Python에만 있음: {sorted(only_py)}"
+        )
+    print("OK - item-effects.js collector 지원 타입 동기화")
 
 
 def audit_item_effects(items):
@@ -314,6 +345,8 @@ def main():
     else:
         print("OK - npc audit")
 
+    audit_item_effects_collector_sync(ITEM_EFFECTS_SCRIPT_PATH)
+
     item_effect_fails, item_effect_warnings = audit_item_effects(parsed["DB_ITEMS"])
     if item_effect_fails:
         joined = "\n  - ".join(item_effect_fails)
@@ -333,6 +366,7 @@ def main():
 
     # 레거시 UI 함수는 template.html에 남아 있어도 뒤에 로드되는 각 계층이 재정의한다.
     # actor-interaction은 기존 서비스/퀘스트 함수에 위임하므로 가장 마지막에 로드한다.
+    item_effects_script = open(ITEM_EFFECTS_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     world_map_script = open(WORLD_MAP_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     service_script = open(SERVICE_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     ui_hotfix_script = open(UI_HOTFIX_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
@@ -343,7 +377,12 @@ def main():
     count = template.count(body_close)
     assert count == 1, f"{body_close} matched {count} times (expected 1)"
     injected = (
-        f'\n<script id="world-map-v1">\n{world_map_script}\n</script>\n'
+        # item-effects는 calcStats()(block-engine, </body>보다 훨씬 앞)가 참조하는 전역
+        # 함수를 정의한다. 스크립트 태그는 문서 순서대로 실행되지만 calcStats 호출은
+        # window.onload=doLoading 이후에만 일어나므로(파싱 중 즉시 호출 없음) 다른 주입
+        # 스크립트와 함께 여기(</body> 직전)에서 정의해도 안전하다 — 다만 가장 먼저 둔다.
+        f'\n<script id="item-effects-v1">\n{item_effects_script}\n</script>\n'
+        f'<script id="world-map-v1">\n{world_map_script}\n</script>\n'
         f'<script id="block-service-systems">\n{service_script}\n</script>\n'
         f'<script id="ux-hotfix">\n{ui_hotfix_script}\n</script>\n'
         f'<script id="quest-guide-v1">\n{quest_guide_script}\n</script>\n'
@@ -365,6 +404,7 @@ def main():
 
     print(f"OK - built {OUTPUT_PATH} ({len(template)} chars)")
     print(f"OK - built {INDEX_PATH} (GitHub Pages entry point)")
+    print("OK - item effects collector (P0-B) injected")
     print("OK - dynamic SVG world map injected")
     print("OK - phase 1-2 service systems injected")
     print("OK - UX hotfix injected")
