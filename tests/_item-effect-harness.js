@@ -48,7 +48,7 @@ const sizeMatrix = extractInlineJson(html, 'db-size');
 const elementMatrix = extractInlineJson(html, 'db-element');
 
 const parseItemSrc = extractFunction(html, 'function parseItem(name) {');
-const calcStatsSrc = extractFunction(html, 'function calcStats(){');
+const calcStatsSrc = extractFunction(html, 'function calcStats(playerOverride){');
 const normalizeJobSrc = extractFunction(html, 'function normalizeJob(name){');
 
 // calcStats()의 마지막 s.statBreakdowns 계산은 UI 표시용 상세 브레이크다운이라
@@ -92,6 +92,33 @@ function makeGetEffectiveSkills() {
 }
 function makeGetItemDropBonus() {
   return new Function(itemEffectsSrc + '\nreturn getItemDropBonus;')();
+}
+
+// P1-C: 장비 비교(getEquipmentComparison) 정본 코드 3블록을 실제 소스 텍스트 그대로
+// 추출한다. equipSrc는 equipItem() 자신까지 포함한다 -- 실제 equip parity 테스트(§28)가
+// "getEquipmentComparison의 candidateStats"와 "실제 equipItem() 실행 후 calcStats()"를
+// 같은 소스로 검증해야 하기 때문이다.
+const statPanelSrc = extractBetween(html, 'function getSeStatBonus(p){', '// [스타일] 맵 분위기 틴트');
+const equipSrc = extractBetween(html, 'const JOB_WEAPON_ALLOW', 'function unequipItem(type){');
+const equipCompareSrc = extractBetween(html, 'function _cloneLoadoutForComparison(p){', '/** 장비 후보를 슬롯에');
+
+// G/DB/log 등은 전부 실제 인자로 주입한다(스텁이 아니라 실제 계산에 필요한 값만 넘긴다).
+// updateUI/showInvModal은 equipItem()이 호출하지만 장착 판정/결과 자체와는 무관해 no-op.
+function makeEquipmentCompareApi(DB, G) {
+  const fn = new Function(
+    'G', 'DB', 'log', 'josa', 'updateUI', 'showInvModal',
+    // JOB_NAME2CODE는 실제 부트스트랩에서 `window.JOB_NAME2CODE = DB.jobName2Code`로
+    // 만들어지는 별칭이다(재구현 아님) -- 여기서도 같은 한 줄로 재현한다.
+    'var JOB_NAME2CODE = DB.jobName2Code || {};\n' +
+      itemEffectsSrc + '\n' + BREAKDOWN_STUBS + '\n' + normalizeJobSrc + '\n' + parseItemSrc + '\n' +
+      calcStatsSrc + '\n' + statPanelSrc + '\n' + equipSrc + '\n' + equipCompareSrc +
+      '\nreturn { getEquipmentComparison, resolveEquipSlot, applyCandidateEquip, equipItem, calcStats };'
+  );
+  const logs = [];
+  return fn(
+    G, DB, (msg, type) => logs.push({ msg, type }), (n) => (/[가-힣]$/.test(n) ? '이' : '가'),
+    () => {}, () => {}
+  );
 }
 
 const rollDropsSrc = extractFunction(html, 'function rollDrops(p, mon, opts, stats){');
@@ -221,6 +248,6 @@ module.exports = {
   runCalcStats, makeTriggerItemEffects, makeGetSkillSpCost, runUseSkill,
   makeApplyIncomingItemReduction, makeIsStatusImmune,
   makeGetEffectiveSkills, makeGetItemDropBonus, runRollDrops,
-  runNormalAttackFormula,
+  runNormalAttackFormula, makeEquipmentCompareApi,
   makeParseItemFn, makePlayer, makeDB, pickRealItems,
 };
