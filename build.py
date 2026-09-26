@@ -171,11 +171,17 @@ def load_effect_audit_baseline():
 
 
 def audit_item_effects(items):
-    """db-items.json 효과 표현 감사 (P0-A, 2026-09-26).
+    """db-items.json 효과 표현 감사 (P0-A, 2026-09-26 / 교정 패스 2026-09-26).
 
     FAIL: 구조적으로 잘못됐거나(중복/누락/미지원 타입) 엔진 소비 경로가 없는 신규 표기.
     WARN: desc-only/raw script/baseline에 등재된 기존 문제 -- 빌드를 막지 않는다.
     baseline은 사람이 확인해 추가한 (item, code) 쌍만 WARN으로 격하한다(자동 증가 금지).
+
+    `_pendingVerification: true`(effect 객체 또는 아이템 최상위)는 "원작 근거를 찾지 못해
+    죽어 있던 표기 그대로 되돌려 둔" 항목 표식이다(교정 패스에서 73건 도입). 이 표식이 있으면
+    legacy-effect-key/reserved-string-effect는 FAIL이 아니라 WARN으로만 보고한다 -- 표식이
+    없는 새 항목이 같은 패턴을 쓰면 여전히 FAIL이다. 표식을 지우고 값을 활성화하려면 먼저
+    실제 원작 근거(rAthena 소스 또는 이 프로젝트의 몬스터 DB)를 확인할 것.
     """
     baseline = load_effect_audit_baseline()
     fails = []
@@ -192,14 +198,22 @@ def audit_item_effects(items):
             continue
 
         eff = it.get("effect")
+        item_pending = it.get("_pendingVerification") is True
         if isinstance(eff, str) and eff in RESERVED_EFFECT_WORDS:
-            report(name, "reserved-string-effect",
-                   f'effect="{eff}" 는 구조화 효과 전용 키워드 -- effect:{{"type":"{eff}", ...}} 형식으로 표현할 것')
+            msg = f'effect="{eff}" 는 구조화 효과 전용 키워드 -- effect:{{"type":"{eff}", ...}} 형식으로 표현할 것'
+            if item_pending:
+                warns.append(f'{name}: {msg} [원작검증필요 -- 활성화 보류, _pendingVerification]')
+            else:
+                report(name, "reserved-string-effect", msg)
 
         if isinstance(eff, dict):
+            eff_pending = item_pending or eff.get("_pendingVerification") is True
             if "effect" in eff and "type" not in eff:
-                report(name, "legacy-effect-key",
-                       f'effect.effect="{eff.get("effect")}" -- effect.type 표기로 정규화할 것 (엔진은 .type만 읽음)')
+                msg = f'effect.effect="{eff.get("effect")}" -- effect.type 표기로 정규화할 것 (엔진은 .type만 읽음)'
+                if eff_pending:
+                    warns.append(f'{name}: {msg} [원작검증필요 -- 활성화 보류, _pendingVerification]')
+                else:
+                    report(name, "legacy-effect-key", msg)
 
             t = eff.get("type")
             if t is not None and t not in KNOWN_EFFECT_TYPES:

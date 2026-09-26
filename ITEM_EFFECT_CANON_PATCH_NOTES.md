@@ -1,5 +1,12 @@
 # Item / card effect canonicalization patch (P0-A)
 
+> **Correction pass (same session, commit after `8ea0121`)**: the "71 cards: rename
+> `effect.effect`→`effect.type`" change below turned out to be a **behavior change**, not a
+> safe rename — see `## Correction pass` at the bottom. 73 of the items described in this
+> file's original "What changed" section were reverted; only 8 remain active. Read the
+> correction section before treating anything below as current state. Full detail:
+> `ITEM_EFFECT_AUDIT.md`.
+
 ## Scope
 
 Full inventory audit of `source/data/db-items.json` effect representations (top-level
@@ -81,3 +88,55 @@ python tests/item-effect-audit-test.py       # ALL TESTS PASS (new)
   into game mechanics — they need rAthena pre-re source cross-checking first (394 items
   total).
 - No change to `processTurn()` or any combat formula.
+
+## Correction pass
+
+Re-tracing `source/template.html` in full (not just the block quoted in the original audit)
+found a second, completely separate consumption path this patch's audit had missed:
+`processTurn()` re-parses every equipped item's cards on each hit and reads `card.effect.type`
+directly to apply `raceBonus`/`seProc`/`lifesteal` in real combat (lines ~6307-6347).
+`calcStats()`'s own `bonus.cardRaceBonus`/`cardSeProc`/`cardLifesteal` (which the original audit
+cited as "the" consumer) are computed and then **silently dropped** — never included in
+`calcStats()`'s return object, so they are dead code, not a real code path.
+
+That means the "71 cards: rename `effect.effect`→`effect.type`" fix above was not a safe
+key rename: because the real consumer reads `effect.type` directly from `DB.items`, the rename
+activated real in-combat damage bonuses / stat bonuses that had never fired before. Treating
+"the value already exists in the DB" as "already confirmed" was the mistake — none of these 73
+items (71 renamed + 피에르/현신(골렘형)) could be corroborated against this project's own card
+reference docs (`text-rag-docs/데이터베이스/카드_*db.md`, ~400 entries) or its monster DB
+(every raceBonus card's supposed source monster is absent from `db-monsters.json`). All 73 were
+reverted to their exact pre-`8ea0121` JSON (via `git show 8ea0121~1`) and marked
+`"_pendingVerification": true` so `build.py`'s audit reports them as WARN (not a fresh
+"legacy-key" FAIL) instead of silently re-activating.
+
+`현신(인간형) 카드`'s `race:"인간"`→`"인간형"` fix was also reverted: it was justified by the
+card's own name, not an rAthena source, so it doesn't meet the bar either (the item is part of
+the reverted 73 anyway).
+
+What's actually left active, verified against the project's card reference docs, and covered by
+a new regression test (`tests/item-effect-canon-correction-smoke.js`, which executes
+`calcStats()`/`parseItem()`/the real card-effect-on-hit block extracted verbatim from
+`source/template.html`):
+
+- 드롭스/파브르/프리오니/호넷/루나틱/고렘 카드: the 7-item top-level/`effect` duplicate
+  removal (§ "What changed" above) — confirmed against the card reference docs, applies exactly
+  once, un-equips cleanly.
+- 스켈레톤 카드: only the duplicated `bonus.atk` was ever touched; its `seProc` was already
+  `effect.type:'mixed'` before `8ea0121` and was never dead — not part of the revert.
+- 은총받은 자 카드: the flat-field promotion is a no-op on behavior (was already applied via
+  calcStats's unconditional `eff.bonus` merge) — kept.
+- 고렘 카드's `weaponUnbreakable` is a newly-confirmed **엔진미지원** finding: the card
+  reference docs confirm the effect is real ("무기는 절대로 손상되지 않는다"), but nothing in
+  the engine implements weapon breakage at all, so the flag has no consumer regardless of key
+  naming.
+
+`build.py`'s `audit_item_effects()` now recognizes `_pendingVerification` (WARN instead of FAIL
+for `legacy-effect-key`/`reserved-string-effect` only when marked) — a genuinely new,
+unmarked occurrence of the same anti-pattern still fails the build. Verification after the
+correction: `python build.py` → 0 FAIL / 469 WARN (up from 396; the 73 reverted items now show
+as WARN instead of being silently active). All prior smoke tests plus the new
+`item-effect-canon-correction-smoke.js` and `item-effect-audit-test.py` pass.
+
+Full findings, the corrected consumption-path trace, and the per-item re-judgment table are in
+`ITEM_EFFECT_AUDIT.md`.
