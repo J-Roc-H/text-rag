@@ -89,6 +89,25 @@ body{background:var(--bg-deep);color:var(--text);font-family:'Noto Sans KR',sans
 .stat-cost{font-size:10px;color:var(--text-dim);margin:0 4px;white-space:nowrap;}
 .pts-row{font-size:11px;color:var(--red-light);text-align:right;font-weight:700;}
 .stat-plus{background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:28px;height:26px;font-size:11px;cursor:pointer;display:none;align-items:center;justify-content:center;border-radius:2px;}
+/* [P1-B] 기본 능력치 보너스 출처(직업/장비/카드/버프/기타) — 값은 전부 기존 s.job*/s.bonus*/
+   ledger를 읽기만 한다(재계산 없음). */
+.stat-bonus-detail{font-size:9px;color:var(--text-dim);margin-left:4px;white-space:nowrap;}
+.combat-sec-hdr{font-size:10px;color:var(--gold);font-weight:700;margin:5px 0 2px;letter-spacing:.3px;}
+/* [P1-B] 적용 효과 섹션 — s.itemEffects(ledger/unsupported/pending) 표시 전용 변환 */
+.fx-hdr{display:flex;align-items:center;gap:4px;cursor:pointer;font-size:11px;color:var(--gold);font-weight:700;padding:5px 0 3px;user-select:none;}
+.fx-hdr .fx-arrow{margin-left:auto;font-size:10px;color:var(--text-dim);}
+.fx-body{display:block;}
+.fx-empty{font-size:11px;color:var(--text-dim);padding:3px 0;}
+.fx-group{margin-bottom:3px;}
+.fx-group-hdr{font-size:10px;color:var(--text-dim);font-weight:700;padding:2px 0;}
+.fx-row{display:flex;justify-content:space-between;gap:6px;font-size:11px;padding:1px 0 1px 6px;color:var(--text);}
+.fx-row-src{font-size:10px;color:var(--text-dim);white-space:nowrap;}
+.fx-row-warn{color:var(--text-dim);font-style:italic;}
+.fx-subhdr{font-size:10px;color:var(--text-dim);cursor:pointer;padding:3px 0;border-top:1px dashed var(--border);margin-top:3px;user-select:none;}
+@media(max-width:700px){
+  #char-detail .fx-body{display:none;}
+  #char-detail .fx-body.fx-open{display:block;}
+}
 
 .equip-sec{padding:5px 8px;border-top:1px solid var(--border);background:#f2f7fa;}
 .equip-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
@@ -34758,13 +34777,14 @@ body.work-mode p {
 <div class="cd-body" id="cd-body">
 <div class="stats-sec">
   <div class="pts-row" id="pts-row"></div>
-  <div class="stat-r"><span class="stat-lbl">STR</span><span class="stat-v" id="stat-str">1</span><span class="stat-cost" id="cost-str"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-str" onclick="addStat('str',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-str" onclick="addStatMax('str')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">AGI</span><span class="stat-v" id="stat-agi">1</span><span class="stat-cost" id="cost-agi"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-agi" onclick="addStat('agi',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-agi" onclick="addStatMax('agi')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">VIT</span><span class="stat-v" id="stat-vit">1</span><span class="stat-cost" id="cost-vit"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-vit" onclick="addStat('vit',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-vit" onclick="addStatMax('vit')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">INT</span><span class="stat-v" id="stat-int">1</span><span class="stat-cost" id="cost-int"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-int" onclick="addStat('int',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-int" onclick="addStatMax('int')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">DEX</span><span class="stat-v" id="stat-dex">1</span><span class="stat-cost" id="cost-dex"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-dex" onclick="addStat('dex',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-dex" onclick="addStatMax('dex')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">LUK</span><span class="stat-v" id="stat-luk">1</span><span class="stat-cost" id="cost-luk"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-luk" onclick="addStat('luk',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-luk" onclick="addStatMax('luk')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
-  <div style="height:1px;background:var(--border);margin:3px 0;"></div>
+  <div class="combat-sec-hdr">기본 능력치</div>
+  <div class="stat-r"><span class="stat-lbl">STR</span><span class="stat-v" id="stat-str">1</span><span class="stat-bonus-detail" id="bonus-str"></span><span class="stat-cost" id="cost-str"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-str" onclick="addStat('str',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-str" onclick="addStatMax('str')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">AGI</span><span class="stat-v" id="stat-agi">1</span><span class="stat-bonus-detail" id="bonus-agi"></span><span class="stat-cost" id="cost-agi"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-agi" onclick="addStat('agi',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-agi" onclick="addStatMax('agi')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">VIT</span><span class="stat-v" id="stat-vit">1</span><span class="stat-bonus-detail" id="bonus-vit"></span><span class="stat-cost" id="cost-vit"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-vit" onclick="addStat('vit',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-vit" onclick="addStatMax('vit')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">INT</span><span class="stat-v" id="stat-int">1</span><span class="stat-bonus-detail" id="bonus-int"></span><span class="stat-cost" id="cost-int"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-int" onclick="addStat('int',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-int" onclick="addStatMax('int')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">DEX</span><span class="stat-v" id="stat-dex">1</span><span class="stat-bonus-detail" id="bonus-dex"></span><span class="stat-cost" id="cost-dex"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-dex" onclick="addStat('dex',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-dex" onclick="addStatMax('dex')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">LUK</span><span class="stat-v" id="stat-luk">1</span><span class="stat-bonus-detail" id="bonus-luk"></span><span class="stat-cost" id="cost-luk"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-luk" onclick="addStat('luk',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-luk" onclick="addStatMax('luk')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="combat-sec-hdr">전투 능력치</div>
   <div class="stat-r"><span class="stat-lbl">⚔ ATK</span><span class="stat-v" id="stat-atk">3</span></div>
   <div class="stat-r"><span class="stat-lbl">🛡 DEF</span><span class="stat-v" id="stat-def">0</span></div>
   <div class="stat-r"><span class="stat-lbl">🔮 MATK</span><span class="stat-v" id="stat-matk">0+0</span></div>
@@ -34772,8 +34792,27 @@ body.work-mode p {
   <div class="stat-r"><span class="stat-lbl">🎯 HIT</span><span class="stat-v" id="stat-hit">2</span></div>
   <div class="stat-r"><span class="stat-lbl">🌀 FLEE</span><span class="stat-v" id="stat-flee">2</span></div>
   <div class="stat-r"><span class="stat-lbl">✨ CRIT</span><span class="stat-v" id="stat-crit">1</span></div>
+  <div class="stat-r" title="일반 FLEE와 별도로 공격을 완전히 회피할 확률 판정에 사용"><span class="stat-lbl">💯 완전회피(PD)</span><span class="stat-v" id="stat-pd">0</span></div>
   <div class="stat-r"><span class="stat-lbl">⚡ ASPD</span><span class="stat-v" id="stat-aspd">100</span></div>
   <div class="stat-r"><span class="stat-lbl">🔵 CAST</span><span class="stat-v" id="stat-cast">100%</span></div>
+  <div class="stat-r"><span class="stat-lbl">❤ MaxHP</span><span class="stat-v" id="stat-maxhp">100</span></div>
+  <div class="stat-r"><span class="stat-lbl">💧 MaxSP</span><span class="stat-v" id="stat-maxsp">50</span></div>
+  <div class="stat-r"><span class="stat-lbl">❤ HP 자연회복</span><span class="stat-v" id="stat-hpregen">1</span></div>
+  <div class="stat-r"><span class="stat-lbl">💧 SP 자연회복</span><span class="stat-v" id="stat-spregen">2</span></div>
+  <div class="fx-sec">
+    <div class="fx-hdr" id="fx-toggle" onclick="toggleFxBody()">적용 효과 <span id="fx-count-badge"></span><span class="fx-arrow" id="fx-toggle-arrow">▾</span></div>
+    <div id="fx-body" class="fx-body">
+      <div id="fx-groups"></div>
+      <div id="fx-unsupported-sec" style="display:none">
+        <div class="fx-subhdr" onclick="toggleFxSub('fx-unsupported-body')">⚠ 미지원 효과 <span id="fx-unsupported-count"></span></div>
+        <div id="fx-unsupported-body" style="display:none"></div>
+      </div>
+      <div id="fx-pending-sec" style="display:none">
+        <div class="fx-subhdr" onclick="toggleFxSub('fx-pending-body')">검증 대기 효과 <span id="fx-pending-count"></span></div>
+        <div id="fx-pending-body" style="display:none"></div>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="equip-sec">
 <div class="panel-hdr" style="margin:0 -8px 4px;padding:3px 8px;">EQUIPMENT</div>
@@ -34922,6 +34961,18 @@ function openCharDetail(tab){
 function closeCharDetail(){
   const el = document.getElementById('char-detail'); if(el) el.classList.remove('open');
   if(typeof syncMobileTab === 'function') syncMobileTab();
+}
+// [P1-B] 적용 효과 섹션 접기/펼치기 — PC/모바일 동일 DOM, CSS(@media max-width:700px)가
+// 모바일에서만 기본 접힘을 적용한다. 계산(getItemEffectDisplayRows)은 그대로, 표시만 토글.
+function toggleFxBody(){
+  const body = document.getElementById('fx-body'); if(!body) return;
+  body.classList.toggle('fx-open');
+  const arrow = document.getElementById('fx-toggle-arrow');
+  if(arrow) arrow.textContent = body.classList.contains('fx-open') ? '▴' : '▾';
+}
+function toggleFxSub(id){
+  const el = document.getElementById(id); if(!el) return;
+  el.style.display = (el.style.display === 'none') ? '' : 'none';
 }
 
 // ── [P1-13] 상단 저장 상태 — 기준은 자동저장(saveLocal). 파일 백업은 섞지 않는다 ──
@@ -38256,6 +38307,113 @@ function getSeStatBonus(p){
   return {str,agi,vit,int,dex,luk,def,mdef,hit,flee,crit,atk,matk,maxHp,maxSp};
 }
 
+// [P1-B] 기본 능력치 +N 보너스를 직업/장비/카드/버프/기타로 분해한다 -- 새 계산은 하지
+// 않는다. s.job*/s.bonus*(calcStats 기존 반환값), getSeStatBonus(기존, 표시 전용),
+// s.itemEffects.ledger(P0 정본, sourceType으로 장비/카드가 이미 구분돼 있다)만 읽는다.
+// 장비/카드/버프 세 출처를 뺀 나머지("기타")는 기본 스킬 패시브(노비스 스킬 등 ledger에
+// 없는 소스) 몫이다 -- 임의로 "패시브 스킬"이라 단정하지 않고 그냥 "기타"로 남긴다(과제
+// §4: "출처 확인 불가"로 뭉개지 말고 확보 가능한 수준까지만 표시하라는 지시에 따름).
+function getStatBonusBreakdown(stKey, s, p){
+  let capK = stKey.charAt(0).toUpperCase()+stKey.slice(1);
+  let job = s['job'+capK] || 0;
+  let bonVal = s['bonus'+capK] || 0;
+  let buff = getSeStatBonus(p)[stKey] || 0;
+  let ledger = (s.itemEffects && s.itemEffects.ledger) || [];
+  let equip = 0, card = 0;
+  ledger.forEach(function(e){
+    if(e.active && e.type==='stat' && e.key===stKey){
+      if(e.sourceType==='equipment') equip += e.value;
+      else if(e.sourceType==='card') card += e.value;
+    }
+  });
+  let etc = bonVal - equip - card - buff;
+  return { job: job, equip: equip, card: card, buff: buff, etc: etc, total: job + bonVal };
+}
+
+// [P1-B] 적용 효과 표시 — s.itemEffects(ledger/unsupported/pending, P0 정본)만 읽고 한국어
+// 문구로 바꾸는 표시 전용 변환이다. DB.items를 다시 읽지 않고, 새 게임 계산도 하지 않는다
+// (ledger에 이미 기록된 값을 그대로 옮기거나 이 프로젝트에 이미 있는 표시 관례(예: CAST의
+// *100 %환산, template.html의 castReduction 표시와 동일)로만 포맷한다).
+//
+// 기본/전투 능력치 합계에 이미 반영되는 단순 가산 효과(스탯/ATK/DEF/HIT/FLEE/CRIT/ASPD/
+// MaxHP/MaxSP/PD)는 여기서 제외한다 -- 중복 표시 방지(과제 §13/§35).
+var EFFECT_HIDE_KEYS = {
+  str:1, agi:1, vit:1, int:1, dex:1, luk:1, atk:1, def:1, mdef:1,
+  maxHp:1, maxSp:1, hit:1, flee:1, crit:1, aspd:1, pd:1,
+  maxHpPct:1, maxSpPct:1, hpRegenPct:1, spRegenPct:1,
+};
+function _fxPct(n){ return (n>0?'+':'') + n + '%'; }
+var EFFECT_LEDGER_FORMATTERS = {
+  atkPct:        { group:'공격', fmt:function(v){ return ['전체 공격력 '+_fxPct(v)]; } },
+  raceAtk:       { group:'공격', fmt:function(v){ return Object.keys(v).map(function(k){ return k+' 대상 피해 '+_fxPct(v[k]); }); } },
+  elemAtk:       { group:'공격', fmt:function(v){ return Object.keys(v).map(function(k){ return k+' 대상 피해 '+_fxPct(v[k]); }); } },
+  sizeAtk:       { group:'공격', fmt:function(v){ return Object.keys(v).map(function(k){ return k+' 대상 피해 '+_fxPct(v[k]); }); } },
+  bossAtk:       { group:'공격', fmt:function(v){ return ['보스(MVP) 피해 '+_fxPct(v)]; } },
+  defIgnore:     { group:'공격', fmt:function(){ return ['DEF 무시']; } },
+  dmgReduceAll:  { group:'방어', fmt:function(v){ return ['모든 피해 -'+v+'%']; } },
+  raceDmgReduce: { group:'방어', fmt:function(v){ return Object.keys(v).map(function(k){ return k+'에게 받는 피해 -'+v[k]+'%'; }); } },
+  elemReduce:    { group:'방어', fmt:function(v){ return Object.keys(v).map(function(k){ return k+' 공격에 받는 피해 -'+v[k]+'%'; }); } },
+  immune:        { group:'상태', fmt:function(v){ return v.map(function(k){ var d=DB.statusEffects&&DB.statusEffects[k]; return (d?d.name:k)+' 면역'; }); } },
+  spCostMul:     { group:'자원', fmt:function(v){ return ['SP 소비 ×'+v]; } },
+  castReduction: { group:'자원', fmt:function(v){ return ['캐스팅 -'+Math.round(v*100)+'%']; } },
+  hpDrainSelf:   { group:'자원', fmt:function(){ return ['전투 중 자기 HP 소모']; } },
+  raceBonus:     { group:'발동', fmt:function(v){ return ['공격 시 '+v.race+' 대상 피해 '+v.dmgMult+'배']; } },
+  seProc:        { group:'발동', fmt:function(v){ var d=DB.statusEffects&&DB.statusEffects[v.se]; return ['공격 시 '+(d?d.name:v.se)+' 부여 '+Math.round((v.chance||0)*100)+'%('+v.turns+'턴)']; } },
+  lifesteal:     { group:'발동', fmt:function(v){ return ['공격 시 SP 흡수 '+Math.round((v.chance||0)*100)+'%(피해량의 '+Math.round((v.spRate||0)*100)+'%)']; } },
+  hpDrain:       { group:'발동', fmt:function(v){ return ['공격 시 HP 흡수 '+Math.round((v.rate||0)*100)+'%']; } },
+  spDrain:       { group:'발동', fmt:function(v){ return ['공격 시 SP 흡수 '+Math.round((v.rate||0)*100)+'%']; } },
+  inflict:       { group:'발동', fmt:function(v){
+    var parts=[];
+    if(v.stun) parts.push('스턴 '+Math.round(v.stun*100)+'%');
+    if(v.confusion) parts.push('혼란 '+Math.round(v.confusion*100)+'%');
+    if(v.random_debuff) parts.push('무작위 이상상태 '+Math.round(v.random_debuff*100)+'%');
+    return ['공격 시 상태이상 부여'+(parts.length?' ('+parts.join(', ')+')':'')];
+  } },
+  autoSpell:     { group:'발동', fmt:function(v){ return ['공격 시 '+v.skill+' 자동 시전 '+Math.round((v.rate||0)*100)+'%']; } },
+  soulgain:      { group:'발동', fmt:function(v){ return [v.race+' 처치 시 SP +'+(v.sp||0)]; } },
+  grantSkill:    { group:'기능', fmt:function(v){ return Object.keys(v).map(function(k){ return k+' Lv.'+v[k]+' 사용 가능'; }); } },
+  dropBonus:     { group:'기능', fmt:function(v){ return ['드롭률 '+_fxPct(Math.round(v*100))]; } },
+};
+// ledger 항목이 fx.unsupported에도 같은 source/sourceType/key로 등록돼 있으면(P0 정본:
+// key+': '+사유 형식) 보류 필드다 -- 미지원 섹션이 담당하므로 일반 목록에서는 뺀다.
+function _isDeferredLedgerEntry(entry, unsupportedList){
+  return unsupportedList.some(function(u){
+    return u.source===entry.source && u.sourceType===entry.sourceType &&
+      entry.key && u.label && u.label.indexOf(entry.key+':')===0;
+  });
+}
+function getItemEffectDisplayRows(s){
+  var fx = (s && s.itemEffects) || { ledger:[], unsupported:[], pending:[] };
+  var groups = { 공격:[], 방어:[], 상태:[], 자원:[], 발동:[], 기능:[] };
+  (fx.ledger||[]).forEach(function(entry){
+    if(!entry.active) return;
+    if(entry.type==='pending' || entry.type==='unsupported') return;
+    var key = entry.key;
+    if(!key || EFFECT_HIDE_KEYS[key]) return;
+    var f = EFFECT_LEDGER_FORMATTERS[key];
+    if(!f) return; // 알려지지 않은 키는 표시하지 않는다(추측 라벨 금지)
+    if(_isDeferredLedgerEntry(entry, fx.unsupported||[])) return;
+    f.fmt(entry.value).forEach(function(label){
+      groups[f.group].push({ label: label, source: entry.source, sourceType: entry.sourceType });
+    });
+  });
+  return groups;
+}
+// [P1-B] 미지원(deferred) 라벨 -- fx.unsupported의 개발자용 사유 문구 대신 알려진 7개
+// 필드는 짧은 한국어 이름으로 바꾼다(과제 §17에서 이름을 그대로 명명한 필드들). 그 외
+// (string effect/무기파괴방지/unknown effect.type 등 극소수 레거시 데이터)는 원문 그대로
+// 보여준다 -- 임의로 새 이름을 지어내지 않는다.
+var EFFECT_KEY_DISPLAY_NAME = {
+  magicRaceAtk: '마법 종족 피해 증가', skillDmg: '스킬 피해 증가', doubleAtkCard: '카드 더블어택',
+  healBoost: '회복량 증가', rangedDmgReduce: '원거리 피해 감소',
+  magicImmune: '마법 면역', armorElement: '방어 속성',
+};
+function _unsupportedDisplayLabel(u){
+  var m = /^([a-zA-Z]+):/.exec(u.label||'');
+  var name = m && EFFECT_KEY_DISPLAY_NAME[m[1]];
+  return name || (u.label||'');
+}
+
 // [스타일] 맵 분위기 틴트 — 로그 배경을 맵 성격에 따라 저채도로 물들임 (CSS가 라이트/다크 분기)
 function applyMapTint(){
   let gl=$('game-log'); if(!gl) return;
@@ -38297,15 +38455,7 @@ function updateUI(){
   let jN=p.jobLv>=_jCap?1:p.jobLv*50; updateBar('jexp',jN===1?1:p.jobExp,jN,jN===1?'MAX':Math.floor(p.jobExp/jN*100)+'%');
   
   // 스탯 포인트 기반 스탯 표시 (앞스탯+뒷스탯)
-  // 형식: 순수포인트(흰) + 잡보너스(금) + 장비/패시브(파랑) + SE버프(초록)
   let seB = getSeStatBonus(p);
-  const fmtStat = (base, jobB, eqB, seBonus) => {
-    let html = `<span style="color:var(--text-bright)">${base}</span>`;
-    if(jobB    > 0) html += `<span style="color:var(--gold-light);font-size:11px">+${jobB}</span>`;
-    if(eqB   !== 0) html += `<span style="color:${eqB>0?'var(--blue-light)':'var(--red-light)'};font-size:11px">${eqB>0?'+':''}${eqB}</span>`;
-    if(seBonus > 0) html += `<span style="color:#27ae60;font-size:11px">+${seBonus}▲</span>`;
-    return html;
-  };
   // 파생 스탯: 기본치 + 장비/카드(파랑, 음수는 빨강) + SE버프(초록) 분리 표시
   const fmtDerived = (total, eqBonus, seBonus) => {
     eqBonus = (eqBonus||0) - (seBonus||0); // s.bonusXxx에는 SE 기여분 포함 → 장비/카드 몫만 분리
@@ -38315,17 +38465,22 @@ function updateUI(){
     if(seBonus  >  0) html += `<span style="color:#27ae60;font-size:11px">+${seBonus}▲</span>`;
     return html;
   };
-  ['str','agi','vit','int','dex','luk'].forEach(st=>{
-    let el = $('stat-'+st); if(!el) return;
-    let capSt = st.charAt(0).toUpperCase()+st.slice(1);
-    let baseVal = s['base'+capSt] ?? s[st];
-    let jobVal  = s['job'+capSt]   || 0;
-    let bonVal  = s['bonus'+capSt] || 0;
-    let seBVal  = seB[st] || 0;
-    let eqOnly  = bonVal - seBVal; // 장비/카드 몫 (음수 허용 — 스켈레톤망토 AGI-4 등)
-    let btnNodes = Array.from(el.querySelectorAll('button'));
-    el.innerHTML = fmtStat(baseVal, jobVal, eqOnly, seBVal);
-    btnNodes.forEach(b => el.appendChild(b));
+  // [P1-B] 기본 능력치 = 투자값(p.str 등) + 총 보너스(+N) + 직업/장비/카드/버프/기타 출처.
+  // getStatBonusBreakdown은 새 계산 없이 s.job*/s.bonus*/s.itemEffects.ledger/getSeStatBonus만
+  // 읽는다 -- statCost/STAT_CAP 등 P1-A 공식은 이 블록에서 손대지 않는다.
+  STAT_KEYS.forEach(st=>{
+    let el = $('stat-'+st); if(el) el.textContent = p[st]||1;
+    let bd = $('bonus-'+st); if(!bd) return;
+    let br = getStatBonusBreakdown(st, s, p);
+    if(!br.total){ bd.innerHTML=''; return; }
+    let parts=[];
+    if(br.job)   parts.push('직업'+(br.job>0?'+':'')+br.job);
+    if(br.equip) parts.push('장비'+(br.equip>0?'+':'')+br.equip);
+    if(br.card)  parts.push('카드'+(br.card>0?'+':'')+br.card);
+    if(br.buff)  parts.push('버프+'+br.buff);
+    if(br.etc)   parts.push('기타'+(br.etc>0?'+':'')+br.etc);
+    let color = br.total>0 ? 'var(--blue-light)' : 'var(--red-light)';
+    bd.innerHTML = `<b style="color:${color}">${br.total>0?'+':''}${br.total}</b>` + (parts.length?` (${parts.join(' ')})`:'');
   });
   // 파생 스탯 표시 (앞스탯+장비보너스 형식) — SE 기여분은 초록으로 분리
   if($('stat-atk'))  $('stat-atk').innerHTML  = `<span>${s.baseAtk}</span><span style="color:var(--blue-light);font-size:11px">+${s.weaponAtk}</span>${seB.atk>0?`<span style="color:#27ae60;font-size:11px">+${seB.atk}▲</span>`:''}`;
@@ -38353,7 +38508,43 @@ function updateUI(){
       ? `<span style="color:var(--green);font-weight:700">무캐스팅</span>`
       : `<span style="color:${castColor}">${castPct}%</span><span style="font-size:11px;color:var(--text-dim)"> 단축</span>`;
   }
-  
+  // [P1-B] PD(완전회피)/MaxHP/MaxSP/자연회복 — 전부 calcStats()가 이미 계산해 둔 값이지만
+  // 상태창에는 빠져 있었다(P0에서 s.pd/s.hpRegen/s.spRegen가 실제 소비되는 것을 확인).
+  if($('stat-pd')) $('stat-pd').textContent = s.pd||0;
+  if($('stat-maxhp')) $('stat-maxhp').innerHTML = `<span>${s.maxHp}</span>${s.bonusMaxHp?`<span style="color:var(--blue-light);font-size:11px">+${s.bonusMaxHp}</span>`:''}`;
+  if($('stat-maxsp')) $('stat-maxsp').innerHTML = `<span>${s.maxSp}</span>${s.bonusMaxSp?`<span style="color:var(--blue-light);font-size:11px">+${s.bonusMaxSp}</span>`:''}`;
+  if($('stat-hpregen')) $('stat-hpregen').textContent = s.hpRegen||0;
+  if($('stat-spregen')) $('stat-spregen').textContent = s.spRegen||0;
+
+  // [P1-B] 적용 효과 — s.itemEffects(ledger/unsupported/pending, P0 정본)만 읽는다.
+  // DB.items 재파싱 없음, 새 게임 계산 없음(표시 전용 변환).
+  (function renderItemEffectsPanel(){
+    let groups = getItemEffectDisplayRows(s);
+    let groupOrder = ['공격','방어','상태','자원','발동','기능'];
+    let total = 0, html = '';
+    groupOrder.forEach(g=>{
+      if(!groups[g] || !groups[g].length) return;
+      total += groups[g].length;
+      html += `<div class="fx-group"><div class="fx-group-hdr">${g}</div>` +
+        groups[g].map(row=>`<div class="fx-row"><span class="fx-row-label">${row.label}</span><span class="fx-row-src">${row.source}</span></div>`).join('') +
+        `</div>`;
+    });
+    if($('fx-groups')) $('fx-groups').innerHTML = html || `<div class="fx-empty">적용 효과 없음</div>`;
+    if($('fx-count-badge')) $('fx-count-badge').textContent = total>0 ? total+'개' : '';
+
+    let unsupported = (s.itemEffects && s.itemEffects.unsupported) || [];
+    if($('fx-unsupported-sec')) $('fx-unsupported-sec').style.display = unsupported.length ? '' : 'none';
+    if($('fx-unsupported-count')) $('fx-unsupported-count').textContent = unsupported.length ? unsupported.length+'개' : '';
+    if($('fx-unsupported-body')) $('fx-unsupported-body').innerHTML = unsupported.map(u=>
+      `<div class="fx-row fx-row-warn">⚠ ${_unsupportedDisplayLabel(u)} — 현재 미지원 <span class="fx-row-src">${u.source}</span></div>`).join('');
+
+    let pending = (s.itemEffects && s.itemEffects.pending) || [];
+    if($('fx-pending-sec')) $('fx-pending-sec').style.display = pending.length ? '' : 'none';
+    if($('fx-pending-count')) $('fx-pending-count').textContent = pending.length ? pending.length+'개' : '';
+    if($('fx-pending-body')) $('fx-pending-body').innerHTML = pending.map(pd=>
+      `<div class="fx-row">⚠ ${pd.source} — 효과 검증 대기</div>`).join('');
+  })();
+
   let pts=p.statPoints||0; if($('pts-row')) $('pts-row').textContent=`포인트: ${pts}`;
   // [P1-A] 미분배 포인트 배지 — PC 좌측 능력치 버튼 / 모바일 캐릭터 탭. "포인트가 있으면
   // 빨강"이 아니라 "지금 즉시 하나 이상의 스탯을 +1 할 수 있으면 빨강"으로 바꿨다 --
