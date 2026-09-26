@@ -86,6 +86,7 @@ body{background:var(--bg-deep);color:var(--text);font-family:'Noto Sans KR',sans
 .stats-sec{padding:5px 8px;background:#fff;}
 .stat-r{display:flex;justify-content:space-between;align-items:center;padding:2px 0;border-bottom:1px dashed #e0e8ed;}
 .stat-lbl{font-size:11px;color:var(--text-dim);font-weight:600;} .stat-v{font-family:'Cinzel',serif;font-size:10px;color:var(--text-bright);font-weight:600;}
+.stat-cost{font-size:10px;color:var(--text-dim);margin:0 4px;white-space:nowrap;}
 .pts-row{font-size:11px;color:var(--red-light);text-align:right;font-weight:700;}
 .stat-plus{background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:28px;height:26px;font-size:11px;cursor:pointer;display:none;align-items:center;justify-content:center;border-radius:2px;}
 
@@ -683,8 +684,8 @@ html[data-theme="dark"] .form-row{ border-bottom-color:var(--border); }
 /* refine 뱃지 (제련도 표시) */
 html[data-theme="dark"] .refine-bdg{ background:#1d3a5a; color:#7bb3d4; }
 
-/* 로딩/이미 덮인 stat-plus10 버튼 */
-html[data-theme="dark"] .stat-plus10{
+/* 로딩/이미 덮인 stat-plusmax 버튼 (P1-A 이전: stat-plus10) */
+html[data-theme="dark"] .stat-plusmax{
   background:#22303f !important;
   border-color:var(--border-gold) !important;
   color:var(--gold) !important;
@@ -979,12 +980,12 @@ body.work-mode p {
 <div class="cd-body" id="cd-body">
 <div class="stats-sec">
   <div class="pts-row" id="pts-row"></div>
-  <div class="stat-r"><span class="stat-lbl">STR</span><span class="stat-v" id="stat-str">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-str" onclick="addStat('str',1)">+1</button><button class="stat-plus10" id="plus10-str" onclick="addStat('str',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">AGI</span><span class="stat-v" id="stat-agi">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-agi" onclick="addStat('agi',1)">+1</button><button class="stat-plus10" id="plus10-agi" onclick="addStat('agi',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">VIT</span><span class="stat-v" id="stat-vit">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-vit" onclick="addStat('vit',1)">+1</button><button class="stat-plus10" id="plus10-vit" onclick="addStat('vit',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">INT</span><span class="stat-v" id="stat-int">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-int" onclick="addStat('int',1)">+1</button><button class="stat-plus10" id="plus10-int" onclick="addStat('int',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">DEX</span><span class="stat-v" id="stat-dex">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-dex" onclick="addStat('dex',1)">+1</button><button class="stat-plus10" id="plus10-dex" onclick="addStat('dex',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">LUK</span><span class="stat-v" id="stat-luk">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-luk" onclick="addStat('luk',1)">+1</button><button class="stat-plus10" id="plus10-luk" onclick="addStat('luk',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">STR</span><span class="stat-v" id="stat-str">1</span><span class="stat-cost" id="cost-str"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-str" onclick="addStat('str',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-str" onclick="addStatMax('str')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">AGI</span><span class="stat-v" id="stat-agi">1</span><span class="stat-cost" id="cost-agi"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-agi" onclick="addStat('agi',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-agi" onclick="addStatMax('agi')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">VIT</span><span class="stat-v" id="stat-vit">1</span><span class="stat-cost" id="cost-vit"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-vit" onclick="addStat('vit',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-vit" onclick="addStatMax('vit')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">INT</span><span class="stat-v" id="stat-int">1</span><span class="stat-cost" id="cost-int"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-int" onclick="addStat('int',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-int" onclick="addStatMax('int')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">DEX</span><span class="stat-v" id="stat-dex">1</span><span class="stat-cost" id="cost-dex"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-dex" onclick="addStat('dex',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-dex" onclick="addStatMax('dex')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">LUK</span><span class="stat-v" id="stat-luk">1</span><span class="stat-cost" id="cost-luk"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-luk" onclick="addStat('luk',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-luk" onclick="addStatMax('luk')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
   <div style="height:1px;background:var(--border);margin:3px 0;"></div>
   <div class="stat-r"><span class="stat-lbl">⚔ ATK</span><span class="stat-v" id="stat-atk">3</span></div>
   <div class="stat-r"><span class="stat-lbl">🛡 DEF</span><span class="stat-v" id="stat-def">0</span></div>
@@ -4575,39 +4576,37 @@ function updateUI(){
       : `<span style="color:${castColor}">${castPct}%</span><span style="font-size:11px;color:var(--text-dim)"> 단축</span>`;
   }
   
-  let pts=p.statPoints||0; if($('pts-row')) $('pts-row').textContent=pts>0?`포인트: ${pts}`:'';
-  // [P1-13] 미분배 포인트 배지 — PC 좌측 능력치 버튼 / 모바일 캐릭터 탭
-  ['pts-badge','m-pts-badge'].forEach(id=>{ let b=document.getElementById(id); if(b){ b.textContent=pts>0?`●${pts}`:''; b.style.display=pts>0?'':'none'; } });
+  let pts=p.statPoints||0; if($('pts-row')) $('pts-row').textContent=`포인트: ${pts}`;
+  // [P1-A] 미분배 포인트 배지 — PC 좌측 능력치 버튼 / 모바일 캐릭터 탭. "포인트가 있으면
+  // 빨강"이 아니라 "지금 즉시 하나 이상의 스탯을 +1 할 수 있으면 빨강"으로 바꿨다 --
+  // canSpendStatPoint() 하나만 쓰므로 PC/모바일 배지가 서로 다른 기준으로 갈릴 수 없다.
+  let canSpend = canSpendStatPoint(p);
+  ['pts-badge','m-pts-badge'].forEach(id=>{ let b=document.getElementById(id); if(b){ b.textContent=canSpend?`●${pts}`:''; b.style.display=canSpend?'':'none'; } });
 
-  // 스탯별 다음 1칸 비용 반영 (원작 누진 비용) — 상한·잔액에 따라 버튼 노출/흐림 처리
+  // [P1-A] 스탯별 다음 1칸 비용을 항상 표시하고, +10 대신 +1/최대만 남긴다. 버튼은
+  // 포인트가 부족해도 자리를 유지한 채 활성/비활성(투명도+커서)만 바뀐다 -- 포인트가
+  // 바뀔 때마다 버튼이 나타났다 사라졌다 하지 않게 한다(과제 지시 §9).
   STAT_KEYS.forEach(k=>{
     let cur = p[k]||1;
     let maxed = cur >= STAT_CAP;
-    let b1 = $('plus-'+k), b10 = $('plus10-'+k);
+    let b1 = $('plus-'+k), bMax = $('plusmax-'+k), costEl = $('cost-'+k);
     let c1 = maxed ? 0 : statCost(cur);
+    let maxN = maxed ? 0 : getMaxAffordableStatUps(cur, pts);
+    if(costEl) costEl.textContent = maxed ? '최대' : `${c1}점`;
     if(b1){
       b1.title = maxed ? `${k.toUpperCase()} 상한 ${STAT_CAP} 도달`
                        : `${k.toUpperCase()} ${cur} → ${cur+1} : ${c1}점 (보유 ${pts}점)`;
-      if(maxed || pts <= 0){ b1.style.display='none'; }
-      else {
-        b1.style.display='inline-flex';
-        let ok = pts >= c1;
-        b1.style.opacity = ok ? '1' : '0.35';
-        b1.style.cursor  = ok ? 'pointer' : 'not-allowed';
-      }
+      let ok = !maxed && pts >= c1;
+      b1.style.opacity = ok ? '1' : '0.35';
+      b1.style.cursor  = ok ? 'pointer' : 'not-allowed';
     }
-    if(b10){
-      let need=0, n=0;
-      for(let v=cur; v<Math.min(STAT_CAP, cur+10); v++){ need += statCost(v); n++; }
-      b10.title = (maxed || n===0) ? `${k.toUpperCase()} 상한 ${STAT_CAP} 도달`
-        : pts >= need ? `${k.toUpperCase()} +${n} : 총 ${need}점`
-        : `${k.toUpperCase()} +${n} : 총 ${need}점 — 보유 ${pts}점이라 가능한 만큼만 오릅니다`;
-      // 1칸도 못 사면 +10은 숨김
-      if(maxed || n===0 || pts < c1){ b10.style.display='none'; }
-      else {
-        b10.style.display='inline-flex';
-        b10.style.opacity = pts >= need ? '1' : '0.6';
-      }
+    if(bMax){
+      bMax.title = maxed ? `${k.toUpperCase()} 상한 ${STAT_CAP} 도달`
+        : maxN > 0 ? `${k.toUpperCase()} +${maxN} (보유 ${pts}점으로 가능한 최대)`
+        : `${k.toUpperCase()} : 다음 칸 ${c1}점 필요 — 보유 ${pts}점`;
+      let ok = !maxed && maxN > 0;
+      bMax.style.opacity = ok ? '1' : '0.35';
+      bMax.style.cursor  = ok ? 'pointer' : 'not-allowed';
     }
   });
   
@@ -4904,10 +4903,18 @@ function gainBaseExp(p, amount, silent){
     if(!need || need <= 0) break;
     if(p.baseExp < need) break;
     p.baseExp -= need;
-    p.statPoints = (p.statPoints||0) + levelStatPoints(p.baseLv); // 올리기 전 레벨 기준
+    let gainedPts = levelStatPoints(p.baseLv); // 올리기 전 레벨 기준
+    p.statPoints = (p.statPoints||0) + gainedPts;
     p.baseLv++;
     lvUp = true;
-    if(!silent){ log(`🌟 Base Lv.${p.baseLv} 달성!`,'level-up'); notify('레벨 업!','gold'); pbReact('levelup'); }
+    // [P1-A] 획득량/보유량을 하드코딩하지 않고 실제 levelStatPoints() 반환값과 갱신된
+    // p.statPoints를 그대로 쓴다. "포인트 획득 ≠ 항상 배분 가능"이므로 canSpendStatPoint()가
+    // true일 때만 배분 가능 문구를 덧붙인다(과제 지시 §17).
+    if(!silent){
+      let canSpendNow = canSpendStatPoint(p);
+      log(`🌟 Base Lv.${p.baseLv} 달성 — 상태 포인트 +${gainedPts} · 보유 ${p.statPoints}${canSpendNow?' · 능력치 배분 가능':''}`,'level-up');
+      notify('레벨 업!','gold'); pbReact('levelup');
+    }
   }
   if(lvUp && !silent){
     let ns = calcStats();
@@ -4939,6 +4946,44 @@ function addStat(st, amt=1){
     updateUI();
     log(`📊 ${st.toUpperCase()} +${raised} <span style="color:var(--text-dim)">(-${spent}점)</span>`,'system');
   }
+}
+
+// [P1-A] cur에서 points로 몇 칸까지 연속 상승 가능한지 계산하는 순수 함수.
+// UI 표시(최대 버튼 라벨/툴팁)와 실제 실행(addStatMax)이 반드시 이 함수 하나만 써야
+// "UI는 +4인데 실제로는 +3"같은 불일치가 생기지 않는다. statCost/STAT_CAP은 그대로 재사용.
+function getMaxAffordableStatUps(cur, points){
+  let n = 0, remain = points || 0;
+  while(cur + n < STAT_CAP){
+    let c = statCost(cur + n);
+    if(remain < c) break;
+    remain -= c; n++;
+  }
+  return n;
+}
+
+// [P1-A] "지금 즉시 하나 이상의 스탯을 +1 할 수 있는가" 단일 판정. PC(pts-badge)와
+// 모바일(m-pts-badge) 배지가 반드시 이 함수 하나만 써야 두 배지의 빨강 여부가 갈리지
+// 않는다. statPoints>0 만으로는 안 된다 -- 포인트가 있어도 모든 스탯이 상한이거나 다음
+// 칸 비용보다 적으면 지금은 아무것도 할 수 없다(과제 지시 §10).
+function canSpendStatPoint(p){
+  if(!p) return false;
+  let pts = p.statPoints || 0;
+  if(pts <= 0) return false;
+  return STAT_KEYS.some(function(k){
+    let cur = p[k] || 1;
+    return cur < STAT_CAP && pts >= statCost(cur);
+  });
+}
+
+// [P1-A] "최대" 버튼의 유일한 실행 경로 -- getMaxAffordableStatUps로 계산한 값을 그대로
+// addStat에 넘긴다(재계산·재구현 없음). addStat 자신의 반복 비용 계산과 완전히 같은
+// statCost를 쓰므로 UI가 예고한 칸 수와 실제 오르는 칸 수가 항상 일치한다.
+function addStatMax(st){
+  let p = G.player; if(!p) return;
+  let cur = p[st] || 1;
+  let n = getMaxAffordableStatUps(cur, p.statPoints || 0);
+  if(n <= 0){ log(`⚠ ${st.toUpperCase()}: 지금 보유 포인트로는 1칸도 올릴 수 없습니다.`,'warning'); return; }
+  addStat(st, n);
 }
 
 // [P2-10] 받침 유무로 조사 선택 (이/가, 을/를, 은/는, 와/과 등). word 끝이 한글 음절이 아니면 뒤쪽(받침 없음 취급) 반환
