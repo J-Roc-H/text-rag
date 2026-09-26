@@ -1617,10 +1617,10 @@ body.work-mode p {
   "무기점 상인(알데바란)": {"map": "알데바란", "emoji": "⚔️", "dialog": "정교하게 다듬어진 무기들입니다.", "service": "shop", "sells": ["나이프", "다거", "소드", "블레이드", "투핸드소드", "그레이트소드", "스피어", "트라이던트", "클럽", "플레일", "핸드액스", "배틀액스", "보우", "지팡이", "카타르", "너클 더스터", "솔리드 너클", "스펠북", "월드 오브 미스테리", "류트", "6스트링 기타", "레더 윕", "슬링샷"]},
   "방어구점 상인(알데바란)": {"map": "알데바란", "emoji": "🛡️", "dialog": "시계탑의 마물들을 막아낼 방어구지.", "service": "shop", "sells": ["코튼셔츠", "가죽재킷", "가드", "후드", "샌들", "슈즈", "버클러"]},
   "현자 메테우스 실페": {"map": "유노", "emoji": "📜", "dialog": "신들의 뜰로 향하는 길을 찾는가? 이미르의 심장에 관한 연구에는... 적잖은 후원이 필요하다네.", "service": "ymir_donate"},
-  "이미르의 책": {"map": "유노", "emoji": "📖", "dialog": "낡은 책장 위에 놓인 거대한 고서. 펼쳐진 면에서 희미한 빛이 새어 나온다.", "service": "ymir_book"},
+  "이미르의 책": {"map": "유노", "emoji": "📖", "actorType": "object", "dialog": "낡은 책장 위에 놓인 거대한 고서. 펼쳐진 면에서 희미한 빛이 새어 나온다.", "service": "ymir_book"},
   "발키리": {"map": "발할라", "emoji": "👼", "dialog": "용사여... 전승의 문은 모든 것을 내려놓을 준비가 된 자에게만 열린다.", "service": "job_change"},
   "경비병": {"map": "글래스트 헤임 입구", "emoji": "💂", "dialog": "이 앞은 저주받은 고성이다. 목숨이 아깝다면 당장 돌아가라!", "service": ""},
-  "울고 있는 소녀": {"map": "미궁 숲", "emoji": "😢", "dialog": "흑흑... 바포메트라는 무서운 괴물이 제 인형을 빼앗아 갔어요...", "service": ""},
+  "꼬마아이": {"map": "알베르타", "emoji": "👧", "dialog": "인형을 모으고 있어요! 인형 하나를 가져다주면 사탕이나 막대사탕과 바꿔 드릴게요.", "service": "exchange", "exchanges": [{"label": "촌촌 인형 1개 → 사탕/막대사탕", "give": {"촌촌 인형": 1}, "random": {"pool": ["사탕", "캔디 스트라이퍼"], "rolls": 1}}, {"label": "메뚜기 인형 1개 → 사탕/막대사탕", "give": {"메뚜기 인형": 1}, "random": {"pool": ["사탕", "캔디 스트라이퍼"], "rolls": 1}}, {"label": "스포아 인형 1개 → 사탕/막대사탕", "give": {"스포아 인형": 1}, "random": {"pool": ["사탕", "캔디 스트라이퍼"], "rolls": 1}}, {"label": "바포메트 인형 1개 → 사탕/막대사탕", "give": {"바포메트 인형": 1}, "random": {"pool": ["사탕", "캔디 스트라이퍼"], "rolls": 1}}, {"label": "너구리 인형 1개 → 사탕/막대사탕", "give": {"너구리 인형": 1}, "random": {"pool": ["사탕", "캔디 스트라이퍼"], "rolls": 1}}, {"label": "몽키 인형 1개 → 사탕/막대사탕", "give": {"몽키 인형": 1}, "random": {"pool": ["사탕", "캔디 스트라이퍼"], "rolls": 1}}]},
   "징병관": {"map": "프론테라", "emoji": "🪖", "dialog": "룬 미드가츠 왕국 기사단이 지하수로 토벌대원을 모집합니다. 용감한 모험가라면 이름을 올리시오.", "service": ""},
   "스프라키": {"map": "이즈루드", "emoji": "🧑", "dialog": "어서 오세요! 초보 모험가시죠? 섬 주변에 루나틱들이 떼 지어 다녀 위험합니다. 혹시 도와주실 수 있나요?", "service": ""},
   "거북 할아버지": {"map": "알베르타", "emoji": "🧓", "dialog": "거북섬으로 가고 싶으시오? 부두에서 선원 갓탄블루에게 10,000제니를 내셔야 합니다.", "service": "dungeon_access", "cost": 10000, "targetMap": "거북섬"},
@@ -1653,7 +1653,7 @@ body.work-mode p {
   "도구점 상인(리히타르젠)": {"map": "리히타르젠", "emoji": "🛒", "dialog": "슬럼가에서도 살아남으려면 준비가 필요하죠.", "service": "shop", "sells": ["빨간포션", "주홍포션", "파란포션", "초록포션", "나비의 날개", "수갑"]},
   "젊은이": {"map": "리히타르젠", "emoji": "🧑", "dialog": "리히타르젠의 슬럼가에서 일어난 사건을 조사하고 있습니다. 제 얘기를 들어주시겠어요?", "service": ""},
   "피쉬본": {"map": "리히타르젠", "emoji": "🐟", "dialog": "생체연구소에 들어가고 싶으세요? 젤로피 20개를 가져오시면 비밀 통로를 알려드리겠습니다.", "service": ""},
-  "바이오랩 트리거": {"map": "생체연구소 1층", "emoji": "⚗️", "dialog": "...어두운 공간에서 이상한 기계음이 들린다. 수갑을 소지하고 있다면 무언가를 할 수 있을 것 같다.", "service": ""},
+  "바이오랩 트리거": {"map": "생체연구소 1층", "emoji": "⚗️", "actorType": "object", "dialog": "...어두운 공간에서 이상한 기계음이 들린다. 수갑을 소지하고 있다면 무언가를 할 수 있을 것 같다.", "service": ""},
   "루트 제이": {"map": "유노", "emoji": "🤖", "dialog": "유페로스 3층은 특별 허가가 필요합니다. 베스퍼의 기억 결정체를 가져오시면 입장권을 드리겠습니다.", "service": ""},
   "앨런 슈웰": {"map": "휘겔", "emoji": "🏠", "dialog": "아버지가 많이 아프셔서... 화이트 포션이 필요한데 구하기가 어렵습니다. 혹시 도와주실 수 있나요?", "service": ""},
   "마나인": {"map": "휘겔", "emoji": "🌳", "dialog": "오래된 기억의 나무 앞에 서 있습니다. 무언가 알 수 없는 기운이 느껴집니다...", "service": ""}
@@ -21553,10 +21553,7 @@ body.work-mode p {
     "atk": 5,
     "effect": {
       "type": "special",
-      "weaponUnbreakable": true,
-      "bonus": {
-        "atk": 5
-      }
+      "weaponUnbreakable": true
     },
     "buy": 0,
     "sell": 10,
@@ -21748,15 +21745,6 @@ body.work-mode p {
     "desc": "DEX +1 / 명중률 +3",
     "dex": 1,
     "hit": 3,
-    "effect": {
-      "type": "stat",
-      "stats": {
-        "dex": 1
-      },
-      "bonus": {
-        "hit": 3
-      }
-    },
     "buy": 0,
     "sell": 10,
     "weight": 10,
@@ -21826,16 +21814,6 @@ body.work-mode p {
     "luk": 1,
     "crit": 1,
     "perfectFlee": 1,
-    "effect": {
-      "type": "stat",
-      "stats": {
-        "luk": 1
-      },
-      "bonus": {
-        "crit": 1,
-        "pd": 1
-      }
-    },
     "buy": 0,
     "sell": 10,
     "weight": 10,
@@ -22111,9 +22089,6 @@ body.work-mode p {
     "atk": 10,
     "effect": {
       "type": "mixed",
-      "bonus": {
-        "atk": 10
-      },
       "seProc": {
         "se": "stun",
         "chance": 0.02,
@@ -22466,15 +22441,6 @@ body.work-mode p {
     "desc": "VIT +1 / Max HP +100",
     "vit": 1,
     "maxHp": 100,
-    "effect": {
-      "type": "stat",
-      "stats": {
-        "vit": 1
-      },
-      "bonus": {
-        "maxHp": 100
-      }
-    },
     "buy": 0,
     "sell": 10,
     "weight": 10,
@@ -22498,12 +22464,6 @@ body.work-mode p {
     "prefix": "퍼펙트",
     "desc": "명중률 +100",
     "hit": 100,
-    "effect": {
-      "type": "stat",
-      "bonus": {
-        "hit": 100
-      }
-    },
     "buy": 0,
     "sell": 10,
     "weight": 10,
@@ -22573,15 +22533,6 @@ body.work-mode p {
     "desc": "STR +1 / ATK +3",
     "str": 1,
     "atk": 3,
-    "effect": {
-      "type": "stat",
-      "stats": {
-        "str": 1
-      },
-      "bonus": {
-        "atk": 3
-      }
-    },
     "buy": 0,
     "sell": 10,
     "weight": 10,
@@ -23741,15 +23692,12 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "target": "방패",
-    "effect": "stat",
-    "stats": {
-      "def": 1
-    },
     "desc": "피에르 카드",
     "buy": 0,
     "sell": 10,
     "weight": 10,
-    "weightSrc": "type"
+    "weightSrc": "type",
+    "def": 1
   },
   "호른 카드": {
     "type": "카드",
@@ -24280,10 +24228,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "int": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "아르기오페 카드 카드",
     "buy": 0,
@@ -24377,10 +24325,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "dex": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "펜 카드 카드",
     "buy": 0,
@@ -24426,9 +24374,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "어류",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "반어인 카드 카드",
     "buy": 0,
@@ -24484,10 +24432,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "vit": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "앙겔링 카드 카드",
     "buy": 0,
@@ -24522,9 +24470,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "조류",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "비행 쁘띠 카드 카드",
     "buy": 0,
@@ -24632,10 +24580,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "agi": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "스테이너 카드 카드",
     "buy": 0,
@@ -24647,10 +24595,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "코르누투스 카드 카드",
     "buy": 0,
@@ -24662,9 +24610,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "어류",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "쉘피쉬 카드 카드",
     "buy": 0,
@@ -24722,10 +24670,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "luk": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "지어스 카드 카드",
     "buy": 0,
@@ -24770,9 +24718,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "악마",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "바토리 카드 카드",
     "buy": 0,
@@ -24933,10 +24881,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "vit": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "가름 카드 카드",
     "buy": 0,
@@ -25017,10 +24965,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "dex": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "룻더 카드 카드",
     "buy": 0,
@@ -25099,9 +25047,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "조류",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "텐구 카드 카드",
     "buy": 0,
@@ -25214,11 +25162,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "int": 1,
         "dex": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "타임홀더 카드 카드",
     "buy": 0,
@@ -25253,10 +25201,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "agi": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "체카 카드 카드",
     "buy": 0,
@@ -25326,9 +25274,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "식물",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "인면도화 카드 카드",
     "buy": 0,
@@ -25432,10 +25380,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "int": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "콘스탄트 카드 카드",
     "buy": 0,
@@ -25502,11 +25450,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1,
         "def": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "가디언 카드 카드",
     "buy": 0,
@@ -25540,9 +25488,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "얼음",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "아이시클라 카드 카드",
     "buy": 0,
@@ -25668,10 +25616,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "vit": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "설인 카드 카드",
     "buy": 0,
@@ -25752,9 +25700,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "악마",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "흑사 카드 카드",
     "buy": 0,
@@ -25766,9 +25714,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "동물형",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "잎사귀 캣 카드 카드",
     "buy": 0,
@@ -25838,10 +25786,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "dex": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "무스시펠라 카드 카드",
     "buy": 0,
@@ -26023,11 +25971,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1,
         "int": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "히밤 카드 카드",
     "buy": 0,
@@ -26050,10 +25998,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "luk": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "레스 카드 카드",
     "buy": 0,
@@ -26065,9 +26013,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "고블린",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "우드 고블린 카드 카드",
     "buy": 0,
@@ -26079,10 +26027,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "int": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "바바야가 카드 카드",
     "buy": 0,
@@ -26094,10 +26042,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "vit": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "우자스 카드 카드",
     "buy": 0,
@@ -26109,9 +26057,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "곤충",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "키키모라 카드 카드",
     "buy": 0,
@@ -26123,11 +26071,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1,
         "agi": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "마브카 카드 카드",
     "buy": 0,
@@ -26139,9 +26087,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "악마",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "고피니치 카드 카드",
     "buy": 0,
@@ -26153,11 +26101,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "int": 1,
         "dex": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "스케골트(청) 카드 카드",
     "buy": 0,
@@ -26169,11 +26117,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1,
         "dex": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "스케골트(흑) 카드 카드",
     "buy": 0,
@@ -26230,10 +26178,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "페러스 카드 카드",
     "buy": 0,
@@ -26291,9 +26239,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "악마",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "언그라이언트 카드 카드",
     "buy": 0,
@@ -26362,10 +26310,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "agi": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "앙그라 만티스 카드 카드",
     "buy": 0,
@@ -26388,10 +26336,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "def": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "지키는 자 카드 카드",
     "buy": 0,
@@ -26402,17 +26350,12 @@ body.work-mode p {
   "은총받은 자 카드": {
     "type": "카드",
     "emoji": "🃏",
-    "effect": {
-      "effect": "derived",
-      "bonus": {
-        "hit": 15
-      }
-    },
     "desc": "은총받은 자 카드 카드",
     "buy": 0,
     "sell": 10,
     "weight": 10,
-    "weightSrc": "type"
+    "weightSrc": "type",
+    "hit": 15
   },
   "타나토스의 절망 카드": {
     "type": "카드",
@@ -26440,11 +26383,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1,
         "int": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "타나토스의 사념체 카드 카드",
     "buy": 0,
@@ -26481,11 +26424,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "int": 2,
         "dex": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "이그니젬 세니아(일반) 카드 카드",
     "buy": 0,
@@ -26497,11 +26440,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1,
         "dex": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "아르마이아 딘제(일반) 카드 카드",
     "buy": 0,
@@ -26513,11 +26456,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1,
         "vit": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "위케바인 트레스(일반) 카드 카드",
     "buy": 0,
@@ -26529,11 +26472,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "agi": 2,
         "luk": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "어쌔신크로스 에레메스(일반) 카드 카드",
     "buy": 0,
@@ -26556,11 +26499,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "agi": 2,
         "dex": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "스나이퍼 세실(일반) 카드 카드",
     "buy": 0,
@@ -26572,11 +26515,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "int": 2,
         "vit": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "하이프리스트 마가레타(일반) 카드 카드",
     "buy": 0,
@@ -26588,11 +26531,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 2,
         "dex": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "화이트스미스 하워드(일반) 카드 카드",
     "buy": 0,
@@ -26604,9 +26547,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "천사",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "현신(천사형) 카드 카드",
     "buy": 0,
@@ -26618,9 +26561,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
-      "race": "인간",
-      "dmgMult": 1.2
+      "race": "인간형",
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "현신(인간형) 카드 카드",
     "buy": 0,
@@ -26631,9 +26574,11 @@ body.work-mode p {
   "현신(골렘형) 카드": {
     "type": "카드",
     "emoji": "🃏",
-    "effect": "raceBonus",
-    "race": "골렘",
-    "dmgMult": 1.2,
+    "effect": {
+      "type": "raceBonus",
+      "race": "골렘",
+      "dmgMult": 1.2
+    },
     "desc": "현신(골렘형) 카드",
     "buy": 0,
     "sell": 10,
@@ -26644,9 +26589,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "물질",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "현신(물질형) 카드 카드",
     "buy": 0,
@@ -26658,9 +26603,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "악마",
-      "dmgMult": 1.3
+      "dmgMult": 1.3,
+      "type": "raceBonus"
     },
     "desc": "마왕 모로크 카드 카드",
     "buy": 0,
@@ -26685,12 +26630,12 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 3,
         "int": 3,
         "dex": 3
-      }
+      },
+      "type": "stat"
     },
     "desc": "절망의 신 모로크 카드 카드",
     "buy": 0,
@@ -26702,9 +26647,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "골렘",
-      "dmgMult": 1.25
+      "dmgMult": 1.25,
+      "type": "raceBonus"
     },
     "desc": "브라디움 골렘 카드 카드",
     "buy": 0,
@@ -26716,9 +26661,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "곤충",
-      "dmgMult": 1.25
+      "dmgMult": 1.25,
+      "type": "raceBonus"
     },
     "desc": "네펜데스 카드 카드",
     "buy": 0,
@@ -26763,9 +26708,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "어류",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "나가 카드 카드",
     "buy": 0,
@@ -26777,9 +26722,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "식물",
-      "dmgMult": 1.25
+      "dmgMult": 1.25,
+      "type": "raceBonus"
     },
     "desc": "텐드릴리온 카드 카드",
     "buy": 0,
@@ -26791,11 +26736,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "def": 2,
         "vit": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "둥지 수호자 카드 카드",
     "buy": 0,
@@ -26818,11 +26763,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 2,
         "vit": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "니드호그의 그림자 카드 카드",
     "buy": 0,
@@ -26834,9 +26779,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "고블린",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "스팀 고블린 카드 카드",
     "buy": 0,
@@ -26870,10 +26815,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "agi": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "방황하는 자 카드 카드",
     "buy": 0,
@@ -26918,9 +26863,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "어류",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "알리게이터 카드 카드",
     "buy": 0,
@@ -26932,9 +26877,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "골렘",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "우드 고렘 카드 카드",
     "buy": 0,
@@ -26957,9 +26902,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "화염",
-      "dmgMult": 1.25
+      "dmgMult": 1.25,
+      "type": "raceBonus"
     },
     "desc": "파이어락 솔져 카드 카드",
     "buy": 0,
@@ -26983,9 +26928,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "드래곤",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "주포룡 카드 카드",
     "buy": 0,
@@ -26997,9 +26942,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "식물",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "피치 트리 카드 카드",
     "buy": 0,
@@ -27023,9 +26968,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "악마",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "데들리 레이스 카드 카드",
     "buy": 0,
@@ -27070,9 +27015,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "화염",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "폐수 난로 카드 카드",
     "buy": 0,
@@ -27084,10 +27029,10 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "몹스터 카드 카드",
     "buy": 0,
@@ -27099,9 +27044,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "곤충",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "핀귀큘라 카드 카드",
     "buy": 0,
@@ -27124,9 +27069,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "인간형",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "코볼트(도끼) 카드 카드",
     "buy": 0,
@@ -27138,9 +27083,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "인간형",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "코볼트(모닝스타) 카드 카드",
     "buy": 0,
@@ -27197,9 +27142,9 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "미라",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "에이션트 미라 카드 카드",
     "buy": 0,
@@ -27494,11 +27439,11 @@ body.work-mode p {
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 2,
         "vit": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "모로크 인카네이션 카드 카드",
     "buy": 0,
@@ -51816,7 +51761,7 @@ window.__serviceSystemsV2 = {
 (function(){
 'use strict';
 
-const AI_OBJECT_NAMES = new Set(['이미르의 책','바이오랩 트리거']);
+const AI_OBJECT_NAMES = new Set(); // 사물 여부는 db-npcs.json actorType을 정본으로 사용한다.
 const AI_FACILITY_SERVICES = new Set(['kafra','shop','refine']);
 const AI_STATE = { actions: [], sceneTargets: [], currentActor: null };
 const AI_LEGACY_TALK = window.talkNPC;
@@ -52256,6 +52201,158 @@ window.__actorInteractionV1={
   interact:aiRenderActor,
   objectFallback:Array.from(AI_OBJECT_NAMES)
 };
+})();
+</script>
+<script id="refine-reveal-v1">
+// TextRAG refine result reveal v1
+// 공통 비명 → [다음] → 성공/실패 공개. 첫 화면에서는 RNG/비용/장비 상태를 건드리지 않는다.
+(function(){
+'use strict';
+
+const RR_REFINABLE_TYPES = new Set(['무기','방패','갑옷','투구_상단','투구_중단','투구_하단','걸칠것','신발']);
+const RR_HOLGREN = '대장장이 홀그렌';
+let rrPending = null;
+
+function rrEsc(v){
+  return String(v == null ? '' : v)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function rrSave(){ if(typeof saveLocal==='function'){ try{ saveLocal(); }catch(e){} } }
+function rrRefiner(){
+  if(typeof DB==='undefined'||!DB.npcs||typeof G==='undefined') return '대장장이';
+  for(let name of Object.keys(DB.npcs)){
+    let n=DB.npcs[name];
+    if(n && n.service==='refine' && n.map===G.currentMap) return name;
+  }
+  return '대장장이';
+}
+function rrRefinerDisplay(name){ return String(name||'대장장이').replace(/^대장장이\s*/, '') || '대장장이'; }
+function rrMeta(itemKey){
+  let parsed = typeof parseItem==='function' ? parseItem(itemKey) : null;
+  if(!parsed || !parsed.base || !RR_REFINABLE_TYPES.has(parsed.base.type)) return null;
+  let cur=Number(parsed.refine)||0, refKey='방어구';
+  if(parsed.base.type==='무기'){
+    let wLv=parsed.base.weaponLv||1;
+    refKey='무기'+Math.min(4,Math.max(1,wLv));
+  }
+  let refData=DB.refine&&DB.refine[refKey];
+  let ore=refData?refData.ore:'에르늄';
+  let cost=refData?refData.cost:2000;
+  let rates=refData?refData.rates:[100,100,100,100,60,60,50,40,20,10];
+  let rate=rates[cur]==null?20:rates[cur];
+  return {key:itemKey,parsed,cur,refKey,ore,cost,rate};
+}
+function rrLiveTarget(target){
+  let p=G.player;
+  if(!target) return null;
+  let key=target.source==='equip' ? (p.equip&&p.equip[target.slot]) : target.key;
+  if(!key) return null;
+  if(target.source==='inventory' && (p.inventory[key]||0)<=0) return null;
+  return {target,key,meta:rrMeta(key)};
+}
+function rrWarn(msg){
+  if(typeof log==='function') log(msg,'warning');
+  if(typeof showRefineModal==='function') showRefineModal();
+}
+function rrSuspense(target,idx){
+  let live=rrLiveTarget(target);
+  if(!live||!live.meta){ rrWarn('⚠ 제련 대상 장비를 찾을 수 없습니다.'); return; }
+  let m=live.meta, p=G.player;
+  if(m.cur>=10){ rrWarn('⚠ 최대 제련도 +10에 도달했습니다.'); return; }
+  if((p.inventory[m.ore]||0)<=0){ rrWarn(`⚠ ${m.ore}이(가) 부족합니다.`); return; }
+  if(p.zeny<m.cost){ rrWarn(`⚠ 제니가 부족합니다. (필요: ${m.cost.toLocaleString()}z)`); return; }
+
+  let refiner=rrRefiner();
+  rrPending={idx,refiner,target:target,key:live.key};
+  let itemName=typeof getItemDisplayName==='function' ? getItemDisplayName(m.parsed) : live.key;
+  let body=`<div style="text-align:center;padding:20px 8px 14px;line-height:1.8;">
+    <div style="font-size:11px;color:var(--text-dim);margin-bottom:12px;">${rrEsc(itemName)}</div>
+    <div style="font-size:20px;font-weight:900;letter-spacing:.04em;">으허허헉!!!!</div>
+  </div>`;
+  openModal(`🔨 ${rrEsc(rrRefinerDisplay(refiner))}`,body,[
+    {label:'다음',cls:'ok',close:false,action:()=>rrResolvePending()}
+  ]);
+}
+function rrHolgrenLines(success){
+  if(success) return ['어... 어?','붙었잖아?!','하하하! 봤나? 이게 내 실력이라고!'];
+  return ['어... 어흠...','실패했네. 면목없네...','장비가 부서졌군...','거... 거보게... 내가 말렸지 않았는가.','나를 원망하진 말아주게...'];
+}
+function rrFallbackLines(success){
+  return success ? ['...오!','제대로 붙었군.'] : ['...이런.','장비가 버티지 못했군.'];
+}
+function rrResultDialog(refiner,success){
+  let lines=refiner===RR_HOLGREN ? rrHolgrenLines(success) : rrFallbackLines(success);
+  return lines.map(rrEsc).join('<br>');
+}
+function rrShowResult(refiner,success,oldName,newName,rate,newRefine){
+  let result=success
+    ? `<div style="margin-top:12px;padding:9px 11px;border:1px solid var(--border-gold);border-radius:5px;"><b>✅ ${rrEsc(newName)}</b><br><span style="font-size:10px;color:var(--text-dim);">제련 +${newRefine} 성공 · 성공률 ${rate}%</span></div>`
+    : `<div style="margin-top:12px;padding:9px 11px;border:1px solid #c58b8b;border-radius:5px;"><b>💥 ${rrEsc(oldName)} 파괴</b><br><span style="font-size:10px;color:var(--text-dim);">제련 실패 · 성공률 ${rate}%</span></div>`;
+  let body=`<div style="font-size:12px;line-height:1.75;">
+    <div style="padding:10px 12px;border:1px solid var(--border);border-radius:6px;background:rgba(127,127,127,.045);">${rrResultDialog(refiner,success)}</div>
+    ${result}
+  </div>`;
+  openModal(`🔨 ${rrEsc(rrRefinerDisplay(refiner))} · 제련 결과`,body,[
+    {label:'계속 제련한다',cls:'ok',action:()=>{ if(typeof showRefineModal==='function') showRefineModal(); }},
+    {label:'그만둔다',action:()=>{ if(typeof closeModal==='function') closeModal(); }}
+  ]);
+}
+function rrResolvePending(){
+  let pending=rrPending; rrPending=null;
+  if(!pending) return;
+  let p=G.player, live=rrLiveTarget(pending.target);
+  if(!live||!live.meta||live.key!==pending.key){ rrWarn('⚠ 제련 대상이 바뀌어 시도를 취소했습니다.'); return; }
+  let m=live.meta;
+  if(m.cur>=10){ rrWarn('⚠ 최대 제련도 +10에 도달했습니다.'); return; }
+  if((p.inventory[m.ore]||0)<=0){ rrWarn(`⚠ ${m.ore}이(가) 부족합니다.`); return; }
+  if(p.zeny<m.cost){ rrWarn(`⚠ 제니가 부족합니다. (필요: ${m.cost.toLocaleString()}z)`); return; }
+
+  // [다음]을 누른 이 시점에만 비용 차감과 성공/실패 판정을 수행한다.
+  p.inventory[m.ore]--;
+  if(p.inventory[m.ore]<=0) delete p.inventory[m.ore];
+  p.zeny-=m.cost;
+  if(pending.target.source==='inventory'){
+    p.inventory[live.key]--;
+    if(p.inventory[live.key]<=0) delete p.inventory[live.key];
+  }
+
+  let oldName=typeof getItemDisplayName==='function' ? getItemDisplayName(m.parsed) : live.key;
+  let success=Math.random()*100<m.rate, newName='', newRefine=m.cur+1;
+  if(success){
+    let newKey=buildEquipKey(m.parsed.baseName,m.parsed.slots,m.parsed.cards,newRefine);
+    if(pending.target.source==='equip') p.equip[pending.target.slot]=newKey;
+    else p.inventory[newKey]=(p.inventory[newKey]||0)+1;
+    p._maxRefineEver=Math.max(p._maxRefineEver||0,newRefine);
+    newName=typeof getItemDisplayName==='function' ? getItemDisplayName(parseItem(newKey)) : newKey;
+    if(typeof log==='function') log(`🔨 ${newName} 성공! (성공률 ${m.rate}%)`,'loot');
+    if(typeof notify==='function') notify(`제련 +${newRefine} 성공`,'gold');
+  }else{
+    if(pending.target.source==='equip') p.equip[pending.target.slot]=null;
+    if(typeof log==='function') log(`💥 ${oldName} 파괴! (성공률 ${m.rate}%)`,'error');
+    if(typeof notify==='function') notify('제련 실패 · 파괴','red');
+  }
+  rrSave();
+  if(typeof updateUI==='function') updateUI();
+  rrShowResult(pending.refiner,success,oldName,newName,m.rate,newRefine);
+}
+
+const RR_LEGACY_REFINE=window.serviceRefineTarget;
+window.serviceRefineTarget=function(idx){
+  let target=(window.__svcRefineTargets||[])[idx];
+  if(!target){
+    if(typeof RR_LEGACY_REFINE==='function') return RR_LEGACY_REFINE(idx);
+    return;
+  }
+  rrSuspense(target,idx);
+};
+window.refine=function(sl){
+  let p=G.player,key=p.equip&&p.equip[sl];
+  if(!key) return;
+  window.__svcRefineTargets=[{source:'equip',slot:sl,key}];
+  window.serviceRefineTarget(0);
+};
+window.__refineRevealV1={version:'1.0',currentRefiner:rrRefiner,resolve:rrResolvePending};
 })();
 </script>
 </body>

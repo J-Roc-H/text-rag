@@ -19892,10 +19892,7 @@
     "atk": 5,
     "effect": {
       "type": "special",
-      "weaponUnbreakable": true,
-      "bonus": {
-        "atk": 5
-      }
+      "weaponUnbreakable": true
     },
     "buy": 0,
     "sell": 10,
@@ -20087,15 +20084,6 @@
     "desc": "DEX +1 / 명중률 +3",
     "dex": 1,
     "hit": 3,
-    "effect": {
-      "type": "stat",
-      "stats": {
-        "dex": 1
-      },
-      "bonus": {
-        "hit": 3
-      }
-    },
     "buy": 0,
     "sell": 10,
     "weight": 10,
@@ -20165,16 +20153,6 @@
     "luk": 1,
     "crit": 1,
     "perfectFlee": 1,
-    "effect": {
-      "type": "stat",
-      "stats": {
-        "luk": 1
-      },
-      "bonus": {
-        "crit": 1,
-        "pd": 1
-      }
-    },
     "buy": 0,
     "sell": 10,
     "weight": 10,
@@ -20450,9 +20428,6 @@
     "atk": 10,
     "effect": {
       "type": "mixed",
-      "bonus": {
-        "atk": 10
-      },
       "seProc": {
         "se": "stun",
         "chance": 0.02,
@@ -20805,15 +20780,6 @@
     "desc": "VIT +1 / Max HP +100",
     "vit": 1,
     "maxHp": 100,
-    "effect": {
-      "type": "stat",
-      "stats": {
-        "vit": 1
-      },
-      "bonus": {
-        "maxHp": 100
-      }
-    },
     "buy": 0,
     "sell": 10,
     "weight": 10,
@@ -20837,12 +20803,6 @@
     "prefix": "퍼펙트",
     "desc": "명중률 +100",
     "hit": 100,
-    "effect": {
-      "type": "stat",
-      "bonus": {
-        "hit": 100
-      }
-    },
     "buy": 0,
     "sell": 10,
     "weight": 10,
@@ -20912,15 +20872,6 @@
     "desc": "STR +1 / ATK +3",
     "str": 1,
     "atk": 3,
-    "effect": {
-      "type": "stat",
-      "stats": {
-        "str": 1
-      },
-      "bonus": {
-        "atk": 3
-      }
-    },
     "buy": 0,
     "sell": 10,
     "weight": 10,
@@ -22080,15 +22031,12 @@
     "type": "카드",
     "emoji": "🃏",
     "target": "방패",
-    "effect": "stat",
-    "stats": {
-      "def": 1
-    },
     "desc": "피에르 카드",
     "buy": 0,
     "sell": 10,
     "weight": 10,
-    "weightSrc": "type"
+    "weightSrc": "type",
+    "def": 1
   },
   "호른 카드": {
     "type": "카드",
@@ -22619,10 +22567,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "int": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "아르기오페 카드 카드",
     "buy": 0,
@@ -22716,10 +22664,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "dex": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "펜 카드 카드",
     "buy": 0,
@@ -22765,9 +22713,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "어류",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "반어인 카드 카드",
     "buy": 0,
@@ -22823,10 +22771,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "vit": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "앙겔링 카드 카드",
     "buy": 0,
@@ -22861,9 +22809,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "조류",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "비행 쁘띠 카드 카드",
     "buy": 0,
@@ -22971,10 +22919,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "agi": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "스테이너 카드 카드",
     "buy": 0,
@@ -22986,10 +22934,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "코르누투스 카드 카드",
     "buy": 0,
@@ -23001,9 +22949,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "어류",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "쉘피쉬 카드 카드",
     "buy": 0,
@@ -23061,10 +23009,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "luk": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "지어스 카드 카드",
     "buy": 0,
@@ -23109,9 +23057,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "악마",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "바토리 카드 카드",
     "buy": 0,
@@ -23272,10 +23220,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "vit": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "가름 카드 카드",
     "buy": 0,
@@ -23356,10 +23304,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "dex": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "룻더 카드 카드",
     "buy": 0,
@@ -23438,9 +23386,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "조류",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "텐구 카드 카드",
     "buy": 0,
@@ -23553,11 +23501,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "int": 1,
         "dex": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "타임홀더 카드 카드",
     "buy": 0,
@@ -23592,10 +23540,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "agi": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "체카 카드 카드",
     "buy": 0,
@@ -23665,9 +23613,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "식물",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "인면도화 카드 카드",
     "buy": 0,
@@ -23771,10 +23719,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "int": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "콘스탄트 카드 카드",
     "buy": 0,
@@ -23841,11 +23789,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1,
         "def": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "가디언 카드 카드",
     "buy": 0,
@@ -23879,9 +23827,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "얼음",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "아이시클라 카드 카드",
     "buy": 0,
@@ -24007,10 +23955,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "vit": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "설인 카드 카드",
     "buy": 0,
@@ -24091,9 +24039,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "악마",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "흑사 카드 카드",
     "buy": 0,
@@ -24105,9 +24053,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "동물형",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "잎사귀 캣 카드 카드",
     "buy": 0,
@@ -24177,10 +24125,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "dex": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "무스시펠라 카드 카드",
     "buy": 0,
@@ -24362,11 +24310,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1,
         "int": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "히밤 카드 카드",
     "buy": 0,
@@ -24389,10 +24337,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "luk": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "레스 카드 카드",
     "buy": 0,
@@ -24404,9 +24352,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "고블린",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "우드 고블린 카드 카드",
     "buy": 0,
@@ -24418,10 +24366,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "int": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "바바야가 카드 카드",
     "buy": 0,
@@ -24433,10 +24381,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "vit": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "우자스 카드 카드",
     "buy": 0,
@@ -24448,9 +24396,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "곤충",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "키키모라 카드 카드",
     "buy": 0,
@@ -24462,11 +24410,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1,
         "agi": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "마브카 카드 카드",
     "buy": 0,
@@ -24478,9 +24426,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "악마",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "고피니치 카드 카드",
     "buy": 0,
@@ -24492,11 +24440,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "int": 1,
         "dex": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "스케골트(청) 카드 카드",
     "buy": 0,
@@ -24508,11 +24456,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1,
         "dex": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "스케골트(흑) 카드 카드",
     "buy": 0,
@@ -24569,10 +24517,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "페러스 카드 카드",
     "buy": 0,
@@ -24630,9 +24578,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "악마",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "언그라이언트 카드 카드",
     "buy": 0,
@@ -24701,10 +24649,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "agi": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "앙그라 만티스 카드 카드",
     "buy": 0,
@@ -24727,10 +24675,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "def": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "지키는 자 카드 카드",
     "buy": 0,
@@ -24741,17 +24689,12 @@
   "은총받은 자 카드": {
     "type": "카드",
     "emoji": "🃏",
-    "effect": {
-      "effect": "derived",
-      "bonus": {
-        "hit": 15
-      }
-    },
     "desc": "은총받은 자 카드 카드",
     "buy": 0,
     "sell": 10,
     "weight": 10,
-    "weightSrc": "type"
+    "weightSrc": "type",
+    "hit": 15
   },
   "타나토스의 절망 카드": {
     "type": "카드",
@@ -24779,11 +24722,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1,
         "int": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "타나토스의 사념체 카드 카드",
     "buy": 0,
@@ -24820,11 +24763,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "int": 2,
         "dex": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "이그니젬 세니아(일반) 카드 카드",
     "buy": 0,
@@ -24836,11 +24779,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1,
         "dex": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "아르마이아 딘제(일반) 카드 카드",
     "buy": 0,
@@ -24852,11 +24795,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1,
         "vit": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "위케바인 트레스(일반) 카드 카드",
     "buy": 0,
@@ -24868,11 +24811,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "agi": 2,
         "luk": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "어쌔신크로스 에레메스(일반) 카드 카드",
     "buy": 0,
@@ -24895,11 +24838,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "agi": 2,
         "dex": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "스나이퍼 세실(일반) 카드 카드",
     "buy": 0,
@@ -24911,11 +24854,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "int": 2,
         "vit": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "하이프리스트 마가레타(일반) 카드 카드",
     "buy": 0,
@@ -24927,11 +24870,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 2,
         "dex": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "화이트스미스 하워드(일반) 카드 카드",
     "buy": 0,
@@ -24943,9 +24886,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "천사",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "현신(천사형) 카드 카드",
     "buy": 0,
@@ -24957,9 +24900,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
-      "race": "인간",
-      "dmgMult": 1.2
+      "race": "인간형",
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "현신(인간형) 카드 카드",
     "buy": 0,
@@ -24970,9 +24913,11 @@
   "현신(골렘형) 카드": {
     "type": "카드",
     "emoji": "🃏",
-    "effect": "raceBonus",
-    "race": "골렘",
-    "dmgMult": 1.2,
+    "effect": {
+      "type": "raceBonus",
+      "race": "골렘",
+      "dmgMult": 1.2
+    },
     "desc": "현신(골렘형) 카드",
     "buy": 0,
     "sell": 10,
@@ -24983,9 +24928,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "물질",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "현신(물질형) 카드 카드",
     "buy": 0,
@@ -24997,9 +24942,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "악마",
-      "dmgMult": 1.3
+      "dmgMult": 1.3,
+      "type": "raceBonus"
     },
     "desc": "마왕 모로크 카드 카드",
     "buy": 0,
@@ -25024,12 +24969,12 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 3,
         "int": 3,
         "dex": 3
-      }
+      },
+      "type": "stat"
     },
     "desc": "절망의 신 모로크 카드 카드",
     "buy": 0,
@@ -25041,9 +24986,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "골렘",
-      "dmgMult": 1.25
+      "dmgMult": 1.25,
+      "type": "raceBonus"
     },
     "desc": "브라디움 골렘 카드 카드",
     "buy": 0,
@@ -25055,9 +25000,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "곤충",
-      "dmgMult": 1.25
+      "dmgMult": 1.25,
+      "type": "raceBonus"
     },
     "desc": "네펜데스 카드 카드",
     "buy": 0,
@@ -25102,9 +25047,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "어류",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "나가 카드 카드",
     "buy": 0,
@@ -25116,9 +25061,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "식물",
-      "dmgMult": 1.25
+      "dmgMult": 1.25,
+      "type": "raceBonus"
     },
     "desc": "텐드릴리온 카드 카드",
     "buy": 0,
@@ -25130,11 +25075,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "def": 2,
         "vit": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "둥지 수호자 카드 카드",
     "buy": 0,
@@ -25157,11 +25102,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 2,
         "vit": 2
-      }
+      },
+      "type": "stat"
     },
     "desc": "니드호그의 그림자 카드 카드",
     "buy": 0,
@@ -25173,9 +25118,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "고블린",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "스팀 고블린 카드 카드",
     "buy": 0,
@@ -25209,10 +25154,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "agi": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "방황하는 자 카드 카드",
     "buy": 0,
@@ -25257,9 +25202,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "어류",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "알리게이터 카드 카드",
     "buy": 0,
@@ -25271,9 +25216,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "골렘",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "우드 고렘 카드 카드",
     "buy": 0,
@@ -25296,9 +25241,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "화염",
-      "dmgMult": 1.25
+      "dmgMult": 1.25,
+      "type": "raceBonus"
     },
     "desc": "파이어락 솔져 카드 카드",
     "buy": 0,
@@ -25322,9 +25267,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "드래곤",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "주포룡 카드 카드",
     "buy": 0,
@@ -25336,9 +25281,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "식물",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "피치 트리 카드 카드",
     "buy": 0,
@@ -25362,9 +25307,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "악마",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "데들리 레이스 카드 카드",
     "buy": 0,
@@ -25409,9 +25354,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "화염",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "폐수 난로 카드 카드",
     "buy": 0,
@@ -25423,10 +25368,10 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "몹스터 카드 카드",
     "buy": 0,
@@ -25438,9 +25383,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "곤충",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "핀귀큘라 카드 카드",
     "buy": 0,
@@ -25463,9 +25408,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "인간형",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "코볼트(도끼) 카드 카드",
     "buy": 0,
@@ -25477,9 +25422,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "인간형",
-      "dmgMult": 1.15
+      "dmgMult": 1.15,
+      "type": "raceBonus"
     },
     "desc": "코볼트(모닝스타) 카드 카드",
     "buy": 0,
@@ -25536,9 +25481,9 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "raceBonus",
       "race": "미라",
-      "dmgMult": 1.2
+      "dmgMult": 1.2,
+      "type": "raceBonus"
     },
     "desc": "에이션트 미라 카드 카드",
     "buy": 0,
@@ -25833,11 +25778,11 @@
     "type": "카드",
     "emoji": "🃏",
     "effect": {
-      "effect": "stat",
       "stats": {
         "str": 2,
         "vit": 1
-      }
+      },
+      "type": "stat"
     },
     "desc": "모로크 인카네이션 카드 카드",
     "buy": 0,

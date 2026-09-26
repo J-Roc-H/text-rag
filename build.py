@@ -132,6 +132,119 @@ def audit_npcs(npcs, maps, items):
 
 
 
+EFFECT_AUDIT_BASELINE_PATH = os.path.join(DATA_DIR, "effect-audit-baseline.json")
+
+# calcStats()가 실제로 분기하는 effect.type 값 (source/template.html 카드 보너스 블록 기준).
+# 여기 없는 type은 DB에 값이 있어도 엔진이 읽지 않는다 -- FAIL 또는(baseline 등재 시) WARN.
+KNOWN_EFFECT_TYPES = {"stat", "mixed", "special", "raceBonus", "seProc", "lifesteal"}
+# 구조화 효과 전용 키워드 -- 최상위 문자열 effect 값으로 나타나면 안 된다(P0-A에서 정리한 레거시 표기).
+RESERVED_EFFECT_WORDS = {"stat", "raceBonus", "mixed", "special", "seProc", "lifesteal",
+                          "derived", "increaseDropRate", "increaseExpRate"}
+# 현재 raceBonus 카드가 실제로 쓰는 종족 키(2026-09-26 P0-A 감사 기준). 새 값은 원작 확인 후 등록.
+KNOWN_RACE_VALUES = {"악마", "어류", "식물", "곤충", "골렘", "조류", "고블린", "화염",
+                      "인간형", "얼음", "동물형", "천사", "물질", "드래곤", "미라"}
+# 확정적으로 잘못된 표기 -- baseline으로도 구제하지 않는다(사용자 확인된 오표기).
+BANNED_RACE_ALIASES = {"인간": "인간형"}
+RATHENA_SCRIPT_MARKERS = ["bonus ", "bonus2 ", "bonus3 ", "bonus4 ", "autobonus", "bAutoSpell"]
+DESC_EFFECT_KEYWORDS = ["확률", "면역", "저항", "무시", "부여", "흡수", "시전", "캐스팅",
+                        "자동 발동", "자동발동", "속성 피해", "내성", "넉백",
+                        "추가 대미지", "추가 데미지", "받는 데미지", "오토스펠", "더블어택",
+                        "디버프", "혼란", "스턴", "사망 시", "처치 시", "스킬 데미지"]
+STRUCTURED_MARKER_KEYS = {"effect", "effects", "raceAtk", "elemAtk", "sizeAtk",
+                          "raceDmgReduce", "elemReduce", "immune", "spCostMul", "healBoost",
+                          "castReduction", "skillDmg", "grantSkill", "dropBonus", "doubleAtk",
+                          "defIgnore", "hpDrainSelf", "magicRaceAtk", "bossAtk",
+                          "rangedDmgReduce", "armorElement", "magicImmune"}
+# effect.bonus 키 중 최상위 필드와 이름이 다른 별칭(calcStats 카드 보너스 블록 기준).
+EFFECT_BONUS_ALIASES = {"pd": "perfectFlee"}
+# baseline으로 WARN까지만 격하할 수 있는 FAIL 후보 코드. 나머지 FAIL 코드는 무조건 즉시 실패
+# (2026-09-26 P0-A 감사에서 전량 정리해 현재 baseline 0건 -- 재발은 회귀로 간주).
+BASELINE_ELIGIBLE_CODES = {"unknown-effect-type", "unknown-race"}
+
+
+def load_effect_audit_baseline():
+    if not os.path.exists(EFFECT_AUDIT_BASELINE_PATH):
+        return set()
+    with open(EFFECT_AUDIT_BASELINE_PATH, encoding="utf-8") as f:
+        data = json.load(f)
+    return {(row["item"], row["code"]) for row in data.get("grandfathered", [])}
+
+
+def audit_item_effects(items):
+    """db-items.json 효과 표현 감사 (P0-A, 2026-09-26).
+
+    FAIL: 구조적으로 잘못됐거나(중복/누락/미지원 타입) 엔진 소비 경로가 없는 신규 표기.
+    WARN: desc-only/raw script/baseline에 등재된 기존 문제 -- 빌드를 막지 않는다.
+    baseline은 사람이 확인해 추가한 (item, code) 쌍만 WARN으로 격하한다(자동 증가 금지).
+    """
+    baseline = load_effect_audit_baseline()
+    fails = []
+    warns = []
+
+    def report(name, code, message):
+        if code in BASELINE_ELIGIBLE_CODES and (name, code) in baseline:
+            warns.append(f'{name}: {message} [baseline]')
+        else:
+            fails.append(f'{name}: {message}')
+
+    for name, it in items.items():
+        if not isinstance(it, dict):
+            continue
+
+        eff = it.get("effect")
+        if isinstance(eff, str) and eff in RESERVED_EFFECT_WORDS:
+            report(name, "reserved-string-effect",
+                   f'effect="{eff}" 는 구조화 효과 전용 키워드 -- effect:{{"type":"{eff}", ...}} 형식으로 표현할 것')
+
+        if isinstance(eff, dict):
+            if "effect" in eff and "type" not in eff:
+                report(name, "legacy-effect-key",
+                       f'effect.effect="{eff.get("effect")}" -- effect.type 표기로 정규화할 것 (엔진은 .type만 읽음)')
+
+            t = eff.get("type")
+            if t is not None and t not in KNOWN_EFFECT_TYPES:
+                report(name, "unknown-effect-type", f'effect.type="{t}" 는 엔진 미지원 타입')
+
+            if t == "raceBonus":
+                race = eff.get("race")
+                if not race or "dmgMult" not in eff:
+                    report(name, "missing-args", "raceBonus 는 race/dmgMult 필수")
+                elif race in BANNED_RACE_ALIASES:
+                    report(name, "race-alias",
+                           f'race="{race}" 는 금지된 표기 -- "{BANNED_RACE_ALIASES[race]}" 사용')
+                elif race not in KNOWN_RACE_VALUES:
+                    report(name, "unknown-race",
+                           f'race="{race}" 는 알려지지 않은 종족 키 -- 원작 확인 후 KNOWN_RACE_VALUES에 등록')
+
+            if t in ("seProc", "mixed") and "seProc" in eff:
+                se = eff["seProc"]
+                if not all(k in se for k in ("se", "chance", "turns")):
+                    report(name, "missing-args", "seProc 는 se/chance/turns 필수")
+
+            if t == "lifesteal" and ("chance" not in eff or "spRate" not in eff):
+                report(name, "missing-args", "lifesteal 은 chance/spRate 필수")
+
+            for sk, sv in (eff.get("stats") or {}).items():
+                if it.get(sk) == sv:
+                    report(name, "duplicate-stat", f'top-level {sk}={sv} 와 effect.stats.{sk} 중복')
+            for bk, bv in (eff.get("bonus") or {}).items():
+                top_key = EFFECT_BONUS_ALIASES.get(bk, bk)
+                if it.get(top_key) == bv:
+                    report(name, "duplicate-stat", f'top-level {top_key}={bv} 와 effect.bonus.{bk} 중복')
+
+        if isinstance(it.get("effects"), list) and it["effects"]:
+            warns.append(f'{name}: effects[] 는 아직 엔진이 소비하지 않음(P0-B 이후 대상)')
+
+        desc = it.get("desc") or ""
+        if any(m in desc for m in RATHENA_SCRIPT_MARKERS):
+            warns.append(f'{name}: desc에 rAthena 원시 스크립트가 그대로 남아 있음(원작 확인 후 변환 대상)')
+        elif it.get("type") != "소모품":
+            if any(k in desc for k in DESC_EFFECT_KEYWORDS) and not (STRUCTURED_MARKER_KEYS & set(it.keys())):
+                warns.append(f'{name}: desc에 효과 설명이 있으나 구조화 데이터 없음(원작 확인 후 변환 대상)')
+
+    return fails, sorted(set(warns))
+
+
 def audit_quest_item_sources(template, parsed):
     """Fail the build when a gather quest has no real acquisition route."""
     targets = set(re.findall(r"type\s*:\s*['\"]gather['\"][\s\S]{0,220}?target\s*:\s*['\"]([^'\"]+)['\"]", template))
@@ -186,6 +299,17 @@ def main():
             print(f"  - {warning}")
     else:
         print("OK - npc audit")
+
+    item_effect_fails, item_effect_warnings = audit_item_effects(parsed["DB_ITEMS"])
+    if item_effect_fails:
+        joined = "\n  - ".join(item_effect_fails)
+        raise ValueError(f"아이템 효과 감사 오류:\n  - {joined}")
+    if item_effect_warnings:
+        print(f"WARN - item effect audit: {len(item_effect_warnings)} issue(s)")
+        for warning in item_effect_warnings:
+            print(f"  - {warning}")
+    else:
+        print("OK - item effect audit")
 
     for marker_key, filename in BLOCKS.items():
         marker = "{{__DATA_" + marker_key + "__}}"
