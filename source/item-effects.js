@@ -78,6 +78,14 @@ var _ITEM_EFF_SIMPLE_COMBAT_KEYS = [
 ];
 var _ITEM_EFF_COUNTER_KEYS = ['raceAtk', 'elemAtk', 'sizeAtk', 'magicRaceAtk', 'raceDmgReduce', 'elemReduce'];
 
+// P0 종료감사: _ITEM_EFF_SIMPLE_COMBAT_KEYS 중 소비처가 없는 키 -> unsupported[] 사유.
+// 값 자체는 여전히 정상 집계된다(위 forEach는 그대로 실행); 여기 있는 키만 "집계는 되지만
+// 게임에 아무 영향도 주지 않는다"는 사실을 ledger 옆의 unsupported[]에도 남긴다.
+var _DEFERRED_SIMPLE_COMBAT_REASONS = {
+  healBoost: '소비처 없음(원작검증필요 -- 주는/받는 힐 증가·포션 회복 증가·자연회복 증가 중 의미 미확정)',
+  rangedDmgReduce: '소비처 없음(P0-C3 보류 -- 전투 계산에 원거리 판별 메타데이터 부재)',
+};
+
 function collectItemEffects(p, DB, parseItem) {
   var fx = makeEmptyItemEffects();
   if (!p || !p.equip || typeof parseItem !== 'function' || !DB || !DB.items) return fx;
@@ -98,6 +106,15 @@ function collectItemEffects(p, DB, parseItem) {
       var n = Number(v);
       fx.combat[key] = (fx.combat[key] || 0) + n;
       ledger({ source: source, sourceType: sourceType, type: 'combat', key: key, value: n, active: true });
+      // P0 종료감사: healBoost/rangedDmgReduce는 값은 정상 집계되지만 소비처가 없다.
+      // healBoost는 의미가 "주는 힐 증가/받는 힐 증가/포션 회복 증가/자연회복 증가" 중
+      // 무엇인지 원작 검증 없이 확정할 수 없어 미구현(모든 P0-C 단계에서 반복 확인, 최종
+      // 보류). rangedDmgReduce는 전투 계산에 "이 공격이 원거리인가"를 판별할 메타데이터가
+      // 전혀 없어 미구현(P0-C3에서 확인). 둘 다 unsupported[]로 "집계됨 vs 실행됨"을
+      // 구분되게 한다 -- ITEM_EFFECT_P0_CLOSEOUT.md 참조.
+      if (_DEFERRED_SIMPLE_COMBAT_REASONS[key]) {
+        fx.unsupported.push({ source: source, sourceType: sourceType, label: key + ': ' + _DEFERRED_SIMPLE_COMBAT_REASONS[key] });
+      }
     });
     if (sourceType === 'card' && it.atk) {
       var atkN = Number(it.atk);
@@ -132,6 +149,9 @@ function collectItemEffects(p, DB, parseItem) {
     if (it.magicImmune) {
       fx.combat.magicImmune = true;
       ledger({ source: source, sourceType: sourceType, type: 'combat', key: 'magicImmune', value: true, active: true });
+      // P0 종료감사: 소비처 없음 -- 의미 범위(마법피해 0/마법스킬 자체 무효/상태효과까지
+      // 무효/버프·힐 마법도 무효?)가 원작 검증 없이 확정 불가(P0-C3 §15에서 이미 보류).
+      fx.unsupported.push({ source: source, sourceType: sourceType, label: 'magicImmune: 소비처 없음(원작검증필요 -- 의미 범위 미확정)' });
     }
     if (it.spCostMul) {
       var mulN = Number(it.spCostMul);
@@ -141,6 +161,10 @@ function collectItemEffects(p, DB, parseItem) {
     if (it.armorElement) {
       fx.combat.armorElement = it.armorElement;
       ledger({ source: source, sourceType: sourceType, type: 'combat', key: 'armorElement', value: it.armorElement, active: true });
+      // P0 종료감사: 소비처 없음 -- 방어 속성 자체는 집계되지만 calcStats() 반환 객체에도
+      // 노출되지 않는다(cardArmorElement 필드가 없음). "방어속성 × 공격속성 상성표"라는
+      // elemReduce와는 다른 메커닉이 필요해 P0-C3에서 이미 보류(§16).
+      fx.unsupported.push({ source: source, sourceType: sourceType, label: 'armorElement: 소비처 없음(P0-C3 보류 -- elemReduce와 다른 상성표 메커닉 필요)' });
     }
     if (it.immune) {
       if (!fx.combat.immune) fx.combat.immune = [];

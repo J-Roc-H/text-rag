@@ -201,6 +201,47 @@ def audit_item_effects_collector_sync(item_effects_js_path):
     print("OK - item-effects.js collector 지원 타입 동기화")
 
 
+def audit_item_effects_deferred_sync(item_effects_js_path):
+    """P0 종료감사: item-effects.js 안에서 "값은 집계하지만 소비처가 없다"고 스스로 표시하는
+    필드 이름이, 실제로 그 값을 집계하는 키 목록(_ITEM_EFF_SIMPLE_COMBAT_KEYS /
+    _ITEM_EFF_COUNTER_KEYS) 안에 정확히 존재하는지만 확인한다.
+
+    이 검사가 잡는 버그: 누군가 필드 이름을 바꾸거나 오타를 내면, unsupported[] 마킹이
+    조용히 아무 키에도 안 걸려서 "active로 집계되는데 unsupported 표시는 없는" 상태가
+    재발한다 -- 정확히 P0 종료감사에서 발견해 고친 버그의 재발 방지용 최소 게이트다.
+    template.html 쪽 실제 소비 여부까지는 정적으로 확인하지 않는다(그건 이 함수의 책임이
+    아니다 -- 과대 파서를 만들지 않는다).
+    """
+    src = open(item_effects_js_path, encoding="utf-8").read()
+
+    def extract_list(var_name):
+        m = re.search(var_name + r"\s*=\s*\[([^\]]*)\]", src)
+        if not m:
+            raise ValueError(f"item-effects.js: {var_name} 배열을 찾지 못함")
+        return {t.strip().strip("'\"") for t in m.group(1).split(",") if t.strip()}
+
+    simple_combat_keys = extract_list(r"_ITEM_EFF_SIMPLE_COMBAT_KEYS")
+    counter_keys = extract_list(r"_ITEM_EFF_COUNTER_KEYS")
+
+    m = re.search(r"_DEFERRED_SIMPLE_COMBAT_REASONS\s*=\s*\{([^}]*)\}", src, re.S)
+    if not m:
+        raise ValueError("item-effects.js: _DEFERRED_SIMPLE_COMBAT_REASONS 객체를 찾지 못함")
+    deferred_keys = set(re.findall(r"(\w+)\s*:", m.group(1)))
+    unknown = deferred_keys - simple_combat_keys
+    if unknown:
+        raise ValueError(
+            "item-effects.js: _DEFERRED_SIMPLE_COMBAT_REASONS에 "
+            f"_ITEM_EFF_SIMPLE_COMBAT_KEYS에 없는 키가 있음(오타/이름불일치 의심): {sorted(unknown)}"
+        )
+
+    if "magicRaceAtk" not in counter_keys:
+        raise ValueError(
+            "item-effects.js: magicRaceAtk가 _ITEM_EFF_COUNTER_KEYS에서 빠짐 -- "
+            "unsupported[] 마킹 코드가 더 이상 걸리지 않을 수 있음"
+        )
+    print("OK - item-effects.js deferred 필드 표시 동기화")
+
+
 def audit_item_effects(items):
     """db-items.json 효과 표현 감사 (P0-A, 2026-09-26 / 교정 패스 2026-09-26).
 
@@ -346,6 +387,7 @@ def main():
         print("OK - npc audit")
 
     audit_item_effects_collector_sync(ITEM_EFFECTS_SCRIPT_PATH)
+    audit_item_effects_deferred_sync(ITEM_EFFECTS_SCRIPT_PATH)
 
     item_effect_fails, item_effect_warnings = audit_item_effects(parsed["DB_ITEMS"])
     if item_effect_fails:
