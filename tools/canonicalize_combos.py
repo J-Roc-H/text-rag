@@ -12,14 +12,19 @@ P2-A — rAthena Pre-Renewal item_combos.yml -> source/data/db-combos.json 정�
     source/reference/rathena-pre-re/item_combos.yml       (원본, 전문 보존)
     source/reference/rathena-pre-re/item_db_aegis_lookup.json (AegisName->Id, provenance용)
     source/data/db-items.json                              (TextRAG 아이템 identity)
+    source/data/combo-item-identity.json                   (P2-A.1 identity map, 있으면 사용)
 
 출력:
     source/data/db-combos.json
 
 핵심 원칙(과제 지시 그대로):
-  - display name fuzzy match 금지 — TextRAG 매핑은 db-items.json의 `_aegis` 필드
-    exact-match만 쓴다(§5/§6). `_aegis`가 없는 아이템, 또는 `_aegis`가 TextRAG 안에서
-    2개 이상의 키와 충돌하는 아이템은 전부 unresolved로 남긴다(추측 금지).
+  - display name fuzzy match 금지 — TextRAG 매핑은 1순위로 P2-A.1
+    combo-item-identity.json의 verified 항목(증거 기반 확정만), 2순위로
+    db-items.json의 `_aegis` 필드 exact-match를 쓴다(§16: identity map 우선,
+    기존 _aegis exact를 fallback으로). identity map에 없거나 verified가
+    아닌(ambiguous/unresolved-existing/missing) 항목은 전부 unresolved로
+    남긴다(추측 금지, identity map의 ambiguous/unresolved를 자동 선택하지
+    않는다).
   - rawScript는 100% 보존(§15) — canonical 변환 성공/실패와 무관하게 항상 원문 그대로.
   - 조건문(if/else)은 파싱하지 않고 raw로만 보존한다(§20) — 최상위(조건 밖) 문장만
     개별 파싱한다. 괄호/중첩을 문자 단위로 추적하는 안전한 분리기만 쓴다 — 일반
@@ -44,6 +49,7 @@ REF_DIR = ROOT / "source" / "reference" / "rathena-pre-re"
 COMBOS_YML = REF_DIR / "item_combos.yml"
 AEGIS_LOOKUP_JSON = REF_DIR / "item_db_aegis_lookup.json"
 TEXTRAG_ITEMS_JSON = ROOT / "source" / "data" / "db-items.json"
+IDENTITY_MAP_JSON = ROOT / "source" / "data" / "combo-item-identity.json"
 OUT_JSON = ROOT / "source" / "data" / "db-combos.json"
 
 # ══════════════════════════════════════════════
@@ -370,7 +376,19 @@ def build_textrag_aegis_index(textrag_items):
 AMMO_AEGIS_TYPE = "Ammo"
 
 
-def resolve_item(aegis_name, unique_index, ambiguous_index, rathena_lookup):
+def load_identity_verified_map(identity_map):
+    """P2-A.1 combo-item-identity.json에서 status=="verified" 항목만 뽑는다.
+    ambiguous/unresolved-existing/missing은 절대 자동 선택하지 않는다(§16)."""
+    if not identity_map:
+        return {}
+    return {
+        it["aegisName"]: it["textragKey"]
+        for it in identity_map.get("items", [])
+        if it.get("status") == "verified" and it.get("textragKey")
+    }
+
+
+def resolve_item(aegis_name, unique_index, ambiguous_index, rathena_lookup, identity_verified=None):
     entry = {
         "aegisName": aegis_name,
         "rathenaItemId": None,
@@ -385,7 +403,13 @@ def resolve_item(aegis_name, unique_index, ambiguous_index, rathena_lookup):
         entry["rathenaItemId"] = rinfo.get("id")
         entry["rathenaName"] = rinfo.get("name")
         entry["isAmmo"] = rinfo.get("type") == AMMO_AEGIS_TYPE
-    if aegis_name in unique_index:
+    identity_verified = identity_verified or {}
+    if aegis_name in identity_verified:
+        # 1순위: P2-A.1에서 증거 기반으로 확정한 identity map
+        entry["textragKey"] = identity_verified[aegis_name]
+        entry["resolved"] = True
+    elif aegis_name in unique_index:
+        # 2순위(fallback): 기존 _aegis exact-match
         entry["textragKey"] = unique_index[aegis_name]
         entry["resolved"] = True
     elif aegis_name in ambiguous_index:
@@ -397,7 +421,7 @@ def make_combo_id(entry_idx, variant_idx):
     return f"rathena-pre-{entry_idx:04d}-{variant_idx:02d}"
 
 
-def canonicalize(source_body, unique_index, ambiguous_index, rathena_lookup):
+def canonicalize(source_body, unique_index, ambiguous_index, rathena_lookup, identity_verified=None):
     combos = []
     for entry_idx, entry in enumerate(source_body, 1):
         combo_list = entry.get("Combos") or []
@@ -420,7 +444,10 @@ def canonicalize(source_body, unique_index, ambiguous_index, rathena_lookup):
         for variant_idx, combo in enumerate(combo_list, 1):
             # §32: 동일 아이템 중복 요구 가능성 — Set으로 바꾸지 않고 원본 순서/중복 그대로 보존.
             required_aegis = combo.get("Combo") or []
-            required_items = [resolve_item(a, unique_index, ambiguous_index, rathena_lookup) for a in required_aegis]
+            required_items = [
+                resolve_item(a, unique_index, ambiguous_index, rathena_lookup, identity_verified)
+                for a in required_aegis
+            ]
 
             any_unresolved = any(not r["resolved"] for r in required_items)
             any_ambiguous = any(r["ambiguousTextragKeys"] for r in required_items)
@@ -470,8 +497,10 @@ def main():
     rathena_lookup = load_json(AEGIS_LOOKUP_JSON) if AEGIS_LOOKUP_JSON.exists() else {}
     textrag_items = load_json(TEXTRAG_ITEMS_JSON)
     unique_index, ambiguous_index = build_textrag_aegis_index(textrag_items)
+    identity_map = load_json(IDENTITY_MAP_JSON) if IDENTITY_MAP_JSON.exists() else None
+    identity_verified = load_identity_verified_map(identity_map)
 
-    combos = canonicalize(body, unique_index, ambiguous_index, rathena_lookup)
+    combos = canonicalize(body, unique_index, ambiguous_index, rathena_lookup, identity_verified)
 
     total_variants = len(combos)
     status_counts = {}
@@ -488,6 +517,8 @@ def main():
             "totalSourceEntries": len(body),
             "totalVariants": total_variants,
             "statusCounts": status_counts,
+            "identityMapUsed": IDENTITY_MAP_JSON.exists(),
+            "identityVerifiedItemCount": len(identity_verified),
         },
         "combos": combos,
     }
@@ -499,6 +530,7 @@ def main():
 
     print(f"OK - wrote {OUT_JSON} ({len(body)} source entries, {total_variants} variants)")
     print("status counts:", status_counts)
+    print(f"identity map verified items used: {len(identity_verified)}")
 
 
 if __name__ == "__main__":

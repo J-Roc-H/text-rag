@@ -8,8 +8,12 @@
   "totalSourceEntries": 105,
   "totalVariants": 156,
   "statusCounts": {
-   "source-needed": 156
-  }
+   "source-needed": 128,
+   "verified": 13,
+   "unsupported": 15
+  },
+  "identityMapUsed": true,
+  "identityVerifiedItemCount": 93
  },
  "combos": [
   {
@@ -1674,12 +1678,9 @@
      "aegisName": "Arrow_Of_Wind",
      "rathenaItemId": 1755,
      "rathenaName": "Arrow of Wind",
-     "textragKey": null,
-     "resolved": false,
-     "ambiguousTextragKeys": [
-      "Arrow of Wind",
-      "바람의 화살"
-     ],
+     "textragKey": "바람의 화살",
+     "resolved": true,
+     "ambiguousTextragKeys": null,
      "isAmmo": true
     }
    ],
@@ -1727,12 +1728,9 @@
      "aegisName": "Steel_Arrow",
      "rathenaItemId": 1753,
      "rathenaName": "Steel Arrow",
-     "textragKey": null,
-     "resolved": false,
-     "ambiguousTextragKeys": [
-      "Steel Arrow",
-      "강철의 화살"
-     ],
+     "textragKey": "강철의 화살",
+     "resolved": true,
+     "ambiguousTextragKeys": null,
      "isAmmo": true
     }
    ],
@@ -3509,8 +3507,8 @@
      "aegisName": "Munak_Card",
      "rathenaItemId": 4090,
      "rathenaName": "Munak Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "무낙 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -3518,8 +3516,8 @@
      "aegisName": "Bon_Gun_Card",
      "rathenaItemId": 4212,
      "rathenaName": "Bongun Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "본건 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -3527,8 +3525,8 @@
      "aegisName": "Hyegun_Card",
      "rathenaItemId": 4328,
      "rathenaName": "Yao Jun Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "혜군 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -3580,10 +3578,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0042-01",
@@ -6670,8 +6666,8 @@
      "aegisName": "Poring_Card",
      "rathenaItemId": 4001,
      "rathenaName": "Poring Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "포링 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -6679,8 +6675,8 @@
      "aegisName": "Mastering_Card",
      "rathenaItemId": 4197,
      "rathenaName": "Mastering Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "마스터링 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -6697,10 +6693,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0070-02",
@@ -6715,8 +6709,8 @@
      "aegisName": "Lunatic_Card",
      "rathenaItemId": 4006,
      "rathenaName": "Lunatic Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "루나틱 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -6724,8 +6718,8 @@
      "aegisName": "Eclipse_Card",
      "rathenaItemId": 4266,
      "rathenaName": "Eclipse Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "이클립스 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -6742,10 +6736,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0070-03",
@@ -6760,8 +6752,8 @@
      "aegisName": "Chonchon_Card",
      "rathenaItemId": 4009,
      "rathenaName": "Chonchon Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "촌촌 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -6769,8 +6761,8 @@
      "aegisName": "Dragon_Fly_Card",
      "rathenaItemId": 4179,
      "rathenaName": "Dragon Fly Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "드래곤 플라이 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -6787,10 +6779,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0070-04",
@@ -6805,8 +6795,8 @@
      "aegisName": "Roda_Frog_Card",
      "rathenaItemId": 4014,
      "rathenaName": "Roda Frog Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "로다프로그 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -6814,8 +6804,8 @@
      "aegisName": "Toad_Card",
      "rathenaItemId": 4306,
      "rathenaName": "Toad Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "토드 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -6832,10 +6822,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0070-05",
@@ -6850,8 +6838,8 @@
      "aegisName": "Rocker_Card",
      "rathenaItemId": 4021,
      "rathenaName": "Rocker Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "로커 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -6859,8 +6847,8 @@
      "aegisName": "Vocal_Card",
      "rathenaItemId": 4211,
      "rathenaName": "Vocal Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "보컬 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -6877,10 +6865,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0070-06",
@@ -6895,8 +6881,8 @@
      "aegisName": "Wolf_Card",
      "rathenaItemId": 4029,
      "rathenaName": "Wolf Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "울프 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -6904,8 +6890,8 @@
      "aegisName": "Vagabond_Wolf_Card",
      "rathenaItemId": 4183,
      "rathenaName": "Vagabond Wolf Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "방랑하는 늑대 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -6922,10 +6908,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0071-01",
@@ -6940,8 +6924,8 @@
      "aegisName": "Skeleton_Card",
      "rathenaItemId": 4025,
      "rathenaName": "Skeleton Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스켈레톤 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -6949,8 +6933,8 @@
      "aegisName": "Skel_Prisoner_Card",
      "rathenaItemId": 4222,
      "rathenaName": "Skeleton Prisoner Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스켈 프리즈너 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -6965,9 +6949,9 @@
      "reason": "\"bonus2 bAddEffWhenHit,eff,n;\" — 위와 동일 사유."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -6983,8 +6967,8 @@
      "aegisName": "Tarou_Card",
      "rathenaItemId": 4028,
      "rathenaName": "Tarou Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "타로우 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -6992,8 +6976,8 @@
      "aegisName": "Cramp_Card",
      "rathenaItemId": 4296,
      "rathenaName": "Cramp Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "크램프 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -7010,10 +6994,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0073-01",
@@ -7028,8 +7010,8 @@
      "aegisName": "Pecopeco_Card",
      "rathenaItemId": 4031,
      "rathenaName": "Peco Peco Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "페코페코 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7037,8 +7019,8 @@
      "aegisName": "Grand_Peco_Card",
      "rathenaItemId": 4161,
      "rathenaName": "Grand Peco Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "그랜드 페코 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -7062,10 +7044,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0074-01",
@@ -7080,8 +7060,8 @@
      "aegisName": "Muka_Card",
      "rathenaItemId": 4036,
      "rathenaName": "Muka Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "무카 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7098,8 +7078,8 @@
      "aegisName": "Baby_Leopard_Card",
      "rathenaItemId": 4233,
      "rathenaName": "Baby Leopard Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "아기표범 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7107,8 +7087,8 @@
      "aegisName": "Zipper_Bear_Card",
      "rathenaItemId": 4281,
      "rathenaName": "Zipper Bear Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "지퍼베어 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7116,8 +7096,8 @@
      "aegisName": "Mole_Card",
      "rathenaItemId": 4343,
      "rathenaName": "Holden Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "홀덴 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -7179,8 +7159,8 @@
      "aegisName": "Stainer_Card",
      "rathenaItemId": 4039,
      "rathenaName": "Stainer Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "스테이너 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7188,8 +7168,8 @@
      "aegisName": "Wander_Man_Card",
      "rathenaItemId": 4210,
      "rathenaName": "Wanderer Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "배회하는자 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7197,8 +7177,8 @@
      "aegisName": "Shinobi_Card",
      "rathenaItemId": 4230,
      "rathenaName": "Shinobi Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "시노비 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7206,8 +7186,8 @@
      "aegisName": "Wild_Rose_Card",
      "rathenaItemId": 4257,
      "rathenaName": "Wild Rose Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "와일드로즈 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7215,8 +7195,8 @@
      "aegisName": "Whikebain_Card",
      "rathenaItemId": 4348,
      "rathenaName": "Wickebine Tres Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "위케바인 트레스(일반) 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -7249,9 +7229,9 @@
      "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -7267,8 +7247,8 @@
      "aegisName": "BigFoot_Card",
      "rathenaItemId": 4074,
      "rathenaName": "Bigfoot Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "빅풋 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7276,8 +7256,8 @@
      "aegisName": "Grizzly_Card",
      "rathenaItemId": 4162,
      "rathenaName": "Grizzly Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "그리즐리 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -7292,9 +7272,9 @@
      "reason": "\"bonus2 bAddEffWhenHit,eff,n;\" — 위와 동일 사유."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -7310,8 +7290,8 @@
      "aegisName": "Mummy_Card",
      "rathenaItemId": 4106,
      "rathenaName": "Mummy Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "미라 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7319,8 +7299,8 @@
      "aegisName": "Ancient_Mummy_Card",
      "rathenaItemId": 4248,
      "rathenaName": "Ancient Mummy Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "에인션트미이라 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -7335,9 +7315,9 @@
      "reason": "\"bonus bPerfectHitAddRate,n;\" — P0에 대응 vocabulary 없음."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -7353,8 +7333,8 @@
      "aegisName": "Nightmare_Card",
      "rathenaItemId": 4127,
      "rathenaName": "Nightmare Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "나이트메어 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7362,8 +7342,8 @@
      "aegisName": "Nightmare_Terror_Card",
      "rathenaItemId": 4166,
      "rathenaName": "Nightmare Terror Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "나이트메어 테러 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -7378,9 +7358,9 @@
      "reason": "\"bonus2 bAddEffWhenHit,eff,n;\" — 위와 동일 사유."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -7396,8 +7376,8 @@
      "aegisName": "Crab_Card",
      "rathenaItemId": 4153,
      "rathenaName": "Crab Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "게 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7405,8 +7385,8 @@
      "aegisName": "Aster_Card",
      "rathenaItemId": 4247,
      "rathenaName": "Aster Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "에스터 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7414,8 +7394,8 @@
      "aegisName": "Shellfish_Card",
      "rathenaItemId": 4273,
      "rathenaName": "Shell Fish Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "조개 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -7435,9 +7415,9 @@
      "reason": "알려지지 않은 rAthena bonus2 상수(rawScript만 보존): bAddEle"
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -7453,8 +7433,8 @@
      "aegisName": "Dark_Lord_Card",
      "rathenaItemId": 4168,
      "rathenaName": "Dark Lord Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "다크 로드 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7462,8 +7442,8 @@
      "aegisName": "Dark_Illusion_Card",
      "rathenaItemId": 4169,
      "rathenaName": "Dark Illusion Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "다크 일루전 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -7493,9 +7473,9 @@
      "reason": "\"bonus bCastrate,n; Skill cast time rate + n%\" — 음수 가능(캐스팅 증가), P0 castReduction(0~1 fraction, 항상 감소)과 부호/단위 불일치."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -7520,8 +7500,8 @@
      "aegisName": "Wander_Man_Card",
      "rathenaItemId": 4210,
      "rathenaName": "Wanderer Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "배회하는자 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7529,8 +7509,8 @@
      "aegisName": "Shinobi_Card",
      "rathenaItemId": 4230,
      "rathenaName": "Shinobi Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "시노비 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7538,8 +7518,8 @@
      "aegisName": "Wild_Rose_Card",
      "rathenaItemId": 4257,
      "rathenaName": "Wild Rose Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "와일드로즈 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7547,8 +7527,8 @@
      "aegisName": "Dancing_Dragon_Card",
      "rathenaItemId": 4272,
      "rathenaName": "Zhu Po Long Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "주포룡 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -7608,8 +7588,8 @@
      "aegisName": "Dragon_Tail_Card",
      "rathenaItemId": 4178,
      "rathenaName": "Dragon Tail Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "드래곤테일 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7617,8 +7597,8 @@
      "aegisName": "Merman_Card",
      "rathenaItemId": 4199,
      "rathenaName": "Merman Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "머맨 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7626,8 +7606,8 @@
      "aegisName": "Anolian_Card",
      "rathenaItemId": 4234,
      "rathenaName": "Anolian Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "아노리안 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7635,8 +7615,8 @@
      "aegisName": "Alligator_Card",
      "rathenaItemId": 4252,
      "rathenaName": "Alligator Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "알리게이터 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7644,8 +7624,8 @@
      "aegisName": "Cruiser_Card",
      "rathenaItemId": 4297,
      "rathenaName": "Cruiser Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "크루이저 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -7682,9 +7662,9 @@
      "reason": "\"bonus bPerfectHitAddRate,n;\" — P0에 대응 vocabulary 없음."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -7700,8 +7680,8 @@
      "aegisName": "Dragon_Tail_Card",
      "rathenaItemId": 4178,
      "rathenaName": "Dragon Tail Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "드래곤테일 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7709,8 +7689,8 @@
      "aegisName": "Anolian_Card",
      "rathenaItemId": 4234,
      "rathenaName": "Anolian Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "아노리안 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7718,8 +7698,8 @@
      "aegisName": "Alligator_Card",
      "rathenaItemId": 4252,
      "rathenaName": "Alligator Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "알리게이터 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7727,8 +7707,8 @@
      "aegisName": "Cruiser_Card",
      "rathenaItemId": 4297,
      "rathenaName": "Cruiser Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "크루이저 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7736,8 +7716,8 @@
      "aegisName": "Ferus__Card",
      "rathenaItemId": 4381,
      "rathenaName": "Green Ferus Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "레드 페러스 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -7772,9 +7752,9 @@
      "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -7790,8 +7770,8 @@
      "aegisName": "Rideword_Card",
      "rathenaItemId": 4185,
      "rathenaName": "Rideword Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "라이드워드 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7808,8 +7788,8 @@
      "aegisName": "Geographer_Card",
      "rathenaItemId": 4280,
      "rathenaName": "Geographer Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "지오그래퍼 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7817,8 +7797,8 @@
      "aegisName": "Cookie_Card",
      "rathenaItemId": 4293,
      "rathenaName": "Cookie Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "쿠키 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7875,8 +7855,8 @@
      "aegisName": "Rideword_Card",
      "rathenaItemId": 4185,
      "rathenaName": "Rideword Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "라이드워드 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7884,8 +7864,8 @@
      "aegisName": "Cookie_Card",
      "rathenaItemId": 4293,
      "rathenaName": "Cookie Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "쿠키 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7902,8 +7882,8 @@
      "aegisName": "Waste_Stove_Card",
      "rathenaItemId": 4332,
      "rathenaName": "Waste Stove Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "고철난로 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -7974,8 +7954,8 @@
      "aegisName": "Mystcase_Card",
      "rathenaItemId": 4206,
      "rathenaName": "Myst Case Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "미스트케이스 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7983,8 +7963,8 @@
      "aegisName": "Baby_Leopard_Card",
      "rathenaItemId": 4233,
      "rathenaName": "Baby Leopard Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "아기표범 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -7992,8 +7972,8 @@
      "aegisName": "Zipper_Bear_Card",
      "rathenaItemId": 4281,
      "rathenaName": "Zipper Bear Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "지퍼베어 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8001,8 +7981,8 @@
      "aegisName": "Hylozoist_Card",
      "rathenaItemId": 4321,
      "rathenaName": "Hylozoist Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "하이로조이스트 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -8050,8 +8030,8 @@
      "aegisName": "Loli_Ruri_Card",
      "rathenaItemId": 4191,
      "rathenaName": "Loli Ruri Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "로리루리 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8059,8 +8039,8 @@
      "aegisName": "Miyabi_Ningyo_Card",
      "rathenaItemId": 4208,
      "rathenaName": "Miyabi Doll Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "미아비 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8068,8 +8048,8 @@
      "aegisName": "Wicked_Nymph_Card",
      "rathenaItemId": 4258,
      "rathenaName": "Evil Nymph Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "요선녀 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8077,8 +8057,8 @@
      "aegisName": "Parasite_Card",
      "rathenaItemId": 4309,
      "rathenaName": "Parasite Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "패러사이트 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8086,8 +8066,8 @@
      "aegisName": "Harpy_Card",
      "rathenaItemId": 4325,
      "rathenaName": "Harpy Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "하피 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8095,8 +8075,8 @@
      "aegisName": "Blood_Butterfly_Card",
      "rathenaItemId": 4327,
      "rathenaName": "Bloody Butterfly Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "혈호접 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -8145,9 +8125,9 @@
      "reason": "\"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%\" — P0 skillDmg는 이미 P0-C5에서 공통 소비 지점 부재로 보류된 필드."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -8163,8 +8143,8 @@
      "aegisName": "Lude_Card",
      "rathenaItemId": 4193,
      "rathenaName": "Lude Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "룻더 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8172,8 +8152,8 @@
      "aegisName": "Quve_Card",
      "rathenaItemId": 4294,
      "rathenaName": "Quve Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "큐브 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -8197,10 +8177,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0089-01",
@@ -8215,8 +8193,8 @@
      "aegisName": "Miyabi_Ningyo_Card",
      "rathenaItemId": 4208,
      "rathenaName": "Miyabi Doll Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "미아비 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8224,8 +8202,8 @@
      "aegisName": "Wicked_Nymph_Card",
      "rathenaItemId": 4258,
      "rathenaName": "Evil Nymph Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "요선녀 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8233,8 +8211,8 @@
      "aegisName": "Harpy_Card",
      "rathenaItemId": 4325,
      "rathenaName": "Harpy Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "하피 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8242,8 +8220,8 @@
      "aegisName": "Blood_Butterfly_Card",
      "rathenaItemId": 4327,
      "rathenaName": "Bloody Butterfly Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "혈호접 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8300,8 +8278,8 @@
      "aegisName": "Succubus_Card",
      "rathenaItemId": 4218,
      "rathenaName": "Succubus Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "서큐버스 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8309,8 +8287,8 @@
      "aegisName": "Incubus_Card",
      "rathenaItemId": 4269,
      "rathenaName": "Incubus Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "인큐버스 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -8348,10 +8326,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0091-01",
@@ -8366,8 +8342,8 @@
      "aegisName": "Solider_Card",
      "rathenaItemId": 4220,
      "rathenaName": "Solider Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "솔리더 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8375,8 +8351,8 @@
      "aegisName": "Assulter_Card",
      "rathenaItemId": 4246,
      "rathenaName": "Assaulter Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "어썰터 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8384,8 +8360,8 @@
      "aegisName": "Permeter_Card",
      "rathenaItemId": 4311,
      "rathenaName": "Permeter Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "퍼머터 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8393,8 +8369,8 @@
      "aegisName": "Freezer_Card",
      "rathenaItemId": 4319,
      "rathenaName": "Freezer Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "프리저 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8402,8 +8378,8 @@
      "aegisName": "Heater_Card",
      "rathenaItemId": 4331,
      "rathenaName": "Heater Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "히터 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -8447,9 +8423,9 @@
      "reason": "복합 인자 또는 함수형 표현(rawScript만 보존): bonus2 bAddMonsterDropItem,501,500"
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -8465,8 +8441,8 @@
      "aegisName": "C_Tower_Manager_Card",
      "rathenaItemId": 4229,
      "rathenaName": "Tower Keeper Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "시계탑 관리자 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8474,8 +8450,8 @@
      "aegisName": "Alarm_Card",
      "rathenaItemId": 4244,
      "rathenaName": "Alarm Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "알람 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8483,8 +8459,8 @@
      "aegisName": "Clock_Card",
      "rathenaItemId": 4299,
      "rathenaName": "Clock Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "클락 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8492,8 +8468,8 @@
      "aegisName": "Punk_Card",
      "rathenaItemId": 4313,
      "rathenaName": "Punk Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "펑크 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -8517,10 +8493,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0093-01",
@@ -8535,8 +8509,8 @@
      "aegisName": "Owl_Duke_Card",
      "rathenaItemId": 4237,
      "rathenaName": "Owl Duke Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "아울 듀크 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8544,8 +8518,8 @@
      "aegisName": "Owl_Baron_Card",
      "rathenaItemId": 4238,
      "rathenaName": "Owl Baron Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "아울 바론 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -8560,9 +8534,9 @@
      "reason": "\"bonus3 bAutoSpell,sk,y,n; n/10% chance...\" — P0 autoSpell 이벤트는 있으나 확률 단위(n/10%) 실사례 대조 전이라 P0-close 관례대로 보류."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -8578,8 +8552,8 @@
      "aegisName": "Injustice_Card",
      "rathenaItemId": 4268,
      "rathenaName": "Injustice Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "인저스티스 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8587,8 +8561,8 @@
      "aegisName": "Zherlthsh_Card",
      "rathenaItemId": 4277,
      "rathenaName": "Zealotus Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "지르타스 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -8612,10 +8586,8 @@
     }
    ],
    "unsupportedEffects": [],
-   "status": "source-needed",
-   "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
-   ]
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0095-01",
@@ -8630,8 +8602,8 @@
      "aegisName": "Permeter_Card",
      "rathenaItemId": 4311,
      "rathenaName": "Permeter Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "퍼머터 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8639,8 +8611,8 @@
      "aegisName": "Freezer_Card",
      "rathenaItemId": 4319,
      "rathenaName": "Freezer Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "프리저 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8648,8 +8620,8 @@
      "aegisName": "Heater_Card",
      "rathenaItemId": 4331,
      "rathenaName": "Heater Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "히터 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8657,8 +8629,8 @@
      "aegisName": "Archdam_Card",
      "rathenaItemId": 4371,
      "rathenaName": "Archdam Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "아크담 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -8714,9 +8686,9 @@
      "reason": "\"bonus bCastrate,n; Skill cast time rate + n%\" — 음수 가능(캐스팅 증가), P0 castReduction(0~1 fraction, 항상 감소)과 부호/단위 불일치."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -8732,8 +8704,8 @@
      "aegisName": "Garm_Baby_Card",
      "rathenaItemId": 4323,
      "rathenaName": "Hatii Babe Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "하티 베베 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8741,8 +8713,8 @@
      "aegisName": "Garm_Card",
      "rathenaItemId": 4324,
      "rathenaName": "Hatii Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "하티 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -8757,9 +8729,9 @@
      "reason": "\"bonus3 bAutoSpell,sk,y,n; n/10% chance...\" — P0 autoSpell 이벤트는 있으나 확률 단위(n/10%) 실사례 대조 전이라 P0-close 관례대로 보류."
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
    ]
   },
   {
@@ -8775,8 +8747,8 @@
      "aegisName": "Zombie_Slaughter_Card",
      "rathenaItemId": 4435,
      "rathenaName": "Zombie Slaughter Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "좀비 슬러터 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     },
@@ -8784,8 +8756,8 @@
      "aegisName": "Ragged_Zombie_Card",
      "rathenaItemId": 4436,
      "rathenaName": "Ragged Zombie Card",
-     "textragKey": null,
-     "resolved": false,
+     "textragKey": "누더기 좀비 카드",
+     "resolved": true,
      "ambiguousTextragKeys": null,
      "isAmmo": false
     }
@@ -8808,9 +8780,9 @@
      "reason": "종족 enum \"RC_Player_Human\"이 TextRAG 확인된 10종에 없음 — 추측 금지"
     }
    ],
-   "status": "source-needed",
+   "status": "unsupported",
    "statusReasons": [
-    "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {

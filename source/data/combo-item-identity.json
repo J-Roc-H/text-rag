@@ -1,0 +1,9314 @@
+{
+ "sourceCommit": "e985006171d2eb320ee512a653f4c83aea3d81b6",
+ "totalItems": 278,
+ "statusCounts": {
+  "verified": 93,
+  "unresolved-existing": 172,
+  "missing": 13
+ },
+ "items": [
+  {
+   "aegisName": "Alarm_Card",
+   "rathenaItemId": 4244,
+   "rathenaName": "Alarm Card",
+   "rathenaType": "Card",
+   "textragKey": "알람 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1193]가 'Alarm_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1193'] -> TextRAG 한글명 '알람'",
+    "TextRAG db-items.json에 '알람 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Alarm_Mask",
+   "rathenaItemId": 5086,
+   "rathenaName": "Alarm Mask",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "악마의작은뿔",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "사이그룬의날개",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "알람가면",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "고블린가면4호",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "메롱가면",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Alligator_Card",
+   "rathenaItemId": 4252,
+   "rathenaName": "Alligator Card",
+   "rathenaType": "Card",
+   "textragKey": "알리게이터 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1271]가 'Alligator_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1271'] -> TextRAG 한글명 '알리게이터'",
+    "TextRAG db-items.json에 '알리게이터 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Ancient_Magic",
+   "rathenaItemId": 1573,
+   "rathenaName": "Ancient Magic",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "고대의마법",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "베체르액스",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "크로체스태프",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "콤보 배틀 글러브",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "리치의 뼈 완드",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Ancient_Mummy_Card",
+   "rathenaItemId": 4248,
+   "rathenaName": "Ancient Mummy Card",
+   "rathenaType": "Card",
+   "textragKey": "에인션트미이라 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1297]가 'Ancient_Mummy_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1297'] -> TextRAG 한글명 '에인션트미이라'",
+    "TextRAG db-items.json에 '에인션트미이라 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Angel's_Arrival",
+   "rathenaItemId": 2420,
+   "rathenaName": "Angel's Reincarnation",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "천사의재래",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "스프린트슈즈",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Angel's_Protection",
+   "rathenaItemId": 2355,
+   "rathenaName": "Angelic Protection",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "맨틀",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "천사의가호",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Angel's_Safeguard",
+   "rathenaItemId": 2116,
+   "rathenaName": "Angelic Guard",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "천사의보호",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "호랑이왕인형모자",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "천사의입맞춤",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "사또모자",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "아얌",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Angel's_Warmth",
+   "rathenaItemId": 2521,
+   "rathenaName": "Angelic Cardigan",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "천사의온기",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "머플러",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Angeling_Hairpin",
+   "rathenaItemId": 5153,
+   "rathenaName": "Angeling Hairpin",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "엔젤링핀",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "천사의헬름",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "코로넷",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "악마의머리띠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "의사머리띠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Anolian_Card",
+   "rathenaItemId": 4234,
+   "rathenaName": "Anolian Card",
+   "rathenaType": "Card",
+   "textragKey": "아노리안 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1206]가 'Anolian_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1206'] -> TextRAG 한글명 '아노리안'",
+    "TextRAG db-items.json에 '아노리안 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Archdam_Card",
+   "rathenaItemId": 4371,
+   "rathenaName": "Archdam Card",
+   "rathenaType": "Card",
+   "textragKey": "아크담 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1668]가 'Archdam_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1668'] -> TextRAG 한글명 '아크담'",
+    "TextRAG db-items.json에 '아크담 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Arrow_Of_Wind",
+   "rathenaItemId": 1755,
+   "rathenaName": "Arrow of Wind",
+   "rathenaType": "Ammo",
+   "textragKey": "바람의 화살",
+   "status": "verified",
+   "evidenceCase": "C",
+   "evidence": [
+    "영문 스텁 'Arrow of Wind'(_krPending=true)는 desc가 '원작 데이터... 한글명 미정' placeholder이고 atk/element 필드가 전혀 없어 게임에서 실제로 아무 효과도 내지 않는다.",
+    "'바람의 화살'은 이미 완성된 한글 정본으로 element=풍속성(Wind와 의미 일치), buy=3/sell=1/weight=0.2 전부 rAthena Arrow_Of_Wind(Buy 3, Weight 2 -> /10 = 0.2)와 정확히 일치.",
+    "atk: rAthena Attack=30이지만 TextRAG는 25 — 단, 같은 원소 화살 계열인 Fire_Arrow/Stone_Arrow/Crystal_Arrow(전부 rAthena Attack=30)도 이미 Case A로 확정된 TextRAG 대응 아이템(불화살/암석 화살/수정 화살)이 전부 atk=25로 동일하게 낮춰져 있음을 확인 (project 차원의 의도적 원소 화살 밸런스 조정, 이 항목만의 우연이 아님) — 이 30->25 패턴이 가족 전체에 일관되므로 반례가 아니라 확증으로 판단.",
+    "db-monsters.json의 오크 아처(ID 130) 드롭 목록이 영문 스텁 키 'Arrow of Wind'를 직접 참조하고 있음을 확인 — 즉 현재 드롭 테이블은 (효과 없는) 영문 스텁을 주고 있고, 실제로 완성된 아이템은 별도의 '바람의 화살'이다. 드롭 테이블 자체는 이번 단계에서 수정하지 않는다(§24) — identity만 기록."
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Assassin_Robe",
+   "rathenaItemId": 2378,
+   "rathenaName": "Assassin Robe",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "돌격대장플레이트",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "정예공병의갑옷",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "암살자의로브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Assaulter_Plate",
+   "rathenaItemId": 2376,
+   "rathenaName": "Assaulter Plate",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "돌격대장플레이트",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "정예공병의갑옷",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "암살자의로브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Assulter_Card",
+   "rathenaItemId": 4246,
+   "rathenaName": "Assaulter Card",
+   "rathenaType": "Card",
+   "textragKey": "어썰터 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1315]가 'Assulter_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1315'] -> TextRAG 한글명 '어썰터'",
+    "TextRAG db-items.json에 '어썰터 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Aster_Card",
+   "rathenaItemId": 4247,
+   "rathenaName": "Aster Card",
+   "rathenaType": "Card",
+   "textragKey": "에스터 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1266]가 'Aster_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1266'] -> TextRAG 한글명 '에스터'",
+    "TextRAG db-items.json에 '에스터 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "B_Harword_Card",
+   "rathenaItemId": 4361,
+   "rathenaName": "MasterSmith Card",
+   "rathenaType": "Card",
+   "textragKey": null,
+   "status": "missing",
+   "evidenceCase": null,
+   "evidence": [
+    "드롭 원작 몬스터 ID [1648] 전부 MONSTER_AI_AUDIT.md에 확정된 원작 ID로 등재돼 있지 않음(몬스터 identity 감사가 이 ID들까지 아직 안 갔음 — 이번 아이템 identity 작업의 범위 밖)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Baby_Leopard_Card",
+   "rathenaItemId": 4233,
+   "rathenaName": "Baby Leopard Card",
+   "rathenaType": "Card",
+   "textragKey": "아기표범 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1415]가 'Baby_Leopard_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1415'] -> TextRAG 한글명 '아기표범'",
+    "TextRAG db-items.json에 '아기표범 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Battle_Boots",
+   "rathenaItemId": 2437,
+   "rathenaName": "Battle Boots",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "군화",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "전투부츠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Battle_Greave",
+   "rathenaItemId": 2435,
+   "rathenaName": "Battle Greaves",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "전투그리브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Battle_Hook",
+   "rathenaItemId": 1421,
+   "rathenaName": "Battle Hook",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "배틀훅",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "하드커버 북",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "무형검",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "스타블레이드",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "그랜드크로스",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Beach_Manteau",
+   "rathenaItemId": 2546,
+   "rathenaName": "Beach Manteau",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "비치망토",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "드래곤의숨결",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Beach_Sandal",
+   "rathenaItemId": 2441,
+   "rathenaName": "Beach Sandals",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "비치샌들",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "BigFoot_Card",
+   "rathenaItemId": 4074,
+   "rathenaName": "Bigfoot Card",
+   "rathenaType": "Card",
+   "textragKey": "빅풋 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1060]가 'BigFoot_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1060'] -> TextRAG 한글명 '빅풋'",
+    "TextRAG db-items.json에 '빅풋 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Bison_Horn",
+   "rathenaItemId": 2702,
+   "rathenaName": "Bison Horn",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "샤먼링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "눈구슬반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "사서의장갑",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "오를레앙의장갑",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "들소의뿔",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Black_Cat",
+   "rathenaItemId": 2747,
+   "rathenaName": "Black Cat",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "베스퍼코어01",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어02",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어03",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어04",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "물의반지",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Black_Glasses",
+   "rathenaItemId": 5401,
+   "rathenaName": "Black Frame Glasses",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "요정의눈가리개",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "요정의선글래스",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "로봇의눈가리개",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "인간의눈가리개",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "오페라유령가면",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Black_Leather_Boots",
+   "rathenaItemId": 2425,
+   "rathenaName": "Black Leather Boots",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "생명나무줄기슈즈",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "황금신발",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "검은가죽부츠",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact"
+     ]
+    },
+    {
+     "textragKey": "배리언트슈즈",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "배리언트슈즈_M",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Black_Leather_Boots_",
+   "rathenaItemId": 2434,
+   "rathenaName": "Black Leather Boots",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "검은가죽부츠",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "마왕의부츠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "발키리의슈즈",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "생명나무줄기슈즈",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Blood_Butterfly_Card",
+   "rathenaItemId": 4327,
+   "rathenaName": "Bloody Butterfly Card",
+   "rathenaType": "Card",
+   "textragKey": "혈호접 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1408]가 'Blood_Butterfly_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1408'] -> TextRAG 한글명 '혈호접'",
+    "TextRAG db-items.json에 '혈호접 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Bloody_Iron_Ball",
+   "rathenaItemId": 2655,
+   "rathenaName": "Bloodied Shackle Ball",
+   "rathenaType": "Armor",
+   "textragKey": "Bloodied Shackle Ball",
+   "status": "verified",
+   "evidenceCase": "A",
+   "evidence": [
+    "TextRAG 'Bloodied Shackle Ball'._aegis == 'Bloody_Iron_Ball' (exact, unique)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Blush",
+   "rathenaItemId": 5040,
+   "rathenaName": "Blush",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "의적안대",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "도끼눈",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "나비가면",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "발그레",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "타키우스눈가리개",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Bon_Gun_Card",
+   "rathenaItemId": 4212,
+   "rathenaName": "Bongun Card",
+   "rathenaType": "Card",
+   "textragKey": "본건 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1188]가 'Bon_Gun_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1188'] -> TextRAG 한글명 '본건'",
+    "TextRAG db-items.json에 '본건 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Bone_Wand",
+   "rathenaItemId": 1615,
+   "rathenaName": "Evil Bone Wand",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "이블 본 완드",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "문라이트소드",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "오크아쳐의활",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "엣지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "슈메티",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Bowman_Scarf",
+   "rathenaItemId": 2727,
+   "rathenaName": "Bowman Scarf",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "명궁의스카프",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "벨카프",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "커즈드스타",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Burning_Bow",
+   "rathenaItemId": 1730,
+   "rathenaName": "Burning Bow",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "불타는활",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "질풍의활",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "냉각의활",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "대지의활",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "크로체스태프",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "C_Tower_Manager_Card",
+   "rathenaItemId": 4229,
+   "rathenaName": "Tower Keeper Card",
+   "rathenaType": "Card",
+   "textragKey": "시계탑 관리자 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1270]가 'C_Tower_Manager_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1270'] -> TextRAG 한글명 '시계탑 관리자'",
+    "TextRAG db-items.json에 '시계탑 관리자 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Chonchon_Card",
+   "rathenaItemId": 4009,
+   "rathenaName": "Chonchon Card",
+   "rathenaType": "Card",
+   "textragKey": "촌촌 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1011, 1183]가 'Chonchon_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1011'] -> TextRAG 한글명 '촌촌'",
+    "TextRAG db-items.json에 '촌촌 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Clack_Of_Servival",
+   "rathenaItemId": 2509,
+   "rathenaName": "Survivor's Manteau",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "생존의망토",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Clip",
+   "rathenaItemId": 2607,
+   "rathenaName": "Clip",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "클립",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Cloak_Of_Survival_C",
+   "rathenaItemId": 2535,
+   "rathenaName": "Cloak Of Survival",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "생존의망토_C",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Clock_Card",
+   "rathenaItemId": 4299,
+   "rathenaName": "Clock Card",
+   "rathenaType": "Card",
+   "textragKey": "클락 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1269]가 'Clock_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1269'] -> TextRAG 한글명 '클락'",
+    "TextRAG db-items.json에 '클락 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Cold_Heart",
+   "rathenaItemId": 2746,
+   "rathenaName": "Cold Heart",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "베스퍼코어01",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어02",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어03",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어04",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "물의반지",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Combat_Boots",
+   "rathenaItemId": 2436,
+   "rathenaName": "Combat Boots",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "군화",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "전투부츠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Commander_Manteau",
+   "rathenaItemId": 2538,
+   "rathenaName": "Captain's Manteau",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "사령관의망토",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Commander_Manteau_",
+   "rathenaItemId": 2539,
+   "rathenaName": "Commander's Manteau",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "지휘관의망토",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "보안관의망토",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Cookie_Card",
+   "rathenaItemId": 4293,
+   "rathenaName": "Cookie Card",
+   "rathenaType": "Card",
+   "textragKey": "쿠키 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1265]가 'Cookie_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1265'] -> TextRAG 한글명 '쿠키'",
+    "TextRAG db-items.json에 '쿠키 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Crab_Card",
+   "rathenaItemId": 4153,
+   "rathenaName": "Crab Card",
+   "rathenaType": "Card",
+   "textragKey": "게 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1073]가 'Crab_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1073'] -> TextRAG 한글명 '게'",
+    "TextRAG db-items.json에 '게 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Cramp_Card",
+   "rathenaItemId": 4296,
+   "rathenaName": "Cramp Card",
+   "rathenaType": "Card",
+   "textragKey": "크램프 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1209]가 'Cramp_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1209'] -> TextRAG 한글명 '크램프'",
+    "TextRAG db-items.json에 '크램프 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Cruiser_Card",
+   "rathenaItemId": 4297,
+   "rathenaName": "Cruiser Card",
+   "rathenaType": "Card",
+   "textragKey": "크루이저 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1248]가 'Cruiser_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1248'] -> TextRAG 한글명 '크루이저'",
+    "TextRAG db-items.json에 '크루이저 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Crystal_Arrow",
+   "rathenaItemId": 1754,
+   "rathenaName": "Crystal Arrow",
+   "rathenaType": "Ammo",
+   "textragKey": "수정 화살",
+   "status": "verified",
+   "evidenceCase": "A",
+   "evidence": [
+    "TextRAG '수정 화살'._aegis == 'Crystal_Arrow' (exact, unique)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Cuffs",
+   "rathenaItemId": 2408,
+   "rathenaName": "Shackles",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "족쇠",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Cursed_Lyre",
+   "rathenaItemId": 1741,
+   "rathenaName": "Cursed Lyre",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "커즈드라이어",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "헌팅스피어",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "허리케인퓨리",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "배틀훅",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "허리케인즈 퓨리",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Cursed_Star",
+   "rathenaItemId": 2748,
+   "rathenaName": "Cursed Star",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "명궁의스카프",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "벨카프",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "커즈드스타",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Dancing_Dragon_Card",
+   "rathenaItemId": 4272,
+   "rathenaName": "Zhu Po Long Card",
+   "rathenaType": "Card",
+   "textragKey": "주포룡 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1514]가 'Dancing_Dragon_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1514'] -> TextRAG 한글명 '주포룡'",
+    "TextRAG db-items.json에 '주포룡 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Dark_Illusion_Card",
+   "rathenaItemId": 4169,
+   "rathenaName": "Dark Illusion Card",
+   "rathenaType": "Card",
+   "textragKey": "다크 일루전 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1302]가 'Dark_Illusion_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1302'] -> TextRAG 한글명 '다크 일루전'",
+    "TextRAG db-items.json에 '다크 일루전 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Dark_Knight_Belt",
+   "rathenaItemId": 2779,
+   "rathenaName": "Dark Knight Belt",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "다크나이트벨트",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "다크나이트글로브",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어01",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어02",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어03",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Dark_Knight_Glove",
+   "rathenaItemId": 2780,
+   "rathenaName": "Dark Knight Glove",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "다크나이트벨트",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "다크나이트글로브",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어01",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어02",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어03",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Dark_Knight_Mask",
+   "rathenaItemId": 5482,
+   "rathenaName": "Dark Knight Mask",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "다크나이트마스크",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "다크나이트마스크B",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Dark_Knight_MaskB",
+   "rathenaItemId": 5577,
+   "rathenaName": "Dark Knight Mask",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "다크나이트마스크",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "다크나이트마스크B",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Dark_Lord_Card",
+   "rathenaItemId": 4168,
+   "rathenaName": "Dark Lord Card",
+   "rathenaType": "Card",
+   "textragKey": "다크 로드 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1272]가 'Dark_Lord_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1272'] -> TextRAG 한글명 '다크 로드'",
+    "TextRAG db-items.json에 '다크 로드 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Darkness_Helm_J",
+   "rathenaItemId": 5653,
+   "rathenaName": "Darkness Helm",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "다크네스헬름_J",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "해적두건",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "오크족헬름",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "안전모",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact"
+     ]
+    },
+    {
+     "textragKey": "학사모",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Diabolus_Armor",
+   "rathenaItemId": 2375,
+   "rathenaName": "Diabolus Armor",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "마왕의아머",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "매직코트",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "닌자슈츠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "글리터링클로스",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "홀리로브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Diabolus_Boots",
+   "rathenaItemId": 2433,
+   "rathenaName": "Diabolus Boots",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "마왕의부츠",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "검은가죽부츠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Diabolus_Manteau",
+   "rathenaItemId": 2537,
+   "rathenaName": "Diabolus Manteau",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "마왕의망토",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "드래곤의망토",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모로크_현신4",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "폴드런",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "대행자의껍질조각",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Diabolus_Ring",
+   "rathenaItemId": 2729,
+   "rathenaName": "Diabolus Ring",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "마왕의링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모로크_현신1",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모로크_인장",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모로크_주문석",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모로크_고리",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Diabolus_Robe",
+   "rathenaItemId": 2374,
+   "rathenaName": "Diabolus Robe",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "마왕의로브",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "포멀드레스",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "밍크코트",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "오를레앙의제복",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "디바인클로스",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Divine_Cross",
+   "rathenaItemId": 2001,
+   "rathenaName": "Divine Cross",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "디바인크로스",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "네이건",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "그랜드크로스",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "인버스스케일",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "나간",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Dragon_Breath",
+   "rathenaItemId": 2527,
+   "rathenaName": "Dragon Breath",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "드래곤의숨결",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "망토",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "비치망토",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "라이더휘장",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "라이더휘장_M",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Dragon_Fly_Card",
+   "rathenaItemId": 4179,
+   "rathenaName": "Dragon Fly Card",
+   "rathenaType": "Card",
+   "textragKey": "드래곤 플라이 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1091]가 'Dragon_Fly_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1091'] -> TextRAG 한글명 '드래곤 플라이'",
+    "TextRAG db-items.json에 '드래곤 플라이 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Dragon_Killer",
+   "rathenaItemId": 13001,
+   "rathenaName": "Dragon Killer",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "드래곤킬러",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "쿼드릴",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "카이저 너클",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "일렉트릭 기타",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "무형검",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Dragon_Manteau",
+   "rathenaItemId": 2553,
+   "rathenaName": "Dragon Manteau",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "드래곤의망토",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "마왕의망토",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "폴드런",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "대행자의껍질조각",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Dragon_Slayer",
+   "rathenaItemId": 1166,
+   "rathenaName": "Dragon Slayer",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "드래곤슬레이어",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "루드라의활",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "엑스칼리버",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "드래곤 슬레이어",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "루드라 보우",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Dragon_Tail_Card",
+   "rathenaItemId": 4178,
+   "rathenaName": "Dragon Tail Card",
+   "rathenaType": "Card",
+   "textragKey": "드래곤테일 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1321]가 'Dragon_Tail_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1321'] -> TextRAG 한글명 '드래곤테일'",
+    "TextRAG db-items.json에 '드래곤테일 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Dragon_Vest",
+   "rathenaItemId": 2399,
+   "rathenaName": "Dragon Vest",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "천상의로브",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "드래곤베스트",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "스프린트메일",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Dress_Of_Angel",
+   "rathenaItemId": 2358,
+   "rathenaName": "Angel's Dress",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "천사의예복",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "나가의비늘갑옷",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Ear_Of_Angel's_Wing",
+   "rathenaItemId": 5074,
+   "rathenaName": "Angel Wing Ears",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "도끼눈",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "3D안경",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "옵저버",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "양쪽귀밑리본",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "망원경",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Ear_Of_Devil's_Wing",
+   "rathenaItemId": 5068,
+   "rathenaName": "Evil Wing Ears",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "도끼눈",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "3D안경",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "옵저버",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "양쪽귀밑리본",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "망원경",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Earth_Bow",
+   "rathenaItemId": 1732,
+   "rathenaName": "Earth Bow",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "대지의활",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "불타는활",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "냉각의활",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "질풍의활",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "크로체스태프",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Eclipse_Card",
+   "rathenaItemId": 4266,
+   "rathenaName": "Eclipse Card",
+   "rathenaType": "Card",
+   "textragKey": "이클립스 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1093]가 'Eclipse_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1093'] -> TextRAG 한글명 '이클립스'",
+    "TextRAG db-items.json에 '이클립스 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Elite_Archer_Suit",
+   "rathenaItemId": 2381,
+   "rathenaName": "Elite Archer Suit",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "워락의전투로브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "위생병의로브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "정예궁병의슈츠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "정예사수의슈츠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Elite_Engineer_Armor",
+   "rathenaItemId": 2377,
+   "rathenaName": "Elite Engineer Armor",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "돌격대장플레이트",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "정예공병의갑옷",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "암살자의로브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Elite_Shooter_Suit",
+   "rathenaItemId": 2382,
+   "rathenaName": "Elite Shooter Suit",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "워락의전투로브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "위생병의로브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "정예궁병의슈츠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "정예사수의슈츠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Elven_Ears",
+   "rathenaItemId": 2286,
+   "rathenaName": "Elven Ears",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "의적안대",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "도끼눈",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "나비가면",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "발그레",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "타키우스눈가리개",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Elven_Ears_",
+   "rathenaItemId": 18507,
+   "rathenaName": "Elven Ears",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "요정의귀",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Exorcism_Bible",
+   "rathenaItemId": 2129,
+   "rathenaName": "Exorcism Bible",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "떠돌이늑대왕투구",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "구마의성서",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "바이킹헬름",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "젬드크라운",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "로드카호의뿔",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Falcon_Robe",
+   "rathenaItemId": 2516,
+   "rathenaName": "Falcon Muffler",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "매의날개옷",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모르피셔스쇼올",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "게브네이어깨장식",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모리아네의망토",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Ferus__Card",
+   "rathenaItemId": 4381,
+   "rathenaName": "Green Ferus Card",
+   "rathenaType": "Card",
+   "textragKey": "레드 페러스 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1717]가 'Ferus__Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1717'] -> TextRAG 한글명 '레드 페러스'",
+    "TextRAG db-items.json에 '레드 페러스 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Fire_Arrow",
+   "rathenaItemId": 1752,
+   "rathenaName": "Fire Arrow",
+   "rathenaType": "Ammo",
+   "textragKey": "불화살",
+   "status": "verified",
+   "evidenceCase": "A",
+   "evidence": [
+    "TextRAG '불화살'._aegis == 'Fire_Arrow' (exact, unique)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Freezer_Card",
+   "rathenaItemId": 4319,
+   "rathenaName": "Freezer Card",
+   "rathenaType": "Card",
+   "textragKey": "프리저 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1319]가 'Freezer_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1319'] -> TextRAG 한글명 '프리저'",
+    "TextRAG db-items.json에 '프리저 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Freyja_Boots",
+   "rathenaItemId": 2428,
+   "rathenaName": "Freyja Boots",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "프레이야의장화",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Freyja_Cape",
+   "rathenaItemId": 2533,
+   "rathenaName": "Freyja Cape",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "프레이야의망토",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Freyja_Crown",
+   "rathenaItemId": 5306,
+   "rathenaName": "Freya's Crown",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "프레이야의크라운",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Freyja_Overcoat",
+   "rathenaItemId": 2369,
+   "rathenaName": "Freyja Overcoat",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "프레이야의외투",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Fricca_Circlet",
+   "rathenaItemId": 5124,
+   "rathenaName": "Fricca's Circlet",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "프리카서클릿",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "코로넷",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "삿갓",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "꼬깔모자_B",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "일본애니버서리햇",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Fricco_Shoes",
+   "rathenaItemId": 2417,
+   "rathenaName": "Fricco's Shoes",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "프리코슈즈",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "배리언트슈즈",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "배리언트슈즈_M",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Frozen_Bow",
+   "rathenaItemId": 1731,
+   "rathenaName": "Frozen Bow",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "냉각의활",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "불타는활",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "대지의활",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "질풍의활",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "크로체스태프",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Fur_Seal_Card",
+   "rathenaItemId": 4312,
+   "rathenaName": "Seal Card",
+   "rathenaType": "Card",
+   "textragKey": null,
+   "status": "missing",
+   "evidenceCase": null,
+   "evidence": [
+    "드롭 원작 몬스터 ID [1317] 전부 MONSTER_AI_AUDIT.md에 확정된 원작 ID로 등재돼 있지 않음(몬스터 identity 감사가 이 ID들까지 아직 안 갔음 — 이번 아이템 identity 작업의 범위 밖)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "G_Strings",
+   "rathenaItemId": 2339,
+   "rathenaName": "Pantie",
+   "rathenaType": "Armor",
+   "textragKey": "Pantie",
+   "status": "verified",
+   "evidenceCase": "A",
+   "evidence": [
+    "TextRAG 'Pantie'._aegis == 'G_Strings' (exact, unique)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "G_Strings_",
+   "rathenaItemId": 2371,
+   "rathenaName": "Pantie",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "삼각팬티",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Gae_Bolg",
+   "rathenaItemId": 1474,
+   "rathenaName": "Gae Bolg",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "슈바이체르샤벨",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "카츠발게르",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "네이건",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "드래곤슬레이어",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "문라이트소드",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Garm_Baby_Card",
+   "rathenaItemId": 4323,
+   "rathenaName": "Hatii Babe Card",
+   "rathenaType": "Card",
+   "textragKey": "하티 베베 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1515]가 'Garm_Baby_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1515'] -> TextRAG 한글명 '하티 베베'",
+    "TextRAG db-items.json에 '하티 베베 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Garm_Card",
+   "rathenaItemId": 4324,
+   "rathenaName": "Hatii Card",
+   "rathenaType": "Card",
+   "textragKey": "하티 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1252]가 'Garm_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1252'] -> TextRAG 한글명 '하티'",
+    "TextRAG db-items.json에 '하티 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Geographer_Card",
+   "rathenaItemId": 4280,
+   "rathenaName": "Geographer Card",
+   "rathenaType": "Card",
+   "textragKey": "지오그래퍼 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1368]가 'Geographer_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1368'] -> TextRAG 한글명 '지오그래퍼'",
+    "TextRAG db-items.json에 '지오그래퍼 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Goibne's_Armor",
+   "rathenaItemId": 2354,
+   "rathenaName": "Goibne's Armor",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "게브네이의갑옷",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Goibne's_Combat_Boots",
+   "rathenaItemId": 2419,
+   "rathenaName": "Goibne's Greaves",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "게브네이의군화",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "비다르의부츠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Goibne's_Helmet",
+   "rathenaItemId": 5128,
+   "rathenaName": "Goibne's Helm",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "게브네이투구",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "바이킹헬름",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모리아네헬름",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "메긴캡",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "사자탈",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Goibne's_Shoulder_Arms",
+   "rathenaItemId": 2520,
+   "rathenaName": "Goibne's Spaulders",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "게브네이어깨장식",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모르피셔스쇼올",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모리아네의망토",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "매의날개옷",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Grand_Peco_Card",
+   "rathenaItemId": 4161,
+   "rathenaName": "Grand Peco Card",
+   "rathenaType": "Card",
+   "textragKey": "그랜드 페코 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1369]가 'Grand_Peco_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1369'] -> TextRAG 한글명 '그랜드 페코'",
+    "TextRAG db-items.json에 '그랜드 페코 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Grizzly_Card",
+   "rathenaItemId": 4162,
+   "rathenaName": "Grizzly Card",
+   "rathenaType": "Card",
+   "textragKey": "그리즐리 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1381]가 'Grizzly_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1381'] -> TextRAG 한글명 '그리즐리'",
+    "TextRAG db-items.json에 '그리즐리 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Gust_Bow",
+   "rathenaItemId": 1733,
+   "rathenaName": "Gust Bow",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "불타는활",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "질풍의활",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "냉각의활",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "대지의활",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "크로체스태프",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Hahoe_Mask",
+   "rathenaItemId": 5176,
+   "rathenaName": "Hahoe Mask",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "하회탈",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "익명요청",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "악마의작은뿔",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "사이그룬의날개",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "알람가면",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Harpy_Card",
+   "rathenaItemId": 4325,
+   "rathenaName": "Harpy Card",
+   "rathenaType": "Card",
+   "textragKey": "하피 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1376]가 'Harpy_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1376'] -> TextRAG 한글명 '하피'",
+    "TextRAG db-items.json에 '하피 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Heater_Card",
+   "rathenaItemId": 4331,
+   "rathenaName": "Heater Card",
+   "rathenaType": "Card",
+   "textragKey": "히터 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1318]가 'Heater_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1318'] -> TextRAG 한글명 '히터'",
+    "TextRAG db-items.json에 '히터 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Hollgrehenn_Hammer",
+   "rathenaItemId": 1535,
+   "rathenaName": "Hollgrehenn's Hammer",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "missing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, 확정 경로 없음, 구조적 신호로도 candidate 0건(TextRAG에 대응 레코드가 아직 없을 가능성)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Holy_Stick",
+   "rathenaItemId": 1631,
+   "rathenaName": "Holy Stick",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "네이건",
+     "signals": [
+      "buy",
+      "weight",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "문라이트소드",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "헌팅스피어",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "허리케인퓨리",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "배틀훅",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Hunting_Spear",
+   "rathenaItemId": 1422,
+   "rathenaName": "Hunting Spear",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "헌팅스피어",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "롱기누스의창",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "허리케인퓨리",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "배틀훅",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "그림투스",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Hyegun_Card",
+   "rathenaItemId": 4328,
+   "rathenaName": "Yao Jun Card",
+   "rathenaType": "Card",
+   "textragKey": "혜군 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1512]가 'Hyegun_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1512'] -> TextRAG 한글명 '혜군'",
+    "TextRAG db-items.json에 '혜군 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Hylozoist_Card",
+   "rathenaItemId": 4321,
+   "rathenaName": "Hylozoist Card",
+   "rathenaType": "Card",
+   "textragKey": "하이로조이스트 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1510]가 'Hylozoist_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1510'] -> TextRAG 한글명 '하이로조이스트'",
+    "TextRAG db-items.json에 '하이로조이스트 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Hyper_Changer",
+   "rathenaItemId": 2656,
+   "rathenaName": "Armor Charm",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "하이퍼체인저",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "시노비의허리띠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Icarus_Wing",
+   "rathenaItemId": 2726,
+   "rathenaName": "Icarus Wings",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "세린의금반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "기념반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "스피리츄얼링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "플레임로드링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "레조넌스링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Improved_Tights",
+   "rathenaItemId": 2390,
+   "rathenaName": "Improved Tights",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "개량형타이즈",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "밍크코트",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "디바인클로스",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "마왕의로브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Incubus_Card",
+   "rathenaItemId": 4269,
+   "rathenaName": "Incubus Card",
+   "rathenaType": "Card",
+   "textragKey": "인큐버스 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1374]가 'Incubus_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1374'] -> TextRAG 한글명 '인큐버스'",
+    "TextRAG db-items.json에 '인큐버스 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Injustice_Card",
+   "rathenaItemId": 4268,
+   "rathenaName": "Injustice Card",
+   "rathenaType": "Card",
+   "textragKey": "인저스티스 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1257]가 'Injustice_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1257'] -> TextRAG 한글명 '인저스티스'",
+    "TextRAG db-items.json에 '인저스티스 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Kiss_Of_Angel",
+   "rathenaItemId": 5125,
+   "rathenaName": "Angel's Kiss",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "천사의입맞춤",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "둥근모자",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "서클릿",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "벙거지모자",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "브라질국기모자",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Krieger_Muffler1",
+   "rathenaItemId": 2549,
+   "rathenaName": "Glorious Muffler",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "missing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, 확정 경로 없음, 구조적 신호로도 candidate 0건(TextRAG에 대응 레코드가 아직 없을 가능성)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Krieger_Ring1",
+   "rathenaItemId": 2772,
+   "rathenaName": "Glorious Ring",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "missing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, 확정 경로 없음, 구조적 신호로도 candidate 0건(TextRAG에 대응 레코드가 아직 없을 가능성)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Krieger_Shoes1",
+   "rathenaItemId": 2444,
+   "rathenaName": "Glorious Shoes",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "missing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, 확정 경로 없음, 구조적 신호로도 candidate 0건(TextRAG에 대응 레코드가 아직 없을 가능성)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Krieger_Suit1",
+   "rathenaItemId": 2394,
+   "rathenaName": "Glorious Suit",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "missing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, 확정 경로 없음, 구조적 신호로도 candidate 0건(TextRAG에 대응 레코드가 아직 없을 가능성)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Librarian_Glove",
+   "rathenaItemId": 2716,
+   "rathenaName": "Librarian Glove",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "샤먼링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "눈구슬반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "사서의장갑",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "오를레앙의장갑",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "들소의뿔",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Linen_Glove",
+   "rathenaItemId": 2749,
+   "rathenaName": "Linen Glove",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "리넨글러브",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Live_Peach_Tree_Card",
+   "rathenaItemId": 4217,
+   "rathenaName": "Enchanted Peach Tree Card",
+   "rathenaType": "Card",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "원작 몬스터 ID [1410] -> 감사된 한글명 '인챈트 피치 트리'로 '인챈트 피치 트리 카드' 키를 찾았으나 db-items.json에 없음(축약/의역 번역일 가능성 — candidate로만 기록)",
+    "원작 몬스터 이름 'Enchanted Peach Tree'(감사 검증 원작 ID 1410, 한글명 '인챈트 피치 트리')의 수식어 '인챈트'가 빠진 축약 번역으로 보이는 카드가 db-items.json에 존재. desc('식물형 몬스터 20% 추가 피해류')가 나무 몬스터 카드로서 개연성은 있으나, 정확한 '인챈트 피치 트리 카드' 문자열이 아니므로 candidate로만 기록."
+   ],
+   "candidates": [
+    {
+     "textragKey": "피치 트리 카드",
+     "signals": [
+      "manual-paraphrase-review"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Loli_Ruri_Card",
+   "rathenaItemId": 4191,
+   "rathenaName": "Loli Ruri Card",
+   "rathenaType": "Card",
+   "textragKey": "로리루리 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1505]가 'Loli_Ruri_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1505'] -> TextRAG 한글명 '로리루리'",
+    "TextRAG db-items.json에 '로리루리 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Long_Horn",
+   "rathenaItemId": 1420,
+   "rathenaName": "Long Horn",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "롱혼",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "스타블레이드",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "드래곤슬레이어",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "헌팅스피어",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "루드라의활",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Long_Horn_M",
+   "rathenaItemId": 1428,
+   "rathenaName": "Long Horn",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "롱혼",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "스타블레이드",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "드래곤슬레이어",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "헌팅스피어",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "루드라의활",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Lude_Card",
+   "rathenaItemId": 4193,
+   "rathenaName": "Lude Card",
+   "rathenaType": "Card",
+   "textragKey": "룻더 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1509]가 'Lude_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1509'] -> TextRAG 한글명 '룻더'",
+    "TextRAG db-items.json에 '룻더 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Luna_Bow",
+   "rathenaItemId": 1723,
+   "rathenaName": "Luna Bow",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "루나보우",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "현자의 일기",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "전기뱀장어",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "대백과사전",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "브로드소드",
+     "signals": [
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Lunatic_Brooch",
+   "rathenaItemId": 2718,
+   "rathenaName": "Lunatic Brooch",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "브라디움이어링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "브라디움링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "브라디움브로치",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "루나틱브로치",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "핀귀큘라코르사주",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Lunatic_Card",
+   "rathenaItemId": 4006,
+   "rathenaName": "Lunatic Card",
+   "rathenaType": "Card",
+   "textragKey": "루나틱 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1063]가 'Lunatic_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1063'] -> TextRAG 한글명 '루나틱'",
+    "TextRAG db-items.json에 '루나틱 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Mage_Coat",
+   "rathenaItemId": 2334,
+   "rathenaName": "Mage Coat",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "천사의예복",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "매직코트",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Mage_Coat_",
+   "rathenaItemId": 2372,
+   "rathenaName": "Mage Coat",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "매직코트",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "포멀드레스",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "스나이핑슈츠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "스나이핑슈츠_M",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "마왕의아머",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Magician_Hat",
+   "rathenaItemId": 5045,
+   "rathenaName": "Magician Hat",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "안전모",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "카프라의머리띠",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "방한모자",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "클래식햇",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "상어모자",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Magni_Cap",
+   "rathenaItemId": 5122,
+   "rathenaName": "Magni's Cap",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "메긴캡",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "스팅모자",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "포링케이크모자",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "게브네이투구",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Mastering_Card",
+   "rathenaItemId": 4197,
+   "rathenaName": "Mastering Card",
+   "rathenaType": "Card",
+   "textragKey": "마스터링 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1090]가 'Mastering_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1090'] -> TextRAG 한글명 '마스터링'",
+    "TextRAG db-items.json에 '마스터링 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Medal_Acolyte",
+   "rathenaItemId": 2722,
+   "rathenaName": "Medal of Honor",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "베스퍼코어01",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어02",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어03",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어04",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "물의반지",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Medal_Archer",
+   "rathenaItemId": 2724,
+   "rathenaName": "Medal of Honor",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "베스퍼코어01",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어02",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어03",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어04",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "물의반지",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Medal_Gunner",
+   "rathenaItemId": 2733,
+   "rathenaName": "Sheriff Badge",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "베스퍼코어01",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어02",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어03",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어04",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "물의반지",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Medal_Mage",
+   "rathenaItemId": 2723,
+   "rathenaName": "Medal of Honor",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "베스퍼코어01",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어02",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어03",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어04",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "물의반지",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Medal_Merchant",
+   "rathenaItemId": 2725,
+   "rathenaName": "Medal of Honor",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "베스퍼코어01",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어02",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어03",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어04",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "물의반지",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Medal_Swordman",
+   "rathenaItemId": 2720,
+   "rathenaName": "Medal of Honor",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "베스퍼코어01",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어02",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어03",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어04",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "물의반지",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Medal_Thief",
+   "rathenaItemId": 2721,
+   "rathenaName": "Medal of Honor",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "베스퍼코어01",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어02",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어03",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "베스퍼코어04",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "물의반지",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Medic_Robe",
+   "rathenaItemId": 2380,
+   "rathenaName": "Medic's Robe",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "워락의전투로브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "위생병의로브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "정예궁병의슈츠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "정예사수의슈츠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Memorize_Book",
+   "rathenaItemId": 2109,
+   "rathenaName": "Memory Book",
+   "rathenaType": "Armor",
+   "textragKey": "Memory Book",
+   "status": "verified",
+   "evidenceCase": "A",
+   "evidence": [
+    "TextRAG 'Memory Book'._aegis == 'Memorize_Book' (exact, unique)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Memorize_Book_",
+   "rathenaItemId": 2121,
+   "rathenaName": "Memory Book",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "스프린트메일",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "메모라이즈북",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "천상의로브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "해적두건",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "학사모",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Merman_Card",
+   "rathenaItemId": 4199,
+   "rathenaName": "Merman Card",
+   "rathenaType": "Card",
+   "textragKey": "머맨 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1264]가 'Merman_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1264'] -> TextRAG 한글명 '머맨'",
+    "TextRAG db-items.json에 '머맨 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Miyabi_Ningyo_Card",
+   "rathenaItemId": 4208,
+   "rathenaName": "Miyabi Doll Card",
+   "rathenaType": "Card",
+   "textragKey": "미아비 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1404]가 'Miyabi_Ningyo_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1404'] -> TextRAG 한글명 '미아비'",
+    "TextRAG db-items.json에 '미아비 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Mole_Card",
+   "rathenaItemId": 4343,
+   "rathenaName": "Holden Card",
+   "rathenaType": "Card",
+   "textragKey": "홀덴 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1628]가 'Mole_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1628'] -> TextRAG 한글명 '홀덴'",
+    "TextRAG db-items.json에 '홀덴 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Morpheus's_Armlet",
+   "rathenaItemId": 2649,
+   "rathenaName": "Morpheus's Bracelet",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "모르피셔스반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모르피셔스팔찌",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Morpheus's_Hood",
+   "rathenaItemId": 5126,
+   "rathenaName": "Morpheus's Hood",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "모르피셔스두건",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "프로펠라",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "인디안머리띠",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "바나나모자",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "깃털베레모",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Morpheus's_Ring",
+   "rathenaItemId": 2648,
+   "rathenaName": "Morpheus's Ring",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "모르피셔스반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모르피셔스팔찌",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Morpheus's_Shawl",
+   "rathenaItemId": 2518,
+   "rathenaName": "Morpheus's Shawl",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "모르피셔스쇼올",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모리아네의망토",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "게브네이어깨장식",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "매의날개옷",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "발리의망토",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Morrigane's_Belt",
+   "rathenaItemId": 2650,
+   "rathenaName": "Morrigane's Belt",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "모리아네의벨트",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모리아네팬던트",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Morrigane's_Helm",
+   "rathenaItemId": 5127,
+   "rathenaName": "Morrigane's Helm",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "모리아네헬름",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "사슴뿔",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "카우보이모자",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "호주국기모자",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "챔피언월계관",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Morrigane's_Manteau",
+   "rathenaItemId": 2519,
+   "rathenaName": "Morrigane's Manteau",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "모르피셔스쇼올",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모리아네의망토",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "게브네이어깨장식",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "매의날개옷",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "발리의망토",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Morrigane's_Pendant",
+   "rathenaItemId": 2651,
+   "rathenaName": "Morrigane's Pendant",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "모리아네의벨트",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모리아네팬던트",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Mr_Smile",
+   "rathenaItemId": 2278,
+   "rathenaName": "Mr. Smile",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "스마일",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "고급선글래스",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "스핀글래스",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "미니글래스",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "도끼눈",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Muka_Card",
+   "rathenaItemId": 4036,
+   "rathenaName": "Muka Card",
+   "rathenaType": "Card",
+   "textragKey": "무카 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1055, 1854]가 'Muka_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1055'] -> TextRAG 한글명 '무카'",
+    "TextRAG db-items.json에 '무카 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Mummy_Card",
+   "rathenaItemId": 4106,
+   "rathenaName": "Mummy Card",
+   "rathenaType": "Card",
+   "textragKey": "미라 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1041]가 'Mummy_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1041'] -> TextRAG 한글명 '미라'",
+    "TextRAG db-items.json에 '미라 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Munak_Card",
+   "rathenaItemId": 4090,
+   "rathenaName": "Munak Card",
+   "rathenaType": "Card",
+   "textragKey": "무낙 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1026]가 'Munak_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1026'] -> TextRAG 한글명 '무낙'",
+    "TextRAG db-items.json에 '무낙 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Mystcase_Card",
+   "rathenaItemId": 4206,
+   "rathenaName": "Myst Case Card",
+   "rathenaType": "Card",
+   "textragKey": "미스트케이스 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1249]가 'Mystcase_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1249'] -> TextRAG 한글명 '미스트케이스'",
+    "TextRAG db-items.json에 '미스트케이스 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Necktie",
+   "rathenaItemId": 5442,
+   "rathenaName": "Necktie",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "해적두건",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "반짝전구머리띠",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "사타닉체인",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "계란후라이",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "찰랑모자",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Nightmare_Card",
+   "rathenaItemId": 4127,
+   "rathenaName": "Nightmare Card",
+   "rathenaType": "Card",
+   "textragKey": "나이트메어 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1061]가 'Nightmare_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1061'] -> TextRAG 한글명 '나이트메어'",
+    "TextRAG db-items.json에 '나이트메어 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Nightmare_Terror_Card",
+   "rathenaItemId": 4166,
+   "rathenaName": "Nightmare Terror Card",
+   "rathenaType": "Card",
+   "textragKey": "나이트메어 테러 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1379]가 'Nightmare_Terror_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1379'] -> TextRAG 한글명 '나이트메어 테러'",
+    "TextRAG db-items.json에 '나이트메어 테러 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Ninja_Suit",
+   "rathenaItemId": 2337,
+   "rathenaName": "Ninja Suit",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "닌자슈츠",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Ninja_Suit_",
+   "rathenaItemId": 2359,
+   "rathenaName": "Ninja Suit",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "닌자슈츠",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "디바인클로스",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "마왕의아머",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "글리터링클로스",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "홀리로브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Novus__Card",
+   "rathenaItemId": 4382,
+   "rathenaName": "Yellow Novus Card",
+   "rathenaType": "Card",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "원작 몬스터 ID [1718] -> 감사된 한글명 '노버스(황)'로 '노버스(황) 카드' 키를 찾았으나 db-items.json에 없음(축약/의역 번역일 가능성 — candidate로만 기록)",
+    "원작 몬스터 이름 'Yellow Novus'(감사 검증 원작 ID 1718, 한글명 '노버스(황)')의 '황' -> '황색' 표기 차이로 정확 문자열 매치에는 실패했지만 동일 카드로 보이는 레코드가 존재. candidate로만 기록."
+   ],
+   "candidates": [
+    {
+     "textragKey": "황색 노버스 카드",
+     "signals": [
+      "manual-paraphrase-review"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Odin's_Blessing",
+   "rathenaItemId": 2353,
+   "rathenaName": "Odin's Blessing",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "오딘의축복",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "One_Eyed_Glass",
+   "rathenaItemId": 2239,
+   "rathenaName": "Monocle",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "외눈안경",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Orc_Archer_Bow",
+   "rathenaItemId": 1734,
+   "rathenaName": "Orc Archer Bow",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "오크아쳐의활",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "하쿠진",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "네이건",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "디바인크로스",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "슈바이체르샤벨",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Orleans_Glove",
+   "rathenaItemId": 2701,
+   "rathenaName": "Orleans's Glove",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "샤먼링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "눈구슬반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "사서의장갑",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "오를레앙의장갑",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "들소의뿔",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Orleans_Server",
+   "rathenaItemId": 2123,
+   "rathenaName": "Orleans's Server",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "가부키가면",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "나가의비늘갑옷",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "토너먼트쉴드",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "오를레앙의서버",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "가시방패",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Owl_Baron_Card",
+   "rathenaItemId": 4238,
+   "rathenaName": "Owl Baron Card",
+   "rathenaType": "Card",
+   "textragKey": "아울 바론 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1295]가 'Owl_Baron_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1295'] -> TextRAG 한글명 '아울 바론'",
+    "TextRAG db-items.json에 '아울 바론 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Owl_Duke_Card",
+   "rathenaItemId": 4237,
+   "rathenaName": "Owl Duke Card",
+   "rathenaType": "Card",
+   "textragKey": "아울 듀크 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1320]가 'Owl_Duke_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1320'] -> TextRAG 한글명 '아울 듀크'",
+    "TextRAG db-items.json에 '아울 듀크 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Padded_Armor",
+   "rathenaItemId": 2312,
+   "rathenaName": "Padded Armor",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "아머",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Padded_Armor_",
+   "rathenaItemId": 2313,
+   "rathenaName": "Padded Armor",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "아머",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Parasite_Card",
+   "rathenaItemId": 4309,
+   "rathenaName": "Parasite Card",
+   "rathenaType": "Card",
+   "textragKey": "패러사이트 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1500]가 'Parasite_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1500'] -> TextRAG 한글명 '패러사이트'",
+    "TextRAG db-items.json에 '패러사이트 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Pecopeco_Card",
+   "rathenaItemId": 4031,
+   "rathenaName": "Peco Peco Card",
+   "rathenaType": "Card",
+   "textragKey": "페코페코 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1019]가 'Pecopeco_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1019'] -> TextRAG 한글명 '페코페코'",
+    "TextRAG db-items.json에 '페코페코 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Pecopeco_Wing_Ears",
+   "rathenaItemId": 5358,
+   "rathenaName": "Peco Ears",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "도끼눈",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "3D안경",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "옵저버",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "양쪽귀밑리본",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "망원경",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Permeter_Card",
+   "rathenaItemId": 4311,
+   "rathenaName": "Permeter Card",
+   "rathenaType": "Card",
+   "textragKey": "퍼머터 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1314]가 'Permeter_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1314'] -> TextRAG 한글명 '퍼머터'",
+    "TextRAG db-items.json에 '퍼머터 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Phantom_Of_Opera",
+   "rathenaItemId": 2281,
+   "rathenaName": "Opera Masque",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "로보아이",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "오페라가면",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "요정의눈가리개",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "요정의선글래스",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "로봇의눈가리개",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Pocket_Watch_",
+   "rathenaItemId": 2717,
+   "rathenaName": "Pocket Watch",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "명궁의스카프",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "벨카프",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "커즈드스타",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Poring_Card",
+   "rathenaItemId": 4001,
+   "rathenaName": "Poring Card",
+   "rathenaType": "Card",
+   "textragKey": "포링 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1002]가 'Poring_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1002'] -> TextRAG 한글명 '포링'",
+    "TextRAG db-items.json에 '포링 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Principles_Of_Magic",
+   "rathenaItemId": 1572,
+   "rathenaName": "Principles of Magic",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "마법의정석",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "리치의 뼈 완드",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "베체르액스",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "아크 완드",
+     "signals": [
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "현자의 일기",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Punk_Card",
+   "rathenaItemId": 4313,
+   "rathenaName": "Punk Card",
+   "rathenaType": "Card",
+   "textragKey": "펑크 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1199]가 'Punk_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1199'] -> TextRAG 한글명 '펑크'",
+    "TextRAG db-items.json에 '펑크 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Quve_Card",
+   "rathenaItemId": 4294,
+   "rathenaName": "Quve Card",
+   "rathenaType": "Card",
+   "textragKey": "큐브 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1508]가 'Quve_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1508'] -> TextRAG 한글명 '큐브'",
+    "TextRAG db-items.json에 '큐브 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Ragged_Zombie_Card",
+   "rathenaItemId": 4436,
+   "rathenaName": "Ragged Zombie Card",
+   "rathenaType": "Card",
+   "textragKey": "누더기 좀비 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1865]가 'Ragged_Zombie_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1865'] -> TextRAG 한글명 '누더기 좀비'",
+    "TextRAG db-items.json에 '누더기 좀비 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Raggler_Card",
+   "rathenaItemId": 4186,
+   "rathenaName": "Raggler Card",
+   "rathenaType": "Card",
+   "textragKey": null,
+   "status": "missing",
+   "evidenceCase": null,
+   "evidence": [
+    "드롭 원작 몬스터 ID [1254] 전부 MONSTER_AI_AUDIT.md에 확정된 원작 ID로 등재돼 있지 않음(몬스터 identity 감사가 이 ID들까지 아직 안 갔음 — 이번 아이템 identity 작업의 범위 밖)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Red_Silk_Seal",
+   "rathenaItemId": 2700,
+   "rathenaName": "Red Silk Seal",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "세린의금반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "기념반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "스피리츄얼링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "플레임로드링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "레조넌스링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Rider_Insignia",
+   "rathenaItemId": 2529,
+   "rathenaName": "Rider Insignia",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "용비늘외투",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "라이더휘장",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact"
+     ]
+    },
+    {
+     "textragKey": "라이더휘장_M",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact"
+     ]
+    },
+    {
+     "textragKey": "불꽃망토",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Rider_Insignia_",
+   "rathenaItemId": 2530,
+   "rathenaName": "Rider Insignia",
+   "rathenaType": "Armor",
+   "textragKey": "Rider Insignia",
+   "status": "verified",
+   "evidenceCase": "A",
+   "evidence": [
+    "TextRAG 'Rider Insignia'._aegis == 'Rider_Insignia_' (exact, unique)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Rider_Insignia_M",
+   "rathenaItemId": 2551,
+   "rathenaName": "Crest of the Rider",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "라이더휘장",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "라이더휘장_M",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "불꽃망토",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "텐드릴리온의가죽",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "드래곤의숨결",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Rideword_Card",
+   "rathenaItemId": 4185,
+   "rathenaName": "Rideword Card",
+   "rathenaType": "Card",
+   "textragKey": "라이드워드 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1195]가 'Rideword_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1195'] -> TextRAG 한글명 '라이드워드'",
+    "TextRAG db-items.json에 '라이드워드 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Ring_Of_Flame_Lord",
+   "rathenaItemId": 2678,
+   "rathenaName": "Ring Of Flame Lord",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "세린의금반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "기념반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "스피리츄얼링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "플레임로드링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "레조넌스링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Ring_Of_Resonance",
+   "rathenaItemId": 2679,
+   "rathenaName": "Ring Of Resonance",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "레조넌스링",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "세린의금반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "기념반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "스피리츄얼링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "플레임로드링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Ring_Of_Rogue",
+   "rathenaItemId": 2620,
+   "rathenaName": "Rogue's Treasure",
+   "rathenaType": "Armor",
+   "textragKey": "Rogue's Treasure",
+   "status": "verified",
+   "evidenceCase": "A",
+   "evidence": [
+    "TextRAG 'Rogue's Treasure'._aegis == 'Ring_Of_Rogue' (exact, unique)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Rocker_Card",
+   "rathenaItemId": 4021,
+   "rathenaName": "Rocker Card",
+   "rathenaType": "Card",
+   "textragKey": "로커 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1052]가 'Rocker_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1052'] -> TextRAG 한글명 '로커'",
+    "TextRAG db-items.json에 '로커 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Roda_Frog_Card",
+   "rathenaItemId": 4014,
+   "rathenaName": "Roda Frog Card",
+   "rathenaType": "Card",
+   "textragKey": "로다프로그 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1012]가 'Roda_Frog_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1012'] -> TextRAG 한글명 '로다프로그'",
+    "TextRAG db-items.json에 '로다프로그 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Rosary",
+   "rathenaItemId": 2608,
+   "rathenaName": "Rosary",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "missing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, 확정 경로 없음, 구조적 신호로도 candidate 0건(TextRAG에 대응 레코드가 아직 없을 가능성)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Rosary_",
+   "rathenaItemId": 2626,
+   "rathenaName": "Rosary",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "로자리",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Sandstorm",
+   "rathenaItemId": 13035,
+   "rathenaName": "Sandstorm",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "배틀포크",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Shadow_Guard",
+   "rathenaItemId": 2135,
+   "rathenaName": "Shadow Guard",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "공작새깃털",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "맹목모",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "쉐도우가드",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "마제스틱고우트",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "신카우보이모자",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Shadow_Walk",
+   "rathenaItemId": 2426,
+   "rathenaName": "Shadow Walk",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "쉐도우워크",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Shaman's_Hair_Ornament",
+   "rathenaItemId": 5479,
+   "rathenaName": "Shaman's Hair Decoration",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "마법사의모자",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "여우가면",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "고양이모자",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "빨강마법사의모자",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "흰색마법사의모자",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Shaman_Earing",
+   "rathenaItemId": 2778,
+   "rathenaName": "Shaman Earrings",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "세린의금반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "기념반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "스피리츄얼링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "플레임로드링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "레조넌스링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Shaman_Ring",
+   "rathenaItemId": 2777,
+   "rathenaName": "Shaman Ring",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "샤먼링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "눈구슬반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "사서의장갑",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "오를레앙의장갑",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "들소의뿔",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Shellfish_Card",
+   "rathenaItemId": 4273,
+   "rathenaName": "Shell Fish Card",
+   "rathenaType": "Card",
+   "textragKey": "조개 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1074]가 'Shellfish_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1074'] -> TextRAG 한글명 '조개'",
+    "TextRAG db-items.json에 '조개 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Sheriff_Manteau",
+   "rathenaItemId": 2540,
+   "rathenaName": "Sheriff's Manteau",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "지휘관의망토",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "보안관의망토",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Shinobi's_Sash",
+   "rathenaItemId": 2654,
+   "rathenaName": "Shinobi Sash",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "시노비의허리띠",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "하이퍼체인저",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Shinobi_Card",
+   "rathenaItemId": 4230,
+   "rathenaName": "Shinobi Card",
+   "rathenaType": "Card",
+   "textragKey": "시노비 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1401]가 'Shinobi_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1401'] -> TextRAG 한글명 '시노비'",
+    "TextRAG db-items.json에 '시노비 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Skel_Prisoner_Card",
+   "rathenaItemId": 4222,
+   "rathenaName": "Skeleton Prisoner Card",
+   "rathenaType": "Card",
+   "textragKey": "스켈 프리즈너 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1196]가 'Skel_Prisoner_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1196'] -> TextRAG 한글명 '스켈 프리즈너'",
+    "TextRAG db-items.json에 '스켈 프리즈너 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Skeleton_Card",
+   "rathenaItemId": 4025,
+   "rathenaName": "Skeleton Card",
+   "rathenaType": "Card",
+   "textragKey": "스켈레톤 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1076]가 'Skeleton_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1076'] -> TextRAG 한글명 '스켈레톤'",
+    "TextRAG db-items.json에 '스켈레톤 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Skull_Cap",
+   "rathenaItemId": 18539,
+   "rathenaName": "Skull Cap",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "스컬캡",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "머큐리의투구",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "백무상모자",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "흑무상모자",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "고대인의뿔",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Solider_Card",
+   "rathenaItemId": 4220,
+   "rathenaName": "Solider Card",
+   "rathenaType": "Card",
+   "textragKey": "솔리더 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1316]가 'Solider_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1316'] -> TextRAG 한글명 '솔리더'",
+    "TextRAG db-items.json에 '솔리더 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Spectral_Spear",
+   "rathenaItemId": 1477,
+   "rathenaName": "Spectral Spear",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "미스틸테인",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "블러디 액스",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "카츠발게르",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "네이건",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "드래곤슬레이어",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Spectral_Spear_",
+   "rathenaItemId": 1479,
+   "rathenaName": "Spectral Spear",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "하트브레이커",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "헌팅스피어",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "허리케인퓨리",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "배틀훅",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "미스틸테인",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Spiritual_Ring",
+   "rathenaItemId": 2677,
+   "rathenaName": "Spiritual Ring",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "세린의금반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "기념반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "스피리츄얼링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "플레임로드링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "레조넌스링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Spiritual_Ring_C",
+   "rathenaItemId": 2711,
+   "rathenaName": "Spiritual Ring",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "missing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, 확정 경로 없음, 구조적 신호로도 candidate 0건(TextRAG에 대응 레코드가 아직 없을 가능성)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Spiritual_Ring_M",
+   "rathenaItemId": 2786,
+   "rathenaName": "Spiritual Ring",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "세린의금반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "기념반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "스피리츄얼링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "플레임로드링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "레조넌스링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Sprint_Mail",
+   "rathenaItemId": 2387,
+   "rathenaName": "Sprint Mail",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "스프린트메일",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "천상의로브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "드래곤베스트",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "나가의비늘갑옷",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "본플레이트",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Sprint_Ring",
+   "rathenaItemId": 2744,
+   "rathenaName": "Sprint Ring",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "세린의금반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "기념반지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "스피리츄얼링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "플레임로드링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "레조넌스링",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Sprint_Shoes",
+   "rathenaItemId": 2440,
+   "rathenaName": "Sprint Shoes",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "스프린트슈즈",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "천사의재래",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "타이달슈즈",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Staff_Of_Soul",
+   "rathenaItemId": 1472,
+   "rathenaName": "Soul Staff",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "오크아쳐의활",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "이블 본 완드",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "로키의 손톱",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "불꽃의 기타",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "하쿠진",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Staff_Of_Wing",
+   "rathenaItemId": 1616,
+   "rathenaName": "Wing Staff",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "네이건",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "베르세르크",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "날개 지팡이",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "바제랄드",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "이레이저",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Stainer_Card",
+   "rathenaItemId": 4039,
+   "rathenaName": "Stainer Card",
+   "rathenaType": "Card",
+   "textragKey": "스테이너 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1174]가 'Stainer_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1174'] -> TextRAG 한글명 '스테이너'",
+    "TextRAG db-items.json에 '스테이너 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Steel_Arrow",
+   "rathenaItemId": 1753,
+   "rathenaName": "Steel Arrow",
+   "rathenaType": "Ammo",
+   "textragKey": "강철의 화살",
+   "status": "verified",
+   "evidenceCase": "C",
+   "evidence": [
+    "영문 스텁 'Steel Arrow'(_krPending=true)도 동일하게 atk/element 필드가 없는 placeholder.",
+    "'강철의 화살'은 buy=4/sell=2/weight=0.2 전부 rAthena Steel_Arrow(Buy 4, Weight 2 -> 0.2)와 정확히 일치, atk=40도 rAthena Attack=40과 정확히 일치(이 화살은 원소가 없는 범용 화살이라 Arrow_Of_Wind류의 원소 화살 밸런스 조정 대상이 아님 — element=무속성으로 일관됨).",
+    "db-monsters.json 오크 아처(ID 130) 드롭 목록이 영문 스텁 키 'Steel Arrow'를 직접 참조 — Arrow_Of_Wind와 동일한 상황."
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Stone_Arrow",
+   "rathenaItemId": 1756,
+   "rathenaName": "Stone Arrow",
+   "rathenaType": "Ammo",
+   "textragKey": "암석 화살",
+   "status": "verified",
+   "evidenceCase": "A",
+   "evidence": [
+    "TextRAG '암석 화살'._aegis == 'Stone_Arrow' (exact, unique)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Stone_Buckler",
+   "rathenaItemId": 2114,
+   "rathenaName": "Stone Buckler",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "스톤버클러",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "사또모자",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "아얌",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "울캡",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "발키리아쉴드",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Succubus_Card",
+   "rathenaItemId": 4218,
+   "rathenaName": "Succubus Card",
+   "rathenaType": "Card",
+   "textragKey": "서큐버스 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1370]가 'Succubus_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1370'] -> TextRAG 한글명 '서큐버스'",
+    "TextRAG db-items.json에 '서큐버스 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Survival_Rod2_",
+   "rathenaItemId": 1620,
+   "rathenaName": "Survivor's Rod",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "서바이버로드",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "서바이버스 로드",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "스태프오브데아",
+     "signals": [
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "알바레스트",
+     "signals": [
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Survival_Rod_",
+   "rathenaItemId": 1618,
+   "rathenaName": "Survivor's Rod",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "서바이버로드",
+     "signals": [
+      "buy",
+      "weight",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "서바이버스 로드",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "스태프오브데아",
+     "signals": [
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "알바레스트",
+     "signals": [
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Tarou_Card",
+   "rathenaItemId": 4028,
+   "rathenaName": "Tarou Card",
+   "rathenaType": "Card",
+   "textragKey": "타로우 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1175]가 'Tarou_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1175'] -> TextRAG 한글명 '타로우'",
+    "TextRAG db-items.json에 '타로우 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "The_Paper_Card",
+   "rathenaItemId": 4172,
+   "rathenaName": "The Paper Card",
+   "rathenaType": "Card",
+   "textragKey": null,
+   "status": "missing",
+   "evidenceCase": null,
+   "evidence": [
+    "드롭 원작 몬스터 ID [1375] 전부 MONSTER_AI_AUDIT.md에 확정된 원작 ID로 등재돼 있지 않음(몬스터 identity 감사가 이 ID들까지 아직 안 갔음 — 이번 아이템 identity 작업의 범위 밖)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Thorn_Staff",
+   "rathenaItemId": 1636,
+   "rathenaName": "Thorn Staff of Darkness",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "문라이트소드",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "엣지",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "슈메티",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "스파이크",
+     "signals": [
+      "buy",
+      "weight",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "날개 지팡이",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Thorny_Buckler",
+   "rathenaItemId": 2124,
+   "rathenaName": "Thorny Buckler",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "가부키가면",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "나가의비늘갑옷",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "토너먼트쉴드",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "오를레앙의서버",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "가시방패",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Tidal_Shoes",
+   "rathenaItemId": 2424,
+   "rathenaName": "Tidal Shoes",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "타이달슈즈",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "슬리퍼",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "스프린트슈즈",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Toad_Card",
+   "rathenaItemId": 4306,
+   "rathenaName": "Toad Card",
+   "rathenaType": "Card",
+   "textragKey": "토드 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1089]가 'Toad_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1089'] -> TextRAG 한글명 '토드'",
+    "TextRAG db-items.json에 '토드 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Tournament_Shield",
+   "rathenaItemId": 2133,
+   "rathenaName": "Tournament Shield",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "가부키가면",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "나가의비늘갑옷",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "토너먼트쉴드",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "오를레앙의서버",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "가시방패",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Twilight_Desert",
+   "rathenaItemId": 13034,
+   "rathenaName": "Desert Twilight",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "빨간스퀘어백",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Ulle_Cap",
+   "rathenaItemId": 5123,
+   "rathenaName": "Ulle's Cap",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "울캡",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "개조코끼리모자",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "사또모자",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "아얌",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "다크네스헬름_J",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Ulle_Cap_I",
+   "rathenaItemId": 5493,
+   "rathenaName": "Ulle's Cap",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "missing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, 확정 경로 없음, 구조적 신호로도 candidate 0건(TextRAG에 대응 레코드가 아직 없을 가능성)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Undershirt",
+   "rathenaItemId": 2522,
+   "rathenaName": "Undershirt",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "런닝셔츠",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Undershirt_",
+   "rathenaItemId": 2523,
+   "rathenaName": "Undershirt",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "런닝셔츠",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Vagabond_Wolf_Card",
+   "rathenaItemId": 4183,
+   "rathenaName": "Vagabond Wolf Card",
+   "rathenaType": "Card",
+   "textragKey": "방랑하는 늑대 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1092]가 'Vagabond_Wolf_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1092'] -> TextRAG 한글명 '방랑하는 늑대'",
+    "TextRAG db-items.json에 '방랑하는 늑대 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Vali's_Manteau",
+   "rathenaItemId": 2517,
+   "rathenaName": "Vali's Manteau",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "발리의망토",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모르피셔스쇼올",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "모리아네의망토",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Valkyrie_Armor",
+   "rathenaItemId": 2357,
+   "rathenaName": "Valkyrian Armor",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "발키리의갑옷",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Valkyrie_Helm",
+   "rathenaItemId": 5171,
+   "rathenaName": "Valkyrie Helm",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "발키리투구",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "가부키가면",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Valkyrie_Manteau",
+   "rathenaItemId": 2524,
+   "rathenaName": "Valkyrian Manteau",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "텐드릴리온의가죽",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "발키리의망토",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "울스카프",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "목보호대",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Valkyrie_Shoes",
+   "rathenaItemId": 2421,
+   "rathenaName": "Valkyrian Shoes",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "발키리의슈즈",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "검은가죽부츠",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Valkyrja's_Shield",
+   "rathenaItemId": 2115,
+   "rathenaName": "Valkyrja's Shield",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "울캡",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "발키리아쉴드",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "천상의로브",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "개조코끼리모자",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "사또모자",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Valkyrja's_Shield_C",
+   "rathenaItemId": 2137,
+   "rathenaName": "Neo Valkyrja's Shield",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "missing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, 확정 경로 없음, 구조적 신호로도 candidate 0건(TextRAG에 대응 레코드가 아직 없을 가능성)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Vidar's_Boots",
+   "rathenaItemId": 2418,
+   "rathenaName": "Vidar's Boots",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "비다르의부츠",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "게브네이의군화",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Vocal_Card",
+   "rathenaItemId": 4211,
+   "rathenaName": "Vocal Card",
+   "rathenaType": "Card",
+   "textragKey": "보컬 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1088]가 'Vocal_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1088'] -> TextRAG 한글명 '보컬'",
+    "TextRAG db-items.json에 '보컬 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Walking_Stick",
+   "rathenaItemId": 1629,
+   "rathenaName": "Gentleman's Staff",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "네이건",
+     "signals": [
+      "buy",
+      "weight",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "헌팅스피어",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "허리케인퓨리",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "배틀훅",
+     "signals": [
+      "buy",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "크로체스태프",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Wander_Man_Card",
+   "rathenaItemId": 4210,
+   "rathenaName": "Wanderer Card",
+   "rathenaType": "Card",
+   "textragKey": "배회하는자 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1208]가 'Wander_Man_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1208'] -> TextRAG 한글명 '배회하는자'",
+    "TextRAG db-items.json에 '배회하는자 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Warlock_Battle_Robe",
+   "rathenaItemId": 2379,
+   "rathenaName": "Warlock's Battle Robe",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "워락의전투로브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "위생병의로브",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "정예궁병의슈츠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "정예사수의슈츠",
+     "signals": [
+      "buy",
+      "def-exact",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Waste_Stove_Card",
+   "rathenaItemId": 4332,
+   "rathenaName": "Waste Stove Card",
+   "rathenaType": "Card",
+   "textragKey": "고철난로 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1617]가 'Waste_Stove_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1617'] -> TextRAG 한글명 '고철난로'",
+    "TextRAG db-items.json에 '고철난로 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Whikebain_Card",
+   "rathenaItemId": 4348,
+   "rathenaName": "Wickebine Tres Card",
+   "rathenaType": "Card",
+   "textragKey": "위케바인 트레스(일반) 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1653]가 'Whikebain_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1653'] -> TextRAG 한글명 '위케바인 트레스(일반)'",
+    "TextRAG db-items.json에 '위케바인 트레스(일반) 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Wicked_Nymph_Card",
+   "rathenaItemId": 4258,
+   "rathenaName": "Evil Nymph Card",
+   "rathenaType": "Card",
+   "textragKey": "요선녀 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1416]가 'Wicked_Nymph_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1416'] -> TextRAG 한글명 '요선녀'",
+    "TextRAG db-items.json에 '요선녀 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Wild_Rose_Card",
+   "rathenaItemId": 4257,
+   "rathenaName": "Wild Rose Card",
+   "rathenaType": "Card",
+   "textragKey": "와일드로즈 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1261]가 'Wild_Rose_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1261'] -> TextRAG 한글명 '와일드로즈'",
+    "TextRAG db-items.json에 '와일드로즈 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Wing_Of_Eagle",
+   "rathenaItemId": 2515,
+   "rathenaName": "Eagle Wing",
+   "rathenaType": "Armor",
+   "textragKey": "Eagle Wing",
+   "status": "verified",
+   "evidenceCase": "A",
+   "evidence": [
+    "TextRAG 'Eagle Wing'._aegis == 'Wing_Of_Eagle' (exact, unique)"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Wit_Pumpkin_Hat",
+   "rathenaItemId": 18656,
+   "rathenaName": "Witch's Pumpkin Hat",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "마녀의호박모자",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "코로넷",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "위저드햇",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "삿갓",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "깃털모자",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Wizardy_Staff",
+   "rathenaItemId": 1473,
+   "rathenaName": "Wizardry Staff",
+   "rathenaType": "Weapon",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "네이건",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "디바인크로스",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "나간",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "베르세르크",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    },
+    {
+     "textragKey": "블러디 로어",
+     "signals": [
+      "buy",
+      "atk-exact",
+      "slots",
+      "weaponLv"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Wolf_Card",
+   "rathenaItemId": 4029,
+   "rathenaName": "Wolf Card",
+   "rathenaType": "Card",
+   "textragKey": "울프 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1013]가 'Wolf_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1013'] -> TextRAG 한글명 '울프'",
+    "TextRAG db-items.json에 '울프 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Wool_Scarf",
+   "rathenaItemId": 2528,
+   "rathenaName": "Wool Scarf",
+   "rathenaType": "Armor",
+   "textragKey": null,
+   "status": "unresolved-existing",
+   "evidenceCase": null,
+   "evidence": [
+    "_aegis exact match 없음, rAthena 자체 데이터(mob_db 드롭 등) 기반 확정 경로 없음 — 구조적 신호만으로 candidate 생성됨(자동 확정 아님)"
+   ],
+   "candidates": [
+    {
+     "textragKey": "텐드릴리온의가죽",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "울스카프",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "목보호대",
+     "signals": [
+      "buy",
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "발키리의망토",
+     "signals": [
+      "weight",
+      "def-exact",
+      "slots"
+     ]
+    },
+    {
+     "textragKey": "라이더휘장",
+     "signals": [
+      "buy",
+      "weight",
+      "slots"
+     ]
+    }
+   ]
+  },
+  {
+   "aegisName": "Zherlthsh_Card",
+   "rathenaItemId": 4277,
+   "rathenaName": "Zealotus Card",
+   "rathenaType": "Card",
+   "textragKey": "지르타스 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1200]가 'Zherlthsh_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1200'] -> TextRAG 한글명 '지르타스'",
+    "TextRAG db-items.json에 '지르타스 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Zipper_Bear_Card",
+   "rathenaItemId": 4281,
+   "rathenaName": "Zipper Bear Card",
+   "rathenaType": "Card",
+   "textragKey": "지퍼베어 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1417]가 'Zipper_Bear_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1417'] -> TextRAG 한글명 '지퍼베어'",
+    "TextRAG db-items.json에 '지퍼베어 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  },
+  {
+   "aegisName": "Zombie_Slaughter_Card",
+   "rathenaItemId": 4435,
+   "rathenaName": "Zombie Slaughter Card",
+   "rathenaType": "Card",
+   "textragKey": "좀비 슬러터 카드",
+   "status": "verified",
+   "evidenceCase": "B-card",
+   "evidence": [
+    "rAthena mob_db.yml Drops/MvpDrops: 원작 몬스터 ID [1864]가 'Zombie_Slaughter_Card'를 직접 드롭 목록에 명시(AegisName exact, 이름 유사도 추측 아님)",
+    "MONSTER_AI_AUDIT.md(pre-re@e985006)가 이미 검증한 원작 ID ['1864'] -> TextRAG 한글명 '좀비 슬러터'",
+    "TextRAG db-items.json에 '좀비 슬러터 카드'(type=카드)가 정확히 존재"
+   ],
+   "candidates": []
+  }
+ ]
+}

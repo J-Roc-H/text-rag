@@ -40,6 +40,9 @@ ITEM_EFFECTS_SCRIPT_PATH = os.path.join(BASE, "source", "item-effects.js")
 # P2-A: 콤보 정본 데이터(tools/canonicalize_combos.py 산출물) -- BLOCKS에는 넣지 않는다.
 # 이번 단계는 데이터 생성/감사만 한다(HTML runtime에 아직 inject하지 않음, §7/§40).
 COMBOS_JSON_PATH = os.path.join(DATA_DIR, "db-combos.json")
+# P2-A.1: 콤보 참조 아이템 identity map(tools/build_combo_item_identity.py 산출물) --
+# 마찬가지로 BLOCKS에는 넣지 않는다(runtime 미연결).
+COMBO_IDENTITY_JSON_PATH = os.path.join(DATA_DIR, "combo-item-identity.json")
 OUTPUT_PATH = os.path.join(BASE, "룬미드가츠_v9.19.html")
 # GitHub Pages는 루트의 index.html을 서빙한다 — 버전 올려도 폰 북마크 URL이
 # 안 바뀌게 매 빌드마다 같은 내용을 index.html에도 복사한다 (2026-09-20)
@@ -425,6 +428,63 @@ def audit_item_combos(combos_data):
     return fails, warns
 
 
+IDENTITY_KNOWN_STATUSES = {"verified", "ambiguous", "unresolved-existing", "missing"}
+
+
+def audit_combo_item_identity(identity_data, combos_data):
+    """P2-A.1: source/data/combo-item-identity.json 구조 감사. 콤보 audit(위)와도,
+    기존 469 WARN(item-effect)과도 별도 카운터로 보고한다(과제 §23의 8개 체크를 그대로
+    구현) -- 세 audit을 절대 하나로 합치지 않는다.
+
+    FAIL: 같은 rAthena ID가 서로 다른 verified TextRAG key에 연결, 같은 AegisName이
+    identity map에 중복 행으로 존재, verified인데 textragKey/evidence 없음,
+    identity map이 db-combos.json이 실제로 참조하는 AegisName 집합을 다 못 덮음.
+    WARN: ambiguous/unresolved-existing/missing(정상적으로 예상되는 상태).
+    """
+    fails, warns = [], []
+
+    referenced_aegis = set()
+    for combo in combos_data.get("combos", []):
+        for r in combo.get("requiredItems", []):
+            referenced_aegis.add(r.get("aegisName"))
+
+    seen_aegis = set()
+    id_to_verified_keys = {}
+    for item in identity_data.get("items", []):
+        aegis = item.get("aegisName")
+        if not aegis:
+            fails.append("identity map에 aegisName 없는 행")
+            continue
+        if aegis in seen_aegis:
+            fails.append(f"{aegis}: identity map에 중복 행")
+        seen_aegis.add(aegis)
+
+        status = item.get("status")
+        if status not in IDENTITY_KNOWN_STATUSES:
+            fails.append(f"{aegis}: 알려지지 않은 identity status '{status}'")
+
+        if status == "verified":
+            if not item.get("textragKey"):
+                fails.append(f"{aegis}: verified인데 textragKey 없음")
+            if not item.get("evidence"):
+                fails.append(f"{aegis}: verified인데 evidence 없음")
+            rid = item.get("rathenaItemId")
+            if rid is not None:
+                id_to_verified_keys.setdefault(rid, set()).add(item.get("textragKey"))
+        elif status in ("ambiguous", "unresolved-existing", "missing"):
+            warns.append(f"{aegis}: identity status={status}")
+
+    for rid, keys in id_to_verified_keys.items():
+        if len(keys) > 1:
+            fails.append(f"rAthena item id {rid}: 서로 다른 verified TextRAG key로 연결됨 {sorted(keys)}")
+
+    missing_rows = referenced_aegis - seen_aegis
+    if missing_rows:
+        fails.append(f"db-combos.json이 참조하는 AegisName {len(missing_rows)}개가 identity map에 없음: {sorted(missing_rows)[:10]}...")
+
+    return fails, warns
+
+
 def load_data_files():
     raw = {}
     parsed = {}
@@ -494,6 +554,22 @@ def main():
             print(f"COMBO WARN - item combo audit: {len(combo_warnings)} issue(s)")
         else:
             print("OK - item combo audit")
+
+        # P2-A.1: 콤보 참조 아이템 identity map 감사 -- 위 콤보 audit과도, 469 WARN과도
+        # 별도 카운터("IDENTITY WARN")로 보고한다(과제 §23/§27과 같은 원칙: 세 숫자를
+        # 절대 하나로 합치지 않는다). db-combos.json이 있어야만 참조 AegisName 집합을
+        # 알 수 있으므로 이 블록 안에서만 실행한다.
+        if os.path.exists(COMBO_IDENTITY_JSON_PATH):
+            with open(COMBO_IDENTITY_JSON_PATH, encoding="utf-8") as f:
+                identity_data = json.load(f)
+            identity_fails, identity_warnings = audit_combo_item_identity(identity_data, combos_data)
+            if identity_fails:
+                joined = "\n  - ".join(identity_fails)
+                raise ValueError(f"콤보 아이템 identity 감사 오류:\n  - {joined}")
+            if identity_warnings:
+                print(f"IDENTITY WARN - combo item identity audit: {len(identity_warnings)} issue(s)")
+            else:
+                print("OK - combo item identity audit")
 
     for marker_key, filename in BLOCKS.items():
         marker = "{{__DATA_" + marker_key + "__}}"

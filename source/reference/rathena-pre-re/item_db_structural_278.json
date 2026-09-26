@@ -1,0 +1,5416 @@
+{
+ "Alarm_Card": {
+  "Id": 4244,
+  "AegisName": "Alarm_Card",
+  "Name": "Alarm Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Shoes": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Alarm_Mask": {
+  "Id": 5086,
+  "AegisName": "Alarm_Mask",
+  "Name": "Alarm Mask",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "Defense": 2,
+  "ArmorLevel": 1,
+  "View": 170,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Alligator_Card": {
+  "Id": 4252,
+  "AegisName": "Alligator_Card",
+  "Name": "Alligator Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Ancient_Magic": {
+  "Id": 1573,
+  "AegisName": "Ancient_Magic",
+  "Name": "Ancient Magic",
+  "Type": "Weapon",
+  "SubType": "Book",
+  "Buy": 20,
+  "Weight": 700,
+  "Attack": 30,
+  "Range": 1,
+  "Slots": 2,
+  "WeaponLevel": 3,
+  "EquipLevelMin": 70,
+  "Refineable": true,
+  "Jobs": {
+   "Priest": true,
+   "Sage": true,
+   "StarGladiator": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Ancient_Mummy_Card": {
+  "Id": 4248,
+  "AegisName": "Ancient_Mummy_Card",
+  "Name": "Ancient Mummy Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Left_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Angel's_Arrival": {
+  "Id": 2420,
+  "AegisName": "Angel's_Arrival",
+  "Name": "Angel's Reincarnation",
+  "Type": "Armor",
+  "Buy": 10000,
+  "Weight": 300,
+  "Defense": 2,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 25,
+  "Refineable": true,
+  "Jobs": {
+   "Novice": true,
+   "SuperNovice": true
+  },
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Angel's_Protection": {
+  "Id": 2355,
+  "AegisName": "Angel's_Protection",
+  "Name": "Angelic Protection",
+  "Type": "Armor",
+  "Buy": 10000,
+  "Weight": 600,
+  "Defense": 4,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 40,
+  "Refineable": true,
+  "Jobs": {
+   "Novice": true,
+   "SuperNovice": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Angel's_Safeguard": {
+  "Id": 2116,
+  "AegisName": "Angel's_Safeguard",
+  "Name": "Angelic Guard",
+  "Type": "Armor",
+  "Buy": 10000,
+  "Weight": 400,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 20,
+  "Refineable": true,
+  "View": 1,
+  "Jobs": {
+   "Novice": true,
+   "SuperNovice": true
+  },
+  "Locations": {
+   "Left_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Angel's_Warmth": {
+  "Id": 2521,
+  "AegisName": "Angel's_Warmth",
+  "Name": "Angelic Cardigan",
+  "Type": "Armor",
+  "Buy": 10000,
+  "Weight": 400,
+  "Defense": 2,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 20,
+  "Refineable": true,
+  "Jobs": {
+   "Novice": true,
+   "SuperNovice": true
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Angeling_Hairpin": {
+  "Id": 5153,
+  "AegisName": "Angeling_Hairpin",
+  "Name": "Angeling Hairpin",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 700,
+  "Defense": 3,
+  "ArmorLevel": 1,
+  "Refineable": true,
+  "View": 222,
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Anolian_Card": {
+  "Id": 4234,
+  "AegisName": "Anolian_Card",
+  "Name": "Anolian Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Archdam_Card": {
+  "Id": 4371,
+  "AegisName": "Archdam_Card",
+  "Name": "Archdam Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Arrow_Of_Wind": {
+  "Id": 1755,
+  "AegisName": "Arrow_Of_Wind",
+  "Name": "Arrow of Wind",
+  "Type": "Ammo",
+  "SubType": "Arrow",
+  "Buy": 3,
+  "Weight": 2,
+  "Attack": 30,
+  "EquipLevelMin": 1,
+  "Jobs": {
+   "Archer": true,
+   "Assassin": true,
+   "BardDancer": true,
+   "Hunter": true,
+   "Rogue": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Ammo": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Assassin_Robe": {
+  "Id": 2378,
+  "AegisName": "Assassin_Robe",
+  "Name": "Assassin Robe",
+  "Type": "Armor",
+  "Buy": 10,
+  "Defense": 7,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Refineable": true,
+  "Jobs": {
+   "Assassin": true,
+   "Ninja": true,
+   "Rogue": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Assaulter_Plate": {
+  "Id": 2376,
+  "AegisName": "Assaulter_Plate",
+  "Name": "Assaulter Plate",
+  "Type": "Armor",
+  "Buy": 10,
+  "Defense": 7,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Refineable": true,
+  "Jobs": {
+   "Alchemist": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Knight": true,
+   "Merchant": true,
+   "StarGladiator": true,
+   "Swordman": true,
+   "Taekwon": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Assulter_Card": {
+  "Id": 4246,
+  "AegisName": "Assulter_Card",
+  "Name": "Assaulter Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Right_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Aster_Card": {
+  "Id": 4247,
+  "AegisName": "Aster_Card",
+  "Name": "Aster Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Right_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "B_Harword_Card": {
+  "Id": 4361,
+  "AegisName": "B_Harword_Card",
+  "Name": "MasterSmith Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Right_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Baby_Leopard_Card": {
+  "Id": 4233,
+  "AegisName": "Baby_Leopard_Card",
+  "Name": "Baby Leopard Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Battle_Boots": {
+  "Id": 2437,
+  "AegisName": "Battle_Boots",
+  "Name": "Battle Boots",
+  "Type": "Armor",
+  "Buy": 10,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Refineable": true,
+  "Jobs": {
+   "Gunslinger": true
+  },
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Battle_Greave": {
+  "Id": 2435,
+  "AegisName": "Battle_Greave",
+  "Name": "Battle Greaves",
+  "Type": "Armor",
+  "Buy": 10,
+  "Defense": 4,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Refineable": true,
+  "Jobs": {
+   "Alchemist": true,
+   "Assassin": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Knight": true,
+   "Merchant": true,
+   "Ninja": true,
+   "Rogue": true,
+   "StarGladiator": true,
+   "Swordman": true,
+   "Taekwon": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Battle_Hook": {
+  "Id": 1421,
+  "AegisName": "Battle_Hook",
+  "Name": "Battle Hook",
+  "Type": "Weapon",
+  "SubType": "1hSpear",
+  "Buy": 20,
+  "Weight": 900,
+  "Attack": 140,
+  "Range": 3,
+  "Slots": 1,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 65,
+  "Refineable": true,
+  "Jobs": {
+   "Crusader": true,
+   "Knight": true,
+   "Swordman": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Beach_Manteau": {
+  "Id": 2546,
+  "AegisName": "Beach_Manteau",
+  "Name": "Beach Manteau",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 600,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "Refineable": true,
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Beach_Sandal": {
+  "Id": 2441,
+  "AegisName": "Beach_Sandal",
+  "Name": "Beach Sandals",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 200,
+  "ArmorLevel": 1,
+  "Refineable": true,
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "BigFoot_Card": {
+  "Id": 4074,
+  "AegisName": "BigFoot_Card",
+  "Name": "Bigfoot Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Left_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Bison_Horn": {
+  "Id": 2702,
+  "AegisName": "Bison_Horn",
+  "Name": "Bison Horn",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 90,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Black_Cat": {
+  "Id": 2747,
+  "AegisName": "Black_Cat",
+  "Name": "Black Cat",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Jobs": {
+   "Rogue": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Black_Glasses": {
+  "Id": 5401,
+  "AegisName": "Black_Glasses",
+  "Name": "Black Frame Glasses",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 200,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "View": 404,
+  "Locations": {
+   "Head_Mid": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Black_Leather_Boots": {
+  "Id": 2425,
+  "AegisName": "Black_Leather_Boots",
+  "Name": "Black Leather Boots",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 500,
+  "Defense": 4,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 55,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Black_Leather_Boots_": {
+  "Id": 2434,
+  "AegisName": "Black_Leather_Boots_",
+  "Name": "Black Leather Boots",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 500,
+  "Defense": 4,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 55,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Blood_Butterfly_Card": {
+  "Id": 4327,
+  "AegisName": "Blood_Butterfly_Card",
+  "Name": "Bloody Butterfly Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Bloody_Iron_Ball": {
+  "Id": 2655,
+  "AegisName": "Bloody_Iron_Ball",
+  "Name": "Bloodied Shackle Ball",
+  "Type": "Armor",
+  "Buy": 50000,
+  "Weight": 4000,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 1,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Blush": {
+  "Id": 5040,
+  "AegisName": "Blush",
+  "Name": "Blush",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "ArmorLevel": 1,
+  "View": 125,
+  "Locations": {
+   "Head_Mid": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Bon_Gun_Card": {
+  "Id": 4212,
+  "AegisName": "Bon_Gun_Card",
+  "Name": "Bongun Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Bone_Wand": {
+  "Id": 1615,
+  "AegisName": "Bone_Wand",
+  "Name": "Evil Bone Wand",
+  "Type": "Weapon",
+  "SubType": "Staff",
+  "Buy": 20,
+  "Weight": 700,
+  "Attack": 40,
+  "Range": 1,
+  "WeaponLevel": 3,
+  "EquipLevelMin": 24,
+  "Refineable": true,
+  "Jobs": {
+   "Acolyte": true,
+   "Mage": true,
+   "Monk": true,
+   "Priest": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Bowman_Scarf": {
+  "Id": 2727,
+  "AegisName": "Bowman_Scarf",
+  "Name": "Bowman Scarf",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 200,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "Jobs": {
+   "Hunter": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Burning_Bow": {
+  "Id": 1730,
+  "AegisName": "Burning_Bow",
+  "Name": "Burning Bow",
+  "Type": "Weapon",
+  "SubType": "Bow",
+  "Buy": 20,
+  "Weight": 1400,
+  "Attack": 95,
+  "Range": 5,
+  "Slots": 1,
+  "WeaponLevel": 3,
+  "EquipLevelMin": 55,
+  "Refineable": true,
+  "Jobs": {
+   "Archer": true,
+   "BardDancer": true,
+   "Hunter": true,
+   "Rogue": true
+  },
+  "Locations": {
+   "Both_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "C_Tower_Manager_Card": {
+  "Id": 4229,
+  "AegisName": "C_Tower_Manager_Card",
+  "Name": "Tower Keeper Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true,
+   "Head_Top": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Chonchon_Card": {
+  "Id": 4009,
+  "AegisName": "Chonchon_Card",
+  "Name": "Chonchon Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Shoes": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Clack_Of_Servival": {
+  "Id": 2509,
+  "AegisName": "Clack_Of_Servival",
+  "Name": "Survivor's Manteau",
+  "Type": "Armor",
+  "Buy": 20000,
+  "Weight": 550,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 75,
+  "Refineable": true,
+  "Jobs": {
+   "Mage": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Clip": {
+  "Id": 2607,
+  "AegisName": "Clip",
+  "Name": "Clip",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 100,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Cloak_Of_Survival_C": {
+  "Id": 2535,
+  "AegisName": "Cloak_Of_Survival_C",
+  "Name": "Cloak Of Survival",
+  "Type": "Armor",
+  "Buy": 1,
+  "Defense": 5,
+  "ArmorLevel": 1,
+  "Jobs": {
+   "Mage": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Clock_Card": {
+  "Id": 4299,
+  "AegisName": "Clock_Card",
+  "Name": "Clock Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Cold_Heart": {
+  "Id": 2746,
+  "AegisName": "Cold_Heart",
+  "Name": "Cold Heart",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Jobs": {
+   "Assassin": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Combat_Boots": {
+  "Id": 2436,
+  "AegisName": "Combat_Boots",
+  "Name": "Combat Boots",
+  "Type": "Armor",
+  "Buy": 10,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Refineable": true,
+  "Jobs": {
+   "Acolyte": true,
+   "Archer": true,
+   "BardDancer": true,
+   "Hunter": true,
+   "Mage": true,
+   "Monk": true,
+   "Priest": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Commander_Manteau": {
+  "Id": 2538,
+  "AegisName": "Commander_Manteau",
+  "Name": "Captain's Manteau",
+  "Type": "Armor",
+  "Buy": 10,
+  "Defense": 4,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Refineable": true,
+  "Jobs": {
+   "Alchemist": true,
+   "Assassin": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Knight": true,
+   "Merchant": true,
+   "Ninja": true,
+   "Rogue": true,
+   "StarGladiator": true,
+   "Swordman": true,
+   "Taekwon": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Commander_Manteau_": {
+  "Id": 2539,
+  "AegisName": "Commander_Manteau_",
+  "Name": "Commander's Manteau",
+  "Type": "Armor",
+  "Buy": 10,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Refineable": true,
+  "Jobs": {
+   "Acolyte": true,
+   "Archer": true,
+   "BardDancer": true,
+   "Hunter": true,
+   "Mage": true,
+   "Monk": true,
+   "Priest": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Cookie_Card": {
+  "Id": 4293,
+  "AegisName": "Cookie_Card",
+  "Name": "Cookie Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Crab_Card": {
+  "Id": 4153,
+  "AegisName": "Crab_Card",
+  "Name": "Crab Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Right_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Cramp_Card": {
+  "Id": 4296,
+  "AegisName": "Cramp_Card",
+  "Name": "Cramp Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true,
+   "Head_Top": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Cruiser_Card": {
+  "Id": 4297,
+  "AegisName": "Cruiser_Card",
+  "Name": "Cruiser Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Right_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Crystal_Arrow": {
+  "Id": 1754,
+  "AegisName": "Crystal_Arrow",
+  "Name": "Crystal Arrow",
+  "Type": "Ammo",
+  "SubType": "Arrow",
+  "Buy": 3,
+  "Weight": 2,
+  "Attack": 30,
+  "EquipLevelMin": 1,
+  "Jobs": {
+   "Archer": true,
+   "Assassin": true,
+   "BardDancer": true,
+   "Hunter": true,
+   "Rogue": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Ammo": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Cuffs": {
+  "Id": 2408,
+  "AegisName": "Cuffs",
+  "Name": "Shackles",
+  "Type": "Armor",
+  "Buy": 5000,
+  "Weight": 3000,
+  "Defense": 3,
+  "ArmorLevel": 1,
+  "Refineable": true,
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Cursed_Lyre": {
+  "Id": 1741,
+  "AegisName": "Cursed_Lyre",
+  "Name": "Cursed Lyre",
+  "Type": "Weapon",
+  "SubType": "Bow",
+  "Buy": 20,
+  "Weight": 1250,
+  "Attack": 125,
+  "Range": 5,
+  "Slots": 1,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 80,
+  "Refineable": true,
+  "Jobs": {
+   "Archer": true,
+   "BardDancer": true,
+   "Hunter": true
+  },
+  "Locations": {
+   "Both_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Cursed_Star": {
+  "Id": 2748,
+  "AegisName": "Cursed_Star",
+  "Name": "Cursed Star",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 200,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 84,
+  "Jobs": {
+   "Archer": true,
+   "BardDancer": true,
+   "Hunter": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Dancing_Dragon_Card": {
+  "Id": 4272,
+  "AegisName": "Dancing_Dragon_Card",
+  "Name": "Zhu Po Long Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Dark_Illusion_Card": {
+  "Id": 4169,
+  "AegisName": "Dark_Illusion_Card",
+  "Name": "Dark Illusion Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true,
+   "Head_Top": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Dark_Knight_Belt": {
+  "Id": 2779,
+  "AegisName": "Dark_Knight_Belt",
+  "Name": "Dark Knight Belt",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 500,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 30,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Dark_Knight_Glove": {
+  "Id": 2780,
+  "AegisName": "Dark_Knight_Glove",
+  "Name": "Dark Knight Glove",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 500,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Dark_Knight_Mask": {
+  "Id": 5482,
+  "AegisName": "Dark_Knight_Mask",
+  "Name": "Dark Knight Mask",
+  "Type": "Armor",
+  "Weight": 3000,
+  "Defense": 5,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Refineable": true,
+  "View": 479,
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true,
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Dark_Knight_MaskB": {
+  "Id": 5577,
+  "AegisName": "Dark_Knight_MaskB",
+  "Name": "Dark Knight Mask",
+  "Type": "Armor",
+  "Weight": 3000,
+  "Defense": 5,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Refineable": true,
+  "View": 479,
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true,
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Dark_Lord_Card": {
+  "Id": 4168,
+  "AegisName": "Dark_Lord_Card",
+  "Name": "Dark Lord Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Shoes": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Darkness_Helm_J": {
+  "Id": 5653,
+  "AegisName": "Darkness_Helm_J",
+  "Name": "Darkness Helm",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 500,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "Refineable": true,
+  "View": 586,
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Diabolus_Armor": {
+  "Id": 2375,
+  "AegisName": "Diabolus_Armor",
+  "Name": "Diabolus Armor",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 600,
+  "Defense": 7,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 55,
+  "Refineable": true,
+  "Jobs": {
+   "Alchemist": true,
+   "Assassin": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Knight": true,
+   "Merchant": true,
+   "Rogue": true,
+   "Swordman": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Diabolus_Boots": {
+  "Id": 2433,
+  "AegisName": "Diabolus_Boots",
+  "Name": "Diabolus Boots",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 250,
+  "Defense": 4,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "Refineable": true,
+  "Jobs": {
+   "Alchemist": true,
+   "Assassin": true,
+   "BardDancer": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Hunter": true,
+   "Knight": true,
+   "Monk": true,
+   "Priest": true,
+   "Rogue": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "StarGladiator": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Diabolus_Manteau": {
+  "Id": 2537,
+  "AegisName": "Diabolus_Manteau",
+  "Name": "Diabolus Manteau",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 250,
+  "Defense": 5,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "Refineable": true,
+  "Jobs": {
+   "Alchemist": true,
+   "Assassin": true,
+   "BardDancer": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Hunter": true,
+   "Knight": true,
+   "Monk": true,
+   "Priest": true,
+   "Rogue": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "StarGladiator": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Diabolus_Ring": {
+  "Id": 2729,
+  "AegisName": "Diabolus_Ring",
+  "Name": "Diabolus Ring",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 50,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "Jobs": {
+   "Alchemist": true,
+   "Assassin": true,
+   "BardDancer": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Hunter": true,
+   "Knight": true,
+   "Monk": true,
+   "Priest": true,
+   "Rogue": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "StarGladiator": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Diabolus_Robe": {
+  "Id": 2374,
+  "AegisName": "Diabolus_Robe",
+  "Name": "Diabolus Robe",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 300,
+  "Defense": 6,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 55,
+  "Refineable": true,
+  "Jobs": {
+   "Acolyte": true,
+   "Archer": true,
+   "BardDancer": true,
+   "Hunter": true,
+   "Mage": true,
+   "Monk": true,
+   "Priest": true,
+   "Sage": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Divine_Cross": {
+  "Id": 2001,
+  "AegisName": "Divine_Cross",
+  "Name": "Divine Cross",
+  "Type": "Weapon",
+  "SubType": "2hStaff",
+  "Buy": 20,
+  "Weight": 1500,
+  "Attack": 120,
+  "Range": 1,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 70,
+  "Refineable": true,
+  "Jobs": {
+   "Monk": true,
+   "Priest": true
+  },
+  "Locations": {
+   "Both_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Dragon_Breath": {
+  "Id": 2527,
+  "AegisName": "Dragon_Breath",
+  "Name": "Dragon Breath",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 600,
+  "Defense": 4,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 48,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Dragon_Fly_Card": {
+  "Id": 4179,
+  "AegisName": "Dragon_Fly_Card",
+  "Name": "Dragon Fly Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Garment": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Dragon_Killer": {
+  "Id": 13001,
+  "AegisName": "Dragon_Killer",
+  "Name": "Dragon Killer",
+  "Type": "Weapon",
+  "SubType": "Dagger",
+  "Buy": 20,
+  "Weight": 900,
+  "Attack": 110,
+  "Range": 1,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 60,
+  "Refineable": true,
+  "Jobs": {
+   "Alchemist": true,
+   "Archer": true,
+   "Assassin": true,
+   "BardDancer": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Hunter": true,
+   "Knight": true,
+   "Mage": true,
+   "Merchant": true,
+   "Ninja": true,
+   "Novice": true,
+   "Rogue": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "SuperNovice": true,
+   "Swordman": true,
+   "Thief": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Dragon_Manteau": {
+  "Id": 2553,
+  "AegisName": "Dragon_Manteau",
+  "Name": "Dragon Manteau",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 1000,
+  "Defense": 5,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Dragon_Slayer": {
+  "Id": 1166,
+  "AegisName": "Dragon_Slayer",
+  "Name": "Dragon Slayer",
+  "Type": "Weapon",
+  "SubType": "2hSword",
+  "Buy": 20,
+  "Weight": 1300,
+  "Attack": 150,
+  "Range": 1,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 48,
+  "Refineable": true,
+  "Jobs": {
+   "Crusader": true,
+   "Knight": true,
+   "Swordman": true
+  },
+  "Locations": {
+   "Both_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Dragon_Tail_Card": {
+  "Id": 4178,
+  "AegisName": "Dragon_Tail_Card",
+  "Name": "Dragon Tail Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Garment": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Dragon_Vest": {
+  "Id": 2399,
+  "AegisName": "Dragon_Vest",
+  "Name": "Dragon Vest",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 500,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Dress_Of_Angel": {
+  "Id": 2358,
+  "AegisName": "Dress_Of_Angel",
+  "Name": "Angel's Dress",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 1000,
+  "Defense": 5,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 1,
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Ear_Of_Angel's_Wing": {
+  "Id": 5074,
+  "AegisName": "Ear_Of_Angel's_Wing",
+  "Name": "Angel Wing Ears",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "View": 158,
+  "Locations": {
+   "Head_Mid": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Ear_Of_Devil's_Wing": {
+  "Id": 5068,
+  "AegisName": "Ear_Of_Devil's_Wing",
+  "Name": "Evil Wing Ears",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "View": 152,
+  "Locations": {
+   "Head_Mid": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Earth_Bow": {
+  "Id": 1732,
+  "AegisName": "Earth_Bow",
+  "Name": "Earth Bow",
+  "Type": "Weapon",
+  "SubType": "Bow",
+  "Buy": 20,
+  "Weight": 1400,
+  "Attack": 105,
+  "Range": 5,
+  "Slots": 1,
+  "WeaponLevel": 3,
+  "EquipLevelMin": 55,
+  "Refineable": true,
+  "Jobs": {
+   "Archer": true,
+   "BardDancer": true,
+   "Hunter": true,
+   "Rogue": true
+  },
+  "Locations": {
+   "Both_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Eclipse_Card": {
+  "Id": 4266,
+  "AegisName": "Eclipse_Card",
+  "Name": "Eclipse Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Garment": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Elite_Archer_Suit": {
+  "Id": 2381,
+  "AegisName": "Elite_Archer_Suit",
+  "Name": "Elite Archer Suit",
+  "Type": "Armor",
+  "Buy": 10,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Refineable": true,
+  "Jobs": {
+   "Archer": true,
+   "BardDancer": true,
+   "Hunter": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Elite_Engineer_Armor": {
+  "Id": 2377,
+  "AegisName": "Elite_Engineer_Armor",
+  "Name": "Elite Engineer Armor",
+  "Type": "Armor",
+  "Buy": 10,
+  "Defense": 7,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Refineable": true,
+  "Jobs": {
+   "Alchemist": true,
+   "Blacksmith": true,
+   "Merchant": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Elite_Shooter_Suit": {
+  "Id": 2382,
+  "AegisName": "Elite_Shooter_Suit",
+  "Name": "Elite Shooter Suit",
+  "Type": "Armor",
+  "Buy": 10,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Refineable": true,
+  "Jobs": {
+   "Gunslinger": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Elven_Ears": {
+  "Id": 2286,
+  "AegisName": "Elven_Ears",
+  "Name": "Elven Ears",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "View": 73,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Head_Mid": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Elven_Ears_": {
+  "Id": 18507,
+  "AegisName": "Elven_Ears_",
+  "Name": "Elven Ears",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "View": 73,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Head_Mid": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Exorcism_Bible": {
+  "Id": 2129,
+  "AegisName": "Exorcism_Bible",
+  "Name": "Exorcism Bible",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 600,
+  "Defense": 5,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 50,
+  "Refineable": true,
+  "View": 5,
+  "Jobs": {
+   "Monk": true,
+   "Priest": true
+  },
+  "Locations": {
+   "Left_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Falcon_Robe": {
+  "Id": 2516,
+  "AegisName": "Falcon_Robe",
+  "Name": "Falcon Muffler",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 400,
+  "Defense": 3,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 65,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Ferus__Card": {
+  "Id": 4381,
+  "AegisName": "Ferus__Card",
+  "Name": "Green Ferus Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Shoes": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Fire_Arrow": {
+  "Id": 1752,
+  "AegisName": "Fire_Arrow",
+  "Name": "Fire Arrow",
+  "Type": "Ammo",
+  "SubType": "Arrow",
+  "Buy": 3,
+  "Weight": 2,
+  "Attack": 30,
+  "EquipLevelMin": 1,
+  "Jobs": {
+   "Archer": true,
+   "Assassin": true,
+   "BardDancer": true,
+   "Hunter": true,
+   "Rogue": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Ammo": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Freezer_Card": {
+  "Id": 4319,
+  "AegisName": "Freezer_Card",
+  "Name": "Freezer Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Shoes": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Freyja_Boots": {
+  "Id": 2428,
+  "AegisName": "Freyja_Boots",
+  "Name": "Freyja Boots",
+  "Type": "Armor",
+  "Weight": 300,
+  "Defense": 10,
+  "ArmorLevel": 1,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Freyja_Cape": {
+  "Id": 2533,
+  "AegisName": "Freyja_Cape",
+  "Name": "Freyja Cape",
+  "Type": "Armor",
+  "Weight": 200,
+  "Defense": 10,
+  "ArmorLevel": 1,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Freyja_Crown": {
+  "Id": 5306,
+  "AegisName": "Freyja_Crown",
+  "Name": "Freya's Crown",
+  "Type": "Armor",
+  "Weight": 500,
+  "Defense": 12,
+  "ArmorLevel": 1,
+  "View": 328,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Freyja_Overcoat": {
+  "Id": 2369,
+  "AegisName": "Freyja_Overcoat",
+  "Name": "Freyja Overcoat",
+  "Type": "Armor",
+  "Weight": 500,
+  "Defense": 12,
+  "ArmorLevel": 1,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Fricca_Circlet": {
+  "Id": 5124,
+  "AegisName": "Fricca_Circlet",
+  "Name": "Fricca's Circlet",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 300,
+  "Defense": 3,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 65,
+  "Refineable": true,
+  "View": 251,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Fricco_Shoes": {
+  "Id": 2417,
+  "AegisName": "Fricco_Shoes",
+  "Name": "Fricco's Shoes",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 500,
+  "Defense": 3,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 65,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Frozen_Bow": {
+  "Id": 1731,
+  "AegisName": "Frozen_Bow",
+  "Name": "Frozen Bow",
+  "Type": "Weapon",
+  "SubType": "Bow",
+  "Buy": 20,
+  "Weight": 1400,
+  "Attack": 100,
+  "Range": 5,
+  "Slots": 1,
+  "WeaponLevel": 3,
+  "EquipLevelMin": 55,
+  "Refineable": true,
+  "Jobs": {
+   "Archer": true,
+   "BardDancer": true,
+   "Hunter": true,
+   "Rogue": true
+  },
+  "Locations": {
+   "Both_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Fur_Seal_Card": {
+  "Id": 4312,
+  "AegisName": "Fur_Seal_Card",
+  "Name": "Seal Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Right_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "G_Strings": {
+  "Id": 2339,
+  "AegisName": "G_Strings",
+  "Name": "Pantie",
+  "Type": "Armor",
+  "Buy": 1000,
+  "Weight": 100,
+  "Defense": 4,
+  "ArmorLevel": 1,
+  "Refineable": true,
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "G_Strings_": {
+  "Id": 2371,
+  "AegisName": "G_Strings_",
+  "Name": "Pantie",
+  "Type": "Armor",
+  "Buy": 1000,
+  "Weight": 100,
+  "Defense": 4,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "Refineable": true,
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Gae_Bolg": {
+  "Id": 1474,
+  "AegisName": "Gae_Bolg",
+  "Name": "Gae Bolg",
+  "Type": "Weapon",
+  "SubType": "2hSpear",
+  "Buy": 20,
+  "Weight": 2000,
+  "Attack": 160,
+  "Range": 3,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 60,
+  "Refineable": true,
+  "Jobs": {
+   "Crusader": true,
+   "Knight": true,
+   "Swordman": true
+  },
+  "Locations": {
+   "Both_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Garm_Baby_Card": {
+  "Id": 4323,
+  "AegisName": "Garm_Baby_Card",
+  "Name": "Hatii Babe Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Right_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Garm_Card": {
+  "Id": 4324,
+  "AegisName": "Garm_Card",
+  "Name": "Hatii Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Geographer_Card": {
+  "Id": 4280,
+  "AegisName": "Geographer_Card",
+  "Name": "Geographer Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Goibne's_Armor": {
+  "Id": 2354,
+  "AegisName": "Goibne's_Armor",
+  "Name": "Goibne's Armor",
+  "Type": "Armor",
+  "Buy": 50000,
+  "Weight": 3500,
+  "Defense": 7,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 54,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Goibne's_Combat_Boots": {
+  "Id": 2419,
+  "AegisName": "Goibne's_Combat_Boots",
+  "Name": "Goibne's Greaves",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 700,
+  "Defense": 4,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 54,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Goibne's_Helmet": {
+  "Id": 5128,
+  "AegisName": "Goibne's_Helmet",
+  "Name": "Goibne's Helm",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 500,
+  "Defense": 5,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 54,
+  "Refineable": true,
+  "View": 258,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Goibne's_Shoulder_Arms": {
+  "Id": 2520,
+  "AegisName": "Goibne's_Shoulder_Arms",
+  "Name": "Goibne's Spaulders",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 700,
+  "Defense": 3,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 54,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Grand_Peco_Card": {
+  "Id": 4161,
+  "AegisName": "Grand_Peco_Card",
+  "Name": "Grand Peco Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true,
+   "Head_Top": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Grizzly_Card": {
+  "Id": 4162,
+  "AegisName": "Grizzly_Card",
+  "Name": "Grizzly Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Gust_Bow": {
+  "Id": 1733,
+  "AegisName": "Gust_Bow",
+  "Name": "Gust Bow",
+  "Type": "Weapon",
+  "SubType": "Bow",
+  "Buy": 20,
+  "Weight": 1400,
+  "Attack": 95,
+  "Range": 5,
+  "Slots": 1,
+  "WeaponLevel": 3,
+  "EquipLevelMin": 55,
+  "Refineable": true,
+  "Jobs": {
+   "Archer": true,
+   "BardDancer": true,
+   "Hunter": true,
+   "Rogue": true
+  },
+  "Locations": {
+   "Both_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Hahoe_Mask": {
+  "Id": 5176,
+  "AegisName": "Hahoe_Mask",
+  "Name": "Hahoe Mask",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 100,
+  "Defense": 2,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 30,
+  "View": 230,
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Harpy_Card": {
+  "Id": 4325,
+  "AegisName": "Harpy_Card",
+  "Name": "Harpy Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Garment": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Heater_Card": {
+  "Id": 4331,
+  "AegisName": "Heater_Card",
+  "Name": "Heater Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Hollgrehenn_Hammer": {
+  "Id": 1535,
+  "AegisName": "Hollgrehenn_Hammer",
+  "Name": "Hollgrehenn's Hammer",
+  "Type": "Weapon",
+  "SubType": "Mace",
+  "Buy": 4444,
+  "Weight": 44,
+  "Attack": 4,
+  "Range": 1,
+  "Slots": 1,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 44,
+  "Refineable": true,
+  "Jobs": {
+   "Acolyte": true,
+   "Alchemist": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Knight": true,
+   "Merchant": true,
+   "Monk": true,
+   "Priest": true,
+   "Swordman": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Holy_Stick": {
+  "Id": 1631,
+  "AegisName": "Holy_Stick",
+  "Name": "Holy Stick",
+  "Type": "Weapon",
+  "SubType": "Staff",
+  "Buy": 20,
+  "Weight": 500,
+  "Attack": 50,
+  "Range": 1,
+  "Slots": 1,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 70,
+  "Refineable": true,
+  "Jobs": {
+   "Monk": true,
+   "Priest": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Hunting_Spear": {
+  "Id": 1422,
+  "AegisName": "Hunting_Spear",
+  "Name": "Hunting Spear",
+  "Type": "Weapon",
+  "SubType": "1hSpear",
+  "Buy": 20,
+  "Weight": 4200,
+  "Attack": 180,
+  "Range": 3,
+  "Slots": 1,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 60,
+  "Refineable": true,
+  "Jobs": {
+   "Crusader": true,
+   "Knight": true,
+   "Swordman": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Hyegun_Card": {
+  "Id": 4328,
+  "AegisName": "Hyegun_Card",
+  "Name": "Yao Jun Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Garment": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Hylozoist_Card": {
+  "Id": 4321,
+  "AegisName": "Hylozoist_Card",
+  "Name": "Hylozoist Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Hyper_Changer": {
+  "Id": 2656,
+  "AegisName": "Hyper_Changer",
+  "Name": "Armor Charm",
+  "Type": "Armor",
+  "Buy": 20000,
+  "Weight": 1000,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 1,
+  "Jobs": {
+   "Alchemist": true,
+   "Assassin": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Knight": true,
+   "Merchant": true,
+   "Rogue": true,
+   "Swordman": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Icarus_Wing": {
+  "Id": 2726,
+  "AegisName": "Icarus_Wing",
+  "Name": "Icarus Wings",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "Jobs": {
+   "Hunter": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Improved_Tights": {
+  "Id": 2390,
+  "AegisName": "Improved_Tights",
+  "Name": "Improved Tights",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 400,
+  "Defense": 6,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 75,
+  "Refineable": true,
+  "Jobs": {
+   "Archer": true,
+   "BardDancer": true,
+   "Hunter": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Incubus_Card": {
+  "Id": 4269,
+  "AegisName": "Incubus_Card",
+  "Name": "Incubus Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true,
+   "Head_Top": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Injustice_Card": {
+  "Id": 4268,
+  "AegisName": "Injustice_Card",
+  "Name": "Injustice Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Right_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Kiss_Of_Angel": {
+  "Id": 5125,
+  "AegisName": "Kiss_Of_Angel",
+  "Name": "Angel's Kiss",
+  "Type": "Armor",
+  "Buy": 10000,
+  "Weight": 300,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 50,
+  "Refineable": true,
+  "View": 255,
+  "Jobs": {
+   "Novice": true,
+   "SuperNovice": true
+  },
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Krieger_Muffler1": {
+  "Id": 2549,
+  "AegisName": "Krieger_Muffler1",
+  "Name": "Glorious Muffler",
+  "Type": "Armor",
+  "Buy": 20,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 81,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Krieger_Ring1": {
+  "Id": 2772,
+  "AegisName": "Krieger_Ring1",
+  "Name": "Glorious Ring",
+  "Type": "Armor",
+  "Buy": 20,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 81,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Krieger_Shoes1": {
+  "Id": 2444,
+  "AegisName": "Krieger_Shoes1",
+  "Name": "Glorious Shoes",
+  "Type": "Armor",
+  "Buy": 20,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 81,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Krieger_Suit1": {
+  "Id": 2394,
+  "AegisName": "Krieger_Suit1",
+  "Name": "Glorious Suit",
+  "Type": "Armor",
+  "Buy": 20,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 81,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Librarian_Glove": {
+  "Id": 2716,
+  "AegisName": "Librarian_Glove",
+  "Name": "Librarian Glove",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Jobs": {
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Linen_Glove": {
+  "Id": 2749,
+  "AegisName": "Linen_Glove",
+  "Name": "Linen Glove",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 120,
+  "Defense": 1,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 90,
+  "Jobs": {
+   "Alchemist": true,
+   "Assassin": true,
+   "BardDancer": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Hunter": true,
+   "Knight": true,
+   "Monk": true,
+   "Priest": true,
+   "Rogue": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "StarGladiator": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Live_Peach_Tree_Card": {
+  "Id": 4217,
+  "AegisName": "Live_Peach_Tree_Card",
+  "Name": "Enchanted Peach Tree Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Left_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Loli_Ruri_Card": {
+  "Id": 4191,
+  "AegisName": "Loli_Ruri_Card",
+  "Name": "Loli Ruri Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Long_Horn": {
+  "Id": 1420,
+  "AegisName": "Long_Horn",
+  "Name": "Long Horn",
+  "Type": "Weapon",
+  "SubType": "1hSpear",
+  "Buy": 20,
+  "Weight": 1000,
+  "Attack": 150,
+  "Range": 3,
+  "Slots": 1,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 65,
+  "Refineable": true,
+  "Jobs": {
+   "Crusader": true,
+   "Knight": true,
+   "Swordman": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Long_Horn_M": {
+  "Id": 1428,
+  "AegisName": "Long_Horn_M",
+  "Name": "Long Horn",
+  "Type": "Weapon",
+  "SubType": "1hSpear",
+  "Buy": 20,
+  "Weight": 1000,
+  "Attack": 150,
+  "Range": 3,
+  "Slots": 1,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 65,
+  "Refineable": true,
+  "Jobs": {
+   "Crusader": true,
+   "Knight": true,
+   "Swordman": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Lude_Card": {
+  "Id": 4193,
+  "AegisName": "Lude_Card",
+  "Name": "Lude Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Luna_Bow": {
+  "Id": 1723,
+  "AegisName": "Luna_Bow",
+  "Name": "Luna Bow",
+  "Type": "Weapon",
+  "SubType": "Bow",
+  "Buy": 20,
+  "Weight": 2000,
+  "Attack": 100,
+  "Range": 5,
+  "Slots": 2,
+  "WeaponLevel": 3,
+  "EquipLevelMin": 30,
+  "Refineable": true,
+  "Jobs": {
+   "Hunter": true
+  },
+  "Locations": {
+   "Both_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Lunatic_Brooch": {
+  "Id": 2718,
+  "AegisName": "Lunatic_Brooch",
+  "Name": "Lunatic Brooch",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 200,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 65,
+  "Jobs": {
+   "Archer": true,
+   "BardDancer": true,
+   "Hunter": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Lunatic_Card": {
+  "Id": 4006,
+  "AegisName": "Lunatic_Card",
+  "Name": "Lunatic Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Right_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Mage_Coat": {
+  "Id": 2334,
+  "AegisName": "Mage_Coat",
+  "Name": "Mage Coat",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 600,
+  "Defense": 5,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 50,
+  "Refineable": true,
+  "Jobs": {
+   "Mage": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Mage_Coat_": {
+  "Id": 2372,
+  "AegisName": "Mage_Coat_",
+  "Name": "Mage Coat",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 600,
+  "Defense": 5,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 50,
+  "Refineable": true,
+  "Jobs": {
+   "Mage": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Magician_Hat": {
+  "Id": 5045,
+  "AegisName": "Magician_Hat",
+  "Name": "Magician Hat",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 500,
+  "Defense": 3,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 50,
+  "Refineable": true,
+  "View": 130,
+  "Jobs": {
+   "Acolyte": true,
+   "Mage": true,
+   "Monk": true,
+   "Priest": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Magni_Cap": {
+  "Id": 5122,
+  "AegisName": "Magni_Cap",
+  "Name": "Magni's Cap",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 1000,
+  "Defense": 5,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 65,
+  "Refineable": true,
+  "View": 250,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Mastering_Card": {
+  "Id": 4197,
+  "AegisName": "Mastering_Card",
+  "Name": "Mastering Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Garment": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Medal_Acolyte": {
+  "Id": 2722,
+  "AegisName": "Medal_Acolyte",
+  "Name": "Medal of Honor",
+  "Type": "Armor",
+  "Buy": 20,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "Jobs": {
+   "Acolyte": true,
+   "Monk": true,
+   "Priest": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Medal_Archer": {
+  "Id": 2724,
+  "AegisName": "Medal_Archer",
+  "Name": "Medal of Honor",
+  "Type": "Armor",
+  "Buy": 20,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "Jobs": {
+   "Archer": true,
+   "BardDancer": true,
+   "Hunter": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Medal_Gunner": {
+  "Id": 2733,
+  "AegisName": "Medal_Gunner",
+  "Name": "Sheriff Badge",
+  "Type": "Armor",
+  "Buy": 20,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "Jobs": {
+   "Gunslinger": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Medal_Mage": {
+  "Id": 2723,
+  "AegisName": "Medal_Mage",
+  "Name": "Medal of Honor",
+  "Type": "Armor",
+  "Buy": 20,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "Jobs": {
+   "Mage": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Medal_Merchant": {
+  "Id": 2725,
+  "AegisName": "Medal_Merchant",
+  "Name": "Medal of Honor",
+  "Type": "Armor",
+  "Buy": 20,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "Jobs": {
+   "Alchemist": true,
+   "Blacksmith": true,
+   "Merchant": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Medal_Swordman": {
+  "Id": 2720,
+  "AegisName": "Medal_Swordman",
+  "Name": "Medal of Honor",
+  "Type": "Armor",
+  "Buy": 20,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "Jobs": {
+   "Crusader": true,
+   "Knight": true,
+   "StarGladiator": true,
+   "Swordman": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Medal_Thief": {
+  "Id": 2721,
+  "AegisName": "Medal_Thief",
+  "Name": "Medal of Honor",
+  "Type": "Armor",
+  "Buy": 20,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "Jobs": {
+   "Assassin": true,
+   "Ninja": true,
+   "Rogue": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Medic_Robe": {
+  "Id": 2380,
+  "AegisName": "Medic_Robe",
+  "Name": "Medic's Robe",
+  "Type": "Armor",
+  "Buy": 10,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Refineable": true,
+  "Jobs": {
+   "Acolyte": true,
+   "Monk": true,
+   "Priest": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Memorize_Book": {
+  "Id": 2109,
+  "AegisName": "Memorize_Book",
+  "Name": "Memory Book",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 1000,
+  "Defense": 3,
+  "ArmorLevel": 1,
+  "Refineable": true,
+  "View": 5,
+  "Jobs": {
+   "Mage": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Left_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Memorize_Book_": {
+  "Id": 2121,
+  "AegisName": "Memorize_Book_",
+  "Name": "Memory Book",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 1000,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "Refineable": true,
+  "View": 5,
+  "Jobs": {
+   "Mage": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Left_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Merman_Card": {
+  "Id": 4199,
+  "AegisName": "Merman_Card",
+  "Name": "Merman Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Shoes": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Miyabi_Ningyo_Card": {
+  "Id": 4208,
+  "AegisName": "Miyabi_Ningyo_Card",
+  "Name": "Miyabi Doll Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Shoes": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Mole_Card": {
+  "Id": 4343,
+  "AegisName": "Mole_Card",
+  "Name": "Holden Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true,
+   "Head_Top": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Morpheus's_Armlet": {
+  "Id": 2649,
+  "AegisName": "Morpheus's_Armlet",
+  "Name": "Morpheus's Bracelet",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 100,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 33,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Morpheus's_Hood": {
+  "Id": 5126,
+  "AegisName": "Morpheus's_Hood",
+  "Name": "Morpheus's Hood",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 200,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 33,
+  "Refineable": true,
+  "View": 256,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Morpheus's_Ring": {
+  "Id": 2648,
+  "AegisName": "Morpheus's_Ring",
+  "Name": "Morpheus's Ring",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 100,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 33,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Morpheus's_Shawl": {
+  "Id": 2518,
+  "AegisName": "Morpheus's_Shawl",
+  "Name": "Morpheus's Shawl",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 600,
+  "Defense": 3,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 33,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Morrigane's_Belt": {
+  "Id": 2650,
+  "AegisName": "Morrigane's_Belt",
+  "Name": "Morrigane's Belt",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 200,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 61,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Morrigane's_Helm": {
+  "Id": 5127,
+  "AegisName": "Morrigane's_Helm",
+  "Name": "Morrigane's Helm",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 500,
+  "Defense": 4,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 61,
+  "Refineable": true,
+  "View": 257,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Morrigane's_Manteau": {
+  "Id": 2519,
+  "AegisName": "Morrigane's_Manteau",
+  "Name": "Morrigane's Manteau",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 600,
+  "Defense": 3,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 61,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Morrigane's_Pendant": {
+  "Id": 2651,
+  "AegisName": "Morrigane's_Pendant",
+  "Name": "Morrigane's Pendant",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 200,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 61,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Mr_Smile": {
+  "Id": 2278,
+  "AegisName": "Mr_Smile",
+  "Name": "Mr. Smile",
+  "Type": "Armor",
+  "Buy": 60,
+  "Weight": 100,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "View": 65,
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Muka_Card": {
+  "Id": 4036,
+  "AegisName": "Muka_Card",
+  "Name": "Muka Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Mummy_Card": {
+  "Id": 4106,
+  "AegisName": "Mummy_Card",
+  "Name": "Mummy Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Right_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Munak_Card": {
+  "Id": 4090,
+  "AegisName": "Munak_Card",
+  "Name": "Munak Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Left_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Mystcase_Card": {
+  "Id": 4206,
+  "AegisName": "Mystcase_Card",
+  "Name": "Myst Case Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true,
+   "Head_Top": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Necktie": {
+  "Id": 5442,
+  "AegisName": "Necktie",
+  "Name": "Necktie",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "Refineable": true,
+  "View": 443,
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Nightmare_Card": {
+  "Id": 4127,
+  "AegisName": "Nightmare_Card",
+  "Name": "Nightmare Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true,
+   "Head_Top": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Nightmare_Terror_Card": {
+  "Id": 4166,
+  "AegisName": "Nightmare_Terror_Card",
+  "Name": "Nightmare Terror Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Ninja_Suit": {
+  "Id": 2337,
+  "AegisName": "Ninja_Suit",
+  "Name": "Ninja Suit",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 1500,
+  "Defense": 7,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 50,
+  "Refineable": true,
+  "Jobs": {
+   "Assassin": true,
+   "Ninja": true,
+   "Rogue": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Ninja_Suit_": {
+  "Id": 2359,
+  "AegisName": "Ninja_Suit_",
+  "Name": "Ninja Suit",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 1500,
+  "Defense": 7,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 50,
+  "Refineable": true,
+  "Jobs": {
+   "Assassin": true,
+   "Ninja": true,
+   "Rogue": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Novus__Card": {
+  "Id": 4382,
+  "AegisName": "Novus__Card",
+  "Name": "Yellow Novus Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Odin's_Blessing": {
+  "Id": 2353,
+  "AegisName": "Odin's_Blessing",
+  "Name": "Odin's Blessing",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 2500,
+  "Defense": 6,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 65,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "One_Eyed_Glass": {
+  "Id": 2239,
+  "AegisName": "One_Eyed_Glass",
+  "Name": "Monocle",
+  "Type": "Armor",
+  "Buy": 10000,
+  "Weight": 100,
+  "ArmorLevel": 1,
+  "View": 23,
+  "Locations": {
+   "Head_Mid": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Orc_Archer_Bow": {
+  "Id": 1734,
+  "AegisName": "Orc_Archer_Bow",
+  "Name": "Orc Archer Bow",
+  "Type": "Weapon",
+  "SubType": "Bow",
+  "Buy": 20,
+  "Weight": 1600,
+  "Attack": 120,
+  "Range": 5,
+  "WeaponLevel": 3,
+  "EquipLevelMin": 65,
+  "Refineable": true,
+  "Jobs": {
+   "Archer": true,
+   "BardDancer": true,
+   "Hunter": true,
+   "Rogue": true
+  },
+  "Locations": {
+   "Both_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Orleans_Glove": {
+  "Id": 2701,
+  "AegisName": "Orleans_Glove",
+  "Name": "Orleans's Glove",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 90,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Orleans_Server": {
+  "Id": 2123,
+  "AegisName": "Orleans_Server",
+  "Name": "Orleans's Server",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 1000,
+  "Defense": 5,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 55,
+  "Refineable": true,
+  "View": 4,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Left_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Owl_Baron_Card": {
+  "Id": 4238,
+  "AegisName": "Owl_Baron_Card",
+  "Name": "Owl Baron Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Owl_Duke_Card": {
+  "Id": 4237,
+  "AegisName": "Owl_Duke_Card",
+  "Name": "Owl Duke Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Padded_Armor": {
+  "Id": 2312,
+  "AegisName": "Padded_Armor",
+  "Name": "Padded Armor",
+  "Type": "Armor",
+  "Buy": 48000,
+  "Weight": 2800,
+  "Defense": 7,
+  "ArmorLevel": 1,
+  "Refineable": true,
+  "Jobs": {
+   "Alchemist": true,
+   "Assassin": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Knight": true,
+   "Merchant": true,
+   "Rogue": true,
+   "Swordman": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Padded_Armor_": {
+  "Id": 2313,
+  "AegisName": "Padded_Armor_",
+  "Name": "Padded Armor",
+  "Type": "Armor",
+  "Buy": 48000,
+  "Weight": 2800,
+  "Defense": 7,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "Refineable": true,
+  "Jobs": {
+   "Alchemist": true,
+   "Assassin": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Knight": true,
+   "Merchant": true,
+   "Rogue": true,
+   "Swordman": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Parasite_Card": {
+  "Id": 4309,
+  "AegisName": "Parasite_Card",
+  "Name": "Parasite Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Left_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Pecopeco_Card": {
+  "Id": 4031,
+  "AegisName": "Pecopeco_Card",
+  "Name": "Peco Peco Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Pecopeco_Wing_Ears": {
+  "Id": 5358,
+  "AegisName": "Pecopeco_Wing_Ears",
+  "Name": "Peco Ears",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "View": 366,
+  "Locations": {
+   "Head_Mid": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Permeter_Card": {
+  "Id": 4311,
+  "AegisName": "Permeter_Card",
+  "Name": "Permeter Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true,
+   "Head_Top": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Phantom_Of_Opera": {
+  "Id": 2281,
+  "AegisName": "Phantom_Of_Opera",
+  "Name": "Opera Masque",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 200,
+  "Defense": 2,
+  "ArmorLevel": 1,
+  "View": 68,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Pocket_Watch_": {
+  "Id": 2717,
+  "AegisName": "Pocket_Watch_",
+  "Name": "Pocket Watch",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 200,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Jobs": {
+   "Mage": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Poring_Card": {
+  "Id": 4001,
+  "AegisName": "Poring_Card",
+  "Name": "Poring Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Principles_Of_Magic": {
+  "Id": 1572,
+  "AegisName": "Principles_Of_Magic",
+  "Name": "Principles of Magic",
+  "Type": "Weapon",
+  "SubType": "Book",
+  "Buy": 20,
+  "Weight": 300,
+  "Attack": 60,
+  "Range": 1,
+  "Slots": 2,
+  "WeaponLevel": 3,
+  "EquipLevelMin": 60,
+  "Refineable": true,
+  "Jobs": {
+   "Priest": true,
+   "Sage": true,
+   "StarGladiator": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Punk_Card": {
+  "Id": 4313,
+  "AegisName": "Punk_Card",
+  "Name": "Punk Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Garment": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Quve_Card": {
+  "Id": 4294,
+  "AegisName": "Quve_Card",
+  "Name": "Quve Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Ragged_Zombie_Card": {
+  "Id": 4436,
+  "AegisName": "Ragged_Zombie_Card",
+  "Name": "Ragged Zombie Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Raggler_Card": {
+  "Id": 4186,
+  "AegisName": "Raggler_Card",
+  "Name": "Raggler Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Shoes": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Red_Silk_Seal": {
+  "Id": 2700,
+  "AegisName": "Red_Silk_Seal",
+  "Name": "Red Silk Seal",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 60,
+  "Jobs": {
+   "Crusader": true,
+   "Knight": true,
+   "Swordman": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Rider_Insignia": {
+  "Id": 2529,
+  "AegisName": "Rider_Insignia",
+  "Name": "Rider Insignia",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 500,
+  "Defense": 4,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 55,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Rider_Insignia_": {
+  "Id": 2530,
+  "AegisName": "Rider_Insignia_",
+  "Name": "Rider Insignia",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 500,
+  "Defense": 4,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 55,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Rider_Insignia_M": {
+  "Id": 2551,
+  "AegisName": "Rider_Insignia_M",
+  "Name": "Crest of the Rider",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 500,
+  "Defense": 4,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 55,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Rideword_Card": {
+  "Id": 4185,
+  "AegisName": "Rideword_Card",
+  "Name": "Rideword Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true,
+   "Head_Top": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Ring_Of_Flame_Lord": {
+  "Id": 2678,
+  "AegisName": "Ring_Of_Flame_Lord",
+  "Name": "Ring Of Flame Lord",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "ArmorLevel": 1,
+  "Jobs": {
+   "Alchemist": true,
+   "Assassin": true,
+   "BardDancer": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Hunter": true,
+   "Knight": true,
+   "Monk": true,
+   "Priest": true,
+   "Rogue": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "StarGladiator": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Ring_Of_Resonance": {
+  "Id": 2679,
+  "AegisName": "Ring_Of_Resonance",
+  "Name": "Ring Of Resonance",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "Defense": 2,
+  "ArmorLevel": 1,
+  "Jobs": {
+   "Alchemist": true,
+   "Assassin": true,
+   "BardDancer": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Hunter": true,
+   "Knight": true,
+   "Monk": true,
+   "Priest": true,
+   "Rogue": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "StarGladiator": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Ring_Of_Rogue": {
+  "Id": 2620,
+  "AegisName": "Ring_Of_Rogue",
+  "Name": "Rogue's Treasure",
+  "Type": "Armor",
+  "Buy": 10000,
+  "Weight": 100,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "Jobs": {
+   "Assassin": true,
+   "Ninja": true,
+   "Rogue": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Rocker_Card": {
+  "Id": 4021,
+  "AegisName": "Rocker_Card",
+  "Name": "Rocker Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Roda_Frog_Card": {
+  "Id": 4014,
+  "AegisName": "Roda_Frog_Card",
+  "Name": "Roda Frog Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Rosary": {
+  "Id": 2608,
+  "AegisName": "Rosary",
+  "Name": "Rosary",
+  "Type": "Armor",
+  "Buy": 15000,
+  "Weight": 100,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 20,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Rosary_": {
+  "Id": 2626,
+  "AegisName": "Rosary_",
+  "Name": "Rosary",
+  "Type": "Armor",
+  "Buy": 15000,
+  "Weight": 200,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 90,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Sandstorm": {
+  "Id": 13035,
+  "AegisName": "Sandstorm",
+  "Name": "Sandstorm",
+  "Type": "Weapon",
+  "SubType": "Dagger",
+  "Buy": 20,
+  "Weight": 600,
+  "Attack": 50,
+  "Range": 1,
+  "Slots": 4,
+  "WeaponLevel": 2,
+  "EquipLevelMin": 70,
+  "Refineable": true,
+  "Jobs": {
+   "Assassin": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Shadow_Guard": {
+  "Id": 2135,
+  "AegisName": "Shadow_Guard",
+  "Name": "Shadow Guard",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 800,
+  "Defense": 4,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "Refineable": true,
+  "View": 2,
+  "Jobs": {
+   "Rogue": true
+  },
+  "Locations": {
+   "Left_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Shadow_Walk": {
+  "Id": 2426,
+  "AegisName": "Shadow_Walk",
+  "Name": "Shadow Walk",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 2000,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 75,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Shaman's_Hair_Ornament": {
+  "Id": 5479,
+  "AegisName": "Shaman's_Hair_Ornament",
+  "Name": "Shaman's Hair Decoration",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 300,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 30,
+  "Refineable": true,
+  "View": 476,
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Shaman_Earing": {
+  "Id": 2778,
+  "AegisName": "Shaman_Earing",
+  "Name": "Shaman Earrings",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 30,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Shaman_Ring": {
+  "Id": 2777,
+  "AegisName": "Shaman_Ring",
+  "Name": "Shaman Ring",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 30,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Shellfish_Card": {
+  "Id": 4273,
+  "AegisName": "Shellfish_Card",
+  "Name": "Shell Fish Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Right_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Sheriff_Manteau": {
+  "Id": 2540,
+  "AegisName": "Sheriff_Manteau",
+  "Name": "Sheriff's Manteau",
+  "Type": "Armor",
+  "Buy": 10,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Refineable": true,
+  "Jobs": {
+   "Gunslinger": true
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Shinobi's_Sash": {
+  "Id": 2654,
+  "AegisName": "Shinobi's_Sash",
+  "Name": "Shinobi Sash",
+  "Type": "Armor",
+  "Buy": 20000,
+  "Weight": 300,
+  "Defense": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 30,
+  "Jobs": {
+   "Assassin": true,
+   "Ninja": true,
+   "Rogue": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Shinobi_Card": {
+  "Id": 4230,
+  "AegisName": "Shinobi_Card",
+  "Name": "Shinobi Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Skel_Prisoner_Card": {
+  "Id": 4222,
+  "AegisName": "Skel_Prisoner_Card",
+  "Name": "Skeleton Prisoner Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Skeleton_Card": {
+  "Id": 4025,
+  "AegisName": "Skeleton_Card",
+  "Name": "Skeleton Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Right_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Skull_Cap": {
+  "Id": 18539,
+  "AegisName": "Skull_Cap",
+  "Name": "Skull Cap",
+  "Type": "Armor",
+  "Buy": 40,
+  "Weight": 200,
+  "Defense": 5,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 10,
+  "Refineable": true,
+  "View": 713,
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Solider_Card": {
+  "Id": 4220,
+  "AegisName": "Solider_Card",
+  "Name": "Solider Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Spectral_Spear": {
+  "Id": 1477,
+  "AegisName": "Spectral_Spear",
+  "Name": "Spectral Spear",
+  "Type": "Weapon",
+  "SubType": "2hSpear",
+  "Buy": 20,
+  "Weight": 2000,
+  "Attack": 170,
+  "Range": 3,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 75,
+  "Refineable": true,
+  "Jobs": {
+   "Crusader": true,
+   "Knight": true,
+   "Swordman": true
+  },
+  "Locations": {
+   "Both_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Spectral_Spear_": {
+  "Id": 1479,
+  "AegisName": "Spectral_Spear_",
+  "Name": "Spectral Spear",
+  "Type": "Weapon",
+  "SubType": "2hSpear",
+  "Buy": 20,
+  "Weight": 2000,
+  "Attack": 170,
+  "Range": 3,
+  "Slots": 1,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 75,
+  "Refineable": true,
+  "Jobs": {
+   "Crusader": true,
+   "Knight": true,
+   "Swordman": true
+  },
+  "Locations": {
+   "Both_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Spiritual_Ring": {
+  "Id": 2677,
+  "AegisName": "Spiritual_Ring",
+  "Name": "Spiritual Ring",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "ArmorLevel": 1,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Spiritual_Ring_C": {
+  "Id": 2711,
+  "AegisName": "Spiritual_Ring_C",
+  "Name": "Spiritual Ring",
+  "Type": "Armor",
+  "Buy": 1,
+  "ArmorLevel": 1,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Spiritual_Ring_M": {
+  "Id": 2786,
+  "AegisName": "Spiritual_Ring_M",
+  "Name": "Spiritual Ring",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "ArmorLevel": 1,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Sprint_Mail": {
+  "Id": 2387,
+  "AegisName": "Sprint_Mail",
+  "Name": "Sprint Mail",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 1000,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "Refineable": true,
+  "Jobs": {
+   "Alchemist": true,
+   "Assassin": true,
+   "BardDancer": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Hunter": true,
+   "Knight": true,
+   "Monk": true,
+   "Priest": true,
+   "Rogue": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "StarGladiator": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Sprint_Ring": {
+  "Id": 2744,
+  "AegisName": "Sprint_Ring",
+  "Name": "Sprint Ring",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 100,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "Jobs": {
+   "Alchemist": true,
+   "Assassin": true,
+   "BardDancer": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Hunter": true,
+   "Knight": true,
+   "Monk": true,
+   "Priest": true,
+   "Rogue": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "StarGladiator": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Sprint_Shoes": {
+  "Id": 2440,
+  "AegisName": "Sprint_Shoes",
+  "Name": "Sprint Shoes",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 300,
+  "Defense": 2,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 70,
+  "Refineable": true,
+  "Jobs": {
+   "Alchemist": true,
+   "Assassin": true,
+   "BardDancer": true,
+   "Blacksmith": true,
+   "Crusader": true,
+   "Hunter": true,
+   "Knight": true,
+   "Monk": true,
+   "Priest": true,
+   "Rogue": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "StarGladiator": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Staff_Of_Soul": {
+  "Id": 1472,
+  "AegisName": "Staff_Of_Soul",
+  "Name": "Soul Staff",
+  "Type": "Weapon",
+  "SubType": "2hStaff",
+  "Buy": 20,
+  "Weight": 1400,
+  "Attack": 25,
+  "Range": 1,
+  "WeaponLevel": 3,
+  "EquipLevelMin": 73,
+  "Refineable": true,
+  "Jobs": {
+   "Mage": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Both_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Staff_Of_Wing": {
+  "Id": 1616,
+  "AegisName": "Staff_Of_Wing",
+  "Name": "Wing Staff",
+  "Type": "Weapon",
+  "SubType": "Staff",
+  "Buy": 20,
+  "Weight": 500,
+  "Attack": 60,
+  "Range": 1,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 40,
+  "Refineable": true,
+  "Jobs": {
+   "Mage": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Stainer_Card": {
+  "Id": 4039,
+  "AegisName": "Stainer_Card",
+  "Name": "Stainer Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true,
+   "Head_Top": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Steel_Arrow": {
+  "Id": 1753,
+  "AegisName": "Steel_Arrow",
+  "Name": "Steel Arrow",
+  "Type": "Ammo",
+  "SubType": "Arrow",
+  "Buy": 4,
+  "Weight": 2,
+  "Attack": 40,
+  "EquipLevelMin": 1,
+  "Jobs": {
+   "Archer": true,
+   "Assassin": true,
+   "BardDancer": true,
+   "Hunter": true,
+   "Rogue": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Ammo": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Stone_Arrow": {
+  "Id": 1756,
+  "AegisName": "Stone_Arrow",
+  "Name": "Stone Arrow",
+  "Type": "Ammo",
+  "SubType": "Arrow",
+  "Buy": 3,
+  "Weight": 2,
+  "Attack": 30,
+  "EquipLevelMin": 1,
+  "Jobs": {
+   "Archer": true,
+   "Assassin": true,
+   "BardDancer": true,
+   "Hunter": true,
+   "Rogue": true,
+   "Thief": true
+  },
+  "Locations": {
+   "Ammo": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Stone_Buckler": {
+  "Id": 2114,
+  "AegisName": "Stone_Buckler",
+  "Name": "Stone Buckler",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 1500,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 65,
+  "Refineable": true,
+  "View": 2,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Left_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Succubus_Card": {
+  "Id": 4218,
+  "AegisName": "Succubus_Card",
+  "Name": "Succubus Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Survival_Rod2_": {
+  "Id": 1620,
+  "AegisName": "Survival_Rod2_",
+  "Name": "Survivor's Rod",
+  "Type": "Weapon",
+  "SubType": "Staff",
+  "Buy": 85000,
+  "Weight": 1000,
+  "Attack": 50,
+  "Range": 1,
+  "Slots": 1,
+  "WeaponLevel": 3,
+  "EquipLevelMin": 24,
+  "Refineable": true,
+  "Jobs": {
+   "Acolyte": true,
+   "Mage": true,
+   "Monk": true,
+   "Priest": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Survival_Rod_": {
+  "Id": 1618,
+  "AegisName": "Survival_Rod_",
+  "Name": "Survivor's Rod",
+  "Type": "Weapon",
+  "SubType": "Staff",
+  "Buy": 85000,
+  "Weight": 1000,
+  "Attack": 50,
+  "Range": 1,
+  "Slots": 1,
+  "WeaponLevel": 3,
+  "EquipLevelMin": 24,
+  "Refineable": true,
+  "Jobs": {
+   "Acolyte": true,
+   "Mage": true,
+   "Monk": true,
+   "Priest": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Tarou_Card": {
+  "Id": 4028,
+  "AegisName": "Tarou_Card",
+  "Name": "Tarou Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "The_Paper_Card": {
+  "Id": 4172,
+  "AegisName": "The_Paper_Card",
+  "Name": "The Paper Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Right_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Thorn_Staff": {
+  "Id": 1636,
+  "AegisName": "Thorn_Staff",
+  "Name": "Thorn Staff of Darkness",
+  "Type": "Weapon",
+  "SubType": "Staff",
+  "Buy": 20,
+  "Weight": 700,
+  "Attack": 60,
+  "Range": 1,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 75,
+  "Refineable": true,
+  "Jobs": {
+   "Acolyte": true,
+   "Mage": true,
+   "Monk": true,
+   "Priest": true,
+   "Sage": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Thorny_Buckler": {
+  "Id": 2124,
+  "AegisName": "Thorny_Buckler",
+  "Name": "Thorny Buckler",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 1000,
+  "Defense": 5,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 55,
+  "Refineable": true,
+  "View": 2,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Left_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Tidal_Shoes": {
+  "Id": 2424,
+  "AegisName": "Tidal_Shoes",
+  "Name": "Tidal Shoes",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 300,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 55,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Toad_Card": {
+  "Id": 4306,
+  "AegisName": "Toad_Card",
+  "Name": "Toad Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Garment": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Tournament_Shield": {
+  "Id": 2133,
+  "AegisName": "Tournament_Shield",
+  "Name": "Tournament Shield",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 1000,
+  "Defense": 5,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 50,
+  "Refineable": true,
+  "View": 4,
+  "Jobs": {
+   "Crusader": true,
+   "Knight": true,
+   "Swordman": true
+  },
+  "Locations": {
+   "Left_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Twilight_Desert": {
+  "Id": 13034,
+  "AegisName": "Twilight_Desert",
+  "Name": "Desert Twilight",
+  "Type": "Weapon",
+  "SubType": "Dagger",
+  "Buy": 20,
+  "Weight": 600,
+  "Attack": 130,
+  "Range": 1,
+  "Slots": 2,
+  "WeaponLevel": 2,
+  "EquipLevelMin": 70,
+  "Refineable": true,
+  "Jobs": {
+   "Assassin": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Ulle_Cap": {
+  "Id": 5123,
+  "AegisName": "Ulle_Cap",
+  "Name": "Ulle's Cap",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 500,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 65,
+  "Refineable": true,
+  "View": 254,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Ulle_Cap_I": {
+  "Id": 5493,
+  "AegisName": "Ulle_Cap_I",
+  "Name": "Ulle's Cap",
+  "Type": "Armor",
+  "Defense": 3,
+  "ArmorLevel": 1,
+  "View": 254,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Undershirt": {
+  "Id": 2522,
+  "AegisName": "Undershirt",
+  "Name": "Undershirt",
+  "Type": "Armor",
+  "Buy": 20000,
+  "Weight": 150,
+  "Defense": 2,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 1,
+  "Refineable": true,
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Undershirt_": {
+  "Id": 2523,
+  "AegisName": "Undershirt_",
+  "Name": "Undershirt",
+  "Type": "Armor",
+  "Buy": 20000,
+  "Weight": 150,
+  "Defense": 2,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 1,
+  "Refineable": true,
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Vagabond_Wolf_Card": {
+  "Id": 4183,
+  "AegisName": "Vagabond_Wolf_Card",
+  "Name": "Vagabond Wolf Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Garment": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Vali's_Manteau": {
+  "Id": 2517,
+  "AegisName": "Vali's_Manteau",
+  "Name": "Vali's Manteau",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 600,
+  "Defense": 4,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 65,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Valkyrie_Armor": {
+  "Id": 2357,
+  "AegisName": "Valkyrie_Armor",
+  "Name": "Valkyrian Armor",
+  "Type": "Armor",
+  "Weight": 2800,
+  "Defense": 6,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 1,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Valkyrie_Helm": {
+  "Id": 5171,
+  "AegisName": "Valkyrie_Helm",
+  "Name": "Valkyrie Helm",
+  "Type": "Armor",
+  "Buy": 100000,
+  "Weight": 1000,
+  "Defense": 5,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "Refineable": true,
+  "View": 225,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Valkyrie_Manteau": {
+  "Id": 2524,
+  "AegisName": "Valkyrie_Manteau",
+  "Name": "Valkyrian Manteau",
+  "Type": "Armor",
+  "Weight": 500,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 1,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Valkyrie_Shoes": {
+  "Id": 2421,
+  "AegisName": "Valkyrie_Shoes",
+  "Name": "Valkyrian Shoes",
+  "Type": "Armor",
+  "Weight": 500,
+  "Defense": 4,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 1,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Valkyrja's_Shield": {
+  "Id": 2115,
+  "AegisName": "Valkyrja's_Shield",
+  "Name": "Valkyrja's Shield",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 500,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 65,
+  "Refineable": true,
+  "View": 4,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Left_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Valkyrja's_Shield_C": {
+  "Id": 2137,
+  "AegisName": "Valkyrja's_Shield_C",
+  "Name": "Neo Valkyrja's Shield",
+  "Type": "Armor",
+  "Defense": 5,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 95,
+  "View": 4,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Left_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Vidar's_Boots": {
+  "Id": 2418,
+  "AegisName": "Vidar's_Boots",
+  "Name": "Vidar's Boots",
+  "Type": "Armor",
+  "Buy": 30000,
+  "Weight": 650,
+  "Defense": 4,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 65,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Shoes": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Vocal_Card": {
+  "Id": 4211,
+  "AegisName": "Vocal_Card",
+  "Name": "Vocal Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Garment": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Walking_Stick": {
+  "Id": 1629,
+  "AegisName": "Walking_Stick",
+  "Name": "Gentleman's Staff",
+  "Type": "Weapon",
+  "SubType": "Staff",
+  "Buy": 20,
+  "Weight": 500,
+  "Attack": 40,
+  "Range": 1,
+  "Slots": 1,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 50,
+  "Refineable": true,
+  "Jobs": {
+   "Acolyte": true,
+   "Mage": true,
+   "Monk": true,
+   "Priest": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Right_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Wander_Man_Card": {
+  "Id": 4210,
+  "AegisName": "Wander_Man_Card",
+  "Name": "Wanderer Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Garment": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Warlock_Battle_Robe": {
+  "Id": 2379,
+  "AegisName": "Warlock_Battle_Robe",
+  "Name": "Warlock's Battle Robe",
+  "Type": "Armor",
+  "Buy": 10,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 80,
+  "Refineable": true,
+  "Jobs": {
+   "Mage": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Armor": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Waste_Stove_Card": {
+  "Id": 4332,
+  "AegisName": "Waste_Stove_Card",
+  "Name": "Waste Stove Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Armor": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Whikebain_Card": {
+  "Id": 4348,
+  "AegisName": "Whikebain_Card",
+  "Name": "Wickebine Tres Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Both_Accessory": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Wicked_Nymph_Card": {
+  "Id": 4258,
+  "AegisName": "Wicked_Nymph_Card",
+  "Name": "Evil Nymph Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Head_Low": true,
+   "Head_Mid": true,
+   "Head_Top": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Wild_Rose_Card": {
+  "Id": 4257,
+  "AegisName": "Wild_Rose_Card",
+  "Name": "Wild Rose Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Shoes": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Wing_Of_Eagle": {
+  "Id": 2515,
+  "AegisName": "Wing_Of_Eagle",
+  "Name": "Eagle Wing",
+  "Type": "Armor",
+  "Buy": 20000,
+  "Weight": 300,
+  "Defense": 1,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 85,
+  "Refineable": true,
+  "Jobs": {
+   "Mage": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Wit_Pumpkin_Hat": {
+  "Id": 18656,
+  "AegisName": "Wit_Pumpkin_Hat",
+  "Name": "Witch's Pumpkin Hat",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 300,
+  "Defense": 10,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 20,
+  "Refineable": true,
+  "View": 717,
+  "Locations": {
+   "Head_Top": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Wizardy_Staff": {
+  "Id": 1473,
+  "AegisName": "Wizardy_Staff",
+  "Name": "Wizardry Staff",
+  "Type": "Weapon",
+  "SubType": "2hStaff",
+  "Buy": 20,
+  "Weight": 2400,
+  "Attack": 120,
+  "Range": 1,
+  "WeaponLevel": 4,
+  "EquipLevelMin": 90,
+  "Refineable": true,
+  "Jobs": {
+   "Mage": true,
+   "Sage": true,
+   "SoulLinker": true,
+   "Wizard": true
+  },
+  "Locations": {
+   "Both_Hand": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Wolf_Card": {
+  "Id": 4029,
+  "AegisName": "Wolf_Card",
+  "Name": "Wolf Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Right_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Wool_Scarf": {
+  "Id": 2528,
+  "AegisName": "Wool_Scarf",
+  "Name": "Wool Scarf",
+  "Type": "Armor",
+  "Buy": 20,
+  "Weight": 500,
+  "Defense": 3,
+  "Slots": 1,
+  "ArmorLevel": 1,
+  "EquipLevelMin": 55,
+  "Refineable": true,
+  "Jobs": {
+   "All": true,
+   "Novice": false,
+   "SuperNovice": false
+  },
+  "Locations": {
+   "Garment": true
+  },
+  "srcFile": "item_db_equip.yml"
+ },
+ "Zherlthsh_Card": {
+  "Id": 4277,
+  "AegisName": "Zherlthsh_Card",
+  "Name": "Zealotus Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Left_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Zipper_Bear_Card": {
+  "Id": 4281,
+  "AegisName": "Zipper_Bear_Card",
+  "Name": "Zipper Bear Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Right_Hand": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ },
+ "Zombie_Slaughter_Card": {
+  "Id": 4435,
+  "AegisName": "Zombie_Slaughter_Card",
+  "Name": "Zombie Slaughter Card",
+  "Type": "Card",
+  "Buy": 20,
+  "Weight": 10,
+  "Locations": {
+   "Shoes": true
+  },
+  "Flags": {
+   "BuyingStore": true
+  },
+  "srcFile": "item_db_etc.yml"
+ }
+}
