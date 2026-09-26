@@ -74,24 +74,57 @@ function makeIsStatusImmune() {
   return new Function(itemEffectsSrc + '\nreturn isStatusImmune;')();
 }
 
+// P0-C4: getEffectiveSkills()/getItemDropBonus()도 item-effects.js에서 그대로 가져온다.
+function makeGetEffectiveSkills() {
+  return new Function(itemEffectsSrc + '\nreturn getEffectiveSkills;')();
+}
+function makeGetItemDropBonus() {
+  return new Function(itemEffectsSrc + '\nreturn getItemDropBonus;')();
+}
+
+const rollDropsSrc = extractFunction(html, 'function rollDrops(p, mon, opts, stats){');
+
+// 실제 rollDrops()를 그대로 실행한다(재구현 아님). 로그/이벤트 기록/오토픽업 등록 등
+// 드롭 확률 계산과 무관한 부수효과는 no-op으로 스텁하되, 확률 계산에 관여하는
+// ensureSettings·returnerMult·getItemDropBonus는 실제 함수/실제 값을 그대로 쓴다.
+// window.__dropWarn 분기는 DB에 없는 아이템일 때만 타므로 정상 fixture에서는 도달하지 않는다.
+function runRollDrops(DB, G, p, mon, stats) {
+  const getItemDropBonus = makeGetItemDropBonus();
+  const fn = new Function(
+    'G', 'DB', 'ensureSettings', 'returnerMult', 'getItemDropBonus',
+    'registerLegacyAutoPickup', 'recordCombatEvent', 'logEvent', 'log', 'pbReact',
+    rollDropsSrc + '\nreturn rollDrops;'
+  );
+  const rollDropsFn = fn(
+    G, DB, (pl) => pl.settings, () => 1, getItemDropBonus,
+    () => {}, () => {}, () => {}, () => {}, () => {}
+  );
+  rollDropsFn(p, mon, null, stats);
+}
+
 const useSkillSrc = extractFunction(html, 'function useSkill(name){');
 
 // 실제 useSkill()을 그대로 실행한다(재구현 아님). 전투/처치 이후 로직(퀘스트 체크·드롭·
-// EXP 등)은 SP 비용 일관성 검증과 무관하므로 no-op으로 스텁하되, SP 판정/차감/환불에
-// 관여하는 calcStats·getSkillSpCost·parseItem은 실제 함수를 그대로 쓴다.
+// EXP 등)은 SP 비용 일관성 검증과 무관하므로 no-op으로 스텁하되, SP 판정/차감/환불과
+// P0-C4의 grantSkill/soulgain 판정에 관여하는 calcStats·getSkillSpCost·parseItem·
+// getEffectiveSkills·triggerItemEffects는 실제 함수를 그대로 쓴다.
 function runUseSkill(DB, G, name) {
   const logs = [];
   const getSkillSpCost = makeGetSkillSpCost();
+  const getEffectiveSkills = makeGetEffectiveSkills();
+  const triggerItemEffects = makeTriggerItemEffects();
   const parseItemFn = makeParseItemFn(DB);
   const fn = new Function(
-    'G', 'DB', 'calcStats', 'getSkillSpCost', 'parseItem', 'log', 'closeModal',
+    'G', 'DB', 'calcStats', 'getSkillSpCost', 'getEffectiveSkills', 'triggerItemEffects',
+    'parseItem', 'log', 'closeModal',
     'queueManualCombatOverride', 'spawnDmg', 'gainBaseExp', 'getJobLvCap', 'addZoneKill',
     'idleTrack', 'returnerMult', 'rollDrops', 'checkQuestKill', 'checkJobQuestKill',
     'logSep', 'updateUI',
     useSkillSrc + '\nreturn useSkill;'
   );
   const useSkillFn = fn(
-    G, DB, () => runCalcStats(DB, G), getSkillSpCost, parseItemFn,
+    G, DB, () => runCalcStats(DB, G), getSkillSpCost, getEffectiveSkills, triggerItemEffects,
+    parseItemFn,
     (msg, type) => logs.push({ msg, type }), () => {},
     () => false, () => {}, () => {}, () => 1, () => {},
     () => {}, () => 1, () => {}, () => {}, () => {}, () => {}, () => {}
@@ -142,5 +175,6 @@ module.exports = {
   extractFunction, extractBetween, html, items,
   runCalcStats, makeTriggerItemEffects, makeGetSkillSpCost, runUseSkill,
   makeApplyIncomingItemReduction, makeIsStatusImmune,
+  makeGetEffectiveSkills, makeGetItemDropBonus, runRollDrops,
   makeParseItemFn, makePlayer, makeDB, pickRealItems,
 };

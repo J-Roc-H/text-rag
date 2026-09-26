@@ -37466,13 +37466,18 @@ function ensureSettings(p){
 // mon 의 드롭 테이블을 굴려 인벤에 넣는다.
 // opts.silent  로그 억제 (오프라인 시뮬)
 // opts.summary 있으면 획득 내역을 집계
-function rollDrops(p, mon, opts){
+function rollDrops(p, mon, opts, stats){
   if(!mon || !mon.drops) return;
   opts = opts || {};
   // [P0-02③] 무음 모드에서는 호출부가 opts를 안 넘겨도 오프라인 요약에 집계한다
   if(G.silentMode && !opts.summary && G.silentSummary){ opts.silent = true; opts.summary = G.silentSummary; }
   let set = ensureSettings(p);
   let rich = (p.statusEffects && p.statusEffects.richManKim) ? p.statusEffects.richManKim.dropBonus : 0;
+  // P0-C4: 아이템 dropBonus -- richManKim.dropBonus와 정확히 같은 자리(같은 방식의 소수
+  // 가산항)에 합류시킨다. 카드/일반 구분 없이 둘 다 같은 rich 항을 더하는 기존 richManKim
+  // 선례를 그대로 따른다(patch notes §11 참조. 근거: 유일하게 존재하는 기존 dropBonus
+  // 소비처인 richManKim이 isCard 여부와 무관하게 이 항 하나에 더해진다).
+  let itemDropBonus = getItemDropBonus(stats);
   if(!p.inventory) p.inventory = {};
 
   Object.keys(mon.drops).forEach(k=>{
@@ -37484,7 +37489,7 @@ function rollDrops(p, mon, opts){
       return;
     }
     let isCard = k.includes('카드');
-    let chance = mon.drops[k] * ((isCard ? set.cardRate : set.dropRate) + rich) * returnerMult(p);
+    let chance = mon.drops[k] * ((isCard ? set.cardRate : set.dropRate) + rich + itemDropBonus) * returnerMult(p);
     if(Math.random()*100 > chance) return;
 
     // [P1-03] slots는 이 아이템이 원래 가진 소켓 수(무/유슬롯 쌍을 병합한 필드) —
@@ -39584,7 +39589,7 @@ function _endTurnIfBattlesEmpty(){
 // AOE 사망 경로(광역기로 여러 마리 동시 처치)는 baseExp를 누적한 뒤 루프 끝에서 한 번만
 // gainBaseExp로 반영하는 별개 방식이라 — 매 킬마다 즉시 레벨업하는 이 함수로 합치면
 // 레벨업 타이밍이 달라진다 — 의도적으로 통합하지 않았다.
-function awardKillReward(p, mon, set){
+function awardKillReward(p, mon, set, stats){
   recordCombatEvent('kill',{monster:mon.name,id:mon.sourceId||mon.id||null,entityId:mon.entityId||null});
   p.totalKills = (p.totalKills||0) + 1;
   if(!p.killCount) p.killCount = {};
@@ -39604,7 +39609,7 @@ function awardKillReward(p, mon, set){
   p.zeny += z; p.records.totalZeny += z;
   log(`💰 +${z}z`, 'system');
   idleTrack(getExp, z);
-  rollDrops(p, mon);
+  rollDrops(p, mon, null, stats);
   checkQuestKill(mon.name);
   checkJobQuestKill(mon.name);
 }
@@ -39668,11 +39673,15 @@ function processTurn(){
     if (!skipAttack) {
       // ── [ 플레이어: 스킬 자동 사용 AI ] ──
       let sUsed = false; let now = Date.now();
+      // P0-C4: 영구 습득 스킬 + 장비 grantSkill을 합친 "현재 사용 가능한" 스킬 목록.
+      // 자동사냥 후보 산정(pickPlayerSkill 내부)과 아래 실제 시전 모두 이 목록만 본다 --
+      // p.skills 자체는 여기서 바뀌지 않는다.
+      let effSkills = getEffectiveSkills(p, s);
       // ── 스킬 선택 (pickPlayerSkill — 슬라이스3 추출, 동작 불변) ──
       let pick = pickPlayerSkill(p, s);
       if(manualOverride&&manualOverride.type==='skill'&&!pick){skipAttack=true;sUsed=true;}
       function pickPlayerSkill(p, s){
-      let mySkillNames = Object.keys(p.skills || {});
+      let mySkillNames = Object.keys(effSkills);
       // ── 쿨다운 틱 차감 (매 턴마다) ──
       Object.keys(G.cooldowns).forEach(sn=>{
         if(G.cooldowns[sn] > 0) G.cooldowns[sn]--;
@@ -39713,7 +39722,7 @@ function processTurn(){
       const hotbarSkillSet = new Set(Object.values(p.hotbar||{}).filter(sl=>sl&&sl.type==='skill').map(sl=>sl.name));
       let allActSkills = mySkillNames.filter(sn=>{
         let sk=DB.skills[sn];
-        return sk&&sk.type==='액티브'&&typeof sk.effect==='function'&&!_NC.has(sn)&&sn!=='죽은척하기'&&(p.skills[sn]||0)>0&&!(p.skillToggles&&p.skillToggles[sn]===false)&&hotbarSkillSet.has(sn);
+        return sk&&sk.type==='액티브'&&typeof sk.effect==='function'&&!_NC.has(sn)&&sn!=='죽은척하기'&&(effSkills[sn]||0)>0&&!(p.skillToggles&&p.skillToggles[sn]===false)&&hotbarSkillSet.has(sn);
       });
       let sigStr = allActSkills.slice().sort().join(',');
       if(!G.skillTiers || G.skillTierSig !== sigStr){
@@ -39728,7 +39737,7 @@ function processTurn(){
           // rank0 (몬스터정보/간반테인): 큐 제외, fallback에서만
         });
         // 각 티어 내에서 스킬레벨 내림차순 정렬 (강한 것 먼저)
-        const sortByLv=(a,b)=>(p.skills[b]||1)-(p.skills[a]||1);
+        const sortByLv=(a,b)=>(effSkills[b]||1)-(effSkills[a]||1);
         G.skillTiers={high:h.sort(sortByLv), mid:m.sort(sortByLv), low:l.sort(sortByLv)};
         G.tierIdx={high:0, mid:0, low:0};
         G.skillTierSig=sigStr;
@@ -39742,11 +39751,11 @@ function processTurn(){
         // [FIX 3-2] 리저렉션 제외 (부활 스킬, 힐 스킬 아님), 응급치료는 고정 5HP 회복
         // [2-8] 힐도 핫바 등록 필수
         ['힐','응급치료'].forEach(sn=>{
-          if(!healPick&&hotbarSkillSet.has(sn)&&((p.skills||{})[sn]||0)>0&&!G.cooldowns[sn]){
+          if(!healPick&&hotbarSkillSet.has(sn)&&(effSkills[sn]||0)>0&&!G.cooldowns[sn]){
             let sk=DB.skills[sn]; if(!sk) return;
-            let cost=getSkillSpCost(typeof sk.spCost==='function'?sk.spCost(p.skills[sn]):sk.spCost, s);
+            let cost=getSkillSpCost(typeof sk.spCost==='function'?sk.spCost(effSkills[sn]):sk.spCost, s);
             if(p.sp<cost) return;
-            let slv=p.skills[sn]||1;
+            let slv=effSkills[sn]||1;
             let recover=(sn==='응급치료')?5:Math.floor((s.matk*2+s.int*slv)*((200-p.vit)*0.005+1));
             if((p.maxHp-p.hp)>=recover) healPick=sn;
           }
@@ -39763,7 +39772,7 @@ function processTurn(){
         for(let i=0;i<arr.length;i++){
           let idx=(ptr+i)%arr.length;
           let sn=arr[idx];
-          let slv=p.skills[sn]||0; if(!slv) continue;
+          let slv=effSkills[sn]||0; if(!slv) continue;
           let sk=DB.skills[sn]; if(!sk) continue;
           let cost=getSkillSpCost(typeof sk.spCost==='function'?sk.spCost(slv):sk.spCost, s);
           if(p.sp<cost) continue;
@@ -39791,12 +39800,12 @@ function processTurn(){
           let buffCandidates = mySkillNames.filter(sn=>{
             let sk=DB.skills[sn];
             // [2-8] 버프도 핫바 등록 필수
-            return sk&&sk.type==='버프'&&typeof sk.effect==='function'&&(p.skills[sn]||0)>0&&!(p.skillToggles&&p.skillToggles[sn]===false)&&hotbarSkillSet.has(sn);
+            return sk&&sk.type==='버프'&&typeof sk.effect==='function'&&(effSkills[sn]||0)>0&&!(p.skillToggles&&p.skillToggles[sn]===false)&&hotbarSkillSet.has(sn);
           });
           for(let sn of buffCandidates){
             if(G.cooldowns[sn]>0) continue;
             let sk=DB.skills[sn];
-            let cost=getSkillSpCost(typeof sk.spCost==='function'?sk.spCost(p.skills[sn]):sk.spCost, s);
+            let cost=getSkillSpCost(typeof sk.spCost==='function'?sk.spCost(effSkills[sn]):sk.spCost, s);
             if(p.sp<cost) continue;
             buffPick=sn; break;
           }
@@ -39813,7 +39822,7 @@ function processTurn(){
         let fallback = mySkillNames.find(sn=>{
           let sk=DB.skills[sn]; if(!sk||sk.type!=='액티브'||typeof sk.effect!=='function') return false;
           if(sn==='죽은척하기'||_NC.has(sn)||!hotbarSkillSet.has(sn)) return false;
-          let slv=p.skills[sn]||0; if(!slv) return false;
+          let slv=effSkills[sn]||0; if(!slv) return false;
           let cost=getSkillSpCost(typeof sk.spCost==='function'?sk.spCost(slv):sk.spCost, s);
           return p.sp>=cost && !G.cooldowns[sn] && !(p.skillToggles&&p.skillToggles[sn]===false);
         });
@@ -39826,7 +39835,7 @@ function processTurn(){
 
       if(finalCastable.length>0){
         pick=finalCastable[0];
-        let slv = p.skills[pick]; let skObj = DB.skills[pick];
+        let slv = effSkills[pick]; let skObj = DB.skills[pick];
         let cost = getSkillSpCost(typeof skObj.spCost === 'function' ? skObj.spCost(slv) : skObj.spCost, s);
         p.sp -= cost;
         // 쿨다운을 틱 단위로 변환: cooldown(ms) / aspdDelay(ms) = 틱 수
@@ -39881,7 +39890,7 @@ function processTurn(){
         // 스킬로 몬스터를 처치했을 경우 즉시 처리
         if(t && t.currentHp <= 0){
           {let _ki=G.battles.indexOf(t);if(_ki!==-1)G.battles.splice(_ki,1);} logSep(); log(`✅ ${t.emoji}${t.name} 처치! (스킬)`, 'combat');
-          awardKillReward(p, t, set);
+          awardKillReward(p, t, set, s);
           if(_endTurnIfBattlesEmpty()) return;
         }
         // ── AOE 사망 처리: t 외 광역기에 사망한 몬스터 보상 처리 및 배열 정리 ──
@@ -39898,7 +39907,7 @@ function processTurn(){
           let _az=_am.zeny[0]+Math.floor(Math.random()*(_am.zeny[1]-_am.zeny[0]));
           recordCombatEvent('reward',{monster:_am.name,exp:_ae,jexp:_aj,zeny:_az});
           p.zeny+=_az;p.records.totalZeny+=_az;log(`💰 +${_az}z`,'system'); idleTrack(_ae,_az); // [UI-①]
-          rollDrops(p, _am);
+          rollDrops(p, _am, null, s);
           checkQuestKill(_am.name);checkJobQuestKill(_am.name);
         }
         // AOE 사망 후 레벨업/잡레벨 체크
@@ -40036,7 +40045,7 @@ function processTurn(){
   if(t.currentHp<=0){
     {let _ki=G.battles.indexOf(t);if(_ki!==-1)G.battles.splice(_ki,1);} logSep(); log(`✅ ${t.emoji}${t.name} 처치!`,'combat');
     
-    awardKillReward(p, t, set);
+    awardKillReward(p, t, set, s);
     if(_endTurnIfBattlesEmpty()) return;
   }
 	// 드랍 처리 루프 끝난 직후
@@ -42214,8 +42223,13 @@ function useSkill(name){
   let sk = DB.skills[name];
   if(!sk) return;
   
-  // 배우지 않은 스킬은 사용 불가
-  let slv = (p.skills && p.skills[name]) || 0;
+  // P0-C4: 영구 습득 스킬 + 장비 grantSkill을 합친 "현재 사용 가능한" 스킬 목록 -- 배우지
+  // 않은 스킬 판정과 실제 시전 레벨(slv) 모두 이 값을 쓴다. p.skills 자체는 바뀌지 않으므로
+  // 장비를 해제하면 다음 calcStats()에서 즉시 사라진다. (calcStats는 p.sp/p.hp를 읽지
+  // 않으므로 P0-C2에서 이미 호출 시점을 SP 체크 앞으로 당겨도 안전함을 확인했다 -- 여기서
+  // 한 번 더 앞으로 당겨도 같은 이유로 안전하다.)
+  let s = calcStats();
+  let slv = getEffectiveSkills(p, s)[name] || 0;
   if(slv === 0) { log(`⚠ 아직 배우지 않은 스킬입니다.`, 'warning'); closeModal(); return; }
 
   // 패시브 스킬은 사용 불가
@@ -42235,10 +42249,7 @@ function useSkill(name){
     closeModal(); return;
   }
 
-  // SP 체크 (P0-C2: getSkillSpCost 하나로 판정/차감/환불/표시 전부 통일 -- calcStats를
-  // 여기로 당겨온 이유는 그것뿐이다. calcStats는 p.sp/p.hp를 읽지 않으므로 호출 시점을
-  // 옮겨도 계산 결과는 그대로다)
-  let s = calcStats();
+  // SP 체크 (P0-C2: getSkillSpCost 하나로 판정/차감/환불/표시 전부 통일. s는 위에서 이미 계산됨)
   let cost = getSkillSpCost(typeof sk.spCost === 'function' ? sk.spCost(slv) : sk.spCost, s);
   if(p.sp < cost){ log(`⚠ SP 부족! 필요: ${cost} / 현재: ${p.sp}`, 'error'); closeModal(); return; }
 
@@ -42275,17 +42286,9 @@ function useSkill(name){
   // 몬스터 처치 판정 (전투 후처리)
   if(t && t.currentHp <= 0){
     G.battles.shift(); logSep(); log(`✅ ${t.emoji}${t.name} 처치!`, 'combat');
-    { let _p=G.player;
-      Object.values(_p.equip||{}).forEach(eqName=>{ if(!eqName)return;
-        let _pr=(typeof parseItem==='function')?parseItem(eqName):null;
-        if(!_pr||!_pr.cards)return;
-        _pr.cards.forEach(cn=>{ let c=DB?.items?.[cn+" 카드"]; if(!c||!c.soulgain)return;
-          if(!t.race||t.race!==c.soulgain.race)return;
-          let sg=c.soulgain.sp||0; _p.sp=Math.min(_p.maxSp,_p.sp+sg);
-          log(`💜 <b>[소울게인]</b> ${c.soulgain.race} 처치 SP +${sg}!`,'system');
-        });
-      });
-    }
+    // P0-C4: soulgain 직접 재파싱(카드 DB 재조회) 제거 -- s.itemEffects.events.onKill만 소비.
+    // 기존 동작 그대로 useSkill()의 수동 처치 경로에만 적용(범위 확대 없음, patch notes 참조).
+    triggerItemEffects('onKill', { player:p, target:t, stats:s, log:log }, (s.itemEffects&&s.itemEffects.events.onKill)||[]);
     p.totalKills = (p.totalKills||0) + 1;
     if(!p.killCount) p.killCount = {}; p.killCount[t.name] = (p.killCount[t.name] || 0) + 1; // ⚔️ 스킬 처치 기록!
     addZoneKill(); // [2-9]
@@ -42298,7 +42301,7 @@ function useSkill(name){
     gainBaseExp(p, getExp);
     let mJ=getJobLvCap(p.job); while(p.jobLv<mJ&&p.jobExp>=p.jobLv*50){p.jobExp-=p.jobLv*50;p.jobLv++;p.skillPoints=(p.skillPoints||0)+1;log(`🌟 Job Lv.${p.jobLv} 달성! <span style="color:var(--job-color)">(스킬 포인트 +1)</span>`,'level-up');}
     let z=t.zeny[0]+Math.floor(Math.random()*(t.zeny[1]-t.zeny[0])); p.zeny+=z; p.records.totalZeny+=z; log(`💰 +${z}z`,'system'); idleTrack(getExp,z); // [UI-①]
-    rollDrops(p, t);
+    rollDrops(p, t, null, s);
     checkQuestKill(t.name); checkJobQuestKill(t.name);
   }
   updateUI(); if(!sk.opensModal) closeModal();
@@ -45525,12 +45528,16 @@ function extrapolateOffline(p, summary, kc0, inv0, restMs, sampleMs, huntMap){
   let jx0 = p.jobExp||0, jl0 = p.jobLv||1;
   G.currentMap = huntMap;           // 표본이 사망 귀환(마을)으로 끝났어도 구역 처치 집계는 사냥 맵 기준
   G.silentMode = true; G.silentSummary = summary;
+  // P0-C4: 오프라인 외삽도 "보상은 전부 기존 경로로 흘린다"는 이 함수의 설계 그대로,
+  // awardKillReward에 stats를 넘겨 item dropBonus가 온라인과 동일하게 적용되게 한다.
+  // 외삽 구간 동안 장비가 바뀌지 않으므로 루프 밖에서 한 번만 계산한다.
+  let s = calcStats();
   try{
     for(let i = 0; i < extraKills; i++){
       let r = Math.random() * sampleKills, name = dist[0][0];
       for(let j = 0; j < dist.length; j++){ r -= dist[j][1]; if(r < 0){ name = dist[j][0]; break; } }
       let mon = monByName[name];
-      if(mon) awardKillReward(p, mon, p.settings || {});
+      if(mon) awardKillReward(p, mon, p.settings || {}, s);
       if(Math.random() < deathRate){
         summary.deaths++;
         if(p.baseLv > 1 && p.baseLv < 99){
@@ -49577,12 +49584,14 @@ function switchHbTab(tab){
 
 function buildSkillTab(key){
   let p=G.player;
-  let list=Object.keys(p.skills||{}).filter(sn=>
-    p.skills[sn]>0 && DB.skills[sn] && DB.skills[sn].type!=='패시브'
+  // P0-C4: 핫바 등록 가능 목록도 영구 습득 + 장비 grantSkill을 합친 effective skill 기준.
+  let effSkills=getEffectiveSkills(p, calcStats());
+  let list=Object.keys(effSkills).filter(sn=>
+    effSkills[sn]>0 && DB.skills[sn] && DB.skills[sn].type!=='패시브'
   );
   if(!list.length) return '<div style="color:var(--text-dim);font-size:11px;padding:10px">등록 가능한 액티브/버프 스킬 없음</div>';
   return list.map(sn=>{
-    let sk=DB.skills[sn]; let slv=p.skills[sn];
+    let sk=DB.skills[sn]; let slv=effSkills[sn];
     return `<div class="hb-list-row" onclick="assignHotbar('${key}','skill','${sn}')"><span>${sk.emoji||'✨'}</span><span style="flex:1">${sn} <span style="color:var(--text-dim);font-size:10px">Lv.${slv}</span></span><span style="font-size:11px;color:var(--text-dim);white-space:nowrap">${sk.type}</span></div>`;
   }).join('');
 }
@@ -50298,6 +50307,13 @@ function collectItemEffects(p, DB, parseItem) {
     if (card.spDrain) onHitEvent(source, 'card', 'spDrain', card.spDrain);
     if (card.inflict) onHitEvent(source, 'card', 'inflict', card.inflict);
     if (card.autoSpell) onHitEvent(source, 'card', 'autoSpell', card.autoSpell);
+    // P0-C4: soulgain -- 원본(useSkill()의 처치 후처리)이 카드마다 무조건 이벤트를 만들고
+    // 종족 일치 여부는 실행 시점(트리거)에서 판정했으므로, 여기서도 필드 존재만으로 이벤트를
+    // 만든다(random() 없음 -- 원본도 없었다). 카드 0건, onKill 실행 데이터 P0-B 최초 배선.
+    if (card.soulgain) {
+      fx.events.onKill.push(Object.assign({ source: source, sourceType: 'card', kind: 'soulgain' }, card.soulgain));
+      ledger({ source: source, sourceType: 'card', type: 'event', key: 'soulgain', value: card.soulgain, active: true });
+    }
   }
 
   function collectCardEffectObject(card, source) {
@@ -50527,6 +50543,56 @@ function isStatusImmune(status, stats) {
 }
 
 // ══════════════════════════════════════════════
+// P0-C4 — grantSkill / soulgain(onKill) / dropBonus 소비처 연결
+//
+// getEffectiveSkills(player, stats)는 "영구 습득 스킬(player.skills, 절대 변경하지 않음)"과
+// "현재 장비가 부여한 스킬"(calcStats() 반환의 stats.cardGrantSkill -- collectItemEffects가
+// 이미 여러 장비/카드 사이에서 Math.max로 병합해 둔 값)을 합쳐 "지금 사용 가능한" 스킬
+// 레벨 맵을 만든다. 같은 스킬이 양쪽에 있으면 더 높은 레벨을 쓴다(과제 §3의 두 예시:
+// 영구3+부여1→3, 영구1+부여5→5). 이 함수는 player.skills를 절대 쓰지 않는다 -- 반환값은
+// 매번 새로 만든 객체이므로 장비를 해제하면 다음 호출에서 즉시 그 스킬이 사라진다(세이브
+// 데이터에 흔적을 남기지 않는다).
+//
+// 이 함수는 "액티브/버프 스킬을 지금 쓸 수 있는가"를 묻는 지점에만 쓴다(자동사냥 후보 산정,
+// useSkill()의 사용 가능 판정, 핫바 등록 목록). 스킬 포인트 투자(upgradeSkill/showSkillModal),
+// 전직(doJob), 탑승 조건(mount) 등 "영구 습득 여부" 자체가 필요한 판정은 이 함수를 쓰지
+// 않고 player.skills를 그대로 읽는다 -- 구분 근거와 전수 목록은
+// ITEM_EFFECT_UTILITY_PATCH_NOTES.md 참조.
+function getEffectiveSkills(player, stats) {
+  var learned = (player && player.skills) || {};
+  var eff = {};
+  Object.keys(learned).forEach(function (sn) { eff[sn] = learned[sn]; });
+  var granted = stats && stats.cardGrantSkill;
+  if (granted) {
+    Object.keys(granted).forEach(function (sn) {
+      var glv = Number(granted[sn]) || 0;
+      if (glv > (eff[sn] || 0)) eff[sn] = glv;
+    });
+  }
+  return eff;
+}
+
+// getItemDropBonus(stats)는 stats.cardDropBonus(collectItemEffects가 이미 소스별로 모아둔
+// 원시 값 배열)를 합산해 하나의 가산 비율로 만든다.
+//
+// 단위/결합 방식은 db-items.json에 dropBonus를 쓰는 항목이 0건이라 실제 데이터로 확정할 수
+// 없다 -- 대신 이 엔진에 이미 존재하는 유일한 "dropBonus"라는 이름의 소비처인 부자킴
+// (richManKim) 버프를 그대로 따른다: `p.statusEffects.richManKim={..., dropBonus:slv*0.05}`로
+// 만들어지고, rollDrops()에서 `(isCard?set.cardRate:set.dropRate) + rich` 형태로 카드/일반
+// 드롭 구분 없이 그 rate 항에 직접 더해진다. 즉 이 필드는 이미 "0.05 = +5%p" 같은 소수
+// 가산값이고, 카드 여부와 무관하게 같은 항에 합류하는 것이 기존 유일한 선례다 -- 이것은
+// TextRAG canonical rule이 아니라 이미 코드에 있는 사실이며, item dropBonus는 이름이 같은
+// 값이므로 그 사실을 그대로 물려받는다. 여러 소스가 있으면 richManKim 자신의 스타일(단일
+// 가산항)대로 합산한다 -- 곱연산으로 새로 설계하지 않는다.
+function getItemDropBonus(stats) {
+  var list = stats && stats.cardDropBonus;
+  if (!list || !list.length) return 0;
+  var sum = 0;
+  list.forEach(function (v) { sum += Number(v) || 0; });
+  return sum;
+}
+
+// ══════════════════════════════════════════════
 // P0-C1 — 전투 중 카드 사건 효과 실행 경로 단일화
 //
 // triggerItemEffects(eventName, context, events)는 collectItemEffects()가 이미 정규화해
@@ -50556,8 +50622,29 @@ function triggerItemEffects(eventName, context, events) {
   var random = context.random || Math.random;
   events.forEach(function (evt) {
     if (eventName === 'onHit') _triggerOnHitEvent(context, evt, log, random);
-    // onDamaged/onKill/onTick: 현재 실행 데이터/소비처가 없다 -- P0-C 후속 단계.
+    else if (eventName === 'onKill') _triggerOnKillEvent(context, evt, log);
+    // onDamaged/onTick: 현재 실행 데이터/소비처가 없다 -- P0-C 후속 단계.
   });
+}
+
+// P0-C4: onKill -- 현재 soulgain 하나뿐이다. 원본(useSkill()의 처치 후처리 직접 재파싱)에는
+// random() 호출이 없었으므로(종족 일치 시 결정적으로 SP 회복) 여기서도 추가하지 않는다.
+// 적용 범위는 원본 그대로 useSkill()의 수동 처치 경로뿐이다 -- processTurn()의 자동
+// 스킬/평타/광역 처치 경로에는 원래도 soulgain이 없었으므로 이번에 새로 넣지 않는다
+// (ITEM_EFFECT_UTILITY_PATCH_NOTES.md §5 참조).
+function _triggerOnKillEvent(context, evt, log) {
+  var p = context.player, t = context.target;
+  switch (evt.kind) {
+    case 'soulgain':
+      if (t && t.race && evt.race === t.race) {
+        var sg = evt.sp || 0;
+        p.sp = Math.min(p.maxSp, p.sp + sg);
+        log('💜 <b>[소울게인]</b> ' + evt.race + ' 처치 SP +' + sg + '!', 'system');
+      }
+      break;
+    default:
+      break;
+  }
 }
 
 function _triggerOnHitEvent(context, evt, log, random) {

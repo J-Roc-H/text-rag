@@ -193,6 +193,13 @@ function collectItemEffects(p, DB, parseItem) {
     if (card.spDrain) onHitEvent(source, 'card', 'spDrain', card.spDrain);
     if (card.inflict) onHitEvent(source, 'card', 'inflict', card.inflict);
     if (card.autoSpell) onHitEvent(source, 'card', 'autoSpell', card.autoSpell);
+    // P0-C4: soulgain -- 원본(useSkill()의 처치 후처리)이 카드마다 무조건 이벤트를 만들고
+    // 종족 일치 여부는 실행 시점(트리거)에서 판정했으므로, 여기서도 필드 존재만으로 이벤트를
+    // 만든다(random() 없음 -- 원본도 없었다). 카드 0건, onKill 실행 데이터 P0-B 최초 배선.
+    if (card.soulgain) {
+      fx.events.onKill.push(Object.assign({ source: source, sourceType: 'card', kind: 'soulgain' }, card.soulgain));
+      ledger({ source: source, sourceType: 'card', type: 'event', key: 'soulgain', value: card.soulgain, active: true });
+    }
   }
 
   function collectCardEffectObject(card, source) {
@@ -422,6 +429,56 @@ function isStatusImmune(status, stats) {
 }
 
 // ══════════════════════════════════════════════
+// P0-C4 — grantSkill / soulgain(onKill) / dropBonus 소비처 연결
+//
+// getEffectiveSkills(player, stats)는 "영구 습득 스킬(player.skills, 절대 변경하지 않음)"과
+// "현재 장비가 부여한 스킬"(calcStats() 반환의 stats.cardGrantSkill -- collectItemEffects가
+// 이미 여러 장비/카드 사이에서 Math.max로 병합해 둔 값)을 합쳐 "지금 사용 가능한" 스킬
+// 레벨 맵을 만든다. 같은 스킬이 양쪽에 있으면 더 높은 레벨을 쓴다(과제 §3의 두 예시:
+// 영구3+부여1→3, 영구1+부여5→5). 이 함수는 player.skills를 절대 쓰지 않는다 -- 반환값은
+// 매번 새로 만든 객체이므로 장비를 해제하면 다음 호출에서 즉시 그 스킬이 사라진다(세이브
+// 데이터에 흔적을 남기지 않는다).
+//
+// 이 함수는 "액티브/버프 스킬을 지금 쓸 수 있는가"를 묻는 지점에만 쓴다(자동사냥 후보 산정,
+// useSkill()의 사용 가능 판정, 핫바 등록 목록). 스킬 포인트 투자(upgradeSkill/showSkillModal),
+// 전직(doJob), 탑승 조건(mount) 등 "영구 습득 여부" 자체가 필요한 판정은 이 함수를 쓰지
+// 않고 player.skills를 그대로 읽는다 -- 구분 근거와 전수 목록은
+// ITEM_EFFECT_UTILITY_PATCH_NOTES.md 참조.
+function getEffectiveSkills(player, stats) {
+  var learned = (player && player.skills) || {};
+  var eff = {};
+  Object.keys(learned).forEach(function (sn) { eff[sn] = learned[sn]; });
+  var granted = stats && stats.cardGrantSkill;
+  if (granted) {
+    Object.keys(granted).forEach(function (sn) {
+      var glv = Number(granted[sn]) || 0;
+      if (glv > (eff[sn] || 0)) eff[sn] = glv;
+    });
+  }
+  return eff;
+}
+
+// getItemDropBonus(stats)는 stats.cardDropBonus(collectItemEffects가 이미 소스별로 모아둔
+// 원시 값 배열)를 합산해 하나의 가산 비율로 만든다.
+//
+// 단위/결합 방식은 db-items.json에 dropBonus를 쓰는 항목이 0건이라 실제 데이터로 확정할 수
+// 없다 -- 대신 이 엔진에 이미 존재하는 유일한 "dropBonus"라는 이름의 소비처인 부자킴
+// (richManKim) 버프를 그대로 따른다: `p.statusEffects.richManKim={..., dropBonus:slv*0.05}`로
+// 만들어지고, rollDrops()에서 `(isCard?set.cardRate:set.dropRate) + rich` 형태로 카드/일반
+// 드롭 구분 없이 그 rate 항에 직접 더해진다. 즉 이 필드는 이미 "0.05 = +5%p" 같은 소수
+// 가산값이고, 카드 여부와 무관하게 같은 항에 합류하는 것이 기존 유일한 선례다 -- 이것은
+// TextRAG canonical rule이 아니라 이미 코드에 있는 사실이며, item dropBonus는 이름이 같은
+// 값이므로 그 사실을 그대로 물려받는다. 여러 소스가 있으면 richManKim 자신의 스타일(단일
+// 가산항)대로 합산한다 -- 곱연산으로 새로 설계하지 않는다.
+function getItemDropBonus(stats) {
+  var list = stats && stats.cardDropBonus;
+  if (!list || !list.length) return 0;
+  var sum = 0;
+  list.forEach(function (v) { sum += Number(v) || 0; });
+  return sum;
+}
+
+// ══════════════════════════════════════════════
 // P0-C1 — 전투 중 카드 사건 효과 실행 경로 단일화
 //
 // triggerItemEffects(eventName, context, events)는 collectItemEffects()가 이미 정규화해
@@ -451,8 +508,29 @@ function triggerItemEffects(eventName, context, events) {
   var random = context.random || Math.random;
   events.forEach(function (evt) {
     if (eventName === 'onHit') _triggerOnHitEvent(context, evt, log, random);
-    // onDamaged/onKill/onTick: 현재 실행 데이터/소비처가 없다 -- P0-C 후속 단계.
+    else if (eventName === 'onKill') _triggerOnKillEvent(context, evt, log);
+    // onDamaged/onTick: 현재 실행 데이터/소비처가 없다 -- P0-C 후속 단계.
   });
+}
+
+// P0-C4: onKill -- 현재 soulgain 하나뿐이다. 원본(useSkill()의 처치 후처리 직접 재파싱)에는
+// random() 호출이 없었으므로(종족 일치 시 결정적으로 SP 회복) 여기서도 추가하지 않는다.
+// 적용 범위는 원본 그대로 useSkill()의 수동 처치 경로뿐이다 -- processTurn()의 자동
+// 스킬/평타/광역 처치 경로에는 원래도 soulgain이 없었으므로 이번에 새로 넣지 않는다
+// (ITEM_EFFECT_UTILITY_PATCH_NOTES.md §5 참조).
+function _triggerOnKillEvent(context, evt, log) {
+  var p = context.player, t = context.target;
+  switch (evt.kind) {
+    case 'soulgain':
+      if (t && t.race && evt.race === t.race) {
+        var sg = evt.sp || 0;
+        p.sp = Math.min(p.maxSp, p.sp + sg);
+        log('💜 <b>[소울게인]</b> ' + evt.race + ' 처치 SP +' + sg + '!', 'system');
+      }
+      break;
+    default:
+      break;
+  }
 }
 
 function _triggerOnHitEvent(context, evt, log, random) {
