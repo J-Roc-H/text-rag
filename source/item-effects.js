@@ -56,6 +56,18 @@ function _itemEffIsPending(it) {
   return false;
 }
 
+// 마커가 아이템/카드 "루트"에 있으면(형제필드 형태) 그 항목 전체가 미검증 대상이라는
+// 뜻이다(P0-A 교정 지시: "_pendingVerification 마커는 effect 객체 또는 형제필드 형태인
+// 경우 아이템 루트에 배치"). 반대로 .effect 객체 안에만 있으면 그 effect 표현 하나만
+// 분쟁 대상이고, 같은 카드의 다른 최상위 단순 필드(str/atk/... )는 별개로 이미 확정된
+// 값이다. 이 구분이 없으면 "루트가 pending인데 sibling 단순 필드가 있는" 카드의 그
+// 단순 필드가 collectSimpleFields를 통해 활성화돼 버린다 -- P0-C3에서 immune 필드로
+// 테스트하다 발견(현재 db-items.json의 루트-pending 2건은 이런 sibling 단순 필드가
+// 없어 지금까지는 관측되지 않았을 뿐인 잠재 버그였다).
+function _itemEffIsRootPending(it) {
+  return !!(it && it._pendingVerification === true);
+}
+
 // 최상위 "단순 무조건 수치" 필드 -- 정본 그대로 합산한다. atk/def는 카드에서만 받는다
 // (장비 자신의 기본 ATK/DEF는 물리 기본 성능이라 calcStats가 이미 처리했다).
 var _ITEM_EFF_SIMPLE_STAT_KEYS = ['str', 'agi', 'vit', 'int', 'dex', 'luk'];
@@ -258,9 +270,12 @@ function collectItemEffects(p, DB, parseItem) {
         if (_itemEffIsPending(card)) {
           fx.pending.push({ source: cardKey, reason: '_pendingVerification' });
           ledger({ source: cardKey, sourceType: 'card', type: 'pending', reason: '_pendingVerification', active: false });
-          // effect는 억제하지만, pending과 무관한 순수 최상위 필드가 있다면(현재 데이터엔 없음)
-          // 그건 이미 정본으로 확정된 값이라 그대로 집계한다.
-          collectSimpleFields(card, cardKey, 'card');
+          // .effect 객체만 미검증인 형태(71건)는 최상위 단순 필드가 별개로 확정된 값이라
+          // 그대로 집계한다. 루트 자체가 미검증인 형태(형제필드 쉐이프, 2건)는 카드 전체가
+          // 분쟁 대상이므로 최상위 단순 필드도 함께 억제한다(_itemEffIsRootPending).
+          if (!_itemEffIsRootPending(card)) {
+            collectSimpleFields(card, cardKey, 'card');
+          }
           return;
         }
         collectSimpleFields(card, cardKey, 'card');
@@ -349,6 +364,61 @@ function mergeItemEffectsIntoBonus(fx, bonus) {
 function getSkillSpCost(baseCost, stats) {
   var mul = (stats && stats.cardSpCostMul != null) ? stats.cardSpCostMul : 1;
   return Math.max(0, Math.floor((baseCost || 0) * mul));
+}
+
+// ══════════════════════════════════════════════
+// P0-C3 — 받는 피해 감소 / 상태 면역 소비처 연결
+//
+// applyIncomingItemReduction(damage, context, stats)는 몬스터로부터 받는 전투 피해에
+// dmgReduceAll/raceDmgReduce/elemReduce(모두 calcStats() 반환의 cardXxx 필드, 즉
+// collectItemEffects → calcStats 정본 경로를 거친 값)를 적용한다. rangedDmgReduce는
+// 이번 단계에서 소비하지 않는다 -- processTurn()의 몬스터 공격 해석에 "이 공격이
+// 원거리인가"를 판별할 수 있는 메타데이터가 전혀 없다(m.range는 몬스터 편집기 폼에만
+// 쓰이고 전투 계산에서는 한 번도 읽히지 않는다, m.distance는 "교전 전 접근 턴수"일 뿐
+// 공격 자체의 원거리 여부가 아니다 -- 실제 전수 조사 결과, ITEM_EFFECT_DEFENSE_PATCH_NOTES.md
+// 참조). 억지 ranged boolean을 만들지 않는다.
+//
+// 단위: raceDmgReduce/elemReduce/dmgReduceAll는 db-items.json에 이 필드를 쓰는 항목이
+// 0건이라 실제 데이터로 확정할 수 없다. maxHpPct/maxSpPct/hpRegenPct/spRegenPct(같은
+// collectItemEffects 반환 객체의 형제 필드)가 전부 "10 = 10%"를 뜻하는 원시 퍼센트 값을
+// 저장하고 소비 시 /100 하는 방식이므로(template.html calcStats 참조), 다수 형제 필드의
+// 관례를 따라 이 세 필드도 "10 = 10%"로 취급한다 -- 이것은 원작(rAthena) 근거가 아니라
+// 이번에 정하는 TextRAG canonical rule이다(과제 지시 §9, 근거는 patch notes에 기록).
+//
+// 중첩 규칙(역시 TextRAG canonical rule, live 데이터 0건): processTurn()의 기존 방어
+// 상태이상 체인(devotion→디바인프로텍션→kyrie→diamondBody→defender→siegfried→godsBless)이
+// 이미 "각 출처가 순차적으로 (1-비율)을 곱한다"는 방식으로 여러 감소 출처를 합성하고
+// 있으므로, item reduction도 같은 방식(순차 곱연산: 전체 → 종족 → 속성)을 따른다 --
+// 합산 후 한 번에 곱하는 방식으로 새로 설계하지 않는다.
+//
+// 최종 clamp(Math.max(1,...))는 이 함수의 책임이 아니다 -- 기존 체인의 다른 모든 단계와
+// 마찬가지로 호출부가 감싼다(과제 지시 §10). 이 함수는 감소만 계산해 돌려준다.
+function applyIncomingItemReduction(damage, context, stats) {
+  if (!stats || !damage) return damage;
+  var ctx = context || {};
+  var result = damage;
+  var all = stats.cardDmgReduceAll;
+  if (all) result *= (1 - all / 100);
+  var raceMap = stats.cardRaceDmgReduce;
+  if (raceMap && ctx.attackerRace != null && raceMap[ctx.attackerRace]) {
+    result *= (1 - raceMap[ctx.attackerRace] / 100);
+  }
+  var elemMap = stats.cardElemReduce;
+  if (elemMap && ctx.element != null && elemMap[ctx.element]) {
+    result *= (1 - elemMap[ctx.element] / 100);
+  }
+  return result;
+}
+
+// isStatusImmune(status, stats)는 collectItemEffects가 이미 정규화해 둔
+// stats.cardImmune(문자열 배열, DB.statusEffects 정본 키 -- poison/stun/freeze/stone/
+// curse/blind/silence/sleep/bleeding/chaos)만 본다. DB.items를 다시 읽지 않는다.
+// _pendingVerification 표시 면역 효과는 collectItemEffects 단계에서 애초에
+// stats.cardImmune에 들어가지 않으므로(파이프라인 구조상 도달 불가), 여기서 별도로
+// pending을 걸러낼 필요가 없다.
+function isStatusImmune(status, stats) {
+  var list = stats && stats.cardImmune;
+  return !!(list && list.indexOf(status) !== -1);
 }
 
 // ══════════════════════════════════════════════

@@ -66,6 +66,14 @@ function makeGetSkillSpCost() {
   return new Function(itemEffectsSrc + '\nreturn getSkillSpCost;')();
 }
 
+// P0-C3: applyIncomingItemReduction()/isStatusImmune()도 item-effects.js에서 그대로 가져온다.
+function makeApplyIncomingItemReduction() {
+  return new Function(itemEffectsSrc + '\nreturn applyIncomingItemReduction;')();
+}
+function makeIsStatusImmune() {
+  return new Function(itemEffectsSrc + '\nreturn isStatusImmune;')();
+}
+
 const useSkillSrc = extractFunction(html, 'function useSkill(name){');
 
 // 실제 useSkill()을 그대로 실행한다(재구현 아님). 전투/처치 이후 로직(퀘스트 체크·드롭·
@@ -133,5 +141,6 @@ function pickRealItems(names) {
 module.exports = {
   extractFunction, extractBetween, html, items,
   runCalcStats, makeTriggerItemEffects, makeGetSkillSpCost, runUseSkill,
+  makeApplyIncomingItemReduction, makeIsStatusImmune,
   makeParseItemFn, makePlayer, makeDB, pickRealItems,
 };

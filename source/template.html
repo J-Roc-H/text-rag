@@ -6390,6 +6390,8 @@ function processTurn(){
           if(mdg>0&&p.statusEffects&&p.statusEffects.defender&&!isSkillMagic)mdg=Math.max(1,Math.floor(mdg*(1-(p.statusEffects.defender.reduce||0))));
           if(mdg>0&&p.statusEffects&&p.statusEffects.siegfried&&isSkillMagic)mdg=Math.max(1,Math.floor(mdg*(1-(p.statusEffects.siegfried.eleRes||0))));
           if(mdg>0&&p.statusEffects&&p.statusEffects.godsBless&&m.element==='성속성')mdg=Math.max(1,Math.floor(mdg*(1-(p.statusEffects.godsBless.holyRes||0))));
+          // P0-C3: 아이템/카드 유래 받는 피해 감소(전체/종족/속성) -- 기존 방어 체인 맨 끝에 한 단계로 추가
+          if(mdg>0) mdg=Math.max(1,Math.floor(applyIncomingItemReduction(mdg, { attackerRace:m.race, element:isSkillMagic?m.element:undefined, kind:isSkillMagic?'magic':'physical' }, s)));
           p.hp -= mdg;
             if(mdg>0) recordCombatEvent('damage_taken',{monster:m.name,amount:mdg,action:'skill'});
             log(`💥 <b>[${m.name}의 ${skName}]</b> ${skDesc} <span class="hl-dmg">${mdg}</span>의 피해를 입었습니다!`,'dmg-recv'); skillUsed = true;
@@ -6413,6 +6415,8 @@ function processTurn(){
           if(mdg>0&&p.statusEffects&&p.statusEffects.kyrie){let ky=p.statusEffects.kyrie;let abs=Math.min(mdg,ky.absorbPerHit||0);mdg-=abs;ky.count--;log(`✨ <b>[기리에]</b> ${abs} 흡수! (${ky.count}회 남음)`,'heal');if(ky.count<=0)delete p.statusEffects.kyrie;}
           if(mdg>0&&p.statusEffects&&p.statusEffects.diamondBody)mdg=Math.max(1,Math.floor(mdg*(1-(p.statusEffects.diamondBody.dmgReduce||0))));
           if(mdg>0&&p.statusEffects&&p.statusEffects.defender)mdg=Math.max(1,Math.floor(mdg*(1-(p.statusEffects.defender.reduce||0))));
+          // P0-C3: 아이템/카드 유래 받는 피해 감소(전체/종족) -- 일반 공격은 속성 판별 근거가 없어 element 미전달(elemReduce 미적용)
+          if(mdg>0) mdg=Math.max(1,Math.floor(applyIncomingItemReduction(mdg, { attackerRace:m.race, kind:'physical' }, s)));
           p.hp-=mdg;
           if(mdg>0) recordCombatEvent('damage_taken',{monster:m.name,amount:mdg,action:'attack'});
           // D. 리플렉트 쉴드: 방패 장착 시 물리 피해 일부 반사
@@ -6435,7 +6439,7 @@ function processTurn(){
           let speedInfo = speedRatio < 0.5 ? ` <span style="font-size:11px;color:var(--green)">[고속회피]</span>` : speedRatio > 2 ? ` <span style="font-size:11px;color:var(--red-light)">[고속${attackCount}타]</span>` : '';
           let atkTag = attackCount>1?` <span style="font-size:11px;color:var(--gold)">[${ac+1}/${attackCount}타]</span>`:'';
           atkTag += speedInfo; log(`🩸 <b>[피격]</b> ${m.name}${josa(m.name,'이가')} ${p.name}${josa(p.name,'을를')} 공격! <span class="hl-dmg">${mdg}</span> 피해.${atkTag}`,'dmg-recv'); }
-        if(m.inflict) Object.keys(m.inflict).forEach(k=>{ if(Math.random()<m.inflict[k]){ if(!p.statusEffects) p.statusEffects={}; p.statusEffects[k]={turns:DB.statusEffects[k]?DB.statusEffects[k].duration:3}; log(`⚠️ ${k} 감염!`,'warning'); } }); 
+        if(m.inflict) Object.keys(m.inflict).forEach(k=>{ if(Math.random()<m.inflict[k]){ if(isStatusImmune(k,s)){ log(`🛡️ ${k} 면역!`,'system'); return; } if(!p.statusEffects) p.statusEffects={}; p.statusEffects[k]={turns:DB.statusEffects[k]?DB.statusEffects[k].duration:3}; log(`⚠️ ${k} 감염!`,'warning'); } });
         if(p.hp<=0){dd=true;break;} 
       }
       if(dd) break;
