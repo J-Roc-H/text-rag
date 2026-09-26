@@ -100,7 +100,7 @@ function makeGetItemDropBonus() {
 // 같은 소스로 검증해야 하기 때문이다.
 const statPanelSrc = extractBetween(html, 'function getSeStatBonus(p){', '// [스타일] 맵 분위기 틴트');
 const equipSrc = extractBetween(html, 'const JOB_WEAPON_ALLOW', 'function unequipItem(type){');
-const equipCompareSrc = extractBetween(html, 'function _cloneLoadoutForComparison(p){', '/** 장비 후보를 슬롯에');
+const equipCompareSrc = extractBetween(html, 'function _cloneLoadoutForComparison(p){', 'function shopEquipQuickHint(it){');
 
 // G/DB/log 등은 전부 실제 인자로 주입한다(스텁이 아니라 실제 계산에 필요한 값만 넘긴다).
 // updateUI/showInvModal은 equipItem()이 호출하지만 장착 판정/결과 자체와는 무관해 no-op.
@@ -112,7 +112,7 @@ function makeEquipmentCompareApi(DB, G) {
     'var JOB_NAME2CODE = DB.jobName2Code || {};\n' +
       itemEffectsSrc + '\n' + BREAKDOWN_STUBS + '\n' + normalizeJobSrc + '\n' + parseItemSrc + '\n' +
       calcStatsSrc + '\n' + statPanelSrc + '\n' + equipSrc + '\n' + equipCompareSrc +
-      '\nreturn { getEquipmentComparison, resolveEquipSlot, applyCandidateEquip, equipItem, calcStats };'
+      '\nreturn { getEquipmentComparison, renderEquipmentCompareHtml, resolveEquipSlot, applyCandidateEquip, equipItem, calcStats };'
   );
   const logs = [];
   return fn(

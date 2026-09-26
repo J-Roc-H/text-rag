@@ -108,8 +108,8 @@ body{background:var(--bg-deep);color:var(--text);font-family:'Noto Sans KR',sans
   #char-detail .fx-body{display:none;}
   #char-detail .fx-body.fx-open{display:block;}
 }
-/* [P1-C] 장비 비교 박스 — 인벤토리/장비창 아이템 상세 모달 전용(상점은 기존
-   getEquipCompareHtml 유지). 새 색 하드코딩 없이 기존 CSS 변수만 사용. */
+/* [P1-C] 장비 비교 박스 — 인벤토리/장비창 아이템 상세 모달과 상점 구매 상세가 공유한다
+   (SHOP비교 단계에서 확장). 새 색 하드코딩 없이 기존 CSS 변수만 사용. */
 .eqcmp-box{margin-top:10px;padding:6px 8px;border:1px solid var(--border);border-radius:3px;background:rgba(0,0,0,0.03);font-size:11px;text-align:left;}
 .eqcmp-hdr{display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--gold);font-weight:700;user-select:none;}
 .eqcmp-summary{font-size:10px;color:var(--text-dim);font-weight:400;}
@@ -41764,7 +41764,7 @@ function equippedCountOf(p, itemName){
 }
 
 // ══════════════════════════════════════════════
-// P1-C — 장비 비교 (인벤토리/장비창 전용, 상점은 getEquipCompareHtml을 그대로 유지)
+// P1-C — 장비 비교 (SHOP비교 단계에서 상점의 구매 상세도 이 정본을 재사용하도록 확장됨)
 //
 // 원칙: 별도 stat 공식을 새로 만들지 않는다. 반드시 "현재 loadout→calcStats()" vs
 // "후보 loadout(clone)→calcStats()" 두 결과를 그대로 diff한다. slot 판정(resolveEquipSlot)과
@@ -41960,44 +41960,14 @@ function toggleEqCmpBody(hdrEl){
   if(arrow) arrow.textContent = body.classList.contains('eqcmp-open') ? '▴' : '▾';
 }
 
-/** 장비 후보를 슬롯에 임시 장착했을 때의 스탯 증감 미리보기.
- *  후보가 인벤토리에 없어도(상점 구매 전 미리보기) 동작한다 — calcStats()는
- *  p.equip에 들어있는 "이름"만 조회하지 인벤토리 보유 여부는 보지 않는다.
- *  showItemDetail(인벤/장비창)과 상점 구매 상세 양쪽에서 공용으로 쓴다. */
-function getEquipCompareHtml(candidateKey, it){
-  let p=G.player;
-  try{
-    let slot=it.type;
-    let cur=(p.equip||{})[slot];
-    let s1=calcStats();
-    if(!p.equip)p.equip={};
-    let hadKey=(slot in p.equip);
-    p.equip[slot]=candidateKey;
-    // [P2-09] 양손무기 미리보기 시 equipItem()과 동일하게 방패도 임시 해제 —
-    // 안 그러면 실제로는 사라질 방패 스탯이 그대로 남아 diff가 과대평가된다
-    const twoHandedTypes=['양손검','양손도끼','양손봉','창','활'];
-    let shieldCur=p.equip['방패']; let shieldHadKey=('방패' in p.equip); let shieldAutoUnequipped=false;
-    if(slot==='무기' && it.wType && twoHandedTypes.includes(it.wType) && shieldCur){
-      delete p.equip['방패']; shieldAutoUnequipped=true;
-    }
-    let s2=calcStats();
-    if(hadKey)p.equip[slot]=cur; else delete p.equip[slot];
-    if(shieldAutoUnequipped && shieldHadKey) p.equip['방패']=shieldCur;
-    calcStats(); // 부수효과(weaponElement 등) 원복
-    const _CMP=[['ATK','totalAtk'],['MATK','totalMAtk'],['DEF','hardDef'],['MDEF','hardMDef'],['HIT','hit'],['FLEE','flee'],['CRI','crit'],['HP','maxHp'],['SP','maxSp']];
-    let rows=_CMP.map(([lb,k])=>{
-      let d=(s2[k]||0)-(s1[k]||0);
-      if(!d)return '';
-      let cl=d>0?'#2e7d32':'#c62828', ar=d>0?'▲':'▼';
-      return `<span style="margin-right:8px;white-space:nowrap;">${lb} <b style="color:${cl}">${ar}${Math.abs(d)}</b></span>`;
-    }).filter(Boolean).join('');
-    let curNm=cur?(cur.length>16?cur.slice(0,15)+'…':cur):'빈 슬롯';
-    let shieldNote=shieldAutoUnequipped?`<div style="color:#e67e22;margin-top:3px;">🛡️ 양손무기라 방패(${shieldCur}) 자동 해제됨</div>`:'';
-    return `<div style="margin-top:10px;padding:6px 8px;border:1px solid var(--border);border-radius:3px;background:rgba(0,0,0,0.03);font-size:10px;text-align:left;"><div style="color:var(--text-dim);margin-bottom:3px;">📊 장착 시 변화 <span style="font-size:11px">(현재: ${curNm})</span></div>${rows||'<span style="color:var(--text-dim)">스탯 변화 없음</span>'}${shieldNote}</div>`;
-  }catch(e){ return ''; }
-}
+// [SHOP비교] getEquipCompareHtml()(P2-09)는 여기 있었다 — `let slot=it.type`로 악세서리를
+// 실제 슬롯(악세1/악세2)이 아니라 존재하지 않는 'Accessory' 키에 임시 장착해 두 슬롯이
+// 이미 찬 상태에서 교체량을 과소평가하는 버그가 있었다(P1-close §8 backlog A). 인벤토리
+// 상세(showItemDetail)는 P1-C에서 이미 renderEquipmentCompareHtml()로 교체됐고, 이번
+// 단계에서 상점(renderShopBuyDetail)의 마지막 호출부도 같은 정본으로 옮겨 함수 자체를
+// 제거했다 — 계산 로직이 인벤토리/상점 어디서든 정확히 하나(getEquipmentComparison)다.
 
-/** 목록용 저비용 미리보기(핵심 스탯 1개, 카드·버프 미반영) — 정확한 전체 비교는 상세영역의 getEquipCompareHtml() */
+/** 목록용 저비용 미리보기(핵심 스탯 1개, 카드·버프 미반영) — 정확한 전체 비교는 상세영역의 renderEquipmentCompareHtml() */
 function shopEquipQuickHint(it){
   if(!SHOP_EQUIP_TYPES.includes(it.type)) return '';
   let p=G.player; let cur=(p.equip||{})[it.type];
@@ -42270,7 +42240,11 @@ function renderShopBuyDetail(itemName){
   let qty=Math.max(0,Math.min(maxQty, shopState.qty||0));
   let total=price*qty;
   let balanceAfter=p.zeny-total;
-  let cmpHtml=SHOP_EQUIP_TYPES.includes(it.type)?getEquipCompareHtml(itemName, it):'';
+  // [SHOP비교] P1-C 정본(getEquipmentComparison/renderEquipmentCompareHtml)을 그대로
+  // 재사용한다 -- 인벤토리 보유 여부를 보지 않으므로(§6 재확인, 아래 patch notes) 구매
+  // 전 미리보기에도 그대로 쓸 수 있다. 상점 후보는 항상 순수 베이스 아이템명이라(제련·
+  // 카드 없음 -- DB.items[itemName] 직접 조회, §2) 별도 후보 표현이 필요 없다.
+  let cmpHtml=SHOP_EQUIP_TYPES.includes(it.type)?renderEquipmentCompareHtml(itemName, it):'';
 
   return `<div style="text-align:center;">
     <div style="font-size:28px;">${it.emoji||'📦'}</div>
@@ -42523,7 +42497,8 @@ function showItemDetail(n){
   let displayName = parsed ? getItemDisplayName(parsed) : n;
 
   // ── [P1-C] 장비 비교: 현재 장착품 대비 실제 calcStats() diff(+특수효과 gained/lost) ──
-  // 상점 구매 상세(showShopModal)는 기존 getEquipCompareHtml을 그대로 쓴다(이번 범위 밖).
+  // 상점 구매 상세(showShopModal → renderShopBuyDetail)도 SHOP비교 단계에서 같은
+  // getEquipmentComparison/renderEquipmentCompareHtml을 재사용하도록 바뀌었다.
   let isEq = Object.values(p.equip||{}).includes(n);
   let cmpHtml='';
   if(['무기','갑옷','방패','투구_상단','투구_중단','투구_하단','걸칠것','신발','Accessory'].includes(it.type) && !isEq && q>0){
