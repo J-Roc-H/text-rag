@@ -1,0 +1,15 @@
+{
+  "_comment": "audit_item_effects()의 FAIL 후보를 WARN으로 격하하는 baseline. 사람이 확인한 항목만 등재한다 (build.py 참조). 새 문제를 여기 추가하지 말고 먼저 원작/엔진 지원 여부를 확인할 것.",
+  "grandfathered": [
+    {
+      "item": "이미르의 잔해 카드",
+      "code": "unknown-effect-type",
+      "note": "effect.type=\"increaseDropRate\" -- 드롭률 증가 카드. calcStats()/processTurn() 어디에도 소비 코드가 없음(2026-09-26 P0-A 감사). 엔진 지원 후 편입 대상, P0-A에서는 미구현으로 보류."
+    },
+    {
+      "item": "상처받은 모로크 카드",
+      "code": "unknown-effect-type",
+      "note": "effect.type=\"increaseExpRate\" -- 경험치 증가 카드. calcStats()/processTurn() 어디에도 소비 코드가 없음(2026-09-26 P0-A 감사). 엔진 지원 후 편입 대상, P0-A에서는 미구현으로 보류."
+    }
+  ]
+}

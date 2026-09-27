@@ -86,8 +86,54 @@ body{background:var(--bg-deep);color:var(--text);font-family:'Noto Sans KR',sans
 .stats-sec{padding:5px 8px;background:#fff;}
 .stat-r{display:flex;justify-content:space-between;align-items:center;padding:2px 0;border-bottom:1px dashed #e0e8ed;}
 .stat-lbl{font-size:11px;color:var(--text-dim);font-weight:600;} .stat-v{font-family:'Cinzel',serif;font-size:10px;color:var(--text-bright);font-weight:600;}
+.stat-cost{font-size:10px;color:var(--text-dim);margin:0 4px;white-space:nowrap;}
 .pts-row{font-size:11px;color:var(--red-light);text-align:right;font-weight:700;}
 .stat-plus{background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:28px;height:26px;font-size:11px;cursor:pointer;display:none;align-items:center;justify-content:center;border-radius:2px;}
+/* [P1-B] 기본 능력치 보너스 출처(직업/장비/카드/버프/기타) — 값은 전부 기존 s.job*/s.bonus*/
+   ledger를 읽기만 한다(재계산 없음). */
+.stat-bonus-detail{font-size:9px;color:var(--text-dim);margin-left:4px;white-space:nowrap;}
+.combat-sec-hdr{font-size:10px;color:var(--gold);font-weight:700;margin:5px 0 2px;letter-spacing:.3px;}
+/* [P1-B] 적용 효과 섹션 — s.itemEffects(ledger/unsupported/pending) 표시 전용 변환 */
+.fx-hdr{display:flex;align-items:center;gap:4px;cursor:pointer;font-size:11px;color:var(--gold);font-weight:700;padding:5px 0 3px;user-select:none;}
+.fx-hdr .fx-arrow{margin-left:auto;font-size:10px;color:var(--text-dim);}
+.fx-body{display:block;}
+.fx-empty{font-size:11px;color:var(--text-dim);padding:3px 0;}
+.fx-group{margin-bottom:3px;}
+.fx-group-hdr{font-size:10px;color:var(--text-dim);font-weight:700;padding:2px 0;}
+.fx-row{display:flex;justify-content:space-between;gap:6px;font-size:11px;padding:1px 0 1px 6px;color:var(--text);}
+.fx-row-src{font-size:10px;color:var(--text-dim);white-space:nowrap;}
+.fx-row-warn{color:var(--text-dim);font-style:italic;}
+.fx-subhdr{font-size:10px;color:var(--text-dim);cursor:pointer;padding:3px 0;border-top:1px dashed var(--border);margin-top:3px;user-select:none;}
+@media(max-width:700px){
+  #char-detail .fx-body{display:none;}
+  #char-detail .fx-body.fx-open{display:block;}
+}
+/* [P1-C] 장비 비교 박스 — 인벤토리/장비창 아이템 상세 모달과 상점 구매 상세가 공유한다
+   (SHOP비교 단계에서 확장). 새 색 하드코딩 없이 기존 CSS 변수만 사용. */
+.eqcmp-box{margin-top:10px;padding:6px 8px;border:1px solid var(--border);border-radius:3px;background:rgba(0,0,0,0.03);font-size:11px;text-align:left;}
+.eqcmp-hdr{display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--gold);font-weight:700;user-select:none;}
+.eqcmp-summary{font-size:10px;color:var(--text-dim);font-weight:400;}
+.eqcmp-arrow{margin-left:auto;font-size:10px;color:var(--text-dim);}
+.eqcmp-body{display:block;margin-top:4px;}
+.eqcmp-blocked{color:var(--red-light);font-weight:700;}
+.eqcmp-row{display:flex;justify-content:space-between;gap:6px;padding:1px 0;}
+.eqcmp-lbl{color:var(--text-dim);}
+.eqcmp-val{white-space:nowrap;}
+.eqcmp-effects{margin-top:4px;}
+.eqcmp-effect-hdr{font-size:10px;color:var(--text-dim);font-weight:700;margin-top:3px;}
+.eqcmp-effect-row{display:flex;justify-content:space-between;gap:6px;padding:1px 0 1px 6px;}
+.eqcmp-gain{color:var(--green);}
+.eqcmp-loss{color:var(--red-light);}
+.eqcmp-changed{color:var(--gold);}
+.eqcmp-effect-src{font-size:10px;color:var(--text-dim);white-space:nowrap;}
+.eqcmp-warn-hdr{font-size:10px;color:var(--text-dim);font-weight:700;margin-top:3px;}
+.eqcmp-warn-row{color:var(--text-dim);font-style:italic;}
+.eqcmp-note{color:#e67e22;margin-top:3px;}
+.eqcmp-empty{color:var(--text-dim);}
+@media(max-width:700px){
+  .eqcmp-body{display:none;}
+  .eqcmp-body.eqcmp-open{display:block;}
+}
 
 .equip-sec{padding:5px 8px;border-top:1px solid var(--border);background:#f2f7fa;}
 .equip-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
@@ -683,8 +729,8 @@ html[data-theme="dark"] .form-row{ border-bottom-color:var(--border); }
 /* refine 뱃지 (제련도 표시) */
 html[data-theme="dark"] .refine-bdg{ background:#1d3a5a; color:#7bb3d4; }
 
-/* 로딩/이미 덮인 stat-plus10 버튼 */
-html[data-theme="dark"] .stat-plus10{
+/* 로딩/이미 덮인 stat-plusmax 버튼 (P1-A 이전: stat-plus10) */
+html[data-theme="dark"] .stat-plusmax{
   background:#22303f !important;
   border-color:var(--border-gold) !important;
   color:var(--gold) !important;
@@ -928,6 +974,9 @@ body.work-mode p {
 <script id="db-npcs" type="application/json">{{__DATA_DB_NPCS__}}</script>
 <!-- items: 아직 CSV 미확충, 원본 JS DB 유지 (나중에 JSON 블록으로 전환) -->
 <script id="db-items" type="application/json">{{__DATA_DB_ITEMS__}}</script>
+<!-- P2-B1: db-combos.json({meta, combos}) 정본을 runtime에 연결 -- P2-A 시절 주석("HTML
+     runtime에 아직 inject하지 않음")은 여기서부터 더 이상 유효하지 않다(build.py BLOCKS 참조). -->
+<script id="db-combos" type="application/json">{{__DATA_DB_COMBOS__}}</script>
 <!-- [제조·파머시 통합 v0.2] 제조 레시피 정본 -->
 <script id="db-production" type="application/json">{{__DATA_DB_PRODUCTION__}}</script>
 <!-- [길드·상점 분리 v0.1] 상점 품목 목록 정본 (NPC의 shopId가 참조) -->
@@ -983,13 +1032,14 @@ body.work-mode p {
 <div class="cd-body" id="cd-body">
 <div class="stats-sec">
   <div class="pts-row" id="pts-row"></div>
-  <div class="stat-r"><span class="stat-lbl">STR</span><span class="stat-v" id="stat-str">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-str" onclick="addStat('str',1)">+1</button><button class="stat-plus10" id="plus10-str" onclick="addStat('str',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">AGI</span><span class="stat-v" id="stat-agi">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-agi" onclick="addStat('agi',1)">+1</button><button class="stat-plus10" id="plus10-agi" onclick="addStat('agi',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">VIT</span><span class="stat-v" id="stat-vit">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-vit" onclick="addStat('vit',1)">+1</button><button class="stat-plus10" id="plus10-vit" onclick="addStat('vit',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">INT</span><span class="stat-v" id="stat-int">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-int" onclick="addStat('int',1)">+1</button><button class="stat-plus10" id="plus10-int" onclick="addStat('int',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">DEX</span><span class="stat-v" id="stat-dex">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-dex" onclick="addStat('dex',1)">+1</button><button class="stat-plus10" id="plus10-dex" onclick="addStat('dex',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
-  <div class="stat-r"><span class="stat-lbl">LUK</span><span class="stat-v" id="stat-luk">1</span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-luk" onclick="addStat('luk',1)">+1</button><button class="stat-plus10" id="plus10-luk" onclick="addStat('luk',10)" style="display:none;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">+10</button></div></div>
-  <div style="height:1px;background:var(--border);margin:3px 0;"></div>
+  <div class="combat-sec-hdr">기본 능력치</div>
+  <div class="stat-r"><span class="stat-lbl">STR</span><span class="stat-v" id="stat-str">1</span><span class="stat-bonus-detail" id="bonus-str"></span><span class="stat-cost" id="cost-str"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-str" onclick="addStat('str',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-str" onclick="addStatMax('str')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">AGI</span><span class="stat-v" id="stat-agi">1</span><span class="stat-bonus-detail" id="bonus-agi"></span><span class="stat-cost" id="cost-agi"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-agi" onclick="addStat('agi',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-agi" onclick="addStatMax('agi')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">VIT</span><span class="stat-v" id="stat-vit">1</span><span class="stat-bonus-detail" id="bonus-vit"></span><span class="stat-cost" id="cost-vit"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-vit" onclick="addStat('vit',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-vit" onclick="addStatMax('vit')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">INT</span><span class="stat-v" id="stat-int">1</span><span class="stat-bonus-detail" id="bonus-int"></span><span class="stat-cost" id="cost-int"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-int" onclick="addStat('int',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-int" onclick="addStatMax('int')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">DEX</span><span class="stat-v" id="stat-dex">1</span><span class="stat-bonus-detail" id="bonus-dex"></span><span class="stat-cost" id="cost-dex"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-dex" onclick="addStat('dex',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-dex" onclick="addStatMax('dex')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="stat-r"><span class="stat-lbl">LUK</span><span class="stat-v" id="stat-luk">1</span><span class="stat-bonus-detail" id="bonus-luk"></span><span class="stat-cost" id="cost-luk"></span><div style="display:flex;gap:2px"><button class="stat-plus" id="plus-luk" onclick="addStat('luk',1)" style="display:inline-flex">+1</button><button class="stat-plusmax" id="plusmax-luk" onclick="addStatMax('luk')" style="display:inline-flex;background:#f0f5f9;border:1px solid var(--border-gold);color:var(--gold);width:34px;height:26px;font-size:11px;cursor:pointer;align-items:center;justify-content:center;border-radius:2px;">최대</button></div></div>
+  <div class="combat-sec-hdr">전투 능력치</div>
   <div class="stat-r"><span class="stat-lbl">⚔ ATK</span><span class="stat-v" id="stat-atk">3</span></div>
   <div class="stat-r"><span class="stat-lbl">🛡 DEF</span><span class="stat-v" id="stat-def">0</span></div>
   <div class="stat-r"><span class="stat-lbl">🔮 MATK</span><span class="stat-v" id="stat-matk">0+0</span></div>
@@ -997,8 +1047,27 @@ body.work-mode p {
   <div class="stat-r"><span class="stat-lbl">🎯 HIT</span><span class="stat-v" id="stat-hit">2</span></div>
   <div class="stat-r"><span class="stat-lbl">🌀 FLEE</span><span class="stat-v" id="stat-flee">2</span></div>
   <div class="stat-r"><span class="stat-lbl">✨ CRIT</span><span class="stat-v" id="stat-crit">1</span></div>
+  <div class="stat-r" title="일반 FLEE와 별도로 공격을 완전히 회피할 확률 판정에 사용"><span class="stat-lbl">💯 완전회피(PD)</span><span class="stat-v" id="stat-pd">0</span></div>
   <div class="stat-r"><span class="stat-lbl">⚡ ASPD</span><span class="stat-v" id="stat-aspd">100</span></div>
   <div class="stat-r"><span class="stat-lbl">🔵 CAST</span><span class="stat-v" id="stat-cast">100%</span></div>
+  <div class="stat-r"><span class="stat-lbl">❤ MaxHP</span><span class="stat-v" id="stat-maxhp">100</span></div>
+  <div class="stat-r"><span class="stat-lbl">💧 MaxSP</span><span class="stat-v" id="stat-maxsp">50</span></div>
+  <div class="stat-r"><span class="stat-lbl">❤ HP 자연회복</span><span class="stat-v" id="stat-hpregen">1</span></div>
+  <div class="stat-r"><span class="stat-lbl">💧 SP 자연회복</span><span class="stat-v" id="stat-spregen">2</span></div>
+  <div class="fx-sec">
+    <div class="fx-hdr" id="fx-toggle" onclick="toggleFxBody()">적용 효과 <span id="fx-count-badge"></span><span class="fx-arrow" id="fx-toggle-arrow">▾</span></div>
+    <div id="fx-body" class="fx-body">
+      <div id="fx-groups"></div>
+      <div id="fx-unsupported-sec" style="display:none">
+        <div class="fx-subhdr" onclick="toggleFxSub('fx-unsupported-body')">⚠ 미지원 효과 <span id="fx-unsupported-count"></span></div>
+        <div id="fx-unsupported-body" style="display:none"></div>
+      </div>
+      <div id="fx-pending-sec" style="display:none">
+        <div class="fx-subhdr" onclick="toggleFxSub('fx-pending-body')">검증 대기 효과 <span id="fx-pending-count"></span></div>
+        <div id="fx-pending-body" style="display:none"></div>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="equip-sec">
 <div class="panel-hdr" style="margin:0 -8px 4px;padding:3px 8px;">EQUIPMENT</div>
@@ -1148,6 +1217,18 @@ function closeCharDetail(){
   const el = document.getElementById('char-detail'); if(el) el.classList.remove('open');
   if(typeof syncMobileTab === 'function') syncMobileTab();
 }
+// [P1-B] 적용 효과 섹션 접기/펼치기 — PC/모바일 동일 DOM, CSS(@media max-width:700px)가
+// 모바일에서만 기본 접힘을 적용한다. 계산(getItemEffectDisplayRows)은 그대로, 표시만 토글.
+function toggleFxBody(){
+  const body = document.getElementById('fx-body'); if(!body) return;
+  body.classList.toggle('fx-open');
+  const arrow = document.getElementById('fx-toggle-arrow');
+  if(arrow) arrow.textContent = body.classList.contains('fx-open') ? '▴' : '▾';
+}
+function toggleFxSub(id){
+  const el = document.getElementById(id); if(!el) return;
+  el.style.display = (el.style.display === 'none') ? '' : 'none';
+}
 
 // ── [P1-13] 상단 저장 상태 — 기준은 자동저장(saveLocal). 파일 백업은 섞지 않는다 ──
 function setSaveState(state){
@@ -1187,6 +1268,9 @@ function loadDB(){
   DB.monsters     = j('db-monsters');
   DB.monsterAiProfiles = j('db-monster-ai-profiles');
   DB.items        = j('db-items');
+  // P2-B1: db-combos.json 최상위는 {meta, combos}다 -- 다른 DB.* 필드처럼 배열/맵 하나만
+  // 두는 관례를 맞추기 위해 여기서 combos 배열만 꺼낸다(meta는 감사 도구 전용, runtime 미사용).
+  DB.combos       = (j('db-combos').combos) || [];
   DB.production   = j('db-production');
   DB.shops        = j('db-shops');
   DB.maps         = j('db-maps');
@@ -3772,13 +3856,18 @@ function ensureSettings(p){
 // mon 의 드롭 테이블을 굴려 인벤에 넣는다.
 // opts.silent  로그 억제 (오프라인 시뮬)
 // opts.summary 있으면 획득 내역을 집계
-function rollDrops(p, mon, opts){
+function rollDrops(p, mon, opts, stats){
   if(!mon || !mon.drops) return;
   opts = opts || {};
   // [P0-02③] 무음 모드에서는 호출부가 opts를 안 넘겨도 오프라인 요약에 집계한다
   if(G.silentMode && !opts.summary && G.silentSummary){ opts.silent = true; opts.summary = G.silentSummary; }
   let set = ensureSettings(p);
   let rich = (p.statusEffects && p.statusEffects.richManKim) ? p.statusEffects.richManKim.dropBonus : 0;
+  // P0-C4: 아이템 dropBonus -- richManKim.dropBonus와 정확히 같은 자리(같은 방식의 소수
+  // 가산항)에 합류시킨다. 카드/일반 구분 없이 둘 다 같은 rich 항을 더하는 기존 richManKim
+  // 선례를 그대로 따른다(patch notes §11 참조. 근거: 유일하게 존재하는 기존 dropBonus
+  // 소비처인 richManKim이 isCard 여부와 무관하게 이 항 하나에 더해진다).
+  let itemDropBonus = getItemDropBonus(stats);
   if(!p.inventory) p.inventory = {};
 
   Object.keys(mon.drops).forEach(k=>{
@@ -3790,7 +3879,7 @@ function rollDrops(p, mon, opts){
       return;
     }
     let isCard = k.includes('카드');
-    let chance = mon.drops[k] * ((isCard ? set.cardRate : set.dropRate) + rich) * returnerMult(p);
+    let chance = mon.drops[k] * ((isCard ? set.cardRate : set.dropRate) + rich + itemDropBonus) * returnerMult(p);
     if(Math.random()*100 > chance) return;
 
     // [P1-03] slots는 이 아이템이 원래 가진 소켓 수(무/유슬롯 쌍을 병합한 필드) —
@@ -3914,6 +4003,10 @@ function buildMatkBreakdown(s, totInt, baseMAtk, bonus, se) {
   let parts = [];
   parts.push({ type: "기본값", value: baseMAtk, formula: `INT(${totInt}) + (INT/5)²` });
   if (bonus.matk && bonus.matk > 0) parts.push({ type: "장비/카드 보너스", value: bonus.matk });
+  // P2-A.5: matkPct는 (기본값+장비/카드 보너스)에 곱연산으로 적용된다(rAthena
+  // status.cpp 실코드 순서, calcStats MATK 계산부 주석 참조) -- 별도 수치란으로
+  // 표시해 상태창이 "실제로 반영된 배율"을 숨기지 않게 한다.
+  if (bonus.matkPct) parts.push({ type: "마법 공격력 배율", value: (bonus.matkPct > 0 ? '+' : '') + bonus.matkPct, unit: "%" });
   if (se.lexAeterna) parts.push({ type: "렉스 에테르나", value: baseMAtk, description: "다음 마법 피해 2배" });
 
   return { name: "MATK", value: s.totalMAtk, breakdown: parts };
@@ -4034,8 +4127,12 @@ function buildMaxSpBreakdown(s, lv, totInt, bonus) {
   return { name: "MaxSP", value: s.maxSp, breakdown: parts };
 }
 
-function calcStats(){
-  let p=G.player; 
+// [P1-C] playerOverride — 장비 비교(getEquipmentComparison)가 실제 G.player를 건드리지
+// 않고 후보 loadout을 계산하기 위한 유일한 진입점. calcStats() 본문 전체에서 G.player를
+// 직접 읽는 곳은 이 한 줄뿐임을 확인했다(그 아래로는 전부 지역변수 p만 쓴다) -- 인자를
+// 생략한 기존 모든 호출부는 동작이 완전히 그대로다.
+function calcStats(playerOverride){
+  let p=playerOverride || G.player;
   if(!p) return {};
 
   // ── [ 1. 순수 스탯 (앞스탯: 스탯 포인트만) ] ──
@@ -4054,7 +4151,8 @@ function calcStats(){
     armorElement:null, immune:null, magicImmune:false,
     spCostMul:1, healBoost:0, castReduction:0,
     doubleAtkCard:0, defIgnore:false, hpDrainSelf:0,
-    skillDmg:null, grantSkill:null, dropBonus:null };
+    skillDmg:null, grantSkill:null, dropBonus:null,
+    matkPct:0, spCostRatePct:0 };
 
   let wAtk=0; p.weaponType="맨손"; p.weaponElement="무속성";
 
@@ -4064,126 +4162,28 @@ function calcStats(){
       let parsed = (typeof parseItem==='function') ? parseItem(itemName) : null;
       if(parsed && parsed.base){
         let i = parsed.base;
+        // 물리 기본 성능만 여기 남긴다(무기 ATK/방어구 DEF/제련/무기 타입·속성).
+        // 그 외 아이템·카드 효과(스탯/HIT·FLEE·CRIT·PD/MaxHP·MaxSP/조건부 피해/내성/특수효과/
+        // 카드 effect)는 collectItemEffects()(source/item-effects.js, P0-B)가 전담한다 —
+        // calcStats는 그 결과를 합산만 한다.
         if(i.atk)  wAtk       += (i.atk||0);
         if(i.def)  bonus.def  += (i.def||0);
         // 원작 Pre-Renewal: 방어구류(무기 제외) 제련 1당 DEF +1 — 무기는 별도 ATK 제련 보너스 블록에서 처리
         if(eqKey!=='무기' && parsed.refine>0) bonus.def += parsed.refine;
-        if(i.str)  bonus.str  += i.str;
-        if(i.agi)  bonus.agi  += i.agi;
-        if(i.vit)  bonus.vit  += i.vit;
-        if(i.int)  bonus.int  += i.int;
-        if(i.dex)  bonus.dex  += i.dex;
-        if(i.luk)  bonus.luk  += i.luk;
-        if(i.mdef)  bonus.mdef  += Number(i.mdef||0);
-        if(i.maxHp) bonus.maxHp += Number(i.maxHp||0);
-        if(i.maxSp) bonus.maxSp += Number(i.maxSp||0);
-        if(i.hit)   bonus.hit   += Number(i.hit||0);
-        if(i.crit)  bonus.crit  += Number(i.crit||0);
-        if(i.flee) bonus.flee += i.flee;
-        if(i.aspd) bonus.aspd += i.aspd;
         if(i.wType) p.weaponType = i.wType;
         if(i.element) p.weaponElement = i.element;
-        
-        // 카드 보너스 합산
-        if(parsed.cards && Array.isArray(parsed.cards)){
-          parsed.cards.forEach(cn=>{
-            let c = DB?.items?.[cn+" 카드"];
-            if(c){
-              if(c.atk)   wAtk        += Number(c.atk||0);
-              if(c.def)   bonus.def   += Number(c.def||0);
-              if(c.mdef)  bonus.mdef  += Number(c.mdef||0);
-              if(c.maxHp) bonus.maxHp += Number(c.maxHp||0);
-              if(c.maxSp) bonus.maxSp += Number(c.maxSp||0);
-              if(c.str)   bonus.str   += Number(c.str);
-              if(c.agi)   bonus.agi   += Number(c.agi);
-              if(c.vit)   bonus.vit   += Number(c.vit);
-              if(c.int)   bonus.int   += Number(c.int);
-              if(c.dex)   bonus.dex   += Number(c.dex);
-              if(c.luk)   bonus.luk   += Number(c.luk);
-              if(c.hit)   bonus.hit   += Number(c.hit||0);
-              if(c.flee)  bonus.flee  += Number(c.flee||0);
-              if(c.aspd)  bonus.aspd  += Number(c.aspd||0);
-              if(c.crit)  bonus.crit  += Number(c.crit||0);
-              if(c.maxHpPct)  bonus.maxHpPct  += Number(c.maxHpPct);
-              if(c.maxSpPct)  bonus.maxSpPct  += Number(c.maxSpPct);
-              if(c.hpRegenPct)bonus.hpRegenPct += Number(c.hpRegenPct);
-              if(c.spRegenPct)bonus.spRegenPct += Number(c.spRegenPct);
-              if(c.atkPct)    bonus.atkPct    += Number(c.atkPct);
-              if(c.raceAtk){    Object.entries(c.raceAtk).forEach(([r,v])=>{ if(!bonus.raceAtk)bonus.raceAtk={}; bonus.raceAtk[r]=(bonus.raceAtk[r]||0)+Number(v); }); }
-              if(c.elemAtk){    Object.entries(c.elemAtk).forEach(([e,v])=>{ if(!bonus.elemAtk)bonus.elemAtk={}; bonus.elemAtk[e]=(bonus.elemAtk[e]||0)+Number(v); }); }
-              if(c.sizeAtk){    Object.entries(c.sizeAtk).forEach(([s,v])=>{ if(!bonus.sizeAtk)bonus.sizeAtk={}; bonus.sizeAtk[s]=(bonus.sizeAtk[s]||0)+Number(v); }); }
-              if(c.magicRaceAtk){ Object.entries(c.magicRaceAtk).forEach(([r,v])=>{ if(!bonus.magicRaceAtk)bonus.magicRaceAtk={}; bonus.magicRaceAtk[r]=(bonus.magicRaceAtk[r]||0)+Number(v); }); }
-              if(c.bossAtk)   bonus.bossAtk  += Number(c.bossAtk);
-              if(c.raceDmgReduce){ Object.entries(c.raceDmgReduce).forEach(([r,v])=>{ if(!bonus.raceDmgReduce)bonus.raceDmgReduce={}; bonus.raceDmgReduce[r]=(bonus.raceDmgReduce[r]||0)+Number(v); }); }
-              if(c.elemReduce){   Object.entries(c.elemReduce).forEach(([e,v])=>{ if(!bonus.elemReduce)bonus.elemReduce={}; bonus.elemReduce[e]=(bonus.elemReduce[e]||0)+Number(v); }); }
-              if(c.dmgReduceAll)  bonus.dmgReduceAll  += Number(c.dmgReduceAll);
-              if(c.rangedDmgReduce) bonus.rangedDmgReduce += Number(c.rangedDmgReduce);
-              if(c.armorElement)  bonus.armorElement  = c.armorElement;
-              if(c.immune){ c.immune.forEach(im=>{ if(!bonus.immune)bonus.immune=[]; if(!bonus.immune.includes(im))bonus.immune.push(im); }); }
-              if(c.magicImmune)   bonus.magicImmune   = true;
-              if(c.spCostMul)     bonus.spCostMul     *= Number(c.spCostMul);
-              if(c.healBoost)     bonus.healBoost     += Number(c.healBoost);
-              if(c.castReduction) bonus.castReduction += Number(c.castReduction);
-              if(c.doubleAtk)     bonus.doubleAtkCard += Number(c.doubleAtk);
-              if(c.defIgnore)     bonus.defIgnore     = true;
-              if(c.hpDrainSelf)   bonus.hpDrainSelf   += Number(c.hpDrainSelf);
-              if(c.skillDmg){   Object.entries(c.skillDmg).forEach(([sn,v])=>{ if(!bonus.skillDmg)bonus.skillDmg={}; bonus.skillDmg[sn]=(bonus.skillDmg[sn]||0)+Number(v); }); }
-              if(c.grantSkill){ Object.entries(c.grantSkill).forEach(([sn,lv])=>{ if(!bonus.grantSkill)bonus.grantSkill={}; bonus.grantSkill[sn]=Math.max(bonus.grantSkill[sn]||0,lv); }); }
-              if(c.dropBonus){  if(!bonus.dropBonus)bonus.dropBonus=[]; bonus.dropBonus.push(c.dropBonus); }
-              if(c.perfectFlee) bonus.pd = (bonus.pd||0) + Number(c.perfectFlee); // [FIX 1-1] 완전회피 카드 보너스
-
-              // ── [v9.04] 카드 effect 필드 처리 (1-7 카드 효과 구현) ──
-              if(c.effect){
-                let eff = c.effect;
-                // stat type: 기본 스탯 추가
-                if((eff.type === 'stat' || eff.type === 'mixed') && eff.stats){
-                  Object.entries(eff.stats).forEach(([sk, sv]) => {
-                    if(sk === 'str') bonus.str += sv;
-                    else if(sk === 'agi') bonus.agi += sv;
-                    else if(sk === 'vit') bonus.vit += sv;
-                    else if(sk === 'int') bonus.int += sv;
-                    else if(sk === 'dex') bonus.dex += sv;
-                    else if(sk === 'luk') bonus.luk += sv;
-                  });
-                }
-                // special type: 무기 손상 무시 등
-                if(eff.type === 'special' && eff.weaponUnbreakable){
-                  if(!p.cardEffects) p.cardEffects = {};
-                  p.cardEffects.weaponUnbreakable = true;
-                }
-                // raceBonus type: 특정 종족 추가 데미지 (processTurn에서 처리)
-                if(eff.type === 'raceBonus'){
-                  if(!bonus.cardRaceBonus) bonus.cardRaceBonus = {};
-                  bonus.cardRaceBonus[eff.race] = (bonus.cardRaceBonus[eff.race] || 1.0) * eff.dmgMult;
-                }
-                // seProc type: 상태효과 확률 (processTurn에서 처리)
-                if((eff.type === 'seProc' || eff.type === 'mixed') && eff.seProc){
-                  if(!bonus.cardSeProc) bonus.cardSeProc = [];
-                  bonus.cardSeProc.push({se: eff.seProc.se, chance: eff.seProc.chance, turns: eff.seProc.turns});
-                }
-                // lifesteal type: SP 흡수 (processTurn에서 처리)
-                if(eff.type === 'lifesteal'){
-                  if(!bonus.cardLifesteal) bonus.cardLifesteal = [];
-                  bonus.cardLifesteal.push({spRate: eff.spRate, chance: eff.chance});
-                }
-                // bonus 필드: 파생 스탯 직접 추가
-                if(eff.bonus){
-                  Object.entries(eff.bonus).forEach(([bk, bv]) => {
-                    if(bk === 'atk') bonus.atk += bv;
-                    else if(bk === 'hit') bonus.hit += bv;
-                    else if(bk === 'crit') bonus.crit += bv;
-                    else if(bk === 'pd' || bk === 'perfectFlee') bonus.pd = (bonus.pd||0) + bv;
-                    else if(bk === 'maxHp') bonus.maxHp += bv;
-                    else if(bk === 'maxSp') bonus.maxSp += bv;
-                  });
-                }
-              }
-            }
-          });
-        }
       }
     });
   }
+
+  // ── [ 2-a. 아이템/카드 효과 집계 (P0-B 정본 진입점) ] ──
+  let fx = collectItemEffects(p, DB, parseItem);
+  // P2-B1: 콤보 매칭·적용은 collectItemEffects 직후, merge 이전에 같은 fx를 확장한다 --
+  // 새 세트엔진이나 별도 계산경로를 만들지 않는다(source/combo-engine.js). p는
+  // playerOverride(장비비교 candidate clone)일 수 있으므로 항상 이 p를 그대로 넘긴다 --
+  // 전역 G.player를 직접 참조하지 않는다.
+  applyComboEffects(p, DB, fx, parseItem);
+  mergeItemEffectsIntoBonus(fx, bonus);
 
   // ── [ 2-b. 탑승(mount) 효과 반영 ] ──
   if(p.mount && p.mount.effect){
@@ -4333,7 +4333,16 @@ function calcStats(){
 
   // MATK: INT + floor(INT/5)^2  (± 랜덤 범위는 텍스트게임상 고정값으로 처리)
   let baseMAtk = totInt + Math.pow(Math.floor(totInt/5), 2);
-  let bonusMAtk = bonus.matk || 0;
+  // P2-A.5: bMatkRate -- rAthena status.cpp(pre-RE, SCB_MATK 블록) 실코드 확인 결과
+  // 순서는 matk=(base_matk+ematk)*matk_rate/100(0% 하한 clamp)이고, 스킬 pseudobuff/
+  // 소모품 MATK/SC_MAGICPOWER는 이 배율 *이후*에 더해진다. TextRAG의 imposMannus/
+  // ampMagic/lexAeterna는 rAthena 실제 스킬과 1:1 대응이 아닌 기존 근사치라 이번
+  // 단계에서 그 공식/순서를 바꾸지 않는다(범위 밖, COMBO_ENGINE_EXTENSION_P2A5.md
+  // §8-9) -- 새 배율은 "base + 아이템 flat MATK"에만 적용하고 기존 버프 가산은
+  // 그대로 그 뒤에 이어붙인다. matkPct=0(기존 아이템 전부)이면 결과가 완전히 동일.
+  let itemFlatMAtk = bonus.matk || 0;
+  let matkRateMul = Math.max(0, 100 + (bonus.matkPct||0)) / 100;
+  let bonusMAtk = Math.floor((baseMAtk + itemFlatMAtk) * matkRateMul) - baseMAtk;
   if(se.imposMannus) bonusMAtk += (se.imposMannus.matkBonus||0); // 임포시티오 마누스
   if(se.ampMagic)    bonusMAtk += Math.floor(baseMAtk*(se.ampMagic.matkBonus||0)); // 마법력 증폭
   if(se.lexAeterna)  bonusMAtk += baseMAtk; // 렉스 에테르나: 다음 마법 피해 2배
@@ -4463,6 +4472,14 @@ function calcStats(){
   // 스킬별 기본 캐스팅 시간은 스킬 cooldown 으로 관리
   // castReduction: 0.0 ~ 1.0 (1.0 = 무캐스팅)
   let castReduction = Math.min(1.0, totDex / 150);
+  // P0-C2: 아이템 효과의 castReduction(bonus.castReduction, DEX/bragi/suffragium과 같은
+  // 0~1 fraction 단위 -- se.bragi.castReduce/se.suffragium.castReduce와 동일 관례, 원래
+  // collector가 순수 덧셈으로만 모아 왔던 값과 같은 단위로 취급)을 DEX 다음·버프 이전에
+  // 합류시킨다. min(1, 누적+항목) 클램프는 항이 전부 음수가 아닌 한 순서 무관하게 같은
+  // 결과를 내므로(각 항 clamp 전 값이 더 작을 때만 의미가 생기고, 이미 1.0이면 이후
+  // 덧셈은 결과를 바꾸지 않는다) 위치 자체가 결과를 바꾸지 않는다 -- DEX(장비 무관 기본)
+  // 다음, 버프(bragi/suffragium) 이전이 "기본 소스 → 버프" 순서로 가장 자연스럽다.
+  castReduction = Math.min(1.0, castReduction + (bonus.castReduction||0));
   if(se.bragi)      castReduction = Math.min(1.0, castReduction + (se.bragi.castReduce||0));
   if(se.suffragium) castReduction = Math.min(1.0, castReduction + (se.suffragium.castReduce||0));
   let instantCast   = castReduction >= 1.0;
@@ -4544,7 +4561,15 @@ function calcStats(){
     cardCastReduction:bonus.castReduction, cardDoubleAtkCard:bonus.doubleAtkCard,
     cardDefIgnore:bonus.defIgnore, cardHpDrainSelf:bonus.hpDrainSelf,
     cardSkillDmg:bonus.skillDmg, cardGrantSkill:bonus.grantSkill,
-    cardDropBonus:bonus.dropBonus
+    cardDropBonus:bonus.dropBonus,
+    // P2-A.5: bMatkRate/bUseSPrate 신규 필드. cardMatkPct는 표시/진단용(실제 MATK
+    // 반영은 이미 위 matk:totalMAtk에 끝남 -- P1 "단일 calcStats 정본" 원칙 유지).
+    // cardSpCostRatePct는 getSkillSpCost()가 직접 읽는 소비 경로다.
+    cardMatkPct:bonus.matkPct, cardSpCostRatePct:bonus.spCostRatePct,
+    // P0-B: 아이템/카드 효과 집계 원본(ledger/pending/unsupported/events 포함) — P0-C 이후
+    // 소비처가 이 값을 재사용한다. calcStats 자신의 위 cardXxx 필드들과 별개로, 집계
+    // 출처 추적이 필요한 소비처는 이쪽을 본다.
+    itemEffects: fx
   };
 
   // ── [ v9.10: 능력치 분석 Breakdown ] ──
@@ -4647,6 +4672,150 @@ function getSeStatBonus(p){
   return {str,agi,vit,int,dex,luk,def,mdef,hit,flee,crit,atk,matk,maxHp,maxSp};
 }
 
+// [P1-B] 기본 능력치 +N 보너스를 직업/장비/카드/버프/기타로 분해한다 -- 새 계산은 하지
+// 않는다. s.job*/s.bonus*(calcStats 기존 반환값), getSeStatBonus(기존, 표시 전용),
+// s.itemEffects.ledger(P0 정본, sourceType으로 장비/카드가 이미 구분돼 있다)만 읽는다.
+// 장비/카드/버프 세 출처를 뺀 나머지("기타")는 기본 스킬 패시브(노비스 스킬 등 ledger에
+// 없는 소스) 몫이다 -- 임의로 "패시브 스킬"이라 단정하지 않고 그냥 "기타"로 남긴다(과제
+// §4: "출처 확인 불가"로 뭉개지 말고 확보 가능한 수준까지만 표시하라는 지시에 따름).
+function getStatBonusBreakdown(stKey, s, p){
+  let capK = stKey.charAt(0).toUpperCase()+stKey.slice(1);
+  let job = s['job'+capK] || 0;
+  let bonVal = s['bonus'+capK] || 0;
+  let buff = getSeStatBonus(p)[stKey] || 0;
+  let ledger = (s.itemEffects && s.itemEffects.ledger) || [];
+  let equip = 0, card = 0, combo = 0;
+  ledger.forEach(function(e){
+    if(e.active && e.type==='stat' && e.key===stKey){
+      if(e.sourceType==='equipment') equip += e.value;
+      else if(e.sourceType==='card') card += e.value;
+      else if(e.sourceType==='combo') combo += e.value;
+    }
+  });
+  let etc = bonVal - equip - card - combo - buff;
+  return { job: job, equip: equip, card: card, combo: combo, buff: buff, etc: etc, total: job + bonVal };
+}
+
+// [P1-B] 적용 효과 표시 — s.itemEffects(ledger/unsupported/pending, P0 정본)만 읽고 한국어
+// 문구로 바꾸는 표시 전용 변환이다. DB.items를 다시 읽지 않고, 새 게임 계산도 하지 않는다
+// (ledger에 이미 기록된 값을 그대로 옮기거나 이 프로젝트에 이미 있는 표시 관례(예: CAST의
+// *100 %환산, template.html의 castReduction 표시와 동일)로만 포맷한다).
+//
+// 기본/전투 능력치 합계에 이미 반영되는 단순 가산 효과(스탯/ATK/DEF/HIT/FLEE/CRIT/ASPD/
+// MaxHP/MaxSP/PD)는 여기서 제외한다 -- 중복 표시 방지(과제 §13/§35).
+var EFFECT_HIDE_KEYS = {
+  str:1, agi:1, vit:1, int:1, dex:1, luk:1, atk:1, def:1, mdef:1,
+  maxHp:1, maxSp:1, hit:1, flee:1, crit:1, aspd:1, pd:1,
+  maxHpPct:1, maxSpPct:1, hpRegenPct:1, spRegenPct:1,
+};
+function _fxPct(n){ return (n>0?'+':'') + n + '%'; }
+var EFFECT_LEDGER_FORMATTERS = {
+  atkPct:        { group:'공격', fmt:function(v){ return ['전체 공격력 '+_fxPct(v)]; } },
+  raceAtk:       { group:'공격', fmt:function(v){ return Object.keys(v).map(function(k){ return k+' 대상 피해 '+_fxPct(v[k]); }); } },
+  elemAtk:       { group:'공격', fmt:function(v){ return Object.keys(v).map(function(k){ return k+' 대상 피해 '+_fxPct(v[k]); }); } },
+  sizeAtk:       { group:'공격', fmt:function(v){ return Object.keys(v).map(function(k){ return k+' 대상 피해 '+_fxPct(v[k]); }); } },
+  bossAtk:       { group:'공격', fmt:function(v){ return ['보스(MVP) 피해 '+_fxPct(v)]; } },
+  matkPct:       { group:'공격', fmt:function(v){ return ['마법 공격력 '+_fxPct(v)]; } },
+  defIgnore:     { group:'공격', fmt:function(){ return ['DEF 무시']; } },
+  dmgReduceAll:  { group:'방어', fmt:function(v){ return ['모든 피해 -'+v+'%']; } },
+  raceDmgReduce: { group:'방어', fmt:function(v){ return Object.keys(v).map(function(k){ return k+'에게 받는 피해 -'+v[k]+'%'; }); } },
+  elemReduce:    { group:'방어', fmt:function(v){ return Object.keys(v).map(function(k){ return k+' 공격에 받는 피해 -'+v[k]+'%'; }); } },
+  immune:        { group:'상태', fmt:function(v){ return v.map(function(k){ var d=DB.statusEffects&&DB.statusEffects[k]; return (d?d.name:k)+' 면역'; }); } },
+  spCostMul:     { group:'자원', fmt:function(v){ return ['SP 소비 ×'+v]; } },
+  spCostRatePct: { group:'자원', fmt:function(v){ return ['SP 소비 '+_fxPct(v)]; } },
+  castReduction: { group:'자원', fmt:function(v){ return ['캐스팅 -'+Math.round(v*100)+'%']; } },
+  hpDrainSelf:   { group:'자원', fmt:function(){ return ['전투 중 자기 HP 소모']; } },
+  raceBonus:     { group:'발동', fmt:function(v){ return ['공격 시 '+v.race+' 대상 피해 '+v.dmgMult+'배']; } },
+  seProc:        { group:'발동', fmt:function(v){ var d=DB.statusEffects&&DB.statusEffects[v.se]; return ['공격 시 '+(d?d.name:v.se)+' 부여 '+Math.round((v.chance||0)*100)+'%('+v.turns+'턴)']; } },
+  lifesteal:     { group:'발동', fmt:function(v){ return ['공격 시 SP 흡수 '+Math.round((v.chance||0)*100)+'%(피해량의 '+Math.round((v.spRate||0)*100)+'%)']; } },
+  hpDrain:       { group:'발동', fmt:function(v){ return ['공격 시 HP 흡수 '+Math.round((v.rate||0)*100)+'%']; } },
+  spDrain:       { group:'발동', fmt:function(v){ return ['공격 시 SP 흡수 '+Math.round((v.rate||0)*100)+'%']; } },
+  inflict:       { group:'발동', fmt:function(v){
+    var parts=[];
+    if(v.stun) parts.push('스턴 '+Math.round(v.stun*100)+'%');
+    if(v.confusion) parts.push('혼란 '+Math.round(v.confusion*100)+'%');
+    if(v.random_debuff) parts.push('무작위 이상상태 '+Math.round(v.random_debuff*100)+'%');
+    return ['공격 시 상태이상 부여'+(parts.length?' ('+parts.join(', ')+')':'')];
+  } },
+  autoSpell:     { group:'발동', fmt:function(v){ return ['공격 시 '+v.skill+' 자동 시전 '+Math.round((v.rate||0)*100)+'%']; } },
+  soulgain:      { group:'발동', fmt:function(v){ return [v.race+' 처치 시 SP +'+(v.sp||0)]; } },
+  grantSkill:    { group:'기능', fmt:function(v){ return Object.keys(v).map(function(k){ return k+' Lv.'+v[k]+' 사용 가능'; }); } },
+  dropBonus:     { group:'기능', fmt:function(v){ return ['드롭률 '+_fxPct(Math.round(v*100))]; } },
+};
+// ledger 항목이 fx.unsupported에도 같은 source/sourceType/key로 등록돼 있으면(P0 정본:
+// key+': '+사유 형식) 보류 필드다 -- 미지원 섹션이 담당하므로 일반 목록에서는 뺀다.
+function _isDeferredLedgerEntry(entry, unsupportedList){
+  return unsupportedList.some(function(u){
+    return u.source===entry.source && u.sourceType===entry.sourceType &&
+      entry.key && u.label && u.label.indexOf(entry.key+':')===0;
+  });
+}
+// [P1-C] 단일 ledger entry → 표시행(1개 이상) 변환. entry.value가 {키:값,...} 맵이면
+// (raceAtk/elemAtk/sizeAtk/raceDmgReduce/elemReduce/grantSkill) 맵의 각 키가 서로 다른
+// 효과이므로 항목별로 별도 행 + 별도 identity를 만든다. identity는 장비 비교(diff)가
+// "같은 효과인가"를 판단하는 유일한 기준이다 -- source(카드/장비 이름) 자체는 넣지 않는다
+// (히드라 카드 +20% → 다른 카드 +20%는 실제 효과 기준으로 무변화여야 하므로).
+var _EFFECT_MAP_VALUE_KEYS = ['raceAtk','elemAtk','sizeAtk','raceDmgReduce','elemReduce','grantSkill'];
+function _effectIdentityDiscriminator(key, value, idx, subKeys){
+  if(subKeys) return subKeys[idx];
+  if(key==='immune') return Array.isArray(value) ? value[idx] : null;
+  if(key==='raceBonus' || key==='soulgain') return value && value.race;
+  if(key==='seProc') return value && value.se;
+  if(key==='autoSpell') return value && value.skill;
+  return null; // 단일값 키(atkPct/bossAtk/defIgnore/dmgReduceAll/spCostMul/castReduction/
+               // hpDrainSelf/lifesteal/hpDrain/spDrain/inflict/dropBonus/matkPct/
+               // spCostRatePct)는 key 자체로 충분
+}
+function _ledgerEntryRows(entry){
+  var key = entry.key;
+  if(!key || EFFECT_HIDE_KEYS[key]) return [];
+  var f = EFFECT_LEDGER_FORMATTERS[key];
+  if(!f) return []; // 알려지지 않은 키는 표시하지 않는다(추측 라벨 금지)
+  var labels = f.fmt(entry.value);
+  var subKeys = (entry.value && typeof entry.value==='object' && !Array.isArray(entry.value) && _EFFECT_MAP_VALUE_KEYS.indexOf(key)!==-1)
+    ? Object.keys(entry.value) : null;
+  return labels.map(function(label, idx){
+    var disc = _effectIdentityDiscriminator(key, entry.value, idx, subKeys);
+    return {
+      group: f.group, label: label, source: entry.source, sourceType: entry.sourceType,
+      identity: key + (disc!=null ? ':'+disc : ''),
+    };
+  });
+}
+// [P1-C] 한 calcStats() 결과(s)의 모든 active 효과를 atomic 행 배열로 만든다 -- deferred는
+// 여전히 여기서 제외한다(_isDeferredLedgerEntry). 장비 비교(getEquipmentComparison)가 이
+// 함수를 current/candidate 양쪽에 그대로 재사용해 identity 기준으로 diff한다.
+function getItemEffectAtomicRows(s){
+  var fx = (s && s.itemEffects) || { ledger:[], unsupported:[], pending:[] };
+  var rows = [];
+  (fx.ledger||[]).forEach(function(entry){
+    if(!entry.active) return;
+    if(entry.type==='pending' || entry.type==='unsupported') return;
+    if(_isDeferredLedgerEntry(entry, fx.unsupported||[])) return;
+    rows = rows.concat(_ledgerEntryRows(entry));
+  });
+  return rows;
+}
+function getItemEffectDisplayRows(s){
+  var groups = { 공격:[], 방어:[], 상태:[], 자원:[], 발동:[], 기능:[] };
+  getItemEffectAtomicRows(s).forEach(function(row){ groups[row.group].push(row); });
+  return groups;
+}
+// [P1-B] 미지원(deferred) 라벨 -- fx.unsupported의 개발자용 사유 문구 대신 알려진 7개
+// 필드는 짧은 한국어 이름으로 바꾼다(과제 §17에서 이름을 그대로 명명한 필드들). 그 외
+// (string effect/무기파괴방지/unknown effect.type 등 극소수 레거시 데이터)는 원문 그대로
+// 보여준다 -- 임의로 새 이름을 지어내지 않는다.
+var EFFECT_KEY_DISPLAY_NAME = {
+  magicRaceAtk: '마법 종족 피해 증가', skillDmg: '스킬 피해 증가', doubleAtkCard: '카드 더블어택',
+  healBoost: '회복량 증가', rangedDmgReduce: '원거리 피해 감소',
+  magicImmune: '마법 면역', armorElement: '방어 속성',
+};
+function _unsupportedDisplayLabel(u){
+  var m = /^([a-zA-Z]+):/.exec(u.label||'');
+  var name = m && EFFECT_KEY_DISPLAY_NAME[m[1]];
+  return name || (u.label||'');
+}
+
 // [스타일] 맵 분위기 틴트 — 로그 배경을 맵 성격에 따라 저채도로 물들임 (CSS가 라이트/다크 분기)
 function applyMapTint(){
   let gl=$('game-log'); if(!gl) return;
@@ -4688,15 +4857,7 @@ function updateUI(){
   let jN=p.jobLv>=_jCap?1:p.jobLv*50; updateBar('jexp',jN===1?1:p.jobExp,jN,jN===1?'MAX':Math.floor(p.jobExp/jN*100)+'%');
   
   // 스탯 포인트 기반 스탯 표시 (앞스탯+뒷스탯)
-  // 형식: 순수포인트(흰) + 잡보너스(금) + 장비/패시브(파랑) + SE버프(초록)
   let seB = getSeStatBonus(p);
-  const fmtStat = (base, jobB, eqB, seBonus) => {
-    let html = `<span style="color:var(--text-bright)">${base}</span>`;
-    if(jobB    > 0) html += `<span style="color:var(--gold-light);font-size:11px">+${jobB}</span>`;
-    if(eqB   !== 0) html += `<span style="color:${eqB>0?'var(--blue-light)':'var(--red-light)'};font-size:11px">${eqB>0?'+':''}${eqB}</span>`;
-    if(seBonus > 0) html += `<span style="color:#27ae60;font-size:11px">+${seBonus}▲</span>`;
-    return html;
-  };
   // 파생 스탯: 기본치 + 장비/카드(파랑, 음수는 빨강) + SE버프(초록) 분리 표시
   const fmtDerived = (total, eqBonus, seBonus) => {
     eqBonus = (eqBonus||0) - (seBonus||0); // s.bonusXxx에는 SE 기여분 포함 → 장비/카드 몫만 분리
@@ -4706,17 +4867,23 @@ function updateUI(){
     if(seBonus  >  0) html += `<span style="color:#27ae60;font-size:11px">+${seBonus}▲</span>`;
     return html;
   };
-  ['str','agi','vit','int','dex','luk'].forEach(st=>{
-    let el = $('stat-'+st); if(!el) return;
-    let capSt = st.charAt(0).toUpperCase()+st.slice(1);
-    let baseVal = s['base'+capSt] ?? s[st];
-    let jobVal  = s['job'+capSt]   || 0;
-    let bonVal  = s['bonus'+capSt] || 0;
-    let seBVal  = seB[st] || 0;
-    let eqOnly  = bonVal - seBVal; // 장비/카드 몫 (음수 허용 — 스켈레톤망토 AGI-4 등)
-    let btnNodes = Array.from(el.querySelectorAll('button'));
-    el.innerHTML = fmtStat(baseVal, jobVal, eqOnly, seBVal);
-    btnNodes.forEach(b => el.appendChild(b));
+  // [P1-B] 기본 능력치 = 투자값(p.str 등) + 총 보너스(+N) + 직업/장비/카드/버프/기타 출처.
+  // getStatBonusBreakdown은 새 계산 없이 s.job*/s.bonus*/s.itemEffects.ledger/getSeStatBonus만
+  // 읽는다 -- statCost/STAT_CAP 등 P1-A 공식은 이 블록에서 손대지 않는다.
+  STAT_KEYS.forEach(st=>{
+    let el = $('stat-'+st); if(el) el.textContent = p[st]||1;
+    let bd = $('bonus-'+st); if(!bd) return;
+    let br = getStatBonusBreakdown(st, s, p);
+    if(!br.total){ bd.innerHTML=''; return; }
+    let parts=[];
+    if(br.job)   parts.push('직업'+(br.job>0?'+':'')+br.job);
+    if(br.equip) parts.push('장비'+(br.equip>0?'+':'')+br.equip);
+    if(br.card)  parts.push('카드'+(br.card>0?'+':'')+br.card);
+    if(br.combo) parts.push('콤보'+(br.combo>0?'+':'')+br.combo);
+    if(br.buff)  parts.push('버프+'+br.buff);
+    if(br.etc)   parts.push('기타'+(br.etc>0?'+':'')+br.etc);
+    let color = br.total>0 ? 'var(--blue-light)' : 'var(--red-light)';
+    bd.innerHTML = `<b style="color:${color}">${br.total>0?'+':''}${br.total}</b>` + (parts.length?` (${parts.join(' ')})`:'');
   });
   // 파생 스탯 표시 (앞스탯+장비보너스 형식) — SE 기여분은 초록으로 분리
   if($('stat-atk'))  $('stat-atk').innerHTML  = `<span>${s.baseAtk}</span><span style="color:var(--blue-light);font-size:11px">+${s.weaponAtk}</span>${seB.atk>0?`<span style="color:#27ae60;font-size:11px">+${seB.atk}▲</span>`:''}`;
@@ -4744,40 +4911,74 @@ function updateUI(){
       ? `<span style="color:var(--green);font-weight:700">무캐스팅</span>`
       : `<span style="color:${castColor}">${castPct}%</span><span style="font-size:11px;color:var(--text-dim)"> 단축</span>`;
   }
-  
-  let pts=p.statPoints||0; if($('pts-row')) $('pts-row').textContent=pts>0?`포인트: ${pts}`:'';
-  // [P1-13] 미분배 포인트 배지 — PC 좌측 능력치 버튼 / 모바일 캐릭터 탭
-  ['pts-badge','m-pts-badge'].forEach(id=>{ let b=document.getElementById(id); if(b){ b.textContent=pts>0?`●${pts}`:''; b.style.display=pts>0?'':'none'; } });
+  // [P1-B] PD(완전회피)/MaxHP/MaxSP/자연회복 — 전부 calcStats()가 이미 계산해 둔 값이지만
+  // 상태창에는 빠져 있었다(P0에서 s.pd/s.hpRegen/s.spRegen가 실제 소비되는 것을 확인).
+  if($('stat-pd')) $('stat-pd').textContent = s.pd||0;
+  if($('stat-maxhp')) $('stat-maxhp').innerHTML = `<span>${s.maxHp}</span>${s.bonusMaxHp?`<span style="color:var(--blue-light);font-size:11px">+${s.bonusMaxHp}</span>`:''}`;
+  if($('stat-maxsp')) $('stat-maxsp').innerHTML = `<span>${s.maxSp}</span>${s.bonusMaxSp?`<span style="color:var(--blue-light);font-size:11px">+${s.bonusMaxSp}</span>`:''}`;
+  if($('stat-hpregen')) $('stat-hpregen').textContent = s.hpRegen||0;
+  if($('stat-spregen')) $('stat-spregen').textContent = s.spRegen||0;
 
-  // 스탯별 다음 1칸 비용 반영 (원작 누진 비용) — 상한·잔액에 따라 버튼 노출/흐림 처리
+  // [P1-B] 적용 효과 — s.itemEffects(ledger/unsupported/pending, P0 정본)만 읽는다.
+  // DB.items 재파싱 없음, 새 게임 계산 없음(표시 전용 변환).
+  (function renderItemEffectsPanel(){
+    let groups = getItemEffectDisplayRows(s);
+    let groupOrder = ['공격','방어','상태','자원','발동','기능'];
+    let total = 0, html = '';
+    groupOrder.forEach(g=>{
+      if(!groups[g] || !groups[g].length) return;
+      total += groups[g].length;
+      html += `<div class="fx-group"><div class="fx-group-hdr">${g}</div>` +
+        groups[g].map(row=>`<div class="fx-row"><span class="fx-row-label">${row.label}</span><span class="fx-row-src">${row.source}</span></div>`).join('') +
+        `</div>`;
+    });
+    if($('fx-groups')) $('fx-groups').innerHTML = html || `<div class="fx-empty">적용 효과 없음</div>`;
+    if($('fx-count-badge')) $('fx-count-badge').textContent = total>0 ? total+'개' : '';
+
+    let unsupported = (s.itemEffects && s.itemEffects.unsupported) || [];
+    if($('fx-unsupported-sec')) $('fx-unsupported-sec').style.display = unsupported.length ? '' : 'none';
+    if($('fx-unsupported-count')) $('fx-unsupported-count').textContent = unsupported.length ? unsupported.length+'개' : '';
+    if($('fx-unsupported-body')) $('fx-unsupported-body').innerHTML = unsupported.map(u=>
+      `<div class="fx-row fx-row-warn">⚠ ${_unsupportedDisplayLabel(u)} — 현재 미지원 <span class="fx-row-src">${u.source}</span></div>`).join('');
+
+    let pending = (s.itemEffects && s.itemEffects.pending) || [];
+    if($('fx-pending-sec')) $('fx-pending-sec').style.display = pending.length ? '' : 'none';
+    if($('fx-pending-count')) $('fx-pending-count').textContent = pending.length ? pending.length+'개' : '';
+    if($('fx-pending-body')) $('fx-pending-body').innerHTML = pending.map(pd=>
+      `<div class="fx-row">⚠ ${pd.source} — 효과 검증 대기</div>`).join('');
+  })();
+
+  let pts=p.statPoints||0; if($('pts-row')) $('pts-row').textContent=`포인트: ${pts}`;
+  // [P1-A] 미분배 포인트 배지 — PC 좌측 능력치 버튼 / 모바일 캐릭터 탭. "포인트가 있으면
+  // 빨강"이 아니라 "지금 즉시 하나 이상의 스탯을 +1 할 수 있으면 빨강"으로 바꿨다 --
+  // canSpendStatPoint() 하나만 쓰므로 PC/모바일 배지가 서로 다른 기준으로 갈릴 수 없다.
+  let canSpend = canSpendStatPoint(p);
+  ['pts-badge','m-pts-badge'].forEach(id=>{ let b=document.getElementById(id); if(b){ b.textContent=canSpend?`●${pts}`:''; b.style.display=canSpend?'':'none'; } });
+
+  // [P1-A] 스탯별 다음 1칸 비용을 항상 표시하고, +10 대신 +1/최대만 남긴다. 버튼은
+  // 포인트가 부족해도 자리를 유지한 채 활성/비활성(투명도+커서)만 바뀐다 -- 포인트가
+  // 바뀔 때마다 버튼이 나타났다 사라졌다 하지 않게 한다(과제 지시 §9).
   STAT_KEYS.forEach(k=>{
     let cur = p[k]||1;
     let maxed = cur >= STAT_CAP;
-    let b1 = $('plus-'+k), b10 = $('plus10-'+k);
+    let b1 = $('plus-'+k), bMax = $('plusmax-'+k), costEl = $('cost-'+k);
     let c1 = maxed ? 0 : statCost(cur);
+    let maxN = maxed ? 0 : getMaxAffordableStatUps(cur, pts);
+    if(costEl) costEl.textContent = maxed ? '최대' : `${c1}점`;
     if(b1){
       b1.title = maxed ? `${k.toUpperCase()} 상한 ${STAT_CAP} 도달`
                        : `${k.toUpperCase()} ${cur} → ${cur+1} : ${c1}점 (보유 ${pts}점)`;
-      if(maxed || pts <= 0){ b1.style.display='none'; }
-      else {
-        b1.style.display='inline-flex';
-        let ok = pts >= c1;
-        b1.style.opacity = ok ? '1' : '0.35';
-        b1.style.cursor  = ok ? 'pointer' : 'not-allowed';
-      }
+      let ok = !maxed && pts >= c1;
+      b1.style.opacity = ok ? '1' : '0.35';
+      b1.style.cursor  = ok ? 'pointer' : 'not-allowed';
     }
-    if(b10){
-      let need=0, n=0;
-      for(let v=cur; v<Math.min(STAT_CAP, cur+10); v++){ need += statCost(v); n++; }
-      b10.title = (maxed || n===0) ? `${k.toUpperCase()} 상한 ${STAT_CAP} 도달`
-        : pts >= need ? `${k.toUpperCase()} +${n} : 총 ${need}점`
-        : `${k.toUpperCase()} +${n} : 총 ${need}점 — 보유 ${pts}점이라 가능한 만큼만 오릅니다`;
-      // 1칸도 못 사면 +10은 숨김
-      if(maxed || n===0 || pts < c1){ b10.style.display='none'; }
-      else {
-        b10.style.display='inline-flex';
-        b10.style.opacity = pts >= need ? '1' : '0.6';
-      }
+    if(bMax){
+      bMax.title = maxed ? `${k.toUpperCase()} 상한 ${STAT_CAP} 도달`
+        : maxN > 0 ? `${k.toUpperCase()} +${maxN} (보유 ${pts}점으로 가능한 최대)`
+        : `${k.toUpperCase()} : 다음 칸 ${c1}점 필요 — 보유 ${pts}점`;
+      let ok = !maxed && maxN > 0;
+      bMax.style.opacity = ok ? '1' : '0.35';
+      bMax.style.cursor  = ok ? 'pointer' : 'not-allowed';
     }
   });
   
@@ -5074,10 +5275,18 @@ function gainBaseExp(p, amount, silent){
     if(!need || need <= 0) break;
     if(p.baseExp < need) break;
     p.baseExp -= need;
-    p.statPoints = (p.statPoints||0) + levelStatPoints(p.baseLv); // 올리기 전 레벨 기준
+    let gainedPts = levelStatPoints(p.baseLv); // 올리기 전 레벨 기준
+    p.statPoints = (p.statPoints||0) + gainedPts;
     p.baseLv++;
     lvUp = true;
-    if(!silent){ log(`🌟 Base Lv.${p.baseLv} 달성!`,'level-up'); notify('레벨 업!','gold'); pbReact('levelup'); }
+    // [P1-A] 획득량/보유량을 하드코딩하지 않고 실제 levelStatPoints() 반환값과 갱신된
+    // p.statPoints를 그대로 쓴다. "포인트 획득 ≠ 항상 배분 가능"이므로 canSpendStatPoint()가
+    // true일 때만 배분 가능 문구를 덧붙인다(과제 지시 §17).
+    if(!silent){
+      let canSpendNow = canSpendStatPoint(p);
+      log(`🌟 Base Lv.${p.baseLv} 달성 — 상태 포인트 +${gainedPts} · 보유 ${p.statPoints}${canSpendNow?' · 능력치 배분 가능':''}`,'level-up');
+      notify('레벨 업!','gold'); pbReact('levelup');
+    }
   }
   if(lvUp && !silent){
     let ns = calcStats();
@@ -5109,6 +5318,44 @@ function addStat(st, amt=1){
     updateUI();
     log(`📊 ${st.toUpperCase()} +${raised} <span style="color:var(--text-dim)">(-${spent}점)</span>`,'system');
   }
+}
+
+// [P1-A] cur에서 points로 몇 칸까지 연속 상승 가능한지 계산하는 순수 함수.
+// UI 표시(최대 버튼 라벨/툴팁)와 실제 실행(addStatMax)이 반드시 이 함수 하나만 써야
+// "UI는 +4인데 실제로는 +3"같은 불일치가 생기지 않는다. statCost/STAT_CAP은 그대로 재사용.
+function getMaxAffordableStatUps(cur, points){
+  let n = 0, remain = points || 0;
+  while(cur + n < STAT_CAP){
+    let c = statCost(cur + n);
+    if(remain < c) break;
+    remain -= c; n++;
+  }
+  return n;
+}
+
+// [P1-A] "지금 즉시 하나 이상의 스탯을 +1 할 수 있는가" 단일 판정. PC(pts-badge)와
+// 모바일(m-pts-badge) 배지가 반드시 이 함수 하나만 써야 두 배지의 빨강 여부가 갈리지
+// 않는다. statPoints>0 만으로는 안 된다 -- 포인트가 있어도 모든 스탯이 상한이거나 다음
+// 칸 비용보다 적으면 지금은 아무것도 할 수 없다(과제 지시 §10).
+function canSpendStatPoint(p){
+  if(!p) return false;
+  let pts = p.statPoints || 0;
+  if(pts <= 0) return false;
+  return STAT_KEYS.some(function(k){
+    let cur = p[k] || 1;
+    return cur < STAT_CAP && pts >= statCost(cur);
+  });
+}
+
+// [P1-A] "최대" 버튼의 유일한 실행 경로 -- getMaxAffordableStatUps로 계산한 값을 그대로
+// addStat에 넘긴다(재계산·재구현 없음). addStat 자신의 반복 비용 계산과 완전히 같은
+// statCost를 쓰므로 UI가 예고한 칸 수와 실제 오르는 칸 수가 항상 일치한다.
+function addStatMax(st){
+  let p = G.player; if(!p) return;
+  let cur = p[st] || 1;
+  let n = getMaxAffordableStatUps(cur, p.statPoints || 0);
+  if(n <= 0){ log(`⚠ ${st.toUpperCase()}: 지금 보유 포인트로는 1칸도 올릴 수 없습니다.`,'warning'); return; }
+  addStat(st, n);
 }
 
 // [P2-10] 받침 유무로 조사 선택 (이/가, 을/를, 은/는, 와/과 등). word 끝이 한글 음절이 아니면 뒤쪽(받침 없음 취급) 반환
@@ -5981,7 +6228,7 @@ function _endTurnIfBattlesEmpty(){
 // AOE 사망 경로(광역기로 여러 마리 동시 처치)는 baseExp를 누적한 뒤 루프 끝에서 한 번만
 // gainBaseExp로 반영하는 별개 방식이라 — 매 킬마다 즉시 레벨업하는 이 함수로 합치면
 // 레벨업 타이밍이 달라진다 — 의도적으로 통합하지 않았다.
-function awardKillReward(p, mon, set){
+function awardKillReward(p, mon, set, stats){
   recordCombatEvent('kill',{monster:mon.name,id:mon.sourceId||mon.id||null,entityId:mon.entityId||null});
   p.totalKills = (p.totalKills||0) + 1;
   if(!p.killCount) p.killCount = {};
@@ -6001,7 +6248,7 @@ function awardKillReward(p, mon, set){
   p.zeny += z; p.records.totalZeny += z;
   log(`💰 +${z}z`, 'system');
   idleTrack(getExp, z);
-  rollDrops(p, mon);
+  rollDrops(p, mon, null, stats);
   checkQuestKill(mon.name);
   checkJobQuestKill(mon.name);
 }
@@ -6065,11 +6312,15 @@ function processTurn(){
     if (!skipAttack) {
       // ── [ 플레이어: 스킬 자동 사용 AI ] ──
       let sUsed = false; let now = Date.now();
+      // P0-C4: 영구 습득 스킬 + 장비 grantSkill을 합친 "현재 사용 가능한" 스킬 목록.
+      // 자동사냥 후보 산정(pickPlayerSkill 내부)과 아래 실제 시전 모두 이 목록만 본다 --
+      // p.skills 자체는 여기서 바뀌지 않는다.
+      let effSkills = getEffectiveSkills(p, s);
       // ── 스킬 선택 (pickPlayerSkill — 슬라이스3 추출, 동작 불변) ──
       let pick = pickPlayerSkill(p, s);
       if(manualOverride&&manualOverride.type==='skill'&&!pick){skipAttack=true;sUsed=true;}
       function pickPlayerSkill(p, s){
-      let mySkillNames = Object.keys(p.skills || {});
+      let mySkillNames = Object.keys(effSkills);
       // ── 쿨다운 틱 차감 (매 턴마다) ──
       Object.keys(G.cooldowns).forEach(sn=>{
         if(G.cooldowns[sn] > 0) G.cooldowns[sn]--;
@@ -6111,7 +6362,7 @@ function processTurn(){
       const hotbarSkillSet = new Set(Object.values(p.hotbar||{}).filter(sl=>sl&&sl.type==='skill').map(sl=>sl.name));
       let allActSkills = mySkillNames.filter(sn=>{
         let sk=DB.skills[sn];
-        return sk&&sk.type==='액티브'&&typeof sk.effect==='function'&&!_NC.has(sn)&&sn!=='죽은척하기'&&(p.skills[sn]||0)>0&&!(p.skillToggles&&p.skillToggles[sn]===false)&&hotbarSkillSet.has(sn);
+        return sk&&sk.type==='액티브'&&typeof sk.effect==='function'&&!_NC.has(sn)&&sn!=='죽은척하기'&&(effSkills[sn]||0)>0&&!(p.skillToggles&&p.skillToggles[sn]===false)&&hotbarSkillSet.has(sn);
       });
       let sigStr = allActSkills.slice().sort().join(',');
       if(!G.skillTiers || G.skillTierSig !== sigStr){
@@ -6126,7 +6377,7 @@ function processTurn(){
           // rank0 (몬스터정보/간반테인): 큐 제외, fallback에서만
         });
         // 각 티어 내에서 스킬레벨 내림차순 정렬 (강한 것 먼저)
-        const sortByLv=(a,b)=>(p.skills[b]||1)-(p.skills[a]||1);
+        const sortByLv=(a,b)=>(effSkills[b]||1)-(effSkills[a]||1);
         G.skillTiers={high:h.sort(sortByLv), mid:m.sort(sortByLv), low:l.sort(sortByLv)};
         G.tierIdx={high:0, mid:0, low:0};
         G.skillTierSig=sigStr;
@@ -6140,11 +6391,11 @@ function processTurn(){
         // [FIX 3-2] 리저렉션 제외 (부활 스킬, 힐 스킬 아님), 응급치료는 고정 5HP 회복
         // [2-8] 힐도 핫바 등록 필수
         ['힐','응급치료'].forEach(sn=>{
-          if(!healPick&&hotbarSkillSet.has(sn)&&((p.skills||{})[sn]||0)>0&&!G.cooldowns[sn]){
+          if(!healPick&&hotbarSkillSet.has(sn)&&(effSkills[sn]||0)>0&&!G.cooldowns[sn]){
             let sk=DB.skills[sn]; if(!sk) return;
-            let cost=typeof sk.spCost==='function'?sk.spCost(p.skills[sn]):sk.spCost;
+            let cost=getSkillSpCost(typeof sk.spCost==='function'?sk.spCost(effSkills[sn]):sk.spCost, s);
             if(p.sp<cost) return;
-            let slv=p.skills[sn]||1;
+            let slv=effSkills[sn]||1;
             let recover=(sn==='응급치료')?5:Math.floor((s.matk*2+s.int*slv)*((200-p.vit)*0.005+1));
             if((p.maxHp-p.hp)>=recover) healPick=sn;
           }
@@ -6161,9 +6412,9 @@ function processTurn(){
         for(let i=0;i<arr.length;i++){
           let idx=(ptr+i)%arr.length;
           let sn=arr[idx];
-          let slv=p.skills[sn]||0; if(!slv) continue;
+          let slv=effSkills[sn]||0; if(!slv) continue;
           let sk=DB.skills[sn]; if(!sk) continue;
-          let cost=typeof sk.spCost==='function'?sk.spCost(slv):sk.spCost;
+          let cost=getSkillSpCost(typeof sk.spCost==='function'?sk.spCost(slv):sk.spCost, s);
           if(p.sp<cost) continue;
           if(!canUseSkillItemCost(p,sk)) continue; // [제조·파머시 통합 v0.2] 재료 부족 시 자동전투 후보 제외
           if(G.cooldowns[sn]>0) continue; // 쿨중이면 같은 티어 다음 것 시도
@@ -6190,12 +6441,12 @@ function processTurn(){
           let buffCandidates = mySkillNames.filter(sn=>{
             let sk=DB.skills[sn];
             // [2-8] 버프도 핫바 등록 필수
-            return sk&&sk.type==='버프'&&typeof sk.effect==='function'&&(p.skills[sn]||0)>0&&!(p.skillToggles&&p.skillToggles[sn]===false)&&hotbarSkillSet.has(sn);
+            return sk&&sk.type==='버프'&&typeof sk.effect==='function'&&(effSkills[sn]||0)>0&&!(p.skillToggles&&p.skillToggles[sn]===false)&&hotbarSkillSet.has(sn);
           });
           for(let sn of buffCandidates){
             if(G.cooldowns[sn]>0) continue;
             let sk=DB.skills[sn];
-            let cost=typeof sk.spCost==='function'?sk.spCost(p.skills[sn]):sk.spCost;
+            let cost=getSkillSpCost(typeof sk.spCost==='function'?sk.spCost(effSkills[sn]):sk.spCost, s);
             if(p.sp<cost) continue;
             if(!canUseSkillItemCost(p,sk)) continue; // [제조·파머시 통합 v0.2]
             buffPick=sn; break;
@@ -6213,8 +6464,8 @@ function processTurn(){
         let fallback = mySkillNames.find(sn=>{
           let sk=DB.skills[sn]; if(!sk||sk.type!=='액티브'||typeof sk.effect!=='function') return false;
           if(sn==='죽은척하기'||_NC.has(sn)||!hotbarSkillSet.has(sn)) return false;
-          let slv=p.skills[sn]||0; if(!slv) return false;
-          let cost=typeof sk.spCost==='function'?sk.spCost(slv):sk.spCost;
+          let slv=effSkills[sn]||0; if(!slv) return false;
+          let cost=getSkillSpCost(typeof sk.spCost==='function'?sk.spCost(slv):sk.spCost, s);
           return p.sp>=cost && canUseSkillItemCost(p,sk) && !G.cooldowns[sn] && !(p.skillToggles&&p.skillToggles[sn]===false);
         });
         if(fallback) pick=fallback;
@@ -6226,8 +6477,8 @@ function processTurn(){
 
       if(finalCastable.length>0){
         pick=finalCastable[0];
-        let slv = p.skills[pick]; let skObj = DB.skills[pick];
-        let cost = typeof skObj.spCost === 'function' ? skObj.spCost(slv) : skObj.spCost;
+        let slv = effSkills[pick]; let skObj = DB.skills[pick];
+        let cost = getSkillSpCost(typeof skObj.spCost === 'function' ? skObj.spCost(slv) : skObj.spCost, s);
         p.sp -= cost;
         // 쿨다운을 틱 단위로 변환: cooldown(ms) / aspdDelay(ms) = 틱 수
         // DEX 캐스팅 단축도 반영: 마법 스킬은 castReduction 비율로 쿨다운 단축
@@ -6282,7 +6533,7 @@ function processTurn(){
         // 스킬로 몬스터를 처치했을 경우 즉시 처리
         if(t && t.currentHp <= 0){
           {let _ki=G.battles.indexOf(t);if(_ki!==-1)G.battles.splice(_ki,1);} logSep(); log(`✅ ${t.emoji}${t.name} 처치! (스킬)`, 'combat');
-          awardKillReward(p, t, set);
+          awardKillReward(p, t, set, s);
           if(_endTurnIfBattlesEmpty()) return;
         }
         // ── AOE 사망 처리: t 외 광역기에 사망한 몬스터 보상 처리 및 배열 정리 ──
@@ -6299,7 +6550,7 @@ function processTurn(){
           let _az=_am.zeny[0]+Math.floor(Math.random()*(_am.zeny[1]-_am.zeny[0]));
           recordCombatEvent('reward',{monster:_am.name,exp:_ae,jexp:_aj,zeny:_az});
           p.zeny+=_az;p.records.totalZeny+=_az;log(`💰 +${_az}z`,'system'); idleTrack(_ae,_az); // [UI-①]
-          rollDrops(p, _am);
+          rollDrops(p, _am, null, s);
           checkQuestKill(_am.name);checkJobQuestKill(_am.name);
         }
         // AOE 사망 후 레벨업/잡레벨 체크
@@ -6341,37 +6592,23 @@ function processTurn(){
           { let dgLv=(p.skills&&p.skills["드래고놀로지"])||0;
             if(dgLv>0&&t.element==='용속성') raceMul+=dgLv*0.1;
           }
-          // 카드 종족/속성/크기/보스 배율
-          if(s.cardRaceAtk && t.race && s.cardRaceAtk[t.race]) raceMul += s.cardRaceAtk[t.race]/100;
-          if(s.cardElemAtk && s.cardElemAtk[t.element]) raceMul += s.cardElemAtk[t.element]/100;
-          if(s.cardSizeAtk && s.cardSizeAtk[t.size]) raceMul += s.cardSizeAtk[t.size]/100;
-          if(s.cardBossAtk && t.isMvp) raceMul += s.cardBossAtk/100;
-          let cardAtkMul = 1 + (s.cardAtkPct||0)/100;
+          // 카드 종족/속성/크기/보스 배율 (P0-C5: item-effects.js로 이동, 계산 순서/반올림
+          // 위치는 그대로 -- rawAtk 계산 직전, DEF 감산 이전에서만 호출)
+          raceMul = applyOutgoingRaceElemSizeBossAtk(raceMul, t, s);
+          let cardAtkMul = getOutgoingAtkPctMul(s);
           // 방어 무시 (원령무사 카드)
-          let effSoftDef = s.cardDefIgnore ? 0 : (t.softDef||0);
-          let effHardDef = s.cardDefIgnore ? 0 : (t.def||0);
+          let _defIgnore = getOutgoingDefIgnore(t, s);
+          let effSoftDef = _defIgnore.softDef;
+          let effHardDef = _defIgnore.hardDef;
           let rawAtk = Math.floor((s.baseAtk + s.weaponAtk) * szP * elM * curseMul * raceMul * cardAtkMul);
           let tot = Math.max(1, Math.floor((rawAtk - effSoftDef) * (1 - effHardDef/100)));
           if(isC) tot = Math.floor(tot * 1.4);
           let _targetHpBefore=t.currentHp;
           let dmg = tot; t.currentHp -= dmg;
-          // 카드 프록: HP흡수 / SP흡수 / 상태이상 / 오토스펠
+          // 카드 프록: HP흡수 / SP흡수 / 상태이상 / 오토스펠 (P0-C1: s.itemEffects.events 소비로 통합 -- 카드 DB 직접 재파싱 없음)
           { let _p=G.player;
-            Object.values(_p.equip||{}).forEach(eqName=>{ if(!eqName)return;
-              let _parsed=(typeof parseItem==='function')?parseItem(eqName):null;
-              if(!_parsed||!_parsed.cards)return;
-              _parsed.cards.forEach(cn=>{
-                let c=DB?.items?.[cn+" 카드"]; if(!c)return;
-                if(c.hpDrain&&Math.random()<c.hpDrain.rate){ let h=Math.floor(dmg*c.hpDrain.pct); _p.hp=Math.min(_p.maxHp,_p.hp+h); if(h>0)log(`🩸 <b>[흡혈]</b> HP <span style="color:#27ae60">+${h}</span>`,'heal'); }
-                if(c.spDrain&&Math.random()<c.spDrain.rate){ let sp2=Math.floor(dmg*c.spDrain.pct); _p.sp=Math.min(_p.maxSp,_p.sp+sp2); if(sp2>0)log(`💜 <b>[SP흡수]</b> SP <span style="color:#3498db">+${sp2}</span>`,'system'); }
-                if(c.inflict){
-                  if(c.inflict.stun&&Math.random()<c.inflict.stun){ if(!t.statusEffects)t.statusEffects={}; t.statusEffects.stun=3; log(`⚡ <b>[스턴]</b> ${t.name} 스턴!`,'system'); }
-                  if(c.inflict.confusion&&Math.random()<c.inflict.confusion){ if(!t.statusEffects)t.statusEffects={}; t.statusEffects.confusion=5; log(`😵 <b>[혼란]</b> ${t.name} 혼란!`,'system'); }
-                  if(c.inflict.random_debuff&&Math.random()<c.inflict.random_debuff){ let dbs=['stun','silence','sleep','blind','confusion']; let d=dbs[Math.floor(Math.random()*dbs.length)]; if(!t.statusEffects)t.statusEffects={}; t.statusEffects[d]=3; log(`💀 <b>[로드오브데스]</b> ${t.name} [${d}]!`,'system'); }
-                }
-                if(c.autoSpell&&Math.random()<(c.autoSpell.rate||0)){ let _sk=DB?.skills?.[c.autoSpell.skill]; if(_sk&&_sk.effect){ let _r=_sk.effect(_p,s,t,c.autoSpell.lv); if(_r)log(`✨ <b>[오토스펠]</b> ${_r.msg}`,'crit'); } }
-              });
-            });
+            let _legacyEvents=(s.itemEffects&&s.itemEffects.events.onHit||[]).filter(e=>e.kind==='hpDrain'||e.kind==='spDrain'||e.kind==='inflict'||e.kind==='autoSpell');
+            triggerItemEffects('onHit', { player:_p, target:t, stats:s, DB:DB, damage:dmg, isCrit:isC, log:log }, _legacyEvents);
           }
           // D. 스내쳐: 기본 공격 명중 시 자동 스틸
           { let snatchLv=(p.skills&&p.skills["스내쳐"])||0;
@@ -6392,46 +6629,13 @@ function processTurn(){
             log(`⚡ <b>[더블 어택]</b> 추가타! <span class="hl-dmg">+${d2}</span>`, 'combat');
           }
 
-          // ── [v9.04] 카드 effect 처리 — 평타 명중 후 추가 효과 ──
+          // ── [P0-C1] 카드 이벤트 효과 실행 — 평타 명중 후 추가 효과 (raceBonus/seProc/lifesteal) ──
+          // s.itemEffects.events.onHit만 쓴다 -- 카드 DB 직접 재파싱 없음(구 v9.04 블록 제거).
           if(t.currentHp > 0 && p.equip){
-            Object.keys(p.equip).forEach(eqKey => {
-              let eqName = p.equip[eqKey]; if(!eqName) return;
-              let parsed = (typeof parseItem === 'function') ? parseItem(eqName) : null;
-              if(!parsed || !parsed.cards || !Array.isArray(parsed.cards)) return;
-
-              parsed.cards.forEach(cardName => {
-                let card = DB?.items?.[cardName + " 카드"]; if(!card || !card.effect) return;
-                let cardEff = card.effect;
-
-                // 1. raceBonus: 특정 종족 추가 데미지
-                if(cardEff.type === 'raceBonus' && cardEff.race === t.race && cardEff.dmgMult){
-                  let bonusDmg = Math.floor(dmg * (cardEff.dmgMult - 1));
-                  t.currentHp -= bonusDmg;
-                  dmg += bonusDmg;
-                  log(`🃏 <b>[${cardName}]</b> ${t.race} 추가 데미지 <span class="hl-dmg">+${bonusDmg}</span>`, 'combat');
-                }
-
-                // 2. seProc: 상태효과 확률 발동 (스턴, 포이즌 등)
-                if((cardEff.type === 'seProc' || cardEff.type === 'mixed') && cardEff.seProc){
-                  let proc = cardEff.seProc;
-                  if(Math.random() < proc.chance){
-                    if(!t.statusEffects) t.statusEffects = {};
-                    t.statusEffects[proc.se] = proc.turns;
-                    const seEmoji = {stun:'💫', poison:'☠️', sleep:'💤', freeze:'🧊', blind:'🌑', silence:'🤐', curse:'👻', bleed:'🩸'};
-                    log(`🃏 <b>[${cardName}]</b> ${seEmoji[proc.se] || '⚡'} ${proc.se} 부여! (${proc.turns}턴)`, 'system');
-                  }
-                }
-
-                // 3. lifesteal: SP 흡수 (드라큘라 카드 등)
-                if(cardEff.type === 'lifesteal' && cardEff.chance && cardEff.spRate){
-                  if(Math.random() < cardEff.chance){
-                    let spGain = Math.floor(dmg * cardEff.spRate);
-                    p.sp = Math.min(p.maxSp, p.sp + spGain);
-                    log(`🃏 <b>[${cardName}]</b> SP 흡수 <span class="hl-dmg">+${spGain}</span>`, 'system');
-                  }
-                }
-              });
-            });
+            let _procEvents=(s.itemEffects&&s.itemEffects.events.onHit||[]).filter(e=>e.kind==='raceBonus'||e.kind==='seProc'||e.kind==='lifesteal');
+            let _ctx = { player:p, target:t, stats:s, DB:DB, damage:dmg, isCrit:isC, log:log };
+            triggerItemEffects('onHit', _ctx, _procEvents);
+            dmg = _ctx.damage;
           }
 
           let advLog = [];
@@ -6483,7 +6687,7 @@ function processTurn(){
   if(t.currentHp<=0){
     {let _ki=G.battles.indexOf(t);if(_ki!==-1)G.battles.splice(_ki,1);} logSep(); log(`✅ ${t.emoji}${t.name} 처치!`,'combat');
     
-    awardKillReward(p, t, set);
+    awardKillReward(p, t, set, s);
     if(_endTurnIfBattlesEmpty()) return;
   }
 	// 드랍 처리 루프 끝난 직후
@@ -6615,6 +6819,8 @@ function processTurn(){
           if(mdg>0&&p.statusEffects&&p.statusEffects.defender&&!isSkillMagic)mdg=Math.max(1,Math.floor(mdg*(1-(p.statusEffects.defender.reduce||0))));
           if(mdg>0&&p.statusEffects&&p.statusEffects.siegfried&&isSkillMagic)mdg=Math.max(1,Math.floor(mdg*(1-(p.statusEffects.siegfried.eleRes||0))));
           if(mdg>0&&p.statusEffects&&p.statusEffects.godsBless&&m.element==='성속성')mdg=Math.max(1,Math.floor(mdg*(1-(p.statusEffects.godsBless.holyRes||0))));
+          // P0-C3: 아이템/카드 유래 받는 피해 감소(전체/종족/속성) -- 기존 방어 체인 맨 끝에 한 단계로 추가
+          if(mdg>0) mdg=Math.max(1,Math.floor(applyIncomingItemReduction(mdg, { attackerRace:m.race, element:isSkillMagic?m.element:undefined, kind:isSkillMagic?'magic':'physical' }, s)));
           p.hp -= mdg;
             if(mdg>0) recordCombatEvent('damage_taken',{monster:m.name,amount:mdg,action:'skill'});
             log(`💥 <b>[${m.name}의 ${skName}]</b> ${skDesc} <span class="hl-dmg">${mdg}</span>의 피해를 입었습니다!`,'dmg-recv'); skillUsed = true;
@@ -6638,6 +6844,8 @@ function processTurn(){
           if(mdg>0&&p.statusEffects&&p.statusEffects.kyrie){let ky=p.statusEffects.kyrie;let abs=Math.min(mdg,ky.absorbPerHit||0);mdg-=abs;ky.count--;log(`✨ <b>[기리에]</b> ${abs} 흡수! (${ky.count}회 남음)`,'heal');if(ky.count<=0)delete p.statusEffects.kyrie;}
           if(mdg>0&&p.statusEffects&&p.statusEffects.diamondBody)mdg=Math.max(1,Math.floor(mdg*(1-(p.statusEffects.diamondBody.dmgReduce||0))));
           if(mdg>0&&p.statusEffects&&p.statusEffects.defender)mdg=Math.max(1,Math.floor(mdg*(1-(p.statusEffects.defender.reduce||0))));
+          // P0-C3: 아이템/카드 유래 받는 피해 감소(전체/종족) -- 일반 공격은 속성 판별 근거가 없어 element 미전달(elemReduce 미적용)
+          if(mdg>0) mdg=Math.max(1,Math.floor(applyIncomingItemReduction(mdg, { attackerRace:m.race, kind:'physical' }, s)));
           p.hp-=mdg;
           if(mdg>0) recordCombatEvent('damage_taken',{monster:m.name,amount:mdg,action:'attack'});
           // D. 리플렉트 쉴드: 방패 장착 시 물리 피해 일부 반사
@@ -6660,7 +6868,7 @@ function processTurn(){
           let speedInfo = speedRatio < 0.5 ? ` <span style="font-size:11px;color:var(--green)">[고속회피]</span>` : speedRatio > 2 ? ` <span style="font-size:11px;color:var(--red-light)">[고속${attackCount}타]</span>` : '';
           let atkTag = attackCount>1?` <span style="font-size:11px;color:var(--gold)">[${ac+1}/${attackCount}타]</span>`:'';
           atkTag += speedInfo; log(`🩸 <b>[피격]</b> ${m.name}${josa(m.name,'이가')} ${p.name}${josa(p.name,'을를')} 공격! <span class="hl-dmg">${mdg}</span> 피해.${atkTag}`,'dmg-recv'); }
-        if(m.inflict) Object.keys(m.inflict).forEach(k=>{ if(Math.random()<m.inflict[k]){ if(!p.statusEffects) p.statusEffects={}; p.statusEffects[k]={turns:DB.statusEffects[k]?DB.statusEffects[k].duration:3}; log(`⚠️ ${k} 감염!`,'warning'); } }); 
+        if(m.inflict) Object.keys(m.inflict).forEach(k=>{ if(Math.random()<m.inflict[k]){ if(isStatusImmune(k,s)){ log(`🛡️ ${k} 면역!`,'system'); return; } if(!p.statusEffects) p.statusEffects={}; p.statusEffects[k]={turns:DB.statusEffects[k]?DB.statusEffects[k].duration:3}; log(`⚠️ ${k} 감염!`,'warning'); } });
         if(p.hp<=0){dd=true;break;} 
       }
       if(dd) break;
@@ -6923,6 +7131,59 @@ const JOB_TIER = {
 // weaponLv → 최소 직업 티어
 const WEAPON_LV_MIN_TIER = {1:0, 2:1, 3:2, 4:2};
 
+const EQUIP_SLOT_TYPES = ['투구_상단','투구_중단','투구_하단','무기','갑옷','방패','걸칠것','신발','악세1','악세2'];
+const TWO_HANDED_WEAPON_TYPES = ['양손검','양손도끼','양손봉','창','활'];
+
+// [P1-C] 슬롯/장착가능 판정 — equipItem()이 실제로 쓰던 것과 정확히 같은 로직을 분리했다
+// (동작 변경 없음, 코드 이동). 장비 비교 UI(getEquipmentComparison)가 이 함수를 그대로
+// 재사용하므로 "비교는 장착 가능하다고 계산했는데 실제 equipItem은 거부" 하는 불일치가
+// 구조적으로 생길 수 없다. reason에는 기존 log() 문구와 동일한 <b> 태그를 그대로 남긴다.
+function resolveEquipSlot(p, i){
+  if(!i) return { slot: null, blocked: false, reason: null };
+  if(i.type === '무기'){
+    const jobCode = JOB_NAME2CODE ? JOB_NAME2CODE[normalizeJob(p.job||'')] : null;
+    const allowed = jobCode ? JOB_WEAPON_ALLOW[jobCode] : null;
+    const wt = i.wType || '';
+    if(allowed && wt && !allowed.includes(wt)){
+      const jobName = p.job || jobCode || '현재 직업';
+      return { slot: '무기', blocked: true, reason: `<b>${jobName}</b>은(는) <b>${wt}</b> 계열 무기를 장착할 수 없습니다.` };
+    }
+    const wlv = i.weaponLv || 1;
+    const minTier = WEAPON_LV_MIN_TIER[wlv] ?? 0;
+    const myTier  = jobCode !== null && JOB_TIER[jobCode] !== undefined ? JOB_TIER[jobCode] : 2;
+    if(myTier < minTier){
+      const tierLabel = ['노비스','1차 직업','2차 직업 이상'][minTier] || '2차 직업 이상';
+      return { slot: '무기', blocked: true, reason: `이 무기는 <b>${tierLabel}</b>만 장착 가능합니다.` };
+    }
+  }
+
+  let targetSlot = i.type;
+  // 장신구 자동 슬롯 배정 로직 (DB type은 'Accessory' 대문자) — 악세1이 비어 있으면
+  // 악세1, 아니면(이미 채워져 있으면) 악세2. 사용자가 고르는 구조가 아니므로 비교 UI도
+  // 이 결정과 다른 슬롯을 임의로 제시하지 않는다.
+  if(i.type === 'Accessory' || i.type === 'accessory') {
+    targetSlot = p.equip && p.equip['악세1'] ? '악세2' : '악세1';
+  }
+
+  if(!EQUIP_SLOT_TYPES.includes(targetSlot)) return { slot: null, blocked: false, reason: null };
+  return { slot: targetSlot, blocked: false, reason: null };
+}
+
+// [P1-C] 실제 장착 결과(교체된 슬롯 + 양손무기의 방패 자동해제)를 equip 딕셔너리에
+// 반영한다. equipItem()과 비교 UI가 완전히 같은 코드로 같은 최종 loadout을 만든다 —
+// 인벤토리 이동은 다루지 않는다(호출부 책임: equipItem은 실제 인벤토리를, 비교 UI는
+// clone만 만지므로 인벤토리를 건드릴 필요가 없다).
+function applyCandidateEquip(equip, targetSlot, itemKey, i){
+  const prevAtSlot = equip[targetSlot];
+  equip[targetSlot] = itemKey;
+  let shieldRemoved = null;
+  if(targetSlot==='무기' && i.wType && TWO_HANDED_WEAPON_TYPES.includes(i.wType) && equip['방패']){
+    shieldRemoved = equip['방패'];
+    delete equip['방패'];
+  }
+  return { prevAtSlot: prevAtSlot, shieldRemoved: shieldRemoved };
+}
+
 function equipItem(k){
   let p=G.player;
   let parsed = parseItem(k);
@@ -6930,52 +7191,24 @@ function equipItem(k){
   if(!i) return;
   if(!p.equip) p.equip={};
 
-  // ── 무기 타입/레벨 제한 체크 ──
-  if(i.type === '무기'){
-    const jobCode = JOB_NAME2CODE ? JOB_NAME2CODE[normalizeJob(p.job||'')] : null;
-    const allowed = jobCode ? JOB_WEAPON_ALLOW[jobCode] : null;
-    const wt = i.wType || '';
-    if(allowed && wt && !allowed.includes(wt)){
-      const jobName = p.job || jobCode || '현재 직업';
-      log(`⛔ <b>${jobName}</b>은(는) <b>${wt}</b> 계열 무기를 장착할 수 없습니다.`, 'error');
-      return;
-    }
-    const wlv = i.weaponLv || 1;
-    const minTier = WEAPON_LV_MIN_TIER[wlv] ?? 0;
-    const myTier  = jobCode !== null && JOB_TIER[jobCode] !== undefined ? JOB_TIER[jobCode] : 2;
-    if(myTier < minTier){
-      const tierLabel = ['노비스','1차 직업','2차 직업 이상'][minTier] || '2차 직업 이상';
-      log(`⛔ 이 무기는 <b>${tierLabel}</b>만 장착 가능합니다.`, 'error');
-      return;
-    }
-  }
-  
-  let targetSlot = i.type;
+  let resolved = resolveEquipSlot(p, i);
+  if(resolved.blocked){ log(`⛔ ${resolved.reason}`, 'error'); return; }
+  let targetSlot = resolved.slot;
+  if(!targetSlot) return;
 
-  // 장신구 자동 슬롯 배정 로직 (DB type은 'Accessory' 대문자)
-  if(i.type === 'Accessory' || i.type === 'accessory') {
-    if(!p.equip['악세1']) targetSlot = '악세1';
-    else targetSlot = '악세2';
-  }
+  // 수량 가드: 인벤에 없으면 장착 불가
+  if((p.inventory[k]||0) <= 0){ log(`⚠ ${k}${josa(k,'이가')} 인벤토리에 없습니다.`, 'error'); return; }
 
-  const equipTypes = ['투구_상단','투구_중단','투구_하단','무기','갑옷','방패','걸칠것','신발','악세1','악세2'];
-  
-  if(equipTypes.includes(targetSlot)){
-    // 수량 가드: 인벤에 없으면 장착 불가
-    if((p.inventory[k]||0) <= 0){ log(`⚠ ${k}${josa(k,'이가')} 인벤토리에 없습니다.`, 'error'); return; }
-    if(p.equip[targetSlot]) p.inventory[p.equip[targetSlot]]=(p.inventory[p.equip[targetSlot]]||0)+1;
-    p.equip[targetSlot]=k; p.inventory[k]--;
-    if(p.inventory[k]<=0) delete p.inventory[k];
-    // 양손 무기 장착 시 방패 자동 해제
-    const twoHandedTypes = ['양손검','양손도끼','양손봉','창','활'];
-    if(targetSlot==='무기' && i.wType && twoHandedTypes.includes(i.wType) && p.equip['방패']){
-      p.inventory[p.equip['방패']] = (p.inventory[p.equip['방패']]||0)+1;
-      if(p.inventory[p.equip['방패']]<=0) delete p.inventory[p.equip['방패']];
-      delete p.equip['방패'];
-      log(`🛡️ 양손 무기 장착으로 방패가 해제되었습니다.`, 'system');
-    }
-    updateUI(); showInvModal();
+  let { prevAtSlot, shieldRemoved } = applyCandidateEquip(p.equip, targetSlot, k, i);
+  if(prevAtSlot) p.inventory[prevAtSlot]=(p.inventory[prevAtSlot]||0)+1;
+  p.inventory[k]--;
+  if(p.inventory[k]<=0) delete p.inventory[k];
+  if(shieldRemoved){
+    p.inventory[shieldRemoved] = (p.inventory[shieldRemoved]||0)+1;
+    if(p.inventory[shieldRemoved]<=0) delete p.inventory[shieldRemoved];
+    log(`🛡️ 양손 무기 장착으로 방패가 해제되었습니다.`, 'system');
   }
+  updateUI(); showInvModal();
 }
 
 function unequipItem(type){
@@ -7874,44 +8107,211 @@ function equippedCountOf(p, itemName){
   return Object.values(p.equip||{}).filter(v=>v===itemName).length;
 }
 
-/** 장비 후보를 슬롯에 임시 장착했을 때의 스탯 증감 미리보기.
- *  후보가 인벤토리에 없어도(상점 구매 전 미리보기) 동작한다 — calcStats()는
- *  p.equip에 들어있는 "이름"만 조회하지 인벤토리 보유 여부는 보지 않는다.
- *  showItemDetail(인벤/장비창)과 상점 구매 상세 양쪽에서 공용으로 쓴다. */
-function getEquipCompareHtml(candidateKey, it){
-  let p=G.player;
-  try{
-    let slot=it.type;
-    let cur=(p.equip||{})[slot];
-    let s1=calcStats();
-    if(!p.equip)p.equip={};
-    let hadKey=(slot in p.equip);
-    p.equip[slot]=candidateKey;
-    // [P2-09] 양손무기 미리보기 시 equipItem()과 동일하게 방패도 임시 해제 —
-    // 안 그러면 실제로는 사라질 방패 스탯이 그대로 남아 diff가 과대평가된다
-    const twoHandedTypes=['양손검','양손도끼','양손봉','창','활'];
-    let shieldCur=p.equip['방패']; let shieldHadKey=('방패' in p.equip); let shieldAutoUnequipped=false;
-    if(slot==='무기' && it.wType && twoHandedTypes.includes(it.wType) && shieldCur){
-      delete p.equip['방패']; shieldAutoUnequipped=true;
-    }
-    let s2=calcStats();
-    if(hadKey)p.equip[slot]=cur; else delete p.equip[slot];
-    if(shieldAutoUnequipped && shieldHadKey) p.equip['방패']=shieldCur;
-    calcStats(); // 부수효과(weaponElement 등) 원복
-    const _CMP=[['ATK','totalAtk'],['MATK','totalMAtk'],['DEF','hardDef'],['MDEF','hardMDef'],['HIT','hit'],['FLEE','flee'],['CRI','crit'],['HP','maxHp'],['SP','maxSp']];
-    let rows=_CMP.map(([lb,k])=>{
-      let d=(s2[k]||0)-(s1[k]||0);
-      if(!d)return '';
-      let cl=d>0?'#2e7d32':'#c62828', ar=d>0?'▲':'▼';
-      return `<span style="margin-right:8px;white-space:nowrap;">${lb} <b style="color:${cl}">${ar}${Math.abs(d)}</b></span>`;
-    }).filter(Boolean).join('');
-    let curNm=cur?(cur.length>16?cur.slice(0,15)+'…':cur):'빈 슬롯';
-    let shieldNote=shieldAutoUnequipped?`<div style="color:#e67e22;margin-top:3px;">🛡️ 양손무기라 방패(${shieldCur}) 자동 해제됨</div>`:'';
-    return `<div style="margin-top:10px;padding:6px 8px;border:1px solid var(--border);border-radius:3px;background:rgba(0,0,0,0.03);font-size:10px;text-align:left;"><div style="color:var(--text-dim);margin-bottom:3px;">📊 장착 시 변화 <span style="font-size:11px">(현재: ${curNm})</span></div>${rows||'<span style="color:var(--text-dim)">스탯 변화 없음</span>'}${shieldNote}</div>`;
-  }catch(e){ return ''; }
+// ══════════════════════════════════════════════
+// P1-C — 장비 비교 (SHOP비교 단계에서 상점의 구매 상세도 이 정본을 재사용하도록 확장됨)
+//
+// 원칙: 별도 stat 공식을 새로 만들지 않는다. 반드시 "현재 loadout→calcStats()" vs
+// "후보 loadout(clone)→calcStats()" 두 결과를 그대로 diff한다. slot 판정(resolveEquipSlot)과
+// 실제 장착 결과 구성(applyCandidateEquip)도 equipItem()과 완전히 같은 코드를 공유한다 —
+// 비교가 "장착 가능"이라 계산했는데 실제 장착이 거부되는 불일치가 생길 수 없다.
+// ══════════════════════════════════════════════
+
+// [P1-C] 후보 loadout 계산용 최소 안전 복제. calcStats()가 실제로 읽고/쓰는 필드는 조사
+// 결과(§3) player 최상위 필드(주로 p.weaponType/p.weaponElement에만 쓰기)와 p.equip
+// 뿐이었다 -- statusEffects/inventory/skills/mount 등은 calcStats가 읽기만 하므로 원본을
+// 그대로 공유해도 안전하다(과도한 범용 deep-clone을 만들지 않는다).
+function _cloneLoadoutForComparison(p){
+  let clone = Object.assign({}, p);
+  clone.equip = Object.assign({}, p.equip || {});
+  return clone;
 }
 
-/** 목록용 저비용 미리보기(핵심 스탯 1개, 카드·버프 미반영) — 정확한 전체 비교는 상세영역의 getEquipCompareHtml() */
+// [P1-C] source 이름 기준 집합 diff -- unsupported/pending처럼 "이 출처가 새로 생겼는가/
+// 사라졌는가"만 필요한 경우에 재사용한다(효과 identity diff는 getItemEffectDiffRows가 담당).
+function diffBySourceKey(currentList, candidateList, keyFn){
+  keyFn = keyFn || function(u){ return u.source + '|' + (u.label||u.reason||''); };
+  let curSet = new Set((currentList||[]).map(keyFn));
+  let canSet = new Set((candidateList||[]).map(keyFn));
+  return {
+    gained: (candidateList||[]).filter(u => !curSet.has(keyFn(u))),
+    lost: (currentList||[]).filter(u => !canSet.has(keyFn(u))),
+  };
+}
+
+// [P1-C] 특수효과 gained/lost/changed -- getItemEffectAtomicRows(P1-B/P1-C 정본 formatter)를
+// current/candidate 양쪽에 그대로 재사용해 identity로만 짝짓는다. 두 번째 effect formatter를
+// 새로 만들지 않는다(과제 §35). unsupported/pending은 diffBySourceKey로 별도 처리.
+function getItemEffectDiffRows(currentStats, candidateStats){
+  let curRows = getItemEffectAtomicRows(currentStats);
+  let canRows = getItemEffectAtomicRows(candidateStats);
+  let curByIdentity = {}; curRows.forEach(r => { curByIdentity[r.identity] = r; });
+  let canByIdentity = {}; canRows.forEach(r => { canByIdentity[r.identity] = r; });
+  let gained = [], lost = [], changed = [];
+  Object.keys(canByIdentity).forEach(id => {
+    if(!(id in curByIdentity)) gained.push(canByIdentity[id]);
+    else if(curByIdentity[id].label !== canByIdentity[id].label) changed.push({ from: curByIdentity[id], to: canByIdentity[id] });
+  });
+  Object.keys(curByIdentity).forEach(id => {
+    if(!(id in canByIdentity)) lost.push(curByIdentity[id]);
+  });
+  let curFx = currentStats.itemEffects || { unsupported: [], pending: [] };
+  let canFx = candidateStats.itemEffects || { unsupported: [], pending: [] };
+  let unsupportedDiff = diffBySourceKey(curFx.unsupported, canFx.unsupported);
+  let pendingKeyFn = u => u.source + '|' + (u.reason||'');
+  let pendingDiff = diffBySourceKey(curFx.pending, canFx.pending, pendingKeyFn);
+  return {
+    gained: gained, lost: lost, changed: changed,
+    gainedUnsupported: unsupportedDiff.gained, lostUnsupported: unsupportedDiff.lost,
+    gainedPending: pendingDiff.gained, lostPending: pendingDiff.lost,
+  };
+}
+
+// [P1-C] 정본 비교 진입점. current = calcStats()(실제 G.player), candidate =
+// calcStats(clone)(G.player는 전혀 건드리지 않음) -- 두 결과의 diff만 만든다.
+const EQUIP_COMPARE_STAT_FIELDS = [
+  ['STR','str'], ['AGI','agi'], ['VIT','vit'], ['INT','int'], ['DEX','dex'], ['LUK','luk'],
+  ['ATK','totalAtk'], ['MATK','totalMAtk'], ['DEF','hardDef'], ['MDEF','hardMDef'],
+  ['HIT','hit'], ['FLEE','flee'], ['CRIT','crit'], ['PD','pd'],
+  ['MaxHP','maxHp'], ['MaxSP','maxSp'], ['HP 자연회복','hpRegen'], ['SP 자연회복','spRegen'],
+];
+function getEquipmentComparison(candidateKey, it){
+  let p = G.player;
+  let resolved = resolveEquipSlot(p, it);
+  if(resolved.blocked) return { blocked: true, reason: resolved.reason, slot: resolved.slot };
+  let slot = resolved.slot;
+  if(!slot) return { blocked: false, slot: null };
+
+  let currentStats = calcStats(); // 실제 G.player 기준 — 정본, 그대로 재사용
+
+  let clone = _cloneLoadoutForComparison(p);
+  let applied = applyCandidateEquip(clone.equip, slot, candidateKey, it);
+  let candidateStats = calcStats(clone); // G.player는 전혀 건드리지 않는다
+
+  let statDiffs = EQUIP_COMPARE_STAT_FIELDS.map(([label, key]) => {
+    let from = currentStats[key]||0, to = candidateStats[key]||0;
+    return { label: label, from: from, to: to, diff: to - from };
+  }).filter(d => d.diff !== 0);
+
+  let aspdChanged = candidateStats.aspdDisplay !== currentStats.aspdDisplay || candidateStats.aspdDelay !== currentStats.aspdDelay;
+  let aspdDiff = aspdChanged ? {
+    fromDisplay: currentStats.aspdDisplay, toDisplay: candidateStats.aspdDisplay,
+    fromDelay: currentStats.aspdDelay, toDelay: candidateStats.aspdDelay,
+  } : null;
+
+  let castChanged = candidateStats.castReduction !== currentStats.castReduction || candidateStats.instantCast !== currentStats.instantCast;
+  let castDiff = castChanged ? {
+    fromReduction: currentStats.castReduction, toReduction: candidateStats.castReduction,
+    fromInstant: currentStats.instantCast, toInstant: candidateStats.instantCast,
+  } : null;
+
+  let effectDiff = getItemEffectDiffRows(currentStats, candidateStats);
+
+  return {
+    blocked: false, slot: slot,
+    prevAtSlot: applied.prevAtSlot, shieldRemoved: applied.shieldRemoved,
+    currentStats: currentStats, candidateStats: candidateStats,
+    statDiffs: statDiffs, aspdDiff: aspdDiff, castDiff: castDiff,
+    gainedEffects: effectDiff.gained, lostEffects: effectDiff.lost, changedEffects: effectDiff.changed,
+    gainedUnsupported: effectDiff.gainedUnsupported, lostUnsupported: effectDiff.lostUnsupported,
+    gainedPending: effectDiff.gainedPending, lostPending: effectDiff.lostPending,
+  };
+}
+
+// [P1-C] getEquipmentComparison() 결과 → HTML. 계산은 전혀 하지 않고 이미 만들어진 diff를
+// 문구로 옮기기만 한다. goodWhenPositive=false인 지표(ASPD 딜레이 — 감소가 개선)만 방향을
+// 반대로 판정한다(과제 §32).
+function _eqCmpDiffSpan(diff, goodWhenPositive){
+  let good = goodWhenPositive===false ? diff<0 : diff>0;
+  let color = good ? 'var(--green)' : 'var(--red-light)';
+  let sign = diff>0?'+':'';
+  return `<b style="color:${color}">${sign}${diff}</b>`;
+}
+function renderEquipmentCompareHtml(candidateKey, it){
+  let cmp;
+  try{ cmp = getEquipmentComparison(candidateKey, it); }catch(e){ return ''; }
+  if(!cmp) return '';
+  if(cmp.blocked){
+    return `<div class="eqcmp-box"><div class="eqcmp-blocked">⛔ 장착 불가 — ${cmp.reason}</div></div>`;
+  }
+  if(!cmp.slot) return ''; // 장비 타입 아님(호출부가 이미 필터링하지만 안전망)
+
+  let rows = cmp.statDiffs.map(d =>
+    `<div class="eqcmp-row"><span class="eqcmp-lbl">${d.label}</span><span class="eqcmp-val">${d.from} → ${d.to}</span>${_eqCmpDiffSpan(d.diff, true)}</div>`
+  ).join('');
+
+  if(cmp.aspdDiff){
+    let dd = cmp.aspdDiff;
+    rows += `<div class="eqcmp-row"><span class="eqcmp-lbl">ASPD</span><span class="eqcmp-val">${dd.fromDisplay} → ${dd.toDisplay}</span>${_eqCmpDiffSpan(dd.toDisplay-dd.fromDisplay, true)}</div>`;
+    rows += `<div class="eqcmp-row"><span class="eqcmp-lbl">공격간격</span><span class="eqcmp-val">${dd.fromDelay}ms → ${dd.toDelay}ms</span>${_eqCmpDiffSpan(dd.toDelay-dd.fromDelay, false)}</div>`;
+  }
+  if(cmp.castDiff){
+    let cd = cmp.castDiff;
+    let fromPct = cd.fromInstant ? 100 : Math.floor(cd.fromReduction*100);
+    let toPct = cd.toInstant ? 100 : Math.floor(cd.toReduction*100);
+    let fromLabel = cd.fromInstant ? '즉시시전' : fromPct+'%';
+    let toLabel = cd.toInstant ? '즉시시전' : toPct+'%';
+    rows += `<div class="eqcmp-row"><span class="eqcmp-lbl">CAST</span><span class="eqcmp-val">${fromLabel} → ${toLabel}</span>${_eqCmpDiffSpan(toPct-fromPct, true)}</div>`;
+  }
+
+  let effectHtml = '';
+  if(cmp.changedEffects.length || cmp.gainedEffects.length || cmp.lostEffects.length){
+    effectHtml += '<div class="eqcmp-effects">';
+    if(cmp.changedEffects.length){
+      effectHtml += cmp.changedEffects.map(c =>
+        `<div class="eqcmp-effect-row eqcmp-changed"><span>${c.from.label} → ${c.to.label}</span><span class="eqcmp-effect-src">${c.to.source}</span></div>`
+      ).join('');
+    }
+    if(cmp.gainedEffects.length){
+      effectHtml += '<div class="eqcmp-effect-hdr">새로 얻음</div>' + cmp.gainedEffects.map(r =>
+        `<div class="eqcmp-effect-row eqcmp-gain"><span>+ ${r.label}</span><span class="eqcmp-effect-src">${r.source}</span></div>`
+      ).join('');
+    }
+    if(cmp.lostEffects.length){
+      effectHtml += '<div class="eqcmp-effect-hdr">사라짐</div>' + cmp.lostEffects.map(r =>
+        `<div class="eqcmp-effect-row eqcmp-loss"><span>- ${r.label}</span><span class="eqcmp-effect-src">${r.source}</span></div>`
+      ).join('');
+    }
+    effectHtml += '</div>';
+  }
+
+  let unsupportedHtml = cmp.gainedUnsupported.length
+    ? '<div class="eqcmp-warn-hdr">⚠ 새 장비 효과 중 현재 미지원</div>' + cmp.gainedUnsupported.map(u =>
+        `<div class="eqcmp-warn-row">- ${_unsupportedDisplayLabel(u)} — 현재 미지원</div>`).join('')
+    : '';
+  let pendingHtml = cmp.gainedPending.length
+    ? `<div class="eqcmp-warn-row">⚠ 검증 대기 효과 ${cmp.gainedPending.length}개</div>` : '';
+  let shieldNote = cmp.shieldRemoved
+    ? `<div class="eqcmp-note">🛡️ 양손무기라 방패(${cmp.shieldRemoved}) 자동 해제됨</div>` : '';
+
+  let changeCount = cmp.statDiffs.length + (cmp.aspdDiff?1:0) + (cmp.castDiff?1:0);
+  let effectPlus = cmp.gainedEffects.length + cmp.changedEffects.length;
+  let summaryParts = [];
+  if(changeCount) summaryParts.push(`변화 ${changeCount}개`);
+  if(effectPlus || cmp.lostEffects.length) summaryParts.push(`효과 +${effectPlus}/-${cmp.lostEffects.length}`);
+  if(cmp.gainedUnsupported.length) summaryParts.push(`미지원 ${cmp.gainedUnsupported.length}`);
+  let summaryText = summaryParts.length ? summaryParts.join(' · ') : '변화 없음';
+  let isEmpty = !rows && !effectHtml && !unsupportedHtml && !pendingHtml;
+
+  return `<div class="eqcmp-box">
+    <div class="eqcmp-hdr" onclick="toggleEqCmpBody(this)">📊 현재 장비 대비 <span class="eqcmp-summary">${summaryText}</span><span class="eqcmp-arrow">▾</span></div>
+    <div class="eqcmp-body">${rows}${effectHtml}${unsupportedHtml}${pendingHtml}${shieldNote}${isEmpty?'<div class="eqcmp-empty">변화 없음</div>':''}</div>
+  </div>`;
+}
+function toggleEqCmpBody(hdrEl){
+  let body = hdrEl.nextElementSibling; if(!body) return;
+  body.classList.toggle('eqcmp-open');
+  let arrow = hdrEl.querySelector('.eqcmp-arrow');
+  if(arrow) arrow.textContent = body.classList.contains('eqcmp-open') ? '▴' : '▾';
+}
+
+// [SHOP비교] getEquipCompareHtml()(P2-09)는 여기 있었다 — `let slot=it.type`로 악세서리를
+// 실제 슬롯(악세1/악세2)이 아니라 존재하지 않는 'Accessory' 키에 임시 장착해 두 슬롯이
+// 이미 찬 상태에서 교체량을 과소평가하는 버그가 있었다(P1-close §8 backlog A). 인벤토리
+// 상세(showItemDetail)는 P1-C에서 이미 renderEquipmentCompareHtml()로 교체됐고, 이번
+// 단계에서 상점(renderShopBuyDetail)의 마지막 호출부도 같은 정본으로 옮겨 함수 자체를
+// 제거했다 — 계산 로직이 인벤토리/상점 어디서든 정확히 하나(getEquipmentComparison)다.
+
+/** 목록용 저비용 미리보기(핵심 스탯 1개, 카드·버프 미반영) — 정확한 전체 비교는 상세영역의 renderEquipmentCompareHtml() */
 function shopEquipQuickHint(it){
   if(!SHOP_EQUIP_TYPES.includes(it.type)) return '';
   let p=G.player; let cur=(p.equip||{})[it.type];
@@ -8186,7 +8586,11 @@ function renderShopBuyDetail(itemName){
   let qty=Math.max(0,Math.min(maxQty, shopState.qty||0));
   let total=price*qty;
   let balanceAfter=p.zeny-total;
-  let cmpHtml=SHOP_EQUIP_TYPES.includes(it.type)?getEquipCompareHtml(itemName, it):'';
+  // [SHOP비교] P1-C 정본(getEquipmentComparison/renderEquipmentCompareHtml)을 그대로
+  // 재사용한다 -- 인벤토리 보유 여부를 보지 않으므로(§6 재확인, 아래 patch notes) 구매
+  // 전 미리보기에도 그대로 쓸 수 있다. 상점 후보는 항상 순수 베이스 아이템명이라(제련·
+  // 카드 없음 -- DB.items[itemName] 직접 조회, §2) 별도 후보 표현이 필요 없다.
+  let cmpHtml=SHOP_EQUIP_TYPES.includes(it.type)?renderEquipmentCompareHtml(itemName, it):'';
 
   return `<div style="text-align:center;">
     <div style="font-size:28px;">${it.emoji||'📦'}</div>
@@ -8438,11 +8842,13 @@ function showItemDetail(n){
 
   let displayName = parsed ? getItemDisplayName(parsed) : n;
 
-  // ── [UI-④] 장비 비교: 현재 장착품 대비 스탯 증감 미리보기 ──
+  // ── [P1-C] 장비 비교: 현재 장착품 대비 실제 calcStats() diff(+특수효과 gained/lost) ──
+  // 상점 구매 상세(showShopModal → renderShopBuyDetail)도 SHOP비교 단계에서 같은
+  // getEquipmentComparison/renderEquipmentCompareHtml을 재사용하도록 바뀌었다.
   let isEq = Object.values(p.equip||{}).includes(n);
   let cmpHtml='';
   if(['무기','갑옷','방패','투구_상단','투구_중단','투구_하단','걸칠것','신발','Accessory'].includes(it.type) && !isEq && q>0){
-    cmpHtml=getEquipCompareHtml(n, it);
+    cmpHtml=renderEquipmentCompareHtml(n, it);
   }
 
   let s=`<div style="font-size:30px;margin-bottom:10px">${it.emoji||'📦'}</div><div style="color:var(--gold-light);font-size:14px">${displayName}</div><div style="font-size:10px;color:var(--text-dim)">보유: ${q}</div><div style="margin-top:10px">${it.desc||''}</div>${targetLine}${cmpHtml}${slotHtml}`;
@@ -8659,8 +9065,13 @@ function useSkill(name){
   let sk = DB.skills[name];
   if(!sk) return;
   
-  // 배우지 않은 스킬은 사용 불가
-  let slv = (p.skills && p.skills[name]) || 0;
+  // P0-C4: 영구 습득 스킬 + 장비 grantSkill을 합친 "현재 사용 가능한" 스킬 목록 -- 배우지
+  // 않은 스킬 판정과 실제 시전 레벨(slv) 모두 이 값을 쓴다. p.skills 자체는 바뀌지 않으므로
+  // 장비를 해제하면 다음 calcStats()에서 즉시 사라진다. (calcStats는 p.sp/p.hp를 읽지
+  // 않으므로 P0-C2에서 이미 호출 시점을 SP 체크 앞으로 당겨도 안전함을 확인했다 -- 여기서
+  // 한 번 더 앞으로 당겨도 같은 이유로 안전하다.)
+  let s = calcStats();
+  let slv = getEffectiveSkills(p, s)[name] || 0;
   if(slv === 0) { log(`⚠ 아직 배우지 않은 스킬입니다.`, 'warning'); closeModal(); return; }
 
   // [제조·파머시 통합 v0.2] 포션 피쳐는 시전 레벨(소비 포션)을 직접 선택한다.
@@ -8689,8 +9100,8 @@ function useSkill(name){
     log(`❌ <b>[${name}]</b> 재료가 부족합니다. (필요: ${need})`, 'error'); closeModal(); return;
   }
 
-  // SP 체크
-  let cost = typeof sk.spCost === 'function' ? sk.spCost(slv) : sk.spCost;
+  // SP 체크 (P0-C2: getSkillSpCost 하나로 판정/차감/환불/표시 전부 통일. s는 위에서 이미 계산됨)
+  let cost = getSkillSpCost(typeof sk.spCost === 'function' ? sk.spCost(slv) : sk.spCost, s);
   if(p.sp < cost){ log(`⚠ SP 부족! 필요: ${cost} / 현재: ${p.sp}`, 'error'); closeModal(); return; }
 
   // 쿨타임 체크 (틱 방식)
@@ -8707,7 +9118,6 @@ function useSkill(name){
 
   // SP 소모 및 쿨타임 등록 (틱 방식 — 자동 로테이션과 동일)
   p.sp -= cost;
-  let s = calcStats();
   if(sk.cooldown > 0) G.cooldowns[name] = Math.max(1, Math.round(sk.cooldown / (s.aspdDelay||300)));
   let t = G.battles.length > 0 ? G.battles[0] : null;
   // 공격 대상이 필요한 스킬인데 전투 중이 아니면 취소 후 SP/쿨 복구
@@ -8728,17 +9138,9 @@ function useSkill(name){
   // 몬스터 처치 판정 (전투 후처리)
   if(t && t.currentHp <= 0){
     G.battles.shift(); logSep(); log(`✅ ${t.emoji}${t.name} 처치!`, 'combat');
-    { let _p=G.player;
-      Object.values(_p.equip||{}).forEach(eqName=>{ if(!eqName)return;
-        let _pr=(typeof parseItem==='function')?parseItem(eqName):null;
-        if(!_pr||!_pr.cards)return;
-        _pr.cards.forEach(cn=>{ let c=DB?.items?.[cn+" 카드"]; if(!c||!c.soulgain)return;
-          if(!t.race||t.race!==c.soulgain.race)return;
-          let sg=c.soulgain.sp||0; _p.sp=Math.min(_p.maxSp,_p.sp+sg);
-          log(`💜 <b>[소울게인]</b> ${c.soulgain.race} 처치 SP +${sg}!`,'system');
-        });
-      });
-    }
+    // P0-C4: soulgain 직접 재파싱(카드 DB 재조회) 제거 -- s.itemEffects.events.onKill만 소비.
+    // 기존 동작 그대로 useSkill()의 수동 처치 경로에만 적용(범위 확대 없음, patch notes 참조).
+    triggerItemEffects('onKill', { player:p, target:t, stats:s, log:log }, (s.itemEffects&&s.itemEffects.events.onKill)||[]);
     p.totalKills = (p.totalKills||0) + 1;
     if(!p.killCount) p.killCount = {}; p.killCount[t.name] = (p.killCount[t.name] || 0) + 1; // ⚔️ 스킬 처치 기록!
     addZoneKill(); // [2-9]
@@ -8751,7 +9153,7 @@ function useSkill(name){
     gainBaseExp(p, getExp);
     let mJ=getJobLvCap(p.job); while(p.jobLv<mJ&&p.jobExp>=p.jobLv*50){p.jobExp-=p.jobLv*50;p.jobLv++;p.skillPoints=(p.skillPoints||0)+1;log(`🌟 Job Lv.${p.jobLv} 달성! <span style="color:var(--job-color)">(스킬 포인트 +1)</span>`,'level-up');}
     let z=t.zeny[0]+Math.floor(Math.random()*(t.zeny[1]-t.zeny[0])); p.zeny+=z; p.records.totalZeny+=z; log(`💰 +${z}z`,'system'); idleTrack(getExp,z); // [UI-①]
-    rollDrops(p, t);
+    rollDrops(p, t, null, s);
     checkQuestKill(t.name); checkJobQuestKill(t.name);
   }
   updateUI(); if(!sk.opensModal) closeModal();
@@ -11978,12 +12380,16 @@ function extrapolateOffline(p, summary, kc0, inv0, restMs, sampleMs, huntMap){
   let jx0 = p.jobExp||0, jl0 = p.jobLv||1;
   G.currentMap = huntMap;           // 표본이 사망 귀환(마을)으로 끝났어도 구역 처치 집계는 사냥 맵 기준
   G.silentMode = true; G.silentSummary = summary;
+  // P0-C4: 오프라인 외삽도 "보상은 전부 기존 경로로 흘린다"는 이 함수의 설계 그대로,
+  // awardKillReward에 stats를 넘겨 item dropBonus가 온라인과 동일하게 적용되게 한다.
+  // 외삽 구간 동안 장비가 바뀌지 않으므로 루프 밖에서 한 번만 계산한다.
+  let s = calcStats();
   try{
     for(let i = 0; i < extraKills; i++){
       let r = Math.random() * sampleKills, name = dist[0][0];
       for(let j = 0; j < dist.length; j++){ r -= dist[j][1]; if(r < 0){ name = dist[j][0]; break; } }
       let mon = monByName[name];
-      if(mon) awardKillReward(p, mon, p.settings || {});
+      if(mon) awardKillReward(p, mon, p.settings || {}, s);
       if(Math.random() < deathRate){
         summary.deaths++;
         if(p.baseLv > 1 && p.baseLv < 99){
@@ -16030,12 +16436,14 @@ function switchHbTab(tab){
 
 function buildSkillTab(key){
   let p=G.player;
-  let list=Object.keys(p.skills||{}).filter(sn=>
-    p.skills[sn]>0 && DB.skills[sn] && DB.skills[sn].type!=='패시브'
+  // P0-C4: 핫바 등록 가능 목록도 영구 습득 + 장비 grantSkill을 합친 effective skill 기준.
+  let effSkills=getEffectiveSkills(p, calcStats());
+  let list=Object.keys(effSkills).filter(sn=>
+    effSkills[sn]>0 && DB.skills[sn] && DB.skills[sn].type!=='패시브'
   );
   if(!list.length) return '<div style="color:var(--text-dim);font-size:11px;padding:10px">등록 가능한 액티브/버프 스킬 없음</div>';
   return list.map(sn=>{
-    let sk=DB.skills[sn]; let slv=p.skills[sn];
+    let sk=DB.skills[sn]; let slv=effSkills[sn];
     return `<div class="hb-list-row" onclick="assignHotbar('${key}','skill','${sn}')"><span>${sk.emoji||'✨'}</span><span style="flex:1">${sn} <span style="color:var(--text-dim);font-size:10px">Lv.${slv}</span></span><span style="font-size:11px;color:var(--text-dim);white-space:nowrap">${sk.type}</span></div>`;
   }).join('');
 }

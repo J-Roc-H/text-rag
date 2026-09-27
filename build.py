@@ -10,8 +10,17 @@ CORS로 막힌다(DEVREF-E 보류-01).
 
 동적 세계지도는 source/world-map.js, 서비스 보강 계층은 source/services.js,
 소규모 UX 핫픽스는 source/ui-hotfix.js, 퀘스트 안내 보강은 source/quest-guide.js,
-장소/NPC 상호작용은 source/actor-interaction.js로 분리 관리하되 빌드 시 </body>
-직전에 모두 인라인한다. 최종 index.html / 룬미드가츠_v9.19.html 은 계속 단일 HTML이다.
+장소/NPC 상호작용은 source/actor-interaction.js, 아이템/카드 효과 집계(P0-B)는
+source/item-effects.js, 콤보 매칭·적용(P2-B1)은 source/combo-engine.js로 분리 관리하되
+빌드 시 </body> 직전에 모두 인라인한다.
+최종 index.html / 룬미드가츠_v9.19.html 은 계속 단일 HTML이다.
+
+item-effects.js는 template.html 본문의 <script id="block-engine"> 안 calcStats()가
+정의된 훨씬 이전 위치보다 늦게(다른 주입 스크립트와 함께 </body> 직전에) 실행되지만,
+calcStats()는 window.onload=doLoading 이후에만 호출되므로(스크립트 파싱 시점에 즉시
+호출되는 곳 없음) 주입 순서가 런타임 오류를 만들지 않는다. 이 전제가 깨지면(예: 어떤
+스크립트가 파싱 중 즉시 calcStats를 호출하게 되면) item-effects.js를 그 이전으로
+옮겨야 한다.
 
 사용법: python build.py
 """
@@ -28,6 +37,19 @@ UI_HOTFIX_SCRIPT_PATH = os.path.join(BASE, "source", "ui-hotfix.js")
 QUEST_GUIDE_SCRIPT_PATH = os.path.join(BASE, "source", "quest-guide.js")
 ACTOR_INTERACTION_SCRIPT_PATH = os.path.join(BASE, "source", "actor-interaction.js")
 REFINE_REVEAL_SCRIPT_PATH = os.path.join(BASE, "source", "refine-reveal.js")
+ITEM_EFFECTS_SCRIPT_PATH = os.path.join(BASE, "source", "item-effects.js")
+COMBO_ENGINE_SCRIPT_PATH = os.path.join(BASE, "source", "combo-engine.js")
+# P2-A 산출물(tools/canonicalize_combos.py). P2-B1부터 BLOCKS(DB_COMBOS)로 runtime에도
+# inject된다 -- 아래 os.path.exists 블록은 그와 별개로, BLOCKS 진입 전에 콤보 전용 감사
+# (item combo / consumer-backed / identity map / review manifest)를 도는 기존 경로다.
+COMBOS_JSON_PATH = os.path.join(DATA_DIR, "db-combos.json")
+# P2-A.1: 콤보 참조 아이템 identity map(tools/build_combo_item_identity.py 산출물) --
+# 마찬가지로 BLOCKS에는 넣지 않는다(runtime 미연결).
+COMBO_IDENTITY_JSON_PATH = os.path.join(DATA_DIR, "combo-item-identity.json")
+# P2-A.2: 사람이 검토·승인한 Case D mapping만 담은 review manifest -- 마찬가지로
+# BLOCKS에 넣지 않는다(runtime 미연결). identity builder가 이 파일을 읽어 identity
+# map에 반영한다(tools/build_combo_item_identity.py).
+COMBO_IDENTITY_REVIEW_JSON_PATH = os.path.join(DATA_DIR, "combo-item-identity-reviewed.json")
 OUTPUT_PATH = os.path.join(BASE, "룬미드가츠_v9.19.html")
 # GitHub Pages는 루트의 index.html을 서빙한다 — 버전 올려도 폰 북마크 URL이
 # 안 바뀌게 매 빌드마다 같은 내용을 index.html에도 복사한다 (2026-09-20)
@@ -40,6 +62,7 @@ BLOCKS = {
     "DB_MAPS": "db-maps.json",
     "DB_NPCS": "db-npcs.json",
     "DB_ITEMS": "db-items.json",
+    "DB_COMBOS": "db-combos.json",
     "DB_PRODUCTION": "db-production.json",
     "DB_SHOPS": "db-shops.json",
 }
@@ -181,6 +204,196 @@ def audit_production(production, items):
     return errors
 
 
+EFFECT_AUDIT_BASELINE_PATH = os.path.join(DATA_DIR, "effect-audit-baseline.json")
+
+# calcStats()가 실제로 분기하는 effect.type 값 (source/template.html 카드 보너스 블록 기준).
+# 여기 없는 type은 DB에 값이 있어도 엔진이 읽지 않는다 -- FAIL 또는(baseline 등재 시) WARN.
+KNOWN_EFFECT_TYPES = {"stat", "mixed", "special", "raceBonus", "seProc", "lifesteal"}
+# 구조화 효과 전용 키워드 -- 최상위 문자열 effect 값으로 나타나면 안 된다(P0-A에서 정리한 레거시 표기).
+RESERVED_EFFECT_WORDS = {"stat", "raceBonus", "mixed", "special", "seProc", "lifesteal",
+                          "derived", "increaseDropRate", "increaseExpRate"}
+# 현재 raceBonus 카드가 실제로 쓰는 종족 키(2026-09-26 P0-A 감사 기준). 새 값은 원작 확인 후 등록.
+KNOWN_RACE_VALUES = {"악마", "어류", "식물", "곤충", "골렘", "조류", "고블린", "화염",
+                      "인간형", "얼음", "동물형", "천사", "물질", "드래곤", "미라"}
+# 확정적으로 잘못된 표기 -- baseline으로도 구제하지 않는다(사용자 확인된 오표기).
+BANNED_RACE_ALIASES = {"인간": "인간형"}
+RATHENA_SCRIPT_MARKERS = ["bonus ", "bonus2 ", "bonus3 ", "bonus4 ", "autobonus", "bAutoSpell"]
+DESC_EFFECT_KEYWORDS = ["확률", "면역", "저항", "무시", "부여", "흡수", "시전", "캐스팅",
+                        "자동 발동", "자동발동", "속성 피해", "내성", "넉백",
+                        "추가 대미지", "추가 데미지", "받는 데미지", "오토스펠", "더블어택",
+                        "디버프", "혼란", "스턴", "사망 시", "처치 시", "스킬 데미지"]
+STRUCTURED_MARKER_KEYS = {"effect", "effects", "raceAtk", "elemAtk", "sizeAtk",
+                          "raceDmgReduce", "elemReduce", "immune", "spCostMul", "healBoost",
+                          "castReduction", "skillDmg", "grantSkill", "dropBonus", "doubleAtk",
+                          "defIgnore", "hpDrainSelf", "magicRaceAtk", "bossAtk",
+                          "rangedDmgReduce", "armorElement", "magicImmune"}
+# effect.bonus 키 중 최상위 필드와 이름이 다른 별칭(calcStats 카드 보너스 블록 기준).
+EFFECT_BONUS_ALIASES = {"pd": "perfectFlee"}
+# baseline으로 WARN까지만 격하할 수 있는 FAIL 후보 코드. 나머지 FAIL 코드는 무조건 즉시 실패
+# (2026-09-26 P0-A 감사에서 전량 정리해 현재 baseline 0건 -- 재발은 회귀로 간주).
+BASELINE_ELIGIBLE_CODES = {"unknown-effect-type", "unknown-race"}
+
+
+def load_effect_audit_baseline():
+    if not os.path.exists(EFFECT_AUDIT_BASELINE_PATH):
+        return set()
+    with open(EFFECT_AUDIT_BASELINE_PATH, encoding="utf-8") as f:
+        data = json.load(f)
+    return {(row["item"], row["code"]) for row in data.get("grandfathered", [])}
+
+
+def audit_item_effects_collector_sync(item_effects_js_path):
+    """P0-B: source/item-effects.js의 KNOWN_ITEM_EFFECT_TYPES가 build.py의
+    KNOWN_EFFECT_TYPES와 어긋나지 않는지만 확인한다(과대 확장 금지 -- 이 한 가지만).
+
+    두 파일이 각자 "엔진이 아는 effect.type 목록"을 따로 들고 있어서, 한쪽만 고치면
+    audit_item_effects()의 unknown-effect-type 판정과 collector의 실제 동작이 어긋난다.
+    """
+    src = open(item_effects_js_path, encoding="utf-8").read()
+    m = re.search(r"KNOWN_ITEM_EFFECT_TYPES\s*=\s*\[([^\]]*)\]", src)
+    if not m:
+        raise ValueError("item-effects.js: KNOWN_ITEM_EFFECT_TYPES 배열을 찾지 못함")
+    js_types = {t.strip().strip("'\"") for t in m.group(1).split(",") if t.strip()}
+    if js_types != KNOWN_EFFECT_TYPES:
+        only_js = js_types - KNOWN_EFFECT_TYPES
+        only_py = KNOWN_EFFECT_TYPES - js_types
+        raise ValueError(
+            "item-effects.js의 KNOWN_ITEM_EFFECT_TYPES가 build.py의 KNOWN_EFFECT_TYPES와 다름 -- "
+            f"JS에만 있음: {sorted(only_js)}, Python에만 있음: {sorted(only_py)}"
+        )
+    print("OK - item-effects.js collector 지원 타입 동기화")
+
+
+def audit_item_effects_deferred_sync(item_effects_js_path):
+    """P0 종료감사: item-effects.js 안에서 "값은 집계하지만 소비처가 없다"고 스스로 표시하는
+    필드 이름이, 실제로 그 값을 집계하는 키 목록(_ITEM_EFF_SIMPLE_COMBAT_KEYS /
+    _ITEM_EFF_COUNTER_KEYS) 안에 정확히 존재하는지만 확인한다.
+
+    이 검사가 잡는 버그: 누군가 필드 이름을 바꾸거나 오타를 내면, unsupported[] 마킹이
+    조용히 아무 키에도 안 걸려서 "active로 집계되는데 unsupported 표시는 없는" 상태가
+    재발한다 -- 정확히 P0 종료감사에서 발견해 고친 버그의 재발 방지용 최소 게이트다.
+    template.html 쪽 실제 소비 여부까지는 정적으로 확인하지 않는다(그건 이 함수의 책임이
+    아니다 -- 과대 파서를 만들지 않는다).
+    """
+    src = open(item_effects_js_path, encoding="utf-8").read()
+
+    def extract_list(var_name):
+        m = re.search(var_name + r"\s*=\s*\[([^\]]*)\]", src)
+        if not m:
+            raise ValueError(f"item-effects.js: {var_name} 배열을 찾지 못함")
+        return {t.strip().strip("'\"") for t in m.group(1).split(",") if t.strip()}
+
+    simple_combat_keys = extract_list(r"_ITEM_EFF_SIMPLE_COMBAT_KEYS")
+    counter_keys = extract_list(r"_ITEM_EFF_COUNTER_KEYS")
+
+    m = re.search(r"_DEFERRED_SIMPLE_COMBAT_REASONS\s*=\s*\{([^}]*)\}", src, re.S)
+    if not m:
+        raise ValueError("item-effects.js: _DEFERRED_SIMPLE_COMBAT_REASONS 객체를 찾지 못함")
+    deferred_keys = set(re.findall(r"(\w+)\s*:", m.group(1)))
+    unknown = deferred_keys - simple_combat_keys
+    if unknown:
+        raise ValueError(
+            "item-effects.js: _DEFERRED_SIMPLE_COMBAT_REASONS에 "
+            f"_ITEM_EFF_SIMPLE_COMBAT_KEYS에 없는 키가 있음(오타/이름불일치 의심): {sorted(unknown)}"
+        )
+
+    if "magicRaceAtk" not in counter_keys:
+        raise ValueError(
+            "item-effects.js: magicRaceAtk가 _ITEM_EFF_COUNTER_KEYS에서 빠짐 -- "
+            "unsupported[] 마킹 코드가 더 이상 걸리지 않을 수 있음"
+        )
+    print("OK - item-effects.js deferred 필드 표시 동기화")
+
+
+def audit_item_effects(items):
+    """db-items.json 효과 표현 감사 (P0-A, 2026-09-26 / 교정 패스 2026-09-26).
+
+    FAIL: 구조적으로 잘못됐거나(중복/누락/미지원 타입) 엔진 소비 경로가 없는 신규 표기.
+    WARN: desc-only/raw script/baseline에 등재된 기존 문제 -- 빌드를 막지 않는다.
+    baseline은 사람이 확인해 추가한 (item, code) 쌍만 WARN으로 격하한다(자동 증가 금지).
+
+    `_pendingVerification: true`(effect 객체 또는 아이템 최상위)는 "원작 근거를 찾지 못해
+    죽어 있던 표기 그대로 되돌려 둔" 항목 표식이다(교정 패스에서 73건 도입). 이 표식이 있으면
+    legacy-effect-key/reserved-string-effect는 FAIL이 아니라 WARN으로만 보고한다 -- 표식이
+    없는 새 항목이 같은 패턴을 쓰면 여전히 FAIL이다. 표식을 지우고 값을 활성화하려면 먼저
+    실제 원작 근거(rAthena 소스 또는 이 프로젝트의 몬스터 DB)를 확인할 것.
+    """
+    baseline = load_effect_audit_baseline()
+    fails = []
+    warns = []
+
+    def report(name, code, message):
+        if code in BASELINE_ELIGIBLE_CODES and (name, code) in baseline:
+            warns.append(f'{name}: {message} [baseline]')
+        else:
+            fails.append(f'{name}: {message}')
+
+    for name, it in items.items():
+        if not isinstance(it, dict):
+            continue
+
+        eff = it.get("effect")
+        item_pending = it.get("_pendingVerification") is True
+        if isinstance(eff, str) and eff in RESERVED_EFFECT_WORDS:
+            msg = f'effect="{eff}" 는 구조화 효과 전용 키워드 -- effect:{{"type":"{eff}", ...}} 형식으로 표현할 것'
+            if item_pending:
+                warns.append(f'{name}: {msg} [원작검증필요 -- 활성화 보류, _pendingVerification]')
+            else:
+                report(name, "reserved-string-effect", msg)
+
+        if isinstance(eff, dict):
+            eff_pending = item_pending or eff.get("_pendingVerification") is True
+            if "effect" in eff and "type" not in eff:
+                msg = f'effect.effect="{eff.get("effect")}" -- effect.type 표기로 정규화할 것 (엔진은 .type만 읽음)'
+                if eff_pending:
+                    warns.append(f'{name}: {msg} [원작검증필요 -- 활성화 보류, _pendingVerification]')
+                else:
+                    report(name, "legacy-effect-key", msg)
+
+            t = eff.get("type")
+            if t is not None and t not in KNOWN_EFFECT_TYPES:
+                report(name, "unknown-effect-type", f'effect.type="{t}" 는 엔진 미지원 타입')
+
+            if t == "raceBonus":
+                race = eff.get("race")
+                if not race or "dmgMult" not in eff:
+                    report(name, "missing-args", "raceBonus 는 race/dmgMult 필수")
+                elif race in BANNED_RACE_ALIASES:
+                    report(name, "race-alias",
+                           f'race="{race}" 는 금지된 표기 -- "{BANNED_RACE_ALIASES[race]}" 사용')
+                elif race not in KNOWN_RACE_VALUES:
+                    report(name, "unknown-race",
+                           f'race="{race}" 는 알려지지 않은 종족 키 -- 원작 확인 후 KNOWN_RACE_VALUES에 등록')
+
+            if t in ("seProc", "mixed") and "seProc" in eff:
+                se = eff["seProc"]
+                if not all(k in se for k in ("se", "chance", "turns")):
+                    report(name, "missing-args", "seProc 는 se/chance/turns 필수")
+
+            if t == "lifesteal" and ("chance" not in eff or "spRate" not in eff):
+                report(name, "missing-args", "lifesteal 은 chance/spRate 필수")
+
+            for sk, sv in (eff.get("stats") or {}).items():
+                if it.get(sk) == sv:
+                    report(name, "duplicate-stat", f'top-level {sk}={sv} 와 effect.stats.{sk} 중복')
+            for bk, bv in (eff.get("bonus") or {}).items():
+                top_key = EFFECT_BONUS_ALIASES.get(bk, bk)
+                if it.get(top_key) == bv:
+                    report(name, "duplicate-stat", f'top-level {top_key}={bv} 와 effect.bonus.{bk} 중복')
+
+        if isinstance(it.get("effects"), list) and it["effects"]:
+            warns.append(f'{name}: effects[] 는 아직 엔진이 소비하지 않음(P0-B 이후 대상)')
+
+        desc = it.get("desc") or ""
+        if any(m in desc for m in RATHENA_SCRIPT_MARKERS):
+            warns.append(f'{name}: desc에 rAthena 원시 스크립트가 그대로 남아 있음(원작 확인 후 변환 대상)')
+        elif it.get("type") != "소모품":
+            if any(k in desc for k in DESC_EFFECT_KEYWORDS) and not (STRUCTURED_MARKER_KEYS & set(it.keys())):
+                warns.append(f'{name}: desc에 효과 설명이 있으나 구조화 데이터 없음(원작 확인 후 변환 대상)')
+
+    return fails, sorted(set(warns))
+
+
 def audit_quest_item_sources(template, parsed):
     """Fail the build when a gather quest has no real acquisition route."""
     targets = set(re.findall(r"type\s*:\s*['\"]gather['\"][\s\S]{0,220}?target\s*:\s*['\"]([^'\"]+)['\"]", template))
@@ -199,6 +412,238 @@ def audit_quest_item_sources(template, parsed):
     if missing:
         raise ValueError('획득처 없는 퀘스트 아이템: ' + ', '.join(missing))
     print(f"OK - quest item source audit ({len(targets)} gather target(s))")
+
+
+# P2-A: canonical effect (type,key) 허용 목록 -- tools/canonicalize_combos.py의
+# VERIFIED_* 표와 정확히 같은 집합이어야 한다. 둘이 갈라지면(예: 생성 스크립트에
+# 새 vocabulary를 추가했는데 여기를 안 고치면) "unknown canonical effect key"로 즉시
+# FAIL한다 -- P0-close가 발견한 "조용히 새는 표시 누락" 패턴을 combo 쪽에서도 재발
+# 방지하는 최소 게이트다(과대 파서 아님, 정적 집합 대조만).
+COMBO_KNOWN_EFFECT_KEYS = {
+    ("stat", "str"), ("stat", "agi"), ("stat", "vit"),
+    ("stat", "int"), ("stat", "dex"), ("stat", "luk"),
+    ("combat", "maxHp"), ("combat", "maxSp"),
+    ("combat", "maxHpPct"), ("combat", "maxSpPct"),
+    ("combat", "def"), ("combat", "mdef"), ("combat", "hit"), ("combat", "flee"),
+    ("combat", "crit"), ("combat", "pd"), ("combat", "atk"),
+    ("combat", "hpRegenPct"), ("combat", "spRegenPct"),
+    ("combat", "raceDmgReduce"), ("combat", "raceAtk"), ("combat", "elemReduce"),
+    ("event", "soulgain"),
+    # P2-A.4 신규(bCastrate 리터럴만 -- stacking parity 확인, COMBO_EFFECT_SUPPORT_AUDIT.md
+    # §7/§11 참조). bUseSPrate/bAddClass/bSubRace,RC_All은 P2-A.4-정정(2026-09-27)에서
+    # SAFE 취소됐다(consumer는 있었지만 stacking/scope parity가 원작과 달랐음, 그때는
+    # 기존 spCostMul/atkPct/bossAtk/dmgReduceAll을 오재사용했었다).
+    ("combat", "castReduction"),
+    # P2-A.5 신규(엔진 확장 -- bMatkRate/bUseSPrate를 기존 곱연산 필드 재사용 없이 새
+    # additive canonical 필드로 안전하게 연결, COMBO_ENGINE_EXTENSION_P2A5.md 참조).
+    # matkPct: rAthena status.cpp SCB_MATK 블록(matk=(base+ematk)*matk_rate/100) 실코드
+    # 재현, calcStats MATK 계산부에 실제 연결(template.html). spCostRatePct:
+    # rAthena skill.cpp skill_get_requirement(req.sp=req.sp*dsprate/100) 실코드
+    # 재현, getSkillSpCost()에 실제 연결(item-effects.js) -- 기존 spCostMul과는
+    # 별개 필드로 함께 곱해진다(오재사용 없음, §3/§4 감사 근거).
+    ("combat", "matkPct"), ("combat", "spCostRatePct"),
+}
+
+# P2-A.4-정정(2026-09-27) — SAFE의 정의를 "consumer 존재"에서 "consumer + scope +
+# stacking 3축 모두 원작과 일치"로 보강했다(과제 지시 §2/§8). 독립검증에서 bUseSPrate/
+# bAddClass/bSubRace,RC_All 3종이 consumer는 있었지만 stacking(bUseSPrate) 또는
+# scope(bAddClass) 또는 cross-field 합성 방식(bSubRace RC_All)이 원작과 달라 잘못
+# SAFE로 승격됐던 사실이 드러났다 -- 상세 근거는 COMBO_EFFECT_SUPPORT_AUDIT.md §11
+# (정정 섹션)과 source/data/combo-effect-support-matrix.json의 각 entry의
+# consumerPresent/scopeParity/stackingParity 필드 참조.
+#
+# COMBO_RUNTIME_SAFE_KEYS는 COMBO_KNOWN_EFFECT_KEYS(생성 스크립트가 실제로 만들어내는
+# canonical 키 전체)와 지금은 항상 같아야 한다(아래 assert) -- 갈라지면(새 key를
+# canonicalize_combos.py에 추가하면서 3축 확인 없이 COMBO_KNOWN_EFFECT_KEYS만 넓힌
+# 경우) 즉시 FAIL한다. 이름 자체가 "consumer 존재"가 아니라 "런타임에 안전하게 쓸 수
+# 있음"을 뜻하도록 바꿨다(구 이름 COMBO_CONSUMER_BACKED_KEYS는 이번 사고의 원인 중
+# 하나였다 -- consumer 유무만으로 이름 붙여서 stacking/scope 확인이 빠진 것처럼
+# 보이지 않았다).
+COMBO_RUNTIME_SAFE_KEYS = set(COMBO_KNOWN_EFFECT_KEYS)
+assert COMBO_RUNTIME_SAFE_KEYS == COMBO_KNOWN_EFFECT_KEYS, (
+    "COMBO_KNOWN_EFFECT_KEYS와 COMBO_RUNTIME_SAFE_KEYS가 갈라짐 -- "
+    "새 canonical key를 추가했다면 consumer+scope+stacking 3축을 모두 실코드로 확인하고 "
+    "두 목록을 함께 갱신할 것(§2)"
+)
+
+
+def audit_combo_consumer_backed(combos_data):
+    """P2-A.4(-정정): 모든 combo effects[] 항목의 canonical (type,key)가
+    COMBO_RUNTIME_SAFE_KEYS(consumer+scope+stacking 3축 모두 원작과 일치함이 실코드로
+    확인된 목록)에 있는지 재확인한다. 이 값은 COMBO_KNOWN_EFFECT_KEYS와 지금은 항상
+    같지만(위 assert), 두 목록의 "의미"가 다르므로 별도 함수/별도 카운터("SUPPORT WARN")로
+    유지한다 -- "verified인데 게임에 영향 없거나 원작과 다르게 동작함" 상태가 생기면
+    (향후 누군가 COMBO_KNOWN_EFFECT_KEYS만 넓히고 3축 확인 없이 이 함수를 지나치면)
+    여기서 FAIL로 잡는다. 함수 이름은 하위호환을 위해 그대로 둔다(호출부/테스트 다수가
+    참조 중) -- 검사 대상 집합의 이름만 COMBO_RUNTIME_SAFE_KEYS로 바뀌었다."""
+    fails = []
+    for combo in combos_data.get("combos", []):
+        cid = combo.get("id")
+        for eff in combo.get("effects", []):
+            key_pair = (eff.get("type"), eff.get("key"))
+            if key_pair not in COMBO_RUNTIME_SAFE_KEYS:
+                fails.append(f"{cid}: consumer+scope+stacking 3축 확인 안 된 canonical key {key_pair} -- verified 판정 근거 없음(§2/§22-23)")
+    return fails
+
+
+def audit_item_combos(combos_data):
+    """P2-A: source/data/db-combos.json 구조 감사. 기존 469 WARN(아이템/카드 효과 P0
+    backlog)과 절대 같은 숫자에 섞지 않는다 -- 완전히 별도로 "COMBO WARN"/실패로만
+    보고한다(과제 지시 §27). 이번 단계는 데이터 정합성만 본다 -- collectItemEffects/
+    calcStats 등 실제 게임 로직과는 연결되지 않은 상태를 그대로 감사한다(§25).
+
+    FAIL: 구조적 결함(생성 파이프라인 버그로 봐야 하는 것들) -- 중복 id, rawScript
+    누락, 알려지지 않은 canonical effect 키, reason 없는 unsupported/runtime-blocked.
+    WARN: 정상적으로 예상되는 상태(unresolved 아이템, source-needed 등) -- 빌드를
+    막지 않는다.
+    """
+    fails, warns = [], []
+    seen_ids = set()
+    for combo in combos_data.get("combos", []):
+        cid = combo.get("id")
+        if not cid:
+            fails.append("id 없는 combo 항목")
+            continue
+        if cid in seen_ids:
+            fails.append(f"{cid}: 중복 combo id")
+        seen_ids.add(cid)
+
+        if not combo.get("requiredItems"):
+            fails.append(f"{cid}: requiredItems 비어 있음")
+        else:
+            aegis_list = [r.get("aegisName") for r in combo["requiredItems"]]
+            if len(aegis_list) != len(set(aegis_list)):
+                warns.append(f"{cid}: requiredItems에 동일 아이템 중복(원본 보존 — §32, 의도적일 수 있음)")
+            for r in combo["requiredItems"]:
+                if not r.get("resolved") and not r.get("ambiguousTextragKeys"):
+                    warns.append(f"{cid}: 미해결 아이템 {r.get('aegisName')}(TextRAG에 매칭되는 _aegis 없음)")
+                if r.get("ambiguousTextragKeys"):
+                    warns.append(f"{cid}: 아이템 {r.get('aegisName')}이 TextRAG에서 2개 이상의 키와 충돌")
+
+        if not combo.get("rawScript"):
+            fails.append(f"{cid}: rawScript 누락(원문 보존 실패)")
+
+        for eff in combo.get("effects", []):
+            key_pair = (eff.get("type"), eff.get("key"))
+            if key_pair not in COMBO_KNOWN_EFFECT_KEYS:
+                fails.append(f"{cid}: 알려지지 않은 canonical effect 키 {key_pair} -- 생성 스크립트와 audit 허용목록 불일치")
+
+        for eff in combo.get("unsupportedEffects", []):
+            if not eff.get("reason"):
+                fails.append(f"{cid}: unsupportedEffects 항목에 reason 없음")
+
+        status = combo.get("status")
+        if status not in ("verified", "source-needed", "unsupported", "runtime-blocked"):
+            fails.append(f"{cid}: 알려지지 않은 status 값 '{status}'")
+        if status == "runtime-blocked" and not combo.get("statusReasons"):
+            fails.append(f"{cid}: runtime-blocked인데 statusReasons 없음")
+        if status == "source-needed" and not combo.get("statusReasons"):
+            warns.append(f"{cid}: source-needed인데 statusReasons 없음(정보용)")
+
+    return fails, warns
+
+
+IDENTITY_KNOWN_STATUSES = {"verified", "ambiguous", "unresolved-existing", "missing"}
+
+
+def audit_combo_item_identity(identity_data, combos_data):
+    """P2-A.1: source/data/combo-item-identity.json 구조 감사. 콤보 audit(위)와도,
+    기존 469 WARN(item-effect)과도 별도 카운터로 보고한다(과제 §23의 8개 체크를 그대로
+    구현) -- 세 audit을 절대 하나로 합치지 않는다.
+
+    FAIL: 같은 rAthena ID가 서로 다른 verified TextRAG key에 연결, 같은 AegisName이
+    identity map에 중복 행으로 존재, verified인데 textragKey/evidence 없음,
+    identity map이 db-combos.json이 실제로 참조하는 AegisName 집합을 다 못 덮음.
+    WARN: ambiguous/unresolved-existing/missing(정상적으로 예상되는 상태).
+    """
+    fails, warns = [], []
+
+    referenced_aegis = set()
+    for combo in combos_data.get("combos", []):
+        for r in combo.get("requiredItems", []):
+            referenced_aegis.add(r.get("aegisName"))
+
+    seen_aegis = set()
+    id_to_verified_keys = {}
+    for item in identity_data.get("items", []):
+        aegis = item.get("aegisName")
+        if not aegis:
+            fails.append("identity map에 aegisName 없는 행")
+            continue
+        if aegis in seen_aegis:
+            fails.append(f"{aegis}: identity map에 중복 행")
+        seen_aegis.add(aegis)
+
+        status = item.get("status")
+        if status not in IDENTITY_KNOWN_STATUSES:
+            fails.append(f"{aegis}: 알려지지 않은 identity status '{status}'")
+
+        if status == "verified":
+            if not item.get("textragKey"):
+                fails.append(f"{aegis}: verified인데 textragKey 없음")
+            if not item.get("evidence"):
+                fails.append(f"{aegis}: verified인데 evidence 없음")
+            rid = item.get("rathenaItemId")
+            if rid is not None:
+                id_to_verified_keys.setdefault(rid, set()).add(item.get("textragKey"))
+        elif status in ("ambiguous", "unresolved-existing", "missing"):
+            warns.append(f"{aegis}: identity status={status}")
+
+    for rid, keys in id_to_verified_keys.items():
+        if len(keys) > 1:
+            fails.append(f"rAthena item id {rid}: 서로 다른 verified TextRAG key로 연결됨 {sorted(keys)}")
+
+    missing_rows = referenced_aegis - seen_aegis
+    if missing_rows:
+        fails.append(f"db-combos.json이 참조하는 AegisName {len(missing_rows)}개가 identity map에 없음: {sorted(missing_rows)[:10]}...")
+
+    return fails, warns
+
+
+def audit_review_manifest(review_data, textrag_items, referenced_aegis):
+    """P2-A.2: source/data/combo-item-identity-reviewed.json(Case D review manifest)
+    자체의 무결성 감사(과제 §17). identity map 감사(위)와는 별도 카운터로 보고한다 --
+    이 감사는 "병합되기 전" manifest 원본의 결함을 잡는다(identity map 감사는 병합
+    "이후" 결과를 본다).
+
+    FAIL: reviewed verified인데 evidence 없음, reviewed target key가 db-items.json에
+    없음, AegisName이 콤보가 참조하는 278개 대상 밖, 같은 AegisName에 review decision
+    중복, verified mapping 충돌(동일 rAthena id가 서로 다른 verified key로 두 번 이상
+    리뷰됨 -- identity map 감사의 rAthena-id 체크와 별개로 manifest 자체에서도 확인).
+    """
+    fails, warns = [], []
+    seen_aegis = {}
+    for item in review_data.get("items", []):
+        if not item.get("reviewed"):
+            continue
+        aegis = item.get("aegisName")
+        if not aegis:
+            fails.append("review manifest에 aegisName 없는 행")
+            continue
+        if aegis in seen_aegis:
+            fails.append(f"{aegis}: review manifest에 같은 AegisName 중복 decision")
+        seen_aegis[aegis] = item
+
+        if aegis not in referenced_aegis:
+            fails.append(f"{aegis}: review manifest에 있으나 콤보가 참조하는 278개 대상이 아님")
+
+        decision = item.get("decision")
+        if decision not in IDENTITY_KNOWN_STATUSES:
+            fails.append(f"{aegis}: review manifest의 알려지지 않은 decision '{decision}'")
+
+        if decision == "verified":
+            if not item.get("evidence"):
+                fails.append(f"{aegis}: reviewed verified인데 evidence 없음")
+            key = item.get("textragKey")
+            if not key:
+                fails.append(f"{aegis}: reviewed verified인데 textragKey 없음")
+            elif key not in textrag_items:
+                fails.append(f"{aegis}: reviewed textragKey '{key}'가 db-items.json에 없음")
+        elif decision == "ambiguous":
+            warns.append(f"{aegis}: review manifest ambiguous(자동 선택 보류)")
+
+    return fails, warns
+
 
 def load_data_files():
     raw = {}
@@ -240,6 +685,77 @@ def main():
     else:
         print("OK - npc audit")
 
+    audit_item_effects_collector_sync(ITEM_EFFECTS_SCRIPT_PATH)
+    audit_item_effects_deferred_sync(ITEM_EFFECTS_SCRIPT_PATH)
+
+    item_effect_fails, item_effect_warnings = audit_item_effects(parsed["DB_ITEMS"])
+    if item_effect_fails:
+        joined = "\n  - ".join(item_effect_fails)
+        raise ValueError(f"아이템 효과 감사 오류:\n  - {joined}")
+    if item_effect_warnings:
+        print(f"WARN - item effect audit: {len(item_effect_warnings)} issue(s)")
+        for warning in item_effect_warnings:
+            print(f"  - {warning}")
+    else:
+        print("OK - item effect audit")
+
+    # P2-A: 콤보 정본 데이터 감사 -- 위 "item effect audit"(469 WARN, P0 backlog)과
+    # 절대 같은 숫자에 합치지 않는다(과제 지시 §27). db-combos.json이 아직 없으면
+    # (P2-A를 실행하지 않은 체크아웃) 조용히 건너뛴다 -- 이번 단계 산출물이 선택적임을
+    # 반영한다.
+    if os.path.exists(COMBOS_JSON_PATH):
+        with open(COMBOS_JSON_PATH, encoding="utf-8") as f:
+            combos_data = json.load(f)
+        combo_fails, combo_warnings = audit_item_combos(combos_data)
+        if combo_fails:
+            joined = "\n  - ".join(combo_fails)
+            raise ValueError(f"콤보 데이터 감사 오류:\n  - {joined}")
+        if combo_warnings:
+            print(f"COMBO WARN - item combo audit: {len(combo_warnings)} issue(s)")
+        else:
+            print("OK - item combo audit")
+
+        # P2-A.4: consumer-backed 감사 -- 위 세 감사(COMBO/IDENTITY/REVIEW)와도 별도
+        # 카운터("SUPPORT WARN")로 보고한다(과제 §36: 절대 합치지 않는다).
+        support_fails = audit_combo_consumer_backed(combos_data)
+        if support_fails:
+            joined = "\n  - ".join(support_fails)
+            raise ValueError(f"콤보 effect-support 감사 오류:\n  - {joined}")
+        print("OK - combo effect-support(consumer-backed) audit")
+
+        # P2-A.1: 콤보 참조 아이템 identity map 감사 -- 위 콤보 audit과도, 469 WARN과도
+        # 별도 카운터("IDENTITY WARN")로 보고한다(과제 §23/§27과 같은 원칙: 세 숫자를
+        # 절대 하나로 합치지 않는다). db-combos.json이 있어야만 참조 AegisName 집합을
+        # 알 수 있으므로 이 블록 안에서만 실행한다.
+        if os.path.exists(COMBO_IDENTITY_JSON_PATH):
+            with open(COMBO_IDENTITY_JSON_PATH, encoding="utf-8") as f:
+                identity_data = json.load(f)
+            identity_fails, identity_warnings = audit_combo_item_identity(identity_data, combos_data)
+            if identity_fails:
+                joined = "\n  - ".join(identity_fails)
+                raise ValueError(f"콤보 아이템 identity 감사 오류:\n  - {joined}")
+            if identity_warnings:
+                print(f"IDENTITY WARN - combo item identity audit: {len(identity_warnings)} issue(s)")
+            else:
+                print("OK - combo item identity audit")
+
+            # P2-A.2: review manifest(사람이 검토한 Case D mapping) 자체의 무결성 감사 --
+            # identity map 감사와도 별도 카운터("REVIEW WARN")로 보고한다(과제 §17).
+            if os.path.exists(COMBO_IDENTITY_REVIEW_JSON_PATH):
+                with open(COMBO_IDENTITY_REVIEW_JSON_PATH, encoding="utf-8") as f:
+                    review_data = json.load(f)
+                referenced_aegis = {
+                    r.get("aegisName") for c in combos_data.get("combos", []) for r in c.get("requiredItems", [])
+                }
+                review_fails, review_warnings = audit_review_manifest(review_data, parsed["DB_ITEMS"], referenced_aegis)
+                if review_fails:
+                    joined = "\n  - ".join(review_fails)
+                    raise ValueError(f"review manifest 감사 오류:\n  - {joined}")
+                if review_warnings:
+                    print(f"REVIEW WARN - combo item identity review audit: {len(review_warnings)} issue(s)")
+                else:
+                    print("OK - combo item identity review audit")
+
     production_errors = audit_production(parsed["DB_PRODUCTION"], parsed["DB_ITEMS"])
     if production_errors:
         joined = "\n  - ".join(production_errors)
@@ -254,6 +770,8 @@ def main():
 
     # 레거시 UI 함수는 template.html에 남아 있어도 뒤에 로드되는 각 계층이 재정의한다.
     # actor-interaction은 기존 서비스/퀘스트 함수에 위임하므로 가장 마지막에 로드한다.
+    item_effects_script = open(ITEM_EFFECTS_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
+    combo_engine_script = open(COMBO_ENGINE_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     world_map_script = open(WORLD_MAP_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     service_script = open(SERVICE_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     ui_hotfix_script = open(UI_HOTFIX_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
@@ -264,7 +782,15 @@ def main():
     count = template.count(body_close)
     assert count == 1, f"{body_close} matched {count} times (expected 1)"
     injected = (
-        f'\n<script id="world-map-v1">\n{world_map_script}\n</script>\n'
+        # item-effects는 calcStats()(block-engine, </body>보다 훨씬 앞)가 참조하는 전역
+        # 함수를 정의한다. 스크립트 태그는 문서 순서대로 실행되지만 calcStats 호출은
+        # window.onload=doLoading 이후에만 일어나므로(파싱 중 즉시 호출 없음) 다른 주입
+        # 스크립트와 함께 여기(</body> 직전)에서 정의해도 안전하다 — 다만 가장 먼저 둔다.
+        f'\n<script id="item-effects-v1">\n{item_effects_script}\n</script>\n'
+        # combo-engine은 calcStats()(item-effects 바로 다음 줄)가 참조하는 applyComboEffects를
+        # 정의한다 -- item-effects와 같은 이유로 늦게 정의돼도 안전하니 바로 뒤에 둔다.
+        f'<script id="combo-engine-v1">\n{combo_engine_script}\n</script>\n'
+        f'<script id="world-map-v1">\n{world_map_script}\n</script>\n'
         f'<script id="block-service-systems">\n{service_script}\n</script>\n'
         f'<script id="ux-hotfix">\n{ui_hotfix_script}\n</script>\n'
         f'<script id="quest-guide-v1">\n{quest_guide_script}\n</script>\n'
@@ -286,6 +812,8 @@ def main():
 
     print(f"OK - built {OUTPUT_PATH} ({len(template)} chars)")
     print(f"OK - built {INDEX_PATH} (GitHub Pages entry point)")
+    print("OK - item effects collector (P0-B) injected")
+    print("OK - combo matcher/effects (P2-B1) injected")
     print("OK - dynamic SVG world map injected")
     print("OK - phase 1-2 service systems injected")
     print("OK - UX hotfix injected")

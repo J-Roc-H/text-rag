@@ -1,0 +1,460 @@
+{
+  "meta": {
+    "purpose": "combo-effect-support-matrix.json의 engine-extension-required/trigger-model-missing/identity-mapping-gap/stacking-scope-mismatch 항목을 unlockPotential/engineComplexity 우선순위로 정렬(빈도 1위가 항상 1순위는 아님)",
+    "priorityFormula": "priorityScore = unlockPotentialCombos / complexityWeight(low=1,medium=2,high=3)",
+    "generatedFrom": "source/data/combo-effect-support-matrix.json"
+  },
+  "backlog": [
+    {
+      "constant": "bAddClass",
+      "verdict": "stacking-scope-mismatch",
+      "unlockPotentialCombos": 13,
+      "engineComplexity": "medium",
+      "engineComplexityReason": "평타(processTurn 블록)와 물리 스킬(스킬 데미지 계산 지점) 공통으로 소비하는 physicalClassAtk류 모듈 필요 -- Class_All/Class_Boss는 트리거 자체는 이미 확인됐으나 스킬 데미지 경로 자체를 새로 노출해야 함",
+      "priorityScore": 6.5,
+      "sampleComboIds": [
+        "rathena-pre-0003-01",
+        "rathena-pre-0003-02",
+        "rathena-pre-0003-03",
+        "rathena-pre-0044-01",
+        "rathena-pre-0044-02"
+      ]
+    },
+    {
+      "constant": "bLongAtkRate",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 6,
+      "engineComplexity": "low",
+      "engineComplexityReason": "isRangedWeapon 구조 데이터 이미 존재, getOutgoingAtkPctMul류 함수 1개 추가",
+      "priorityScore": 6.0,
+      "sampleComboIds": [
+        "rathena-pre-0018-01",
+        "rathena-pre-0018-02",
+        "rathena-pre-0019-01",
+        "rathena-pre-0020-01",
+        "rathena-pre-0021-01"
+      ]
+    },
+    {
+      "constant": "bSubRace",
+      "verdict": "stacking-scope-mismatch",
+      "unlockPotentialCombos": 8,
+      "engineComplexity": "medium",
+      "engineComplexityReason": "all+specific race additive reduction 모델 필요 -- applyIncomingItemReduction을 '곱연산 순차 적용'에서 'race_fix=all+specific 합산 후 단 한 번 적용'으로 바꿔야 함(기존 raceDmgReduce 자체 값 변경은 아님)",
+      "priorityScore": 4.0,
+      "sampleComboIds": [
+        "rathena-pre-0043-01",
+        "rathena-pre-0045-01",
+        "rathena-pre-0046-01",
+        "rathena-pre-0047-01",
+        "rathena-pre-0048-01"
+      ]
+    },
+    {
+      "constant": "bAspdRate",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 9,
+      "engineComplexity": "high",
+      "engineComplexityReason": "%기반 아스피드와 기존 flat aspd(*20ms) 단위 체계를 통합하는 리팩터 필요",
+      "priorityScore": 3.0,
+      "sampleComboIds": [
+        "rathena-pre-0008-01",
+        "rathena-pre-0008-02",
+        "rathena-pre-0029-01",
+        "rathena-pre-0047-01",
+        "rathena-pre-0063-01"
+      ]
+    },
+    {
+      "constant": "bHealPower",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 8,
+      "engineComplexity": "high",
+      "engineComplexityReason": "healBoost 계열 자체가 P0에서 원작검증필요로 막혀 있어 상위 조사부터 필요",
+      "priorityScore": 2.667,
+      "sampleComboIds": [
+        "rathena-pre-0049-01",
+        "rathena-pre-0066-01",
+        "rathena-pre-0066-02",
+        "rathena-pre-0066-03",
+        "rathena-pre-0066-04"
+      ]
+    },
+    {
+      "constant": "bResEff",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 5,
+      "engineComplexity": "medium",
+      "engineComplexityReason": "isStatusImmune 옆에 부분 저항 % 롤 로직 추가 -- 패턴은 있으나 새 필드 필요",
+      "priorityScore": 2.5,
+      "sampleComboIds": [
+        "rathena-pre-0006-01",
+        "rathena-pre-0006-02",
+        "rathena-pre-0043-01",
+        "rathena-pre-0048-01",
+        "rathena-pre-0053-01"
+      ]
+    },
+    {
+      "constant": "bAutoSpell",
+      "verdict": "identity-mapping-gap",
+      "unlockPotentialCombos": 6,
+      "engineComplexity": "high",
+      "engineComplexityReason": "rAthena 스킬ID -> TextRAG 스킬키 identity 매핑 테이블 신규 구축(P2-A.1급 별도 프로젝트)",
+      "priorityScore": 2.0,
+      "sampleComboIds": [
+        "rathena-pre-0020-01",
+        "rathena-pre-0065-01",
+        "rathena-pre-0085-01",
+        "rathena-pre-0091-01",
+        "rathena-pre-0093-01"
+      ]
+    },
+    {
+      "constant": "bAddEff",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 4,
+      "engineComplexity": "medium",
+      "engineComplexityReason": "seProc 이벤트 구조 재사용 가능하나 turns 기본값 정책을 새로 정해야 함(rAthena가 안 줌)",
+      "priorityScore": 2.0,
+      "sampleComboIds": [
+        "rathena-pre-0019-01",
+        "rathena-pre-0022-01",
+        "rathena-pre-0030-01",
+        "rathena-pre-0032-01"
+      ]
+    },
+    {
+      "constant": "autobonus",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 4,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 1.333,
+      "sampleComboIds": [
+        "rathena-pre-0030-01",
+        "rathena-pre-0047-01",
+        "rathena-pre-0102-01",
+        "rathena-pre-0105-01"
+      ]
+    },
+    {
+      "constant": "bAddMonsterDropItem",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 4,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 1.333,
+      "sampleComboIds": [
+        "rathena-pre-0031-01",
+        "rathena-pre-0079-01",
+        "rathena-pre-0091-01",
+        "rathena-pre-0101-01"
+      ]
+    },
+    {
+      "constant": "bAutoSpellWhenHit",
+      "verdict": "trigger-model-missing",
+      "unlockPotentialCombos": 4,
+      "engineComplexity": "high",
+      "engineComplexityReason": "onDamaged 집계 인프라 자체를 P0 collector에 신규 구축해야 함",
+      "priorityScore": 1.333,
+      "sampleComboIds": [
+        "rathena-pre-0002-01",
+        "rathena-pre-0002-02",
+        "rathena-pre-0016-01",
+        "rathena-pre-0027-01"
+      ]
+    },
+    {
+      "constant": "autobonus2",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 3,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 1.0,
+      "sampleComboIds": [
+        "rathena-pre-0045-01",
+        "rathena-pre-0048-01",
+        "rathena-pre-0049-01"
+      ]
+    },
+    {
+      "constant": "bAddEffWhenHit",
+      "verdict": "trigger-model-missing",
+      "unlockPotentialCombos": 3,
+      "engineComplexity": "high",
+      "engineComplexityReason": "bAutoSpellWhenHit과 동일(onDamaged 인프라 신규)",
+      "priorityScore": 1.0,
+      "sampleComboIds": [
+        "rathena-pre-0071-01",
+        "rathena-pre-0076-01",
+        "rathena-pre-0078-01"
+      ]
+    },
+    {
+      "constant": "bAddSize",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 3,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 1.0,
+      "sampleComboIds": [
+        "rathena-pre-0063-01",
+        "rathena-pre-0064-01",
+        "rathena-pre-0105-01"
+      ]
+    },
+    {
+      "constant": "bSPDrainValue",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 3,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 1.0,
+      "sampleComboIds": [
+        "rathena-pre-0074-01",
+        "rathena-pre-0081-01",
+        "rathena-pre-0086-01"
+      ]
+    },
+    {
+      "constant": "bAddItemHealRate",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 2,
+      "engineComplexity": "high",
+      "engineComplexityReason": "healBoost 계열, 위와 동일",
+      "priorityScore": 0.667,
+      "sampleComboIds": [
+        "rathena-pre-0045-01",
+        "rathena-pre-0101-01"
+      ]
+    },
+    {
+      "constant": "bDelayRate",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 2,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 0.667,
+      "sampleComboIds": [
+        "rathena-pre-0050-01",
+        "rathena-pre-0050-02"
+      ]
+    },
+    {
+      "constant": "bLongAtkDef",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 2,
+      "engineComplexity": "high",
+      "engineComplexityReason": "몬스터 공격의 원거리/근접 판별 메타데이터 자체가 없음(신규 데이터 모델)",
+      "priorityScore": 0.667,
+      "sampleComboIds": [
+        "rathena-pre-0050-01",
+        "rathena-pre-0050-02"
+      ]
+    },
+    {
+      "constant": "bMatk",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 2,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 0.667,
+      "sampleComboIds": [
+        "rathena-pre-0010-01",
+        "rathena-pre-0010-02"
+      ]
+    },
+    {
+      "constant": "bPerfectHitAddRate",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 2,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 0.667,
+      "sampleComboIds": [
+        "rathena-pre-0077-01",
+        "rathena-pre-0082-01"
+      ]
+    },
+    {
+      "constant": "bSkillHeal2",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 2,
+      "engineComplexity": "high",
+      "engineComplexityReason": "healBoost 계열, 위와 동일",
+      "priorityScore": 0.667,
+      "sampleComboIds": [
+        "rathena-pre-0046-01",
+        "rathena-pre-0053-01"
+      ]
+    },
+    {
+      "constant": "bSpeedRate",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 2,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 0.667,
+      "sampleComboIds": [
+        "rathena-pre-0011-01",
+        "rathena-pre-0081-01"
+      ]
+    },
+    {
+      "constant": "bAddDefMonster",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 1,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 0.333,
+      "sampleComboIds": [
+        "rathena-pre-0055-01"
+      ]
+    },
+    {
+      "constant": "bAddEle",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 1,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 0.333,
+      "sampleComboIds": [
+        "rathena-pre-0079-01"
+      ]
+    },
+    {
+      "constant": "bAtk",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 1,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 0.333,
+      "sampleComboIds": [
+        "rathena-pre-0022-01"
+      ]
+    },
+    {
+      "constant": "bAtkRate",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 1,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 0.333,
+      "sampleComboIds": [
+        "rathena-pre-0099-01"
+      ]
+    },
+    {
+      "constant": "bBreakArmorRate",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 1,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 0.333,
+      "sampleComboIds": [
+        "rathena-pre-0007-01"
+      ]
+    },
+    {
+      "constant": "bBreakWeaponRate",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 1,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 0.333,
+      "sampleComboIds": [
+        "rathena-pre-0007-01"
+      ]
+    },
+    {
+      "constant": "bDelayrate",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 1,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 0.333,
+      "sampleComboIds": [
+        "rathena-pre-0051-01"
+      ]
+    },
+    {
+      "constant": "bHealpower2",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 1,
+      "engineComplexity": "high",
+      "engineComplexityReason": "healBoost 계열, 위와 동일",
+      "priorityScore": 0.333,
+      "sampleComboIds": [
+        "rathena-pre-0045-01"
+      ]
+    },
+    {
+      "constant": "bNoCastCancel",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 1,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 0.333,
+      "sampleComboIds": [
+        "rathena-pre-0060-01"
+      ]
+    },
+    {
+      "constant": "bSPGainRace",
+      "verdict": "identity-mapping-gap",
+      "unlockPotentialCombos": 1,
+      "engineComplexity": "high",
+      "engineComplexityReason": "RC_Player_Human 등 RACE_ENUM_MAP 미등재 enum -- '플레이어 종족' 개념 자체를 몬스터 전투 모델에 새로 도입해야 함(bSubRace의 RC_All 항목과는 별개 사유)",
+      "priorityScore": 0.333,
+      "sampleComboIds": [
+        "rathena-pre-0097-01"
+      ]
+    },
+    {
+      "constant": "bShortWeaponDamageReturn",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 1,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 0.333,
+      "sampleComboIds": [
+        "rathena-pre-0029-01"
+      ]
+    },
+    {
+      "constant": "bSkillHeal",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 1,
+      "engineComplexity": "high",
+      "engineComplexityReason": "healBoost 계열, 위와 동일",
+      "priorityScore": 0.333,
+      "sampleComboIds": [
+        "rathena-pre-0046-01"
+      ]
+    },
+    {
+      "constant": "bUnbreakableArmor",
+      "verdict": "engine-extension-required",
+      "unlockPotentialCombos": 1,
+      "engineComplexity": "high",
+      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
+      "priorityScore": 0.333,
+      "sampleComboIds": [
+        "rathena-pre-0046-01"
+      ]
+    },
+    {
+      "constant": "skill",
+      "verdict": "identity-mapping-gap",
+      "unlockPotentialCombos": 1,
+      "engineComplexity": "high",
+      "engineComplexityReason": "bAutoSpell과 동일한 스킬 identity 매핑 필요",
+      "priorityScore": 0.333,
+      "sampleComboIds": [
+        "rathena-pre-0043-01"
+      ]
+    }
+  ]
+}

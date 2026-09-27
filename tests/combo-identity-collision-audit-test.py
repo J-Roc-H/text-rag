@@ -1,0 +1,216 @@
+"""P2-A.6 — identity collision 감사 회귀 테스트.
+
+동일 textragKey에 복수 rAthena AegisName이 매핑된 경우(combo-item-identity.json 역매핑
+충돌)를 canonicalize_combos.py가 IDENTITY_COLLISION_JUDGMENTS(rAthena item_db_equip.yml
+실코드 대조로 확인한 근거)로만 해소하는지, 그리고 그 결과가 db-combos.json에 정확히
+반영됐는지 검증한다. 실제 함수(compute_identity_collisions/audit_identity_collision_
+coverage/resolve_global_identity_collisions/canonicalize)와 실제 산출물(db-combos.json)을
+그대로 쓴다 -- 재구현 금지.
+
+실행: python tests/combo-identity-collision-audit-test.py
+"""
+import os
+import sys
+import json
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+import canonicalize_combos as cc  # noqa: E402
+
+
+def check(label, condition):
+    if not condition:
+        raise SystemExit(f'FAIL - {label}')
+    print(f'OK - {label}')
+
+
+def main():
+    real_combos = json.load(open(os.path.join(ROOT, 'source/data/db-combos.json'), encoding='utf-8'))
+    by_id = {c['id']: c for c in real_combos['combos']}
+
+    # ══════════════════════════════════════════════
+    # A — combo-item-identity.json 전체 역매핑 충돌 전수(6개, 하드코딩 예상치 아니라
+    # generator를 그대로 실행해 재확인) 가 전부 IDENTITY_COLLISION_JUDGMENTS에 등재됨.
+    # ══════════════════════════════════════════════
+    identity_map = cc.load_json(cc.IDENTITY_MAP_JSON)
+    identity_verified = cc.load_identity_verified_map(identity_map)
+    collisions = cc.compute_identity_collisions(identity_verified)
+    check('A: identity collision textragKey 6개 전수 발견', len(collisions) == 6)
+    expected_keys = {'롱혼', '매직코트', '닌자슈츠', '아머', '서바이버로드', '런닝셔츠'}
+    check('A: 발견된 충돌 키가 정확히 예상 6종과 일치', set(collisions.keys()) == expected_keys)
+    for key, aegis_set in collisions.items():
+        judgment = cc.IDENTITY_COLLISION_JUDGMENTS.get(key)
+        check(f'A: {key} 충돌이 IDENTITY_COLLISION_JUDGMENTS에 등재됨', judgment is not None)
+        check(f'A: {key}의 실제 aegis 집합이 등재된 집합의 부분집합', aegis_set.issubset(judgment['aegisNames']))
+        check(f'A: {key} judgment는 exclusive-alias', judgment['judgment'] == 'exclusive-alias')
+
+    # ══════════════════════════════════════════════
+    # B — audit_identity_collision_coverage()는 등재되지 않은 신규 충돌을 즉시 raise한다
+    # (추측 병합 금지 가드 자체를 검증 -- 등재 표에서 하나를 지운 사본으로 재현).
+    # ══════════════════════════════════════════════
+    tampered = dict(cc.IDENTITY_COLLISION_JUDGMENTS)
+    del tampered['매직코트']
+    original = cc.IDENTITY_COLLISION_JUDGMENTS
+    cc.IDENTITY_COLLISION_JUDGMENTS = tampered
+    try:
+        raised = False
+        try:
+            cc.audit_identity_collision_coverage(identity_verified)
+        except ValueError:
+            raised = True
+        check('B: 등재 표에서 하나를 지우면 audit_identity_collision_coverage가 raise', raised)
+    finally:
+        cc.IDENTITY_COLLISION_JUDGMENTS = original
+    # 원상복구 후에는 다시 통과해야 한다(테스트 격리 확인).
+    collisions_after_restore = cc.audit_identity_collision_coverage(identity_verified)
+    check('B: 표 복구 후에는 다시 정상 통과', len(collisions_after_restore) == 6)
+
+    # ══════════════════════════════════════════════
+    # C — 실제 db-combos.json에 반영된 canonical/duplicate 역할과 status가 정확함.
+    # entry 9/13/34/35는 단순 pair, entry 36은 내부적으로 두 개의 독립 pair로 분리돼야
+    # 한다(G_Strings/G_Strings_는 collision이 아니라 서로 다른 textragKey이므로 4-way
+    # 그룹으로 뭉쳐지면 안 됨).
+    # ══════════════════════════════════════════════
+    pairs = [
+        ('rathena-pre-0009-01', 'rathena-pre-0009-02', '매직코트'),
+        ('rathena-pre-0013-01', 'rathena-pre-0013-02', '서바이버로드'),
+        ('rathena-pre-0034-01', 'rathena-pre-0034-02', '아머'),
+        ('rathena-pre-0035-01', 'rathena-pre-0035-02', '닌자슈츠'),
+        ('rathena-pre-0036-01', 'rathena-pre-0036-02', '런닝셔츠'),
+        ('rathena-pre-0036-03', 'rathena-pre-0036-04', '런닝셔츠'),
+    ]
+    for canonical_id, duplicate_id, key in pairs:
+        canonical, duplicate = by_id[canonical_id], by_id[duplicate_id]
+        check(f'C: {canonical_id}(canonical) status=verified', canonical['status'] == 'verified')
+        check(f'C: {duplicate_id}(duplicate) status=runtime-blocked', duplicate['status'] == 'runtime-blocked')
+        check(f'C: {duplicate_id}.identityCollision.canonicalId == {canonical_id}',
+              duplicate['identityCollision']['canonicalId'] == canonical_id)
+        check(f'C: {duplicate_id}.identityCollision.role == duplicate', duplicate['identityCollision']['role'] == 'duplicate')
+        check(f'C: {canonical_id}.identityCollision.role == canonical', canonical['identityCollision']['role'] == 'canonical')
+        check(f'C: {duplicate_id}에 identity collision statusReasons 기록됨',
+              any('identity collision' in r for r in duplicate['statusReasons']))
+        check(f'C: collisionTextragKeys에 {key} 포함', key in canonical['identityCollision']['collisionTextragKeys'])
+
+    # entry 36이 4-way로 뭉쳐지지 않고 2개의 독립 pair로 남아 있는지(서로 다른 canonicalId).
+    check('C: 0036-01/02와 0036-03/04는 서로 다른 canonicalId(4-way 그룹 아님)',
+          by_id['rathena-pre-0036-01']['identityCollision']['canonicalId'] !=
+          by_id['rathena-pre-0036-03']['identityCollision']['canonicalId'])
+    check('C: 0036-01의 memberIds는 [01,02]뿐(03/04 포함 안 됨)',
+          set(by_id['rathena-pre-0036-01']['identityCollision']['memberIds']) ==
+          {'rathena-pre-0036-01', 'rathena-pre-0036-02'})
+
+    # entry 2(롱혼, unsupported)도 문서화만 되고 status는 그대로(이미 다른 사유로 unsupported).
+    c2a, c2b = by_id['rathena-pre-0002-01'], by_id['rathena-pre-0002-02']
+    check('C: 0002-01/02(unsupported)도 identityCollision 문서화됨', c2a['identityCollision'] is not None and c2b['identityCollision'] is not None)
+    check('C: 0002-01/02는 원래 status(unsupported) 유지(이미 verified가 아니었으므로 강등 대상 아님)',
+          c2a['status'] == 'unsupported' and c2b['status'] == 'unsupported')
+
+    # 짝 없는 단독 참조(0003-01)는 identityCollision이 없어야 한다.
+    check('C: 0003-01(짝 없는 롱혼 단독 참조)은 identityCollision 없음', by_id['rathena-pre-0003-01']['identityCollision'] is None)
+    # identity collision과 무관한 콤보(0001-01)도 identityCollision이 없어야 한다.
+    check('C: 0001-01(무관 콤보)은 identityCollision 없음', by_id['rathena-pre-0001-01']['identityCollision'] is None)
+
+    # ══════════════════════════════════════════════
+    # D — 재산출된 집계: verified/runtime-blocked/unsupported/source-needed.
+    # 하드코딩된 기대치가 아니라 db-combos.json 자체를 세어 재확인한다(§추측 금지와 같은
+    # 원칙 -- generator 결과를 그대로 재계산).
+    # ══════════════════════════════════════════════
+    counts = {}
+    for c in real_combos['combos']:
+        counts[c['status']] = counts.get(c['status'], 0) + 1
+    check('D: 전체 variant 수 156(불변)', sum(counts.values()) == 156)
+    check('D: verified 41건(47 - identity collision duplicate 6건)', counts.get('verified') == 41)
+    check('D: runtime-blocked 6건(identity collision duplicate 6건, ammo는 현재 0건)', counts.get('runtime-blocked') == 6)
+    check('D: unsupported 51건(불변 -- identity collision이 상태를 바꾸지 않음)', counts.get('unsupported') == 51)
+    check('D: source-needed 58건(불변)', counts.get('source-needed') == 58)
+    check('D: meta.statusCounts가 재계산 값과 일치', real_combos['meta']['statusCounts'] == counts)
+    check('D: meta.identityCollisionKeys가 6종 전부 포함', set(real_combos['meta']['identityCollisionKeys']) == expected_keys)
+    check('D: meta.identityCollisionGroupCount == 8(case 2 pair 7건: 9/13/34/35/36×2/2 + case 3 cross-entry pair 1건: 12+14)',
+          real_combos['meta']['identityCollisionGroupCount'] == 8)
+
+    # ══════════════════════════════════════════════
+    # E(보완지시) — cross-entry collision: 0012-01(entry 12, Survival_Rod_)과 0014-01
+    # (entry 14, Survival_Rod2_)는 서로 다른 source entry이지만 requiredItems가 TextRAG
+    # identity 기준으로 같아진다(둘 다 서바이버로드+생존의망토). 그러나 rawScript가 서로
+    # 다르므로(0012-01은 min() 래핑, 0014-01은 if/else) case 2(canonical 선택)가 아니라
+    # case 3(ambiguous-no-canonical)로 처리돼야 한다 -- "효과가 다르면 canonical 선택 금지".
+    # ══════════════════════════════════════════════
+    e12, e14 = by_id['rathena-pre-0012-01'], by_id['rathena-pre-0014-01']
+    check('E: 0012-01/0014-01은 서로 다른 source entry(12/14)', e12['source']['entry'] != e14['source']['entry'])
+    check('E: 0012-01/0014-01의 rawScript는 서로 다름(min() vs if/else)', e12['rawScript'] != e14['rawScript'])
+    check('E: 0012-01/0014-01의 requiredItems textragKey multiset은 동일(서바이버로드+생존의망토)',
+          sorted(ri['textragKey'] for ri in e12['requiredItems']) == sorted(ri['textragKey'] for ri in e14['requiredItems']))
+    check('E: 0012-01의 identityCollision.role == ambiguous-no-canonical(canonical 선택 안 함)',
+          e12['identityCollision']['role'] == 'ambiguous-no-canonical')
+    check('E: 0014-01도 role == ambiguous-no-canonical', e14['identityCollision']['role'] == 'ambiguous-no-canonical')
+    check('E: 0012-01.identityCollision.canonicalId는 None(canonical 없음)', e12['identityCollision']['canonicalId'] is None)
+    check('E: 0012-01/0014-01이 서로를 memberIds로 참조', set(e12['identityCollision']['memberIds']) == {'rathena-pre-0012-01', 'rathena-pre-0014-01'})
+    check('E: futurePromotionBlock 플래그가 켜져 있음', e12['identityCollision'].get('futurePromotionBlock') is True and e14['identityCollision'].get('futurePromotionBlock') is True)
+    check('E: 지금은 둘 다 이미 다른 사유로 unsupported -- status를 건드리지 않음', e12['status'] == 'unsupported' and e14['status'] == 'unsupported')
+
+    # ══════════════════════════════════════════════
+    # F(보완지시) — future promotion block이 실제로 작동하는지: 합성 데이터로 0012-01/
+    # 0014-01과 같은 모양(requiredItems 동일, rawScript 다름)을 만들되 하나(또는 둘 다)를
+    # 인위적으로 "otherwise-verified"로 설정한 뒤 resolve_global_identity_collisions를
+    # 직접 호출해, 결과가 전부 runtime-blocked로 강등되는지 확인한다(재생성 시점마다 항상
+    # 재평가되므로 "이후 otherwise-verified가 되면 둘 다 runtime-blocked"가 보장된다).
+    # ══════════════════════════════════════════════
+    def make_fake(cid, entry, variant, aegis, script, status):
+        return {
+            'id': cid,
+            'source': {'system': 'rathena', 'mode': 'pre-re', 'entry': entry, 'variant': variant},
+            'requiredItems': [
+                {'aegisName': aegis, 'textragKey': '서바이버로드', 'resolved': True, 'isAmmo': False},
+                {'aegisName': 'Clack_Of_Servival', 'textragKey': '생존의망토', 'resolved': True, 'isAmmo': False},
+            ],
+            'rawScript': script,
+            'conditionalRaw': [],
+            'effects': [],
+            'unsupportedEffects': [],
+            'status': status,
+            'statusReasons': [],
+            'identityCollision': None,
+        }
+
+    # F-1: 하나만 otherwise-verified인 경우에도 그 하나가 runtime-blocked로 강등돼야 한다
+    # (§보완지시: "이후 otherwise-verified가 되면 둘 다 runtime-blocked" -- 한쪽만 verified가
+    # 돼도 전체가 강등돼야 하며, 다른 하나가 이미 unsupported라고 봐줘선 안 된다).
+    fake_one_verified = [
+        make_fake('fake-A', 90, 1, 'Survival_Rod_', 'bonus bMaxHP,300;\nbonus bMatkRate,min(5, x);', 'verified'),
+        make_fake('fake-A', 91, 1, 'Survival_Rod2_', 'bonus bMaxHP,300;\nif (y>10) { bonus2 bSubEle,Ele_Neutral,30; }', 'unsupported'),
+    ]
+    cc.resolve_global_identity_collisions(fake_one_verified)
+    check('F-1: 하나만 otherwise-verified여도 그 하나가 runtime-blocked로 강등됨',
+          fake_one_verified[0]['status'] == 'runtime-blocked')
+    check('F-1: canonical은 여전히 선택되지 않음(None)', fake_one_verified[0]['identityCollision']['canonicalId'] is None)
+    check('F-1: 원래 unsupported였던 쪽은 그대로 unsupported(강등 대상 아님 -- 원래도 verified가 아니었으므로)',
+          fake_one_verified[1]['status'] == 'unsupported')
+
+    # F-2: 둘 다 otherwise-verified인 경우 -- 둘 다 runtime-blocked.
+    fake_both_verified = [
+        make_fake('fake-B', 92, 1, 'Survival_Rod_', 'bonus bMaxHP,300;\nbonus bMatkRate,min(5, x);', 'verified'),
+        make_fake('fake-B', 93, 1, 'Survival_Rod2_', 'bonus bMaxHP,300;\nif (y>10) { bonus2 bSubEle,Ele_Neutral,30; }', 'verified'),
+    ]
+    cc.resolve_global_identity_collisions(fake_both_verified)
+    check('F-2: 둘 다 otherwise-verified였으면 둘 다 runtime-blocked',
+          all(c['status'] == 'runtime-blocked' for c in fake_both_verified))
+
+    # F-3(대조군): rawScript가 완전히 같으면(case 2) 여전히 canonical/duplicate로 처리돼야
+    # 한다 -- case 3 로직을 추가했다고 case 2 경로가 깨지지 않았는지 확인.
+    fake_same_script = [
+        make_fake('fake-C', 94, 1, 'Survival_Rod_', 'bonus bMatkRate,5;', 'verified'),
+        make_fake('fake-C', 95, 1, 'Survival_Rod2_', 'bonus bMatkRate,5;', 'verified'),
+    ]
+    cc.resolve_global_identity_collisions(fake_same_script)
+    check('F-3: rawScript가 같으면 여전히 case 2(canonical 1개 verified 유지)',
+          sum(1 for c in fake_same_script if c['status'] == 'verified') == 1 and
+          sum(1 for c in fake_same_script if c['status'] == 'runtime-blocked') == 1)
+    check('F-3: canonical이 실제로 선택됨(None 아님)',
+          any(c['identityCollision']['canonicalId'] is not None for c in fake_same_script))
+
+    print('ALL TESTS PASS')
+
+
+if __name__ == '__main__':
+    main()
