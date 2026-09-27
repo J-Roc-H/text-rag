@@ -11,7 +11,8 @@ CORS로 막힌다(DEVREF-E 보류-01).
 동적 세계지도는 source/world-map.js, 서비스 보강 계층은 source/services.js,
 소규모 UX 핫픽스는 source/ui-hotfix.js, 퀘스트 안내 보강은 source/quest-guide.js,
 장소/NPC 상호작용은 source/actor-interaction.js, 아이템/카드 효과 집계(P0-B)는
-source/item-effects.js로 분리 관리하되 빌드 시 </body> 직전에 모두 인라인한다.
+source/item-effects.js, 콤보 매칭·적용(P2-B1)은 source/combo-engine.js로 분리 관리하되
+빌드 시 </body> 직전에 모두 인라인한다.
 최종 index.html / 룬미드가츠_v9.19.html 은 계속 단일 HTML이다.
 
 item-effects.js는 template.html 본문의 <script id="block-engine"> 안 calcStats()가
@@ -37,8 +38,10 @@ QUEST_GUIDE_SCRIPT_PATH = os.path.join(BASE, "source", "quest-guide.js")
 ACTOR_INTERACTION_SCRIPT_PATH = os.path.join(BASE, "source", "actor-interaction.js")
 REFINE_REVEAL_SCRIPT_PATH = os.path.join(BASE, "source", "refine-reveal.js")
 ITEM_EFFECTS_SCRIPT_PATH = os.path.join(BASE, "source", "item-effects.js")
-# P2-A: 콤보 정본 데이터(tools/canonicalize_combos.py 산출물) -- BLOCKS에는 넣지 않는다.
-# 이번 단계는 데이터 생성/감사만 한다(HTML runtime에 아직 inject하지 않음, §7/§40).
+COMBO_ENGINE_SCRIPT_PATH = os.path.join(BASE, "source", "combo-engine.js")
+# P2-A 산출물(tools/canonicalize_combos.py). P2-B1부터 BLOCKS(DB_COMBOS)로 runtime에도
+# inject된다 -- 아래 os.path.exists 블록은 그와 별개로, BLOCKS 진입 전에 콤보 전용 감사
+# (item combo / consumer-backed / identity map / review manifest)를 도는 기존 경로다.
 COMBOS_JSON_PATH = os.path.join(DATA_DIR, "db-combos.json")
 # P2-A.1: 콤보 참조 아이템 identity map(tools/build_combo_item_identity.py 산출물) --
 # 마찬가지로 BLOCKS에는 넣지 않는다(runtime 미연결).
@@ -59,6 +62,7 @@ BLOCKS = {
     "DB_MAPS": "db-maps.json",
     "DB_NPCS": "db-npcs.json",
     "DB_ITEMS": "db-items.json",
+    "DB_COMBOS": "db-combos.json",
 }
 
 NPC_SERVICES = {
@@ -708,6 +712,7 @@ def main():
     # 레거시 UI 함수는 template.html에 남아 있어도 뒤에 로드되는 각 계층이 재정의한다.
     # actor-interaction은 기존 서비스/퀘스트 함수에 위임하므로 가장 마지막에 로드한다.
     item_effects_script = open(ITEM_EFFECTS_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
+    combo_engine_script = open(COMBO_ENGINE_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     world_map_script = open(WORLD_MAP_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     service_script = open(SERVICE_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     ui_hotfix_script = open(UI_HOTFIX_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
@@ -723,6 +728,9 @@ def main():
         # window.onload=doLoading 이후에만 일어나므로(파싱 중 즉시 호출 없음) 다른 주입
         # 스크립트와 함께 여기(</body> 직전)에서 정의해도 안전하다 — 다만 가장 먼저 둔다.
         f'\n<script id="item-effects-v1">\n{item_effects_script}\n</script>\n'
+        # combo-engine은 calcStats()(item-effects 바로 다음 줄)가 참조하는 applyComboEffects를
+        # 정의한다 -- item-effects와 같은 이유로 늦게 정의돼도 안전하니 바로 뒤에 둔다.
+        f'<script id="combo-engine-v1">\n{combo_engine_script}\n</script>\n'
         f'<script id="world-map-v1">\n{world_map_script}\n</script>\n'
         f'<script id="block-service-systems">\n{service_script}\n</script>\n'
         f'<script id="ux-hotfix">\n{ui_hotfix_script}\n</script>\n'
@@ -746,6 +754,7 @@ def main():
     print(f"OK - built {OUTPUT_PATH} ({len(template)} chars)")
     print(f"OK - built {INDEX_PATH} (GitHub Pages entry point)")
     print("OK - item effects collector (P0-B) injected")
+    print("OK - combo matcher/effects (P2-B1) injected")
     print("OK - dynamic SVG world map injected")
     print("OK - phase 1-2 service systems injected")
     print("OK - UX hotfix injected")

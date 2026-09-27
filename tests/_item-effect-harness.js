@@ -10,6 +10,7 @@ const assert = require('assert');
 
 const HTML_PATH = path.join(__dirname, '..', 'source', 'template.html');
 const ITEM_EFFECTS_PATH = path.join(__dirname, '..', 'source', 'item-effects.js');
+const COMBO_ENGINE_PATH = path.join(__dirname, '..', 'source', 'combo-engine.js');
 const ITEMS_PATH = path.join(__dirname, '..', 'source', 'data', 'db-items.json');
 
 function extractFunction(src, startMarker) {
@@ -33,6 +34,7 @@ function extractBetween(src, startMarker, endMarker) {
 
 const html = fs.readFileSync(HTML_PATH, 'utf8');
 const itemEffectsSrc = fs.readFileSync(ITEM_EFFECTS_PATH, 'utf8');
+const comboEngineSrc = fs.readFileSync(COMBO_ENGINE_PATH, 'utf8');
 const items = JSON.parse(fs.readFileSync(ITEMS_PATH, 'utf8'));
 
 // template.html에 인라인으로 박혀 있는 <script id="...">JSON</script> 정본 데이터를
@@ -62,9 +64,15 @@ const BREAKDOWN_STUBS = [
 function runCalcStats(DB, G) {
   const fn = new Function(
     'G', 'DB',
-    itemEffectsSrc + '\n' + BREAKDOWN_STUBS + '\n' + normalizeJobSrc + '\n' + parseItemSrc + '\n' + calcStatsSrc + '\nreturn calcStats();'
+    itemEffectsSrc + '\n' + comboEngineSrc + '\n' + BREAKDOWN_STUBS + '\n' + normalizeJobSrc + '\n' + parseItemSrc + '\n' + calcStatsSrc + '\nreturn calcStats();'
   );
   return fn(G, DB);
+}
+
+// P2-B1: getActiveLoadout/matchCombos/applyComboEffects도 combo-engine.js에서 그대로
+// 가져온다(재구현 아님).
+function makeComboEngineApi() {
+  return new Function(comboEngineSrc + '\nreturn { getActiveLoadout, matchCombos, applyComboEffects };')();
 }
 
 // P0-C1: 실제 실행기(triggerItemEffects)를 item-effects.js에서 그대로 가져온다.
@@ -110,7 +118,7 @@ function makeEquipmentCompareApi(DB, G) {
     // JOB_NAME2CODE는 실제 부트스트랩에서 `window.JOB_NAME2CODE = DB.jobName2Code`로
     // 만들어지는 별칭이다(재구현 아님) -- 여기서도 같은 한 줄로 재현한다.
     'var JOB_NAME2CODE = DB.jobName2Code || {};\n' +
-      itemEffectsSrc + '\n' + BREAKDOWN_STUBS + '\n' + normalizeJobSrc + '\n' + parseItemSrc + '\n' +
+      itemEffectsSrc + '\n' + comboEngineSrc + '\n' + BREAKDOWN_STUBS + '\n' + normalizeJobSrc + '\n' + parseItemSrc + '\n' +
       calcStatsSrc + '\n' + statPanelSrc + '\n' + equipSrc + '\n' + equipCompareSrc +
       '\nreturn { getEquipmentComparison, renderEquipmentCompareHtml, resolveEquipSlot, applyCandidateEquip, equipItem, calcStats };'
   );
@@ -221,12 +229,16 @@ function makePlayer(equip) {
 }
 
 // extraItems: {이름: itemObj, ...} db-items.json 실제 항목 또는 합성 fixture를 얹는다.
-function makeDB(extraItems) {
+// extraCombos: db-combos.json의 combos[] 배열 형태 항목(합성 fixture 또는 실데이터 발췌) --
+// 비우면 콤보 없는 기존 테스트와 동일하게 동작한다(applyComboEffects가 빈 배열이면 아무것도
+// 매칭하지 않는다).
+function makeDB(extraItems, extraCombos) {
   return {
     items: Object.assign(
       { '테스트무기': { type: '무기', atk: 10, wType: '단검', weaponLv: 1, slots: 1 } },
       extraItems || {}
     ),
+    combos: extraCombos || [],
     jobAlias: {},
     statusEffects: {},
     sizeMatrix: sizeMatrix,
@@ -248,6 +260,6 @@ module.exports = {
   runCalcStats, makeTriggerItemEffects, makeGetSkillSpCost, runUseSkill,
   makeApplyIncomingItemReduction, makeIsStatusImmune,
   makeGetEffectiveSkills, makeGetItemDropBonus, runRollDrops,
-  runNormalAttackFormula, makeEquipmentCompareApi,
+  runNormalAttackFormula, makeEquipmentCompareApi, makeComboEngineApi,
   makeParseItemFn, makePlayer, makeDB, pickRealItems,
 };

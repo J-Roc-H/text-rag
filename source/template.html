@@ -974,6 +974,9 @@ body.work-mode p {
 <script id="db-npcs" type="application/json">{{__DATA_DB_NPCS__}}</script>
 <!-- items: 아직 CSV 미확충, 원본 JS DB 유지 (나중에 JSON 블록으로 전환) -->
 <script id="db-items" type="application/json">{{__DATA_DB_ITEMS__}}</script>
+<!-- P2-B1: db-combos.json({meta, combos}) 정본을 runtime에 연결 -- P2-A 시절 주석("HTML
+     runtime에 아직 inject하지 않음")은 여기서부터 더 이상 유효하지 않다(build.py BLOCKS 참조). -->
+<script id="db-combos" type="application/json">{{__DATA_DB_COMBOS__}}</script>
 <!-- ════ BLOCK 3: HTML 뼈대 ════ -->
 <div id="loading"><div class="ld-title">룬 미드가츠</div><div class="ld-bar-track"><div class="ld-bar-fill" id="ld-bar"></div></div><div class="ld-tip" id="ld-tip">데이터 로딩 중...</div></div>
 <div id="battle-flash"></div><div id="notif-area"></div>
@@ -1261,6 +1264,9 @@ function loadDB(){
   DB.monsters     = j('db-monsters');
   DB.monsterAiProfiles = j('db-monster-ai-profiles');
   DB.items        = j('db-items');
+  // P2-B1: db-combos.json 최상위는 {meta, combos}다 -- 다른 DB.* 필드처럼 배열/맵 하나만
+  // 두는 관례를 맞추기 위해 여기서 combos 배열만 꺼낸다(meta는 감사 도구 전용, runtime 미사용).
+  DB.combos       = (j('db-combos').combos) || [];
   DB.maps         = j('db-maps');
   DB.npcs         = j('db-npcs');
   DB.skills       = (typeof DB_SKILLS !== 'undefined') ? DB_SKILLS : {};
@@ -4088,6 +4094,11 @@ function calcStats(playerOverride){
 
   // ── [ 2-a. 아이템/카드 효과 집계 (P0-B 정본 진입점) ] ──
   let fx = collectItemEffects(p, DB, parseItem);
+  // P2-B1: 콤보 매칭·적용은 collectItemEffects 직후, merge 이전에 같은 fx를 확장한다 --
+  // 새 세트엔진이나 별도 계산경로를 만들지 않는다(source/combo-engine.js). p는
+  // playerOverride(장비비교 candidate clone)일 수 있으므로 항상 이 p를 그대로 넘긴다 --
+  // 전역 G.player를 직접 참조하지 않는다.
+  applyComboEffects(p, DB, fx, parseItem);
   mergeItemEffectsIntoBonus(fx, bonus);
 
   // ── [ 2-b. 탑승(mount) 효과 반영 ] ──
@@ -4589,15 +4600,16 @@ function getStatBonusBreakdown(stKey, s, p){
   let bonVal = s['bonus'+capK] || 0;
   let buff = getSeStatBonus(p)[stKey] || 0;
   let ledger = (s.itemEffects && s.itemEffects.ledger) || [];
-  let equip = 0, card = 0;
+  let equip = 0, card = 0, combo = 0;
   ledger.forEach(function(e){
     if(e.active && e.type==='stat' && e.key===stKey){
       if(e.sourceType==='equipment') equip += e.value;
       else if(e.sourceType==='card') card += e.value;
+      else if(e.sourceType==='combo') combo += e.value;
     }
   });
-  let etc = bonVal - equip - card - buff;
-  return { job: job, equip: equip, card: card, buff: buff, etc: etc, total: job + bonVal };
+  let etc = bonVal - equip - card - combo - buff;
+  return { job: job, equip: equip, card: card, combo: combo, buff: buff, etc: etc, total: job + bonVal };
 }
 
 // [P1-B] 적용 효과 표시 — s.itemEffects(ledger/unsupported/pending, P0 정본)만 읽고 한국어
@@ -4783,6 +4795,7 @@ function updateUI(){
     if(br.job)   parts.push('직업'+(br.job>0?'+':'')+br.job);
     if(br.equip) parts.push('장비'+(br.equip>0?'+':'')+br.equip);
     if(br.card)  parts.push('카드'+(br.card>0?'+':'')+br.card);
+    if(br.combo) parts.push('콤보'+(br.combo>0?'+':'')+br.combo);
     if(br.buff)  parts.push('버프+'+br.buff);
     if(br.etc)   parts.push('기타'+(br.etc>0?'+':'')+br.etc);
     let color = br.total>0 ? 'var(--blue-light)' : 'var(--red-light)';
