@@ -126,8 +126,88 @@ def main():
     check('D: source-needed 58건(불변)', counts.get('source-needed') == 58)
     check('D: meta.statusCounts가 재계산 값과 일치', real_combos['meta']['statusCounts'] == counts)
     check('D: meta.identityCollisionKeys가 6종 전부 포함', set(real_combos['meta']['identityCollisionKeys']) == expected_keys)
-    check('D: meta.identityCollisionGroupCount == 7(verified pair 5 + entry36 분리로 +1 = 6, + entry2 unsupported pair 1 = 7)',
-          real_combos['meta']['identityCollisionGroupCount'] == 7)
+    check('D: meta.identityCollisionGroupCount == 8(case 2 pair 7건: 9/13/34/35/36×2/2 + case 3 cross-entry pair 1건: 12+14)',
+          real_combos['meta']['identityCollisionGroupCount'] == 8)
+
+    # ══════════════════════════════════════════════
+    # E(보완지시) — cross-entry collision: 0012-01(entry 12, Survival_Rod_)과 0014-01
+    # (entry 14, Survival_Rod2_)는 서로 다른 source entry이지만 requiredItems가 TextRAG
+    # identity 기준으로 같아진다(둘 다 서바이버로드+생존의망토). 그러나 rawScript가 서로
+    # 다르므로(0012-01은 min() 래핑, 0014-01은 if/else) case 2(canonical 선택)가 아니라
+    # case 3(ambiguous-no-canonical)로 처리돼야 한다 -- "효과가 다르면 canonical 선택 금지".
+    # ══════════════════════════════════════════════
+    e12, e14 = by_id['rathena-pre-0012-01'], by_id['rathena-pre-0014-01']
+    check('E: 0012-01/0014-01은 서로 다른 source entry(12/14)', e12['source']['entry'] != e14['source']['entry'])
+    check('E: 0012-01/0014-01의 rawScript는 서로 다름(min() vs if/else)', e12['rawScript'] != e14['rawScript'])
+    check('E: 0012-01/0014-01의 requiredItems textragKey multiset은 동일(서바이버로드+생존의망토)',
+          sorted(ri['textragKey'] for ri in e12['requiredItems']) == sorted(ri['textragKey'] for ri in e14['requiredItems']))
+    check('E: 0012-01의 identityCollision.role == ambiguous-no-canonical(canonical 선택 안 함)',
+          e12['identityCollision']['role'] == 'ambiguous-no-canonical')
+    check('E: 0014-01도 role == ambiguous-no-canonical', e14['identityCollision']['role'] == 'ambiguous-no-canonical')
+    check('E: 0012-01.identityCollision.canonicalId는 None(canonical 없음)', e12['identityCollision']['canonicalId'] is None)
+    check('E: 0012-01/0014-01이 서로를 memberIds로 참조', set(e12['identityCollision']['memberIds']) == {'rathena-pre-0012-01', 'rathena-pre-0014-01'})
+    check('E: futurePromotionBlock 플래그가 켜져 있음', e12['identityCollision'].get('futurePromotionBlock') is True and e14['identityCollision'].get('futurePromotionBlock') is True)
+    check('E: 지금은 둘 다 이미 다른 사유로 unsupported -- status를 건드리지 않음', e12['status'] == 'unsupported' and e14['status'] == 'unsupported')
+
+    # ══════════════════════════════════════════════
+    # F(보완지시) — future promotion block이 실제로 작동하는지: 합성 데이터로 0012-01/
+    # 0014-01과 같은 모양(requiredItems 동일, rawScript 다름)을 만들되 하나(또는 둘 다)를
+    # 인위적으로 "otherwise-verified"로 설정한 뒤 resolve_global_identity_collisions를
+    # 직접 호출해, 결과가 전부 runtime-blocked로 강등되는지 확인한다(재생성 시점마다 항상
+    # 재평가되므로 "이후 otherwise-verified가 되면 둘 다 runtime-blocked"가 보장된다).
+    # ══════════════════════════════════════════════
+    def make_fake(cid, entry, variant, aegis, script, status):
+        return {
+            'id': cid,
+            'source': {'system': 'rathena', 'mode': 'pre-re', 'entry': entry, 'variant': variant},
+            'requiredItems': [
+                {'aegisName': aegis, 'textragKey': '서바이버로드', 'resolved': True, 'isAmmo': False},
+                {'aegisName': 'Clack_Of_Servival', 'textragKey': '생존의망토', 'resolved': True, 'isAmmo': False},
+            ],
+            'rawScript': script,
+            'conditionalRaw': [],
+            'effects': [],
+            'unsupportedEffects': [],
+            'status': status,
+            'statusReasons': [],
+            'identityCollision': None,
+        }
+
+    # F-1: 하나만 otherwise-verified인 경우에도 그 하나가 runtime-blocked로 강등돼야 한다
+    # (§보완지시: "이후 otherwise-verified가 되면 둘 다 runtime-blocked" -- 한쪽만 verified가
+    # 돼도 전체가 강등돼야 하며, 다른 하나가 이미 unsupported라고 봐줘선 안 된다).
+    fake_one_verified = [
+        make_fake('fake-A', 90, 1, 'Survival_Rod_', 'bonus bMaxHP,300;\nbonus bMatkRate,min(5, x);', 'verified'),
+        make_fake('fake-A', 91, 1, 'Survival_Rod2_', 'bonus bMaxHP,300;\nif (y>10) { bonus2 bSubEle,Ele_Neutral,30; }', 'unsupported'),
+    ]
+    cc.resolve_global_identity_collisions(fake_one_verified)
+    check('F-1: 하나만 otherwise-verified여도 그 하나가 runtime-blocked로 강등됨',
+          fake_one_verified[0]['status'] == 'runtime-blocked')
+    check('F-1: canonical은 여전히 선택되지 않음(None)', fake_one_verified[0]['identityCollision']['canonicalId'] is None)
+    check('F-1: 원래 unsupported였던 쪽은 그대로 unsupported(강등 대상 아님 -- 원래도 verified가 아니었으므로)',
+          fake_one_verified[1]['status'] == 'unsupported')
+
+    # F-2: 둘 다 otherwise-verified인 경우 -- 둘 다 runtime-blocked.
+    fake_both_verified = [
+        make_fake('fake-B', 92, 1, 'Survival_Rod_', 'bonus bMaxHP,300;\nbonus bMatkRate,min(5, x);', 'verified'),
+        make_fake('fake-B', 93, 1, 'Survival_Rod2_', 'bonus bMaxHP,300;\nif (y>10) { bonus2 bSubEle,Ele_Neutral,30; }', 'verified'),
+    ]
+    cc.resolve_global_identity_collisions(fake_both_verified)
+    check('F-2: 둘 다 otherwise-verified였으면 둘 다 runtime-blocked',
+          all(c['status'] == 'runtime-blocked' for c in fake_both_verified))
+
+    # F-3(대조군): rawScript가 완전히 같으면(case 2) 여전히 canonical/duplicate로 처리돼야
+    # 한다 -- case 3 로직을 추가했다고 case 2 경로가 깨지지 않았는지 확인.
+    fake_same_script = [
+        make_fake('fake-C', 94, 1, 'Survival_Rod_', 'bonus bMatkRate,5;', 'verified'),
+        make_fake('fake-C', 95, 1, 'Survival_Rod2_', 'bonus bMatkRate,5;', 'verified'),
+    ]
+    cc.resolve_global_identity_collisions(fake_same_script)
+    check('F-3: rawScript가 같으면 여전히 case 2(canonical 1개 verified 유지)',
+          sum(1 for c in fake_same_script if c['status'] == 'verified') == 1 and
+          sum(1 for c in fake_same_script if c['status'] == 'runtime-blocked') == 1)
+    check('F-3: canonical이 실제로 선택됨(None 아님)',
+          any(c['identityCollision']['canonicalId'] is not None for c in fake_same_script))
 
     print('ALL TESTS PASS')
 
