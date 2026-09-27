@@ -394,6 +394,21 @@ def audit_item_effects(items):
     return fails, sorted(set(warns))
 
 
+def audit_monster_drops(monsters, items):
+    """몬스터 드롭 키 실존 감사 -- 런타임 runValidationGate() ①과 같은 규칙.
+
+    rollDrops()는 DB.items[k]를 그대로 조회하므로 없는 키는 에러 없이 드롭만
+    사라진다. 아이템 키를 정본화(ITEM_KEY_ALIASES)할 때 드롭표를 같이 안 고친
+    2026-09-27 사고(81건)의 재발 방지: 빌드 단계에서 즉시 실패시킨다.
+    """
+    errors = []
+    for mid, mon in monsters.items():
+        for name in (mon.get("drops") or {}):
+            if name not in items:
+                errors.append(f'{mon.get("name")}({mid}) -> {name}')
+    return errors
+
+
 def audit_quest_item_sources(template, parsed):
     """Fail the build when a gather quest has no real acquisition route."""
     targets = set(re.findall(r"type\s*:\s*['\"]gather['\"][\s\S]{0,220}?target\s*:\s*['\"]([^'\"]+)['\"]", template))
@@ -660,6 +675,11 @@ def main():
     template = open(TEMPLATE_PATH, encoding="utf-8-sig", newline=None).read()
     raw, parsed = load_data_files()
     audit_quest_item_sources(template, parsed)
+    drop_errors = audit_monster_drops(parsed["DB_MONSTERS"], parsed["DB_ITEMS"])
+    if drop_errors:
+        joined = "\n  - ".join(drop_errors)
+        raise ValueError(f"몬스터 드롭 키 DB 미등록 (조용한 드롭 실패):\n  - {joined}")
+    print("OK - monster drop key audit")
 
     map_errors, map_warnings = audit_maps(parsed["DB_MAPS"])
     if map_errors:
