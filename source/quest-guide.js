@@ -99,7 +99,10 @@
     const out=[];
     Object.keys(DB.npcs).forEach(name=>{
       const n=DB.npcs[name];
-      if(n && Array.isArray(n.sells) && n.sells.includes(item)) out.push({npc:name,map:n.map||''});
+      if(!n) return;
+      // [길드·상점 분리 v0.1] 인라인 sells뿐 아니라 shopId(db-shops.json 참조)도 확인한다.
+      const sells = Array.isArray(n.sells) ? n.sells : (n.shopId && DB.shops && DB.shops[n.shopId]) || [];
+      if(sells.includes(item)) out.push({npc:name,map:n.map||''});
     });
     return out;
   }

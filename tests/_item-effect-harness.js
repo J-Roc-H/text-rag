@@ -181,6 +181,12 @@ function runNormalAttackFormula(p, t, s, se, DB, randomFn) {
 }
 
 const useSkillSrc = extractFunction(html, 'function useSkill(name){');
+// [제조·파머시 통합 v0.2] useSkill()이 SP 체크 이전에 참조하는 아이템 비용 판정/차감 --
+// 재구현 아니라 실제 소스 텍스트 그대로 가져온다(canUseSkillItemCost/commitSkillItemCost/
+// consumeMats, 셋 다 self-contained: log()만 외부 의존).
+const canUseSkillItemCostSrc = extractFunction(html, 'function canUseSkillItemCost(p, sk){');
+const commitSkillItemCostSrc = extractFunction(html, 'function commitSkillItemCost(p, sk){');
+const consumeMatsSrc = extractFunction(html, 'function consumeMats(p, mats) {');
 
 // 실제 useSkill()을 그대로 실행한다(재구현 아님). 전투/처치 이후 로직(퀘스트 체크·드롭·
 // EXP 등)은 SP 비용 일관성 검증과 무관하므로 no-op으로 스텁하되, SP 판정/차감/환불과
@@ -198,7 +204,8 @@ function runUseSkill(DB, G, name) {
     'queueManualCombatOverride', 'spawnDmg', 'gainBaseExp', 'getJobLvCap', 'addZoneKill',
     'idleTrack', 'returnerMult', 'rollDrops', 'checkQuestKill', 'checkJobQuestKill',
     'logSep', 'updateUI',
-    useSkillSrc + '\nreturn useSkill;'
+    consumeMatsSrc + '\n' + canUseSkillItemCostSrc + '\n' + commitSkillItemCostSrc + '\n' +
+      useSkillSrc + '\nreturn useSkill;'
   );
   const useSkillFn = fn(
     G, DB, () => runCalcStats(DB, G), getSkillSpCost, getEffectiveSkills, triggerItemEffects,

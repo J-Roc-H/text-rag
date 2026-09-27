@@ -63,6 +63,8 @@ BLOCKS = {
     "DB_NPCS": "db-npcs.json",
     "DB_ITEMS": "db-items.json",
     "DB_COMBOS": "db-combos.json",
+    "DB_PRODUCTION": "db-production.json",
+    "DB_SHOPS": "db-shops.json",
 }
 
 NPC_SERVICES = {
@@ -109,7 +111,7 @@ def audit_maps(maps):
     return errors, sorted(set(warnings))
 
 
-def audit_npcs(npcs, maps, items):
+def audit_npcs(npcs, maps, items, shops):
     """NPC/상호작용 데이터의 최소 배선 감사.
 
     퀘스트 정의는 아직 template.html 내부 JS이므로 여기서는 데이터 파일만 검증한다.
@@ -118,6 +120,7 @@ def audit_npcs(npcs, maps, items):
     warnings = []
     map_names = set(maps)
     item_names = set(items)
+    shop_ids = set(shops)
 
     for name, npc in npcs.items():
         map_name = npc.get("map")
@@ -132,10 +135,22 @@ def audit_npcs(npcs, maps, items):
         if actor_type not in ("npc", "object"):
             errors.append(f'{name}: actorType은 npc/object만 허용 -> {actor_type}')
 
+        # [길드·상점 분리 v0.1] 전직 NPC는 판매 기능을 겸하지 않는다.
+        if service == "job_change" and (npc.get("sells") or npc.get("shopId")):
+            errors.append(f'{name}: job_change NPC가 sells/shopId를 겸함 (길드·상점 분리 위반)')
+
         if service == "shop":
             sells = npc.get("sells")
-            if not isinstance(sells, list) or not sells:
-                errors.append(f'{name}: shop인데 sells가 비어 있음')
+            shop_id = npc.get("shopId")
+            if shop_id:
+                if shop_id not in shop_ids:
+                    errors.append(f'{name}: 존재하지 않는 shopId -> {shop_id}')
+                else:
+                    missing = [item for item in shops[shop_id] if item not in item_names]
+                    if missing:
+                        warnings.append(f'{name}: 상점({shop_id}) 아이템 DB 미등록 -> {", ".join(missing)}')
+            elif not isinstance(sells, list) or not sells:
+                errors.append(f'{name}: shop인데 sells/shopId가 비어 있음')
             else:
                 missing = [item for item in sells if item not in item_names]
                 if missing:
@@ -153,6 +168,40 @@ def audit_npcs(npcs, maps, items):
 
     return errors, sorted(set(warnings))
 
+
+def audit_production(production, items):
+    """제조·파머시 레시피 감사.
+
+    deferred 레시피(예: 호문클루스 엠브리오)는 이번 구현 범위 밖이라
+    재료/결과물 미등록이어도 빌드를 막지 않는다 — UI·실행에 노출되지 않기 때문.
+    """
+    errors = []
+    item_names = set(items)
+
+    for rid, recipe in production.items():
+        if recipe.get("deferred"):
+            continue
+
+        result = recipe.get("result") or {}
+        result_item = result.get("item")
+        if not result_item or result_item not in item_names:
+            errors.append(f'{rid}: 결과물 아이템 DB 미등록 -> {result_item}')
+
+        manual = (recipe.get("requirements") or {}).get("manual")
+        if manual and manual not in item_names:
+            errors.append(f'{rid}: 메뉴얼 아이템 DB 미등록 -> {manual}')
+
+        for mat in recipe.get("materials") or []:
+            mat_item = mat.get("item")
+            if not mat_item or mat_item not in item_names:
+                errors.append(f'{rid}: 재료 아이템 DB 미등록 -> {mat_item}')
+
+        for shared in recipe.get("sharedConsumption") or []:
+            shared_item = shared.get("item")
+            if not shared_item or shared_item not in item_names:
+                errors.append(f'{rid}: 공용 소모 아이템 DB 미등록 -> {shared_item}')
+
+    return errors
 
 
 EFFECT_AUDIT_BASELINE_PATH = os.path.join(DATA_DIR, "effect-audit-baseline.json")
@@ -355,6 +404,10 @@ def audit_quest_item_sources(template, parsed):
         quest_only.add(m.group(1))
     drops = {name for mon in parsed['DB_MONSTERS'].values() for name in (mon.get('drops') or {})}
     sells = {name for npc in parsed['DB_NPCS'].values() for name in (npc.get('sells') or [])}
+    for npc in parsed['DB_NPCS'].values():
+        shop_id = npc.get('shopId')
+        if shop_id:
+            sells.update(parsed.get('DB_SHOPS', {}).get(shop_id) or [])
     missing = sorted(targets - drops - sells - quest_only)
     if missing:
         raise ValueError('획득처 없는 퀘스트 아이템: ' + ', '.join(missing))
@@ -620,7 +673,7 @@ def main():
         print("OK - map audit")
 
     npc_errors, npc_warnings = audit_npcs(
-        parsed["DB_NPCS"], parsed["DB_MAPS"], parsed["DB_ITEMS"]
+        parsed["DB_NPCS"], parsed["DB_MAPS"], parsed["DB_ITEMS"], parsed["DB_SHOPS"]
     )
     if npc_errors:
         joined = "\n  - ".join(npc_errors)
@@ -702,6 +755,12 @@ def main():
                     print(f"REVIEW WARN - combo item identity review audit: {len(review_warnings)} issue(s)")
                 else:
                     print("OK - combo item identity review audit")
+
+    production_errors = audit_production(parsed["DB_PRODUCTION"], parsed["DB_ITEMS"])
+    if production_errors:
+        joined = "\n  - ".join(production_errors)
+        raise ValueError(f"제조 데이터 오류:\n  - {joined}")
+    print("OK - production audit")
 
     for marker_key, filename in BLOCKS.items():
         marker = "{{__DATA_" + marker_key + "__}}"

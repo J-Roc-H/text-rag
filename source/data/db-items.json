@@ -2435,7 +2435,7 @@
     "wType": "둔기",
     "weaponLv": 1,
     "slots": 4,
-    "buy": 200,
+    "buy": 120,
     "sell": 100,
     "weight": 70,
     "weightSrc": "csv"
@@ -2474,8 +2474,8 @@
     "wType": "둔기",
     "weaponLv": 2,
     "slots": 3,
-    "buy": 35000,
-    "sell": 17500,
+    "buy": 16000,
+    "sell": 8000,
     "weight": 90,
     "weightSrc": "csv"
   },
@@ -17381,7 +17381,7 @@
     "weight": 10,
     "weightSrc": "type"
   },
-  "인어의심장": {
+  "인어의 심장": {
     "type": "잡템",
     "emoji": "💜",
     "desc": "인어족의 심장.",
@@ -17399,7 +17399,7 @@
     "weight": 10,
     "weightSrc": "type"
   },
-  "식물의줄기": {
+  "식물의 줄기": {
     "type": "잡템",
     "emoji": "🌿",
     "desc": "질긴 식물 줄기.",
@@ -17457,7 +17457,7 @@
     "type": "재료",
     "emoji": "🪨",
     "desc": "Lv1 무기 제련석.",
-    "buy": 0,
+    "buy": 200,
     "sell": 30,
     "weight": 10,
     "weightSrc": "type"
@@ -17466,7 +17466,7 @@
     "type": "재료",
     "emoji": "🪨",
     "desc": "Lv2 무기 제련석.",
-    "buy": 0,
+    "buy": 1000,
     "sell": 100,
     "weight": 10,
     "weightSrc": "type"
@@ -28648,7 +28648,7 @@
     "weight": 1,
     "weightSrc": "official"
   },
-  "나방의 가루": {
+  "나방의 날개가루": {
     "type": "잡템",
     "emoji": "🦋",
     "desc": "나방 날개에서 떨어진 인분가루.",
@@ -28822,7 +28822,7 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "노란색 보석": {
+  "옐로우 젬스톤": {
     "type": "잡템",
     "emoji": "💛",
     "desc": "노란빛을 띠는 보석.",
@@ -29559,7 +29559,7 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "메네이터의 꽃": {
+  "식인수의 꽃": {
     "type": "잡템",
     "emoji": "🌸",
     "desc": "식충식물 메네이터가 피우는 꽃.",
@@ -29702,7 +29702,7 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "몰의 수염": {
+  "두더지의 수염": {
     "type": "잡템",
     "emoji": "🐹",
     "desc": "두더지류 몬스터 몰의 수염.",
@@ -30128,7 +30128,7 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "불멸의 심장": {
+  "멈추지 않는 심장": {
     "type": "잡템",
     "emoji": "❤️",
     "desc": "죽지 않는 존재의 심장.",
@@ -30185,7 +30185,7 @@
     "weight": 1,
     "weightSrc": "official"
   },
-  "붉은 보석": {
+  "레드 젬스톤": {
     "type": "잡템",
     "emoji": "❤️",
     "desc": "붉은빛을 띠는 보석.",
@@ -30262,14 +30262,13 @@
     "_stub": true
   },
   "블루 젬스톤": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
+    "type": "재료",
+    "emoji": "🔷",
+    "desc": "마법·워프 포털에 쓰이는 푸른 촉매.",
+    "buy": 600,
+    "sell": 300,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "estimate"
   },
   "블루 코이프[1]": {
     "type": "잡템",
@@ -30439,7 +30438,7 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "선인장 가시": {
+  "선인장의 뾰족한 침": {
     "type": "잡템",
     "emoji": "🌵",
     "desc": "선인장류 몬스터의 날카로운 가시.",
@@ -30655,7 +30654,7 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "스켈": {
+  "셀": {
     "type": "잡템",
     "emoji": "🦴",
     "desc": "곤충류 몬스터의 겉껍질 조각.",
@@ -30772,7 +30771,7 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "시파": {
+  "사이파": {
     "type": "잡템",
     "emoji": "🧵",
     "desc": "옷감을 짜는 데 쓰이는 특수한 실.",
@@ -30946,14 +30945,14 @@
     "_stub": true
   },
   "알로에베라": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "type": "소모품",
+    "emoji": "🌵",
+    "desc": "알로에와 꿀을 섞어 만든 약. HP를 200 즉시 회복한다.",
+    "heal": 200,
     "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "sell": 100,
+    "weight": 8,
+    "weightSrc": "estimate"
   },
   "알리체의앞치마": {
     "type": "잡템",
@@ -31664,15 +31663,6 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "인어의 마음": {
-    "type": "잡템",
-    "emoji": "💙",
-    "desc": "인어를 닮은 몬스터의 심장.",
-    "buy": 0,
-    "sell": 132,
-    "weight": 1,
-    "weightSrc": "official"
-  },
   "인큐버스의 뿔": {
     "type": "잡템",
     "emoji": "❓",
@@ -31867,15 +31857,6 @@
     "desc": "작은 벌레 모양 소재.",
     "buy": 0,
     "sell": 16,
-    "weight": 1,
-    "weightSrc": "official"
-  },
-  "줄기": {
-    "type": "잡템",
-    "emoji": "🌱",
-    "desc": "식물성 몬스터에게서 얻는 줄기.",
-    "buy": 0,
-    "sell": 23,
     "weight": 1,
     "weightSrc": "official"
   },
@@ -32236,7 +32217,7 @@
     "weightSrc": "official",
     "_aegis": "Candy_Striper"
   },
-  "커다란 젤로피": {
+  "라지 젤로피": {
     "type": "잡템",
     "emoji": "❓",
     "desc": "용도가 알려지지 않은 물건.",
@@ -32459,7 +32440,7 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "투명한 천": {
+  "투명한 천조각": {
     "type": "잡템",
     "emoji": "🩶",
     "desc": "속이 비칠 만큼 얇은 천 조각.",
@@ -33043,5 +33024,477 @@
     "weight": 1,
     "weightSrc": "stub",
     "_stub": true
+  },
+
+  "약사발": {
+    "type": "잡템",
+    "emoji": "🥣",
+    "desc": "파머시 제조에 쓰이는 그릇. 모든 제조 시도(성공·실패 무관)에 1개씩 소모된다.",
+    "buy": 8,
+    "sell": 4,
+    "weight": 1,
+    "weightSrc": "estimate"
+  },
+  "빈 포션병": {
+    "type": "잡템",
+    "emoji": "🧴",
+    "desc": "포션류를 담그는 데 쓰이는 빈 병.",
+    "buy": 0,
+    "sell": 5,
+    "weight": 3,
+    "weightSrc": "estimate"
+  },
+  "빈 시험관": {
+    "type": "잡템",
+    "emoji": "🧪",
+    "desc": "슬림 포션 제조에 쓰이는 빈 시험관.",
+    "buy": 0,
+    "sell": 4,
+    "weight": 3,
+    "weightSrc": "estimate"
+  },
+
+  "일반 포션 제조 메뉴얼": {
+    "type": "잡템",
+    "emoji": "📖",
+    "desc": "빨간/노란/하얀/파란 포션과 일반 약품 제조법이 담긴 메뉴얼. 소지만 하면 되며 제조해도 소모되지 않는다.",
+    "buy": 100000,
+    "sell": 0,
+    "weight": 10,
+    "weightSrc": "estimate"
+  },
+  "슬림 포션 제조 메뉴얼": {
+    "type": "잡템",
+    "emoji": "📖",
+    "desc": "레드/옐로우/화이트 슬림 포션 제조법이 담긴 메뉴얼. 소지만 하면 되며 제조해도 소모되지 않는다.",
+    "buy": 240000,
+    "sell": 0,
+    "weight": 10,
+    "weightSrc": "estimate"
+  },
+  "알콜 제조 메뉴얼": {
+    "type": "잡템",
+    "emoji": "📖",
+    "desc": "알코올 제조법이 담긴 메뉴얼. 소지만 하면 되며 제조해도 소모되지 않는다.",
+    "buy": 100000,
+    "sell": 0,
+    "weight": 10,
+    "weightSrc": "estimate"
+  },
+  "화염병 제조 메뉴얼": {
+    "type": "잡템",
+    "emoji": "📖",
+    "desc": "화염병 제조법이 담긴 메뉴얼. 소지만 하면 되며 제조해도 소모되지 않는다.",
+    "buy": 100000,
+    "sell": 0,
+    "weight": 10,
+    "weightSrc": "estimate"
+  },
+  "염산병 제조 메뉴얼": {
+    "type": "잡템",
+    "emoji": "📖",
+    "desc": "염산병 제조법이 담긴 메뉴얼. 소지만 하면 되며 제조해도 소모되지 않는다.",
+    "buy": 100000,
+    "sell": 0,
+    "weight": 10,
+    "weightSrc": "estimate"
+  },
+  "식물병 제조 메뉴얼": {
+    "type": "잡템",
+    "emoji": "📖",
+    "desc": "식인 식물병 제조법이 담긴 메뉴얼. 소지만 하면 되며 제조해도 소모되지 않는다.",
+    "buy": 100000,
+    "sell": 0,
+    "weight": 10,
+    "weightSrc": "estimate"
+  },
+  "코팅약 제조 메뉴얼": {
+    "type": "잡템",
+    "emoji": "📖",
+    "desc": "코팅약 제조법이 담긴 메뉴얼. 소지만 하면 되며 제조해도 소모되지 않는다.",
+    "buy": 100000,
+    "sell": 0,
+    "weight": 10,
+    "weightSrc": "estimate"
+  },
+  "기뢰병 제조 메뉴얼": {
+    "type": "잡템",
+    "emoji": "📖",
+    "desc": "기뢰병 제조법이 담긴 메뉴얼. 소지만 하면 되며 제조해도 소모되지 않는다.",
+    "buy": 100000,
+    "sell": 0,
+    "weight": 10,
+    "weightSrc": "estimate"
+  },
+  "속성 포션 제조 메뉴얼": {
+    "type": "잡템",
+    "emoji": "📖",
+    "desc": "레지스트 속성 포션 제조법이 담긴 메뉴얼. 퀘스트로만 얻는다. 소지만 하면 되며 제조해도 소모되지 않는다.",
+    "buy": 0,
+    "sell": 0,
+    "weight": 10,
+    "weightSrc": "estimate"
+  },
+
+  "제노크의 이빨": {
+    "type": "잡템",
+    "emoji": "🦷",
+    "desc": "제노크류 몬스터의 날카로운 이빨.",
+    "buy": 0,
+    "sell": 50,
+    "weight": 1,
+    "weightSrc": "estimate"
+  },
+  "멘트": {
+    "type": "잡템",
+    "emoji": "🌿",
+    "desc": "화한 향이 나는 허브.",
+    "buy": 0,
+    "sell": 30,
+    "weight": 1,
+    "weightSrc": "estimate"
+  },
+  "힘줄": {
+    "type": "잡템",
+    "emoji": "🦴",
+    "desc": "질긴 동물의 힘줄.",
+    "buy": 0,
+    "sell": 40,
+    "weight": 1,
+    "weightSrc": "estimate"
+  },
+  "뇌관": {
+    "type": "잡템",
+    "emoji": "💣",
+    "desc": "폭발물의 기폭 장치.",
+    "buy": 0,
+    "sell": 60,
+    "weight": 1,
+    "weightSrc": "estimate"
+  },
+  "마녀의 별모래": {
+    "type": "잡템",
+    "emoji": "✨",
+    "desc": "마녀가 다루는 신비한 별모래.",
+    "buy": 0,
+    "sell": 90,
+    "weight": 1,
+    "weightSrc": "estimate"
+  },
+
+  "알코올": {
+    "type": "재료",
+    "emoji": "🧴",
+    "desc": "제조에 쓰이는 정제된 알코올. 화염병·코팅약 등의 원료.",
+    "buy": 0,
+    "sell": 30,
+    "weight": 5,
+    "weightSrc": "estimate"
+  },
+  "화염병": {
+    "type": "소모품",
+    "emoji": "🔥",
+    "desc": "데몬스트레이션에 사용하는 화염 투척병.",
+    "buy": 0,
+    "sell": 50,
+    "weight": 6,
+    "weightSrc": "estimate"
+  },
+  "염산병": {
+    "type": "소모품",
+    "emoji": "🧪",
+    "desc": "애시드 테러에 사용하는 염산 투척병.",
+    "buy": 0,
+    "sell": 50,
+    "weight": 6,
+    "weightSrc": "estimate"
+  },
+  "식인 식물병": {
+    "type": "소모품",
+    "emoji": "🌱",
+    "desc": "바이오 캐니벌라이즈에 사용하는 식물 소환병.",
+    "buy": 0,
+    "sell": 50,
+    "weight": 6,
+    "weightSrc": "estimate"
+  },
+  "기뢰병": {
+    "type": "소모품",
+    "emoji": "🧨",
+    "desc": "스피어 마인에 사용하는 해양 지뢰병.",
+    "buy": 0,
+    "sell": 50,
+    "weight": 6,
+    "weightSrc": "estimate"
+  },
+  "코팅약": {
+    "type": "소모품",
+    "emoji": "🧴",
+    "desc": "장비에 발라 파괴를 방지하는 코팅약. 케미컬 프로텍션 계열에 사용한다.",
+    "buy": 0,
+    "sell": 50,
+    "weight": 6,
+    "weightSrc": "estimate"
+  },
+
+  "레드 슬림 포션": {
+    "type": "소모품",
+    "emoji": "🧴",
+    "desc": "빨간포션을 정제한 슬림형 포션. HP를 60 즉시 회복한다.",
+    "heal": 60,
+    "buy": 0,
+    "sell": 40,
+    "weight": 3,
+    "weightSrc": "estimate"
+  },
+  "옐로우 슬림 포션": {
+    "type": "소모품",
+    "emoji": "🧴",
+    "desc": "노란포션을 정제한 슬림형 포션. HP를 500 즉시 회복한다.",
+    "heal": 500,
+    "buy": 0,
+    "sell": 400,
+    "weight": 5,
+    "weightSrc": "estimate"
+  },
+  "화이트 슬림 포션": {
+    "type": "소모품",
+    "emoji": "🧴",
+    "desc": "하얀포션을 정제한 슬림형 포션. HP를 1000 즉시 회복한다.",
+    "heal": 1000,
+    "buy": 0,
+    "sell": 800,
+    "weight": 7,
+    "weightSrc": "estimate"
+  },
+
+  "레지스트 파이어 포션": {
+    "type": "소모품",
+    "emoji": "🔴",
+    "desc": "일시적으로 화속성 내성을 부여하는 포션.",
+    "buy": 0,
+    "sell": 100,
+    "weight": 5,
+    "weightSrc": "estimate"
+  },
+  "레지스트 콜드 포션": {
+    "type": "소모품",
+    "emoji": "🔵",
+    "desc": "일시적으로 수속성 내성을 부여하는 포션.",
+    "buy": 0,
+    "sell": 100,
+    "weight": 5,
+    "weightSrc": "estimate"
+  },
+  "레지스트 썬더 포션": {
+    "type": "소모품",
+    "emoji": "🟡",
+    "desc": "일시적으로 풍속성 내성을 부여하는 포션.",
+    "buy": 0,
+    "sell": 100,
+    "weight": 5,
+    "weightSrc": "estimate"
+  },
+  "레지스트 어스 포션": {
+    "type": "소모품",
+    "emoji": "🟤",
+    "desc": "일시적으로 지속성 내성을 부여하는 포션.",
+    "buy": 0,
+    "sell": 100,
+    "weight": 5,
+    "weightSrc": "estimate"
+  },
+
+  "안티 페인멘트": {
+    "type": "소모품",
+    "emoji": "💊",
+    "desc": "상태이상을 완화하는 알케미스트용 상비약.",
+    "effect": "cure",
+    "cure": ["poison", "silence", "blind", "confusion"],
+    "buy": 0,
+    "sell": 20,
+    "weight": 4,
+    "weightSrc": "estimate"
+  },
+
+  "휴대용 용광로": {
+    "type": "잡템",
+    "emoji": "🔥",
+    "desc": "금속·속성석 제조에 쓰이는 휴대용 용광로. 1회 소비.",
+    "buy": 150,
+    "sell": 75,
+    "weight": 50,
+    "weightSrc": "estimate"
+  },
+  "강철의 망치": {
+    "type": "잡템",
+    "emoji": "🔨",
+    "desc": "무기 레벨 1 제조에 쓰이는 망치. 1회 소비.",
+    "buy": 1000,
+    "sell": 500,
+    "weight": 50,
+    "weightSrc": "estimate"
+  },
+  "황금의 망치": {
+    "type": "잡템",
+    "emoji": "🔨",
+    "desc": "무기 레벨 2 제조에 쓰이는 망치. 1회 소비.",
+    "buy": 3000,
+    "sell": 1500,
+    "weight": 50,
+    "weightSrc": "estimate"
+  },
+  "오리데오콘 망치": {
+    "type": "잡템",
+    "emoji": "🔨",
+    "desc": "무기 레벨 3 제조에 쓰이는 망치. 1회 소비.",
+    "buy": 5000,
+    "sell": 2500,
+    "weight": 50,
+    "weightSrc": "estimate"
+  },
+  "모루": {
+    "type": "잡템",
+    "emoji": "⚒️",
+    "desc": "무기 제조 성공률을 보정하는 기본 모루. 소비되지 않으며 인벤토리 보유만으로 적용된다.",
+    "buy": 30000,
+    "sell": 15000,
+    "weight": 500,
+    "weightSrc": "estimate"
+  },
+  "오리데오콘 모루": {
+    "type": "잡템",
+    "emoji": "⚒️",
+    "desc": "무기 제조 성공률을 보정하는 상급 모루. 소비되지 않으며 인벤토리 보유만으로 적용된다.",
+    "buy": 120000,
+    "sell": 60000,
+    "weight": 500,
+    "weightSrc": "estimate"
+  },
+  "황금의 모루": {
+    "type": "잡템",
+    "emoji": "⚒️",
+    "desc": "무기 제조 성공률을 보정하는 최상급 모루. 소비되지 않으며 인벤토리 보유만으로 적용된다.",
+    "buy": 300000,
+    "sell": 150000,
+    "weight": 500,
+    "weightSrc": "estimate"
+  },
+  "엠펠리움 모루": {
+    "type": "잡템",
+    "emoji": "⚒️",
+    "desc": "판매되지 않는 희귀 모루. 보유만으로 무기 제조 성공률을 보정한다.",
+    "buy": 0,
+    "sell": 500,
+    "weight": 500,
+    "weightSrc": "estimate"
+  },
+
+  "유리관": {
+    "type": "잡템",
+    "emoji": "🧪",
+    "desc": "엠브리오 제조에 쓰이는 유리관.",
+    "buy": 5000,
+    "sell": 2500,
+    "weight": 30,
+    "weightSrc": "estimate"
+  },
+  "이그드라실의 이슬": {
+    "type": "잡템",
+    "emoji": "💧",
+    "desc": "엠브리오 제조에 쓰이는 이그드라실의 이슬.",
+    "buy": 20000,
+    "sell": 10000,
+    "weight": 10,
+    "weightSrc": "estimate"
+  },
+  "생명의 씨앗": {
+    "type": "잡템",
+    "emoji": "🌱",
+    "desc": "엠브리오 제조에 쓰이는 생명의 씨앗.",
+    "buy": 60000,
+    "sell": 30000,
+    "weight": 10,
+    "weightSrc": "estimate"
+  },
+
+  "로드": {
+    "type": "무기",
+    "emoji": "🪄",
+    "desc": "INT가 약간 상승하는 초급 마법 지팡이.",
+    "atk": 15,
+    "wType": "지팡이",
+    "weaponLv": 1,
+    "slots": 2,
+    "buy": 50,
+    "sell": 25,
+    "weight": 40,
+    "weightSrc": "estimate"
+  },
+  "실크 로브": {
+    "type": "갑옷",
+    "emoji": "👘",
+    "desc": "가볍고 부드러운 비단 로브.",
+    "def": 4,
+    "slots": 1,
+    "buy": 8000,
+    "sell": 4000,
+    "weight": 40,
+    "weightSrc": "estimate"
+  },
+  "실버 로브": {
+    "type": "갑옷",
+    "emoji": "👘",
+    "desc": "은실로 짠 마법사용 로브.",
+    "def": 5,
+    "slots": 1,
+    "buy": 7000,
+    "sell": 3500,
+    "weight": 40,
+    "weightSrc": "estimate"
+  },
+  "로자리오": {
+    "type": "Accessory",
+    "emoji": "📿",
+    "desc": "성직자가 지니는 묵주.",
+    "def": 0,
+    "slots": 1,
+    "buy": 15000,
+    "sell": 7500,
+    "weight": 10,
+    "weightSrc": "estimate"
+  },
+  "코이프": {
+    "type": "투구_상단",
+    "emoji": "👒",
+    "desc": "성직자용 고급 두건.",
+    "def": 6,
+    "slots": 1,
+    "buy": 150000,
+    "sell": 75000,
+    "weight": 30,
+    "weightSrc": "estimate"
+  },
+  "스카풀라": {
+    "type": "갑옷",
+    "emoji": "🥋",
+    "desc": "성직자가 어깨에 두르는 견대.",
+    "def": 3,
+    "slots": 1,
+    "buy": 6500,
+    "sell": 3250,
+    "weight": 40,
+    "weightSrc": "estimate"
+  },
+  "세인트 로브": {
+    "type": "갑옷",
+    "emoji": "👘",
+    "desc": "성직자용 고급 로브.",
+    "def": 6,
+    "slots": 1,
+    "buy": 54000,
+    "sell": 27000,
+    "weight": 50,
+    "weightSrc": "estimate"
   }
 }

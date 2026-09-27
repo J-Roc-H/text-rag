@@ -1,0 +1,183 @@
+{
+  "pharmacy_red_potion": {
+    "profession": "alchemist",
+    "category": "일반포션",
+    "result": { "item": "빨간포션", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "일반 포션 제조 메뉴얼" },
+    "materials": [ { "item": "빨간 허브", "amount": 1 }, { "item": "빈 포션병", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_yellow_potion": {
+    "profession": "alchemist",
+    "category": "일반포션",
+    "result": { "item": "노란포션", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "일반 포션 제조 메뉴얼" },
+    "materials": [ { "item": "옐로 허브", "amount": 1 }, { "item": "빈 포션병", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_white_potion": {
+    "profession": "alchemist",
+    "category": "일반포션",
+    "result": { "item": "하얀포션", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "일반 포션 제조 메뉴얼" },
+    "materials": [ { "item": "하얀허브", "amount": 1 }, { "item": "빈 포션병", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_blue_potion": {
+    "profession": "alchemist",
+    "category": "일반포션",
+    "result": { "item": "파란포션", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "일반 포션 제조 메뉴얼" },
+    "materials": [ { "item": "파란허브", "amount": 1 }, { "item": "셀", "amount": 1 }, { "item": "빈 포션병", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_anti_painkiller": {
+    "profession": "alchemist",
+    "category": "일반약품",
+    "result": { "item": "안티 페인멘트", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "일반 포션 제조 메뉴얼" },
+    "materials": [ { "item": "멘트", "amount": 1 }, { "item": "알코올", "amount": 1 }, { "item": "빈병", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_aloe_vera": {
+    "profession": "alchemist",
+    "category": "일반약품",
+    "result": { "item": "알로에베라", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "일반 포션 제조 메뉴얼" },
+    "materials": [ { "item": "알로에", "amount": 1 }, { "item": "꿀", "amount": 1 }, { "item": "빈병", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_embryo": {
+    "profession": "alchemist",
+    "category": "호문클루스",
+    "result": { "item": "엠브리오", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "일반 포션 제조 메뉴얼" },
+    "materials": [ { "item": "이그드라실의 이슬", "amount": 1 }, { "item": "생명의 씨앗", "amount": 1 }, { "item": "유리관", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all",
+    "deferred": "homunculus"
+  },
+  "pharmacy_red_slim_potion": {
+    "profession": "alchemist",
+    "category": "슬림포션",
+    "result": { "item": "레드 슬림 포션", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "슬림 포션 제조 메뉴얼" },
+    "materials": [ { "item": "빨간포션", "amount": 1 }, { "item": "빈 시험관", "amount": 1 }, { "item": "선인장의 뾰족한 침", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_yellow_slim_potion": {
+    "profession": "alchemist",
+    "category": "슬림포션",
+    "result": { "item": "옐로우 슬림 포션", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "슬림 포션 제조 메뉴얼" },
+    "materials": [ { "item": "노란포션", "amount": 1 }, { "item": "빈 시험관", "amount": 1 }, { "item": "두더지의 수염", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_white_slim_potion": {
+    "profession": "alchemist",
+    "category": "슬림포션",
+    "result": { "item": "화이트 슬림 포션", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "슬림 포션 제조 메뉴얼" },
+    "materials": [ { "item": "하얀포션", "amount": 1 }, { "item": "빈 시험관", "amount": 1 }, { "item": "마녀의 별모래", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_alcohol": {
+    "profession": "alchemist",
+    "category": "제조재료",
+    "result": { "item": "알코올", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "알콜 제조 메뉴얼" },
+    "materials": [ { "item": "식물의 줄기", "amount": 5 }, { "item": "독버섯 포자", "amount": 5 }, { "item": "빈 시험관", "amount": 1 }, { "item": "빈병", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_fire_bottle": {
+    "profession": "alchemist",
+    "category": "전투약품",
+    "result": { "item": "화염병", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "화염병 제조 메뉴얼" },
+    "materials": [ { "item": "알코올", "amount": 1 }, { "item": "투명한 천조각", "amount": 1 }, { "item": "빈병", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_acid_bottle": {
+    "profession": "alchemist",
+    "category": "전투약품",
+    "result": { "item": "염산병", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "염산병 제조 메뉴얼" },
+    "materials": [ { "item": "멈추지 않는 심장", "amount": 1 }, { "item": "빈병", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_plant_bottle": {
+    "profession": "alchemist",
+    "category": "전투약품",
+    "result": { "item": "식인 식물병", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "식물병 제조 메뉴얼" },
+    "materials": [ { "item": "식인수의 꽃", "amount": 2 }, { "item": "빈병", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_marine_sphere": {
+    "profession": "alchemist",
+    "category": "전투약품",
+    "result": { "item": "기뢰병", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "기뢰병 제조 메뉴얼" },
+    "materials": [ { "item": "힘줄", "amount": 1 }, { "item": "뇌관", "amount": 1 }, { "item": "빈병", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_glistening_coat": {
+    "profession": "alchemist",
+    "category": "전투약품",
+    "result": { "item": "코팅약", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "코팅약 제조 메뉴얼" },
+    "materials": [ { "item": "알코올", "amount": 1 }, { "item": "인어의 심장", "amount": 1 }, { "item": "제노크의 이빨", "amount": 1 }, { "item": "빈병", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_resist_fire_potion": {
+    "profession": "alchemist",
+    "category": "속성포션",
+    "result": { "item": "레지스트 파이어 포션", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "속성 포션 제조 메뉴얼" },
+    "materials": [ { "item": "도마뱀의 목덜미", "amount": 2 }, { "item": "레드 젬스톤", "amount": 1 }, { "item": "빈 포션병", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_resist_cold_potion": {
+    "profession": "alchemist",
+    "category": "속성포션",
+    "result": { "item": "레지스트 콜드 포션", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "속성 포션 제조 메뉴얼" },
+    "materials": [ { "item": "인어의 심장", "amount": 3 }, { "item": "블루 젬스톤", "amount": 1 }, { "item": "빈 포션병", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_resist_thunder_potion": {
+    "profession": "alchemist",
+    "category": "속성포션",
+    "result": { "item": "레지스트 썬더 포션", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "속성 포션 제조 메뉴얼" },
+    "materials": [ { "item": "나방의 날개가루", "amount": 3 }, { "item": "블루 젬스톤", "amount": 1 }, { "item": "빈 포션병", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  },
+  "pharmacy_resist_earth_potion": {
+    "profession": "alchemist",
+    "category": "속성포션",
+    "result": { "item": "레지스트 어스 포션", "amount": 1 },
+    "requirements": { "skill": "파머시", "skillLevel": 1, "manual": "속성 포션 제조 메뉴얼" },
+    "materials": [ { "item": "라지 젤로피", "amount": 2 }, { "item": "옐로우 젬스톤", "amount": 1 }, { "item": "빈 포션병", "amount": 1 } ],
+    "sharedConsumption": [ { "item": "약사발", "amount": 1 } ],
+    "failureConsumes": "all"
+  }
+}
