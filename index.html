@@ -1608,7 +1608,7 @@ body.work-mode p {
 "SK_5201":"도검 수련","SK_5202":"스내쳐","SK_5203":"스틸 코인","SK_5204":"백 스탭","SK_5205":"기습","SK_5206":"인티미데이트","SK_5207":"도작","SK_5208":"터널 드라이브","SK_5209":"스트립 헬름","SK_5210":"스트립 쉴드","SK_5211":"스트립 아머","SK_5212":"스트립 웨폰","SK_5213":"클로즈 컨파인",
 "SK_6001":"소지량 증가","SK_6002":"디스카운트","SK_6003":"오버챠지","SK_6004":"노점 개설","SK_6005":"매머나이트","SK_6006":"푸쉬카트","SK_6007":"아이템 감정","SK_6008":"카트 레볼루션","SK_6009":"체인지 카트","SK_6010":"고성방가",
 "SK_6101":"아드레날린 러쉬","SK_6102":"무기 연구","SK_6103":"웨폰 퍼펙션","SK_6104":"단검 제작","SK_6105":"검 제작","SK_6106":"양손검 제작","SK_6107":"도끼 제작","SK_6108":"너클 제작","SK_6109":"메이스 제작","SK_6110":"창 제작","SK_6111":"철 제조","SK_6112":"속성석 제조","SK_6113":"오리데오콘 연구","SK_6114":"강철 제조","SK_6115":"힐트 바인딩","SK_6116":"광석 발견","SK_6117":"무기 수리","SK_6118":"해머폴","SK_6119":"오버 트러스트","SK_6120":"맥시마이즈 파워","SK_6121":"스킨 템버링","SK_6122":"수상쩍은 상술","SK_6123":"탐욕",
-"SK_6201":"도끼 수련","SK_6202":"포션 연구","SK_6203":"파머시","SK_6204":"데몬스트레이션","SK_6205":"애시드 테러","SK_6206":"스피어 마인","SK_6207":"바이오 캐니벌라이즈","SK_6208":"포션 피쳐","SK_6209":"케미컬 프로텍션 헬름","SK_6210":"케미컬 프로텍션 쉴드","SK_6211":"케미컬 프로텍션 아머","SK_6212":"케미컬 프로텍션 웨폰","SK_6213":"생명 윤리","SK_6214":"안식","SK_6215":"콜 호문클루스","SK_6216":"리저렉션 호문클루스"}</script>
+"SK_6201":"도끼 수련","SK_6202":"러닝 포션","SK_6203":"파머시","SK_6204":"데몬스트레이션","SK_6205":"애시드 테러","SK_6206":"스피어 마인","SK_6207":"바이오 캐니벌라이즈","SK_6208":"포션 피쳐","SK_6209":"케미컬 프로텍션 헬름","SK_6210":"케미컬 프로텍션 쉴드","SK_6211":"케미컬 프로텍션 아머","SK_6212":"케미컬 프로텍션 웨폰","SK_6213":"생명 윤리","SK_6214":"안식","SK_6215":"콜 호문클루스","SK_6216":"리저렉션 호문클루스"}</script>
 <script id="db-npcs" type="application/json">{
   "친절한 노인": {"map": "프론테라", "emoji": "👴", "dialog": "아, 초보 모험가님이시군요! 룬 미드가츠 왕국에 오신 것을 환영합니다.", "service": ""},
   "카프라 직원(프론테라)": {"map": "프론테라", "emoji": "🧳", "dialog": "어서오세요, 프론테라 카프라 서비스입니다. 무엇을 도와드릴까요?", "service": "kafra"},
@@ -45904,8 +45904,8 @@ const DB_SKILLS = {
 // ── [Rank 2] 알케미스트 스킬 ──
 // ══════════════════════════════════════════════
 "도끼 수련":{ rank:2, job:"JOB_ALC", type:"패시브", maxLv:10, spCost:0, emoji:"🪓", desc:"도끼 계열 무기 장착 시 물리 공격력 증가.", effect:null },
-"포션 연구":{ rank:2, job:"JOB_ALC", type:"패시브", maxLv:10, spCost:0, emoji:"🧪", desc:"포션 제작 성공률 상승. 자신의 포션 회복 효율 증가.", effect:null },
-"파머시":{ rank:2, job:"JOB_ALC", type:"액티브", maxLv:10, spCost:(l)=>5, cooldown:3000, req:{"포션 연구":5}, emoji:"⚗️", desc:"보유한 제조 메뉴얼과 재료로 제조 메뉴를 연다.",
+"러닝 포션":{ rank:2, job:"JOB_ALC", type:"패시브", maxLv:10, spCost:0, emoji:"🧪", desc:"포션 제작 성공률 상승. 자신의 포션 회복 효율 증가.", effect:null },
+"파머시":{ rank:2, job:"JOB_ALC", type:"액티브", maxLv:10, spCost:(l)=>5, cooldown:3000, req:{"러닝 포션":5}, emoji:"⚗️", desc:"보유한 제조 메뉴얼과 재료로 제조 메뉴를 연다.",
   // [제조·파머시 통합 v0.2] 실제 제조 경로는 services.js의 svcShowCraftHub → servicePharmacyBatch
   // (db-production.json 레시피 기반)이다. useSkill()이 이 스킬을 크래프팅 허브로 라우팅하므로
   // 아래 effect()는 도달하지 않지만, req/maxLv/spCost/cooldown 메타데이터는 그대로 참조된다.
@@ -47288,6 +47288,37 @@ function migrateItemLedger(ledger, mergeCount=true){
   return true;
 }
 
+// 스킬 이름을 원작 정본명으로 바꿀 때 기존 세이브의 습득 레벨·토글·핫바를 잃지 않도록
+// 옛 키를 정본 키로 치환한다(ITEM_KEY_ALIASES의 스킬판). 새 이름 변경은 여기 한 줄 추가.
+const SKILL_KEY_ALIASES = Object.freeze({
+  "포션 연구": "러닝 포션",   // Alchemist AM_LEARNINGPOTION (RO_스킬_원작_레퍼런스_v13)
+});
+function migrateSkillKey(name){
+  return (typeof name === 'string' && SKILL_KEY_ALIASES[name]) || name;
+}
+// p.skills(레벨: 큰 값 유지) · p.skillToggles · 핫바 스킬 슬롯. 멱등.
+function migrateSkillKeys(p){
+  let changed=false;
+  if(p.skills && typeof p.skills === 'object' && !Array.isArray(p.skills)){
+    Object.keys(p.skills).forEach(k=>{
+      const t=migrateSkillKey(k); if(t===k) return;
+      p.skills[t]=Math.max(Number(p.skills[t])||0, Number(p.skills[k])||0);
+      delete p.skills[k]; changed=true;
+    });
+  }
+  if(p.skillToggles && typeof p.skillToggles === 'object'){
+    Object.keys(p.skillToggles).forEach(k=>{
+      const t=migrateSkillKey(k); if(t===k) return;
+      if(!(t in p.skillToggles)) p.skillToggles[t]=p.skillToggles[k];
+      delete p.skillToggles[k]; changed=true;
+    });
+  }
+  Object.values(p.hotbar||{}).forEach(slot=>{
+    if(slot && slot.type==='skill'){ const t=migrateSkillKey(slot.name); if(t!==slot.name){ slot.name=t; changed=true; } }
+  });
+  return changed;
+}
+
 function validateSave(data){
   return !!(data && typeof data === 'object' && data.name && data.job);
 }
@@ -47356,6 +47387,7 @@ function normalizeSave(p){
   migrateItemLedger(p.sellLocked, false);
   if(p.equip) Object.keys(p.equip).forEach(slot=>{ p.equip[slot]=migrateItemKey(p.equip[slot]); });
   Object.values(p.hotbar).forEach(slot=>{ if(slot && slot.type==='item') slot.name=migrateItemKey(slot.name); });
+  migrateSkillKeys(p);
 
   // [데이터 마이그레이션] 인벤의 유령 키 제거.
   // 드롭명이 아이템DB에 없던 시절에 쌓인 것들이라 팔 수도 쓸 수도 없는 죽은 데이터다.
@@ -51035,8 +51067,8 @@ function useItem(n,auto=false){
   let hpHeal=(it.healMin!=null&&it.healMax!=null)
     ? it.healMin+Math.floor(Math.random()*(it.healMax-it.healMin+1))
     : it.heal||(it.effect==='hp'?it.value:0)||0;
-  // E. 포션 연구: HP 회복 아이템 효율 +10%×Lv
-  { let prLv=(p.skills&&p.skills["포션 연구"])||0;
+  // E. 러닝 포션: HP 회복 아이템 효율 +10%×Lv
+  { let prLv=(p.skills&&p.skills["러닝 포션"])||0;
     if(prLv>0&&hpHeal>0) hpHeal=Math.floor(hpHeal*(1+prLv*0.1));
   }
   let spHeal=it.spHeal||(it.effect==='sp'?it.value:0)||0;
