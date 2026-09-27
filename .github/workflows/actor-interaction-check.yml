@@ -62,4 +62,4 @@ jobs:
           grep -q 'id="actor-interaction-v1"' index.html
           grep -q 'id="refine-reveal-v1"' index.html
           grep -q '으허허헉!!!!' index.html
-          test -s '룬미드가츠_v9.19.html'
+          test -s "$(python -c 'import build; print(build.OUTPUT_PATH)')"
