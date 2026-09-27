@@ -120,10 +120,20 @@ def main():
     # ══════════════════════════════════════════════
     verified_count = sum(1 for c in real_combos['combos'] if c['status'] == 'verified')
     check('verified 수가 P2-A.4-정정 시점(40) 이상 유지(엔진 확장으로 더 늘어남)', verified_count >= 40)
-    gained_ids = ['rathena-pre-0013-01', 'rathena-pre-0013-02', 'rathena-pre-0023-01',
-                  'rathena-pre-0023-02', 'rathena-pre-0033-02', 'rathena-pre-0035-01', 'rathena-pre-0035-02']
-    check('P2-A.5로 새로 verified된 실데이터 7건이 전부 verified 상태',
+    # P2-A.6 identity collision 감사(canonicalize_combos.py IDENTITY_COLLISION_JUDGMENTS)가
+    # rathena-pre-0013-02/0035-02를 duplicate(원작에서 canonical과 동일 슬롯의 exclusive
+    # alias)로 판정해 runtime-blocked로 낮췄다 -- P2-A.5 시점엔 이 collision을 놓쳐 둘 다
+    # verified로 잘못 판정했던 것의 정정이다(canonical인 0013-01/0035-01은 그대로 verified).
+    gained_ids = ['rathena-pre-0013-01', 'rathena-pre-0023-01',
+                  'rathena-pre-0023-02', 'rathena-pre-0033-02', 'rathena-pre-0035-01']
+    check('P2-A.5로 새로 verified된 실데이터 5건(identity collision canonical만) 전부 verified 상태',
           all(by_id[i]['status'] == 'verified' for i in gained_ids))
+    check('P2-A.6 정정: rathena-pre-0013-02는 identity collision duplicate로 runtime-blocked',
+          by_id['rathena-pre-0013-02']['status'] == 'runtime-blocked' and
+          by_id['rathena-pre-0013-02']['identityCollision']['canonicalId'] == 'rathena-pre-0013-01')
+    check('P2-A.6 정정: rathena-pre-0035-02는 identity collision duplicate로 runtime-blocked',
+          by_id['rathena-pre-0035-02']['status'] == 'runtime-blocked' and
+          by_id['rathena-pre-0035-02']['identityCollision']['canonicalId'] == 'rathena-pre-0035-01')
 
     print('ALL TESTS PASS')
 

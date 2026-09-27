@@ -495,6 +495,160 @@ def build_textrag_aegis_index(textrag_items):
 
 AMMO_AEGIS_TYPE = "Ammo"
 
+# ══════════════════════════════════════════════
+# P2-A.6 — identity collision 감사(동일 textragKey에 복수 rAthena AegisName이 매핑된 경우).
+#
+# combo-item-identity.json은 각 AegisName을 독립적으로 하나의 textragKey에 매핑한다
+# (P2-A.1 §16: fuzzy match 금지, 1:1 exact match만). 그런데 rAthena 자체에 "이름이 같고
+# 스탯도 동일하되 슬롯 유무만 다른" 레거시 아이템 쌍이 존재해서(예: Mage_Coat/Mage_Coat_),
+# 서로 다른 AegisName 두 개가 TextRAG에서는 같은 표시명 하나로 합쳐진다. 이 경우 콤보
+# variant 2개가 "TextRAG identity 기준"으로는 완전히 같은 요구 아이템 집합이 되어, 실제
+# 게임에서는 있을 수 없는 "두 alias를 동시에 장착"한 것처럼 콤보 매처가 착각해 원작에 없는
+# 이중 적용을 만들 수 있다(P2-B1이 처음 이 문제를 놓쳤다 -- P2-A.6에서 정정).
+#
+# 아래 표는 combo-item-identity.json 전체를 텍스트 역매핑해 발견한 모든 충돌(6개, 전수)에
+# 대해 rAthena db/pre-re/item_db_equip.yml(pin e985006171d2eb320ee512a653f4c83aea3d81b6)
+# 실코드를 직접 대조한 결과다 -- 추측이 아니라 각 pair의 Locations/Jobs/Defense·Attack/
+# Script가 전부 동일하고 Slots(무/유 1슬롯)만 다름을 확인했다(=같은 장비 슬롯을 두고 소켓
+# 유무만 다른 동일 아이템의 두 DB 레코드 -- 원작에서 동시 장착 자체가 불가능한 exclusive
+# alias). 이 표에 없는 신규 충돌이 나타나면 audit_identity_collision_coverage()가 즉시
+# 실패한다(추측으로 자동 판정하지 않는다 -- 새 충돌은 반드시 같은 방식으로 개별 조사해
+# 이 표에 근거와 함께 등재한 뒤에만 처리한다).
+IDENTITY_COLLISION_JUDGMENTS = {
+    "매직코트": {
+        "aegisNames": frozenset({"Mage_Coat", "Mage_Coat_"}),
+        "judgment": "exclusive-alias",
+        "evidence": "item_db_equip.yml: 둘 다 Type=Armor, Locations.Armor=true, Jobs 동일"
+                    "(Mage/Sage/SoulLinker/Wizard), Defense=5, Script(bMdef+5,bInt+1) 동일 --"
+                    " 차이는 Mage_Coat_만 Slots:1(소켓 버전). 같은 방어구 슬롯이라 동시 장착 불가.",
+    },
+    "닌자슈츠": {
+        "aegisNames": frozenset({"Ninja_Suit", "Ninja_Suit_"}),
+        "judgment": "exclusive-alias",
+        "evidence": "item_db_equip.yml: 둘 다 Type=Armor, Locations.Armor=true, Jobs 동일"
+                    "(Assassin/Ninja/Rogue/Thief), Defense=7, Script(bAgi+1,bMdef+3) 동일 --"
+                    " 차이는 Ninja_Suit_만 Slots:1. 같은 방어구 슬롯이라 동시 장착 불가.",
+    },
+    "아머": {
+        "aegisNames": frozenset({"Padded_Armor", "Padded_Armor_"}),
+        "judgment": "exclusive-alias",
+        "evidence": "item_db_equip.yml: 둘 다 Type=Armor, Locations.Armor=true, Jobs 동일"
+                    "(9개 직업), Defense=7 동일 -- 차이는 Padded_Armor_만 Slots:1."
+                    " 같은 방어구 슬롯이라 동시 장착 불가.",
+    },
+    "서바이버로드": {
+        "aegisNames": frozenset({"Survival_Rod_", "Survival_Rod2_"}),
+        "judgment": "exclusive-alias",
+        "evidence": "item_db_equip.yml: 둘 다 Type=Weapon/SubType=Staff, Locations.Right_Hand=true,"
+                    " Jobs 동일(7개 마법계열), Attack=50/Range=1/WeaponLevel=3/EquipLevelMin=24"
+                    " 전부 동일, 둘 다 Slots:1(차이 없음 -- 완전한 중복 DB 레코드)."
+                    " 같은 무기 슬롯이라 동시 장착 불가.",
+    },
+    "런닝셔츠": {
+        "aegisNames": frozenset({"Undershirt", "Undershirt_"}),
+        "judgment": "exclusive-alias",
+        "evidence": "item_db_equip.yml: 둘 다 Type=Armor, Locations.Garment=true, Defense=2,"
+                    " Script(bMdef+1) 동일 -- 차이는 Undershirt_만 Slots:1."
+                    " 같은 걸칠것(망토) 슬롯이라 동시 장착 불가.",
+    },
+    "롱혼": {
+        "aegisNames": frozenset({"Long_Horn", "Long_Horn_M"}),
+        "judgment": "exclusive-alias",
+        "evidence": "item_db_equip.yml: 둘 다 Type=Weapon/SubType=1hSpear, Locations.Right_Hand=true,"
+                    " Jobs 동일(Crusader/Knight/Swordman), Attack=150/Range=3/WeaponLevel=4 동일 --"
+                    " Long_Horn_M만 Trade 제한 플래그(결혼 시스템 지급용 non-tradeable 사본으로 추정)."
+                    " 같은 무기 슬롯이라 동시 장착 불가. 현재 참조 콤보(entry 2/3)가 모두"
+                    " unsupported라 runtime 영향은 없지만, 향후 verified로 바뀔 경우를 대비해 등재.",
+    },
+}
+
+
+def compute_identity_collisions(identity_verified):
+    """identity_verified(aegisName -> textragKey)를 역매핑해 하나의 textragKey에 복수
+    AegisName이 매핑된 경우만 모은다. 이 자체가 "충돌"이며, 이후 detect_identity_collisions가
+    실제 콤보 variant 조합에 나타나는지 확인한다."""
+    reverse = {}
+    for aegis, key in identity_verified.items():
+        reverse.setdefault(key, set()).add(aegis)
+    return {k: v for k, v in reverse.items() if len(v) > 1}
+
+
+def audit_identity_collision_coverage(identity_verified):
+    """새로 나타난(등재 안 된) identity collision을 즉시 실패시킨다 -- §추측 금지: 새 충돌은
+    이 스크립트가 자동으로 병합 판정하지 않고, 반드시 IDENTITY_COLLISION_JUDGMENTS에 근거와
+    함께 사람이 먼저 등재해야 한다."""
+    collisions = compute_identity_collisions(identity_verified)
+    unaudited = []
+    for key, aegis_set in collisions.items():
+        judgment = IDENTITY_COLLISION_JUDGMENTS.get(key)
+        if not judgment or not aegis_set.issubset(judgment["aegisNames"]):
+            unaudited.append((key, sorted(aegis_set)))
+    if unaudited:
+        joined = "; ".join(f"{k} <- {v}" for k, v in unaudited)
+        raise ValueError(
+            f"새 identity collision이 IDENTITY_COLLISION_JUDGMENTS에 등재되지 않음"
+            f"(추측 병합 금지, 개별 조사 후 등재 필요): {joined}"
+        )
+    return collisions
+
+
+def detect_identity_collisions(entry_combos):
+    """같은 source entry 안에서 만들어진 variant들(entry_combos) 중, requiredItems가
+    TextRAG identity(textragKey) 기준으로 완전히 동일해진 그룹을 찾는다. 그 동일성이
+    IDENTITY_COLLISION_JUDGMENTS에 'exclusive-alias'로 등재된 aegisName 쌍 때문일 때만
+    인정한다(§금지: textragKey가 우연히 같다는 이유만으로 일반 dedup 금지) -- 등재되지
+    않은 이유로 우연히 같아진 경우는 건드리지 않는다(발생 시 이미 audit_identity_
+    collision_coverage가 별도로 잡아낸다).
+
+    가장 낮은 variant_idx를 canonical로 삼아 verified를 유지하고, 나머지(duplicate)는
+    status가 verified였을 때만 runtime-blocked로 낮춘다(승격 목적 조작이 아니라, 원작에서
+    나타날 수 없는 이중 적용을 막는 되돌림). 모든 관련 variant에 identityCollision
+    메타데이터를 남긴다(canonical/duplicate 관계없이, 회귀 감사용)."""
+    groups = {}
+    for c in entry_combos:
+        keys = tuple(ri["textragKey"] for ri in c["requiredItems"])
+        if any(k is None for k in keys):
+            continue  # 미해결 identity -- 이미 source-needed, 충돌 판정 대상 아님
+        groups.setdefault(keys, []).append(c)
+
+    for keys, members in groups.items():
+        if len(members) < 2:
+            continue
+
+        n_items = len(keys)
+        collision_keys_used = set()
+        all_slots_ok = True
+        for slot in range(n_items):
+            aegis_at_slot = {m["requiredItems"][slot]["aegisName"] for m in members}
+            if len(aegis_at_slot) == 1:
+                continue  # 이 슬롯은 모든 variant가 같은 aegis -- 충돌 아님
+            judgment = IDENTITY_COLLISION_JUDGMENTS.get(keys[slot])
+            if not judgment or judgment["judgment"] != "exclusive-alias" or not aegis_at_slot.issubset(judgment["aegisNames"]):
+                all_slots_ok = False
+                break
+            collision_keys_used.add(keys[slot])
+        if not all_slots_ok or not collision_keys_used:
+            continue
+
+        canonical = members[0]  # entry_combos는 variant_idx 오름차순으로 생성됨
+        member_ids = [m["id"] for m in members]
+        for m in members:
+            role = "canonical" if m is canonical else "duplicate"
+            m["identityCollision"] = {
+                "collisionTextragKeys": sorted(collision_keys_used),
+                "role": role,
+                "canonicalId": canonical["id"],
+                "memberIds": member_ids,
+            }
+            if role == "duplicate" and m["status"] == "verified":
+                m["status"] = "runtime-blocked"
+                m["statusReasons"] = m["statusReasons"] + [
+                    f"identity collision: {canonical['id']}와 requiredItems가 TextRAG identity"
+                    f" 기준 완전히 동일(원작에서는 같은 장비 슬롯의 exclusive alias --"
+                    f" IDENTITY_COLLISION_JUDGMENTS 참조). 원작에 없는 이중 적용을 막기 위해"
+                    f" canonical만 verified로 두고 이 variant는 runtime-blocked."
+                ]
+
 
 def load_identity_verified_map(identity_map):
     """P2-A.1 combo-item-identity.json에서 status=="verified" 항목만 뽑는다.
@@ -561,6 +715,7 @@ def canonicalize(source_body, unique_index, ambiguous_index, rathena_lookup, ide
             elif kind == "unsupported":
                 unsupported_effects.append(payload)
 
+        entry_combos = []
         for variant_idx, combo in enumerate(combo_list, 1):
             # §32: 동일 아이템 중복 요구 가능성 — Set으로 바꾸지 않고 원본 순서/중복 그대로 보존.
             required_aegis = combo.get("Combo") or []
@@ -593,7 +748,7 @@ def canonicalize(source_body, unique_index, ambiguous_index, rathena_lookup, ide
                 status = "runtime-blocked"
                 status_reasons = ["ammo(화살 등) 포함 combo — TextRAG는 activeAmmo를 명시적으로 관리하지 않고 인벤토리 첫 ammo를 쓰는 구조라 아직 활성화 불가"]
 
-            combos.append({
+            entry_combos.append({
                 "id": make_combo_id(entry_idx, variant_idx),
                 "source": {"system": "rathena", "mode": "pre-re", "entry": entry_idx, "variant": variant_idx},
                 "requiredItems": required_items,
@@ -603,7 +758,13 @@ def canonicalize(source_body, unique_index, ambiguous_index, rathena_lookup, ide
                 "unsupportedEffects": unsupported_effects,
                 "status": status,
                 "statusReasons": status_reasons,
+                "identityCollision": None,
             })
+
+        # P2-A.6: 같은 entry 안의 variant들만 비교 대상이다(source entry 단위 일반 dedup이
+        # 아니라, 이 entry가 우연히 만든 identity 충돌만 국소적으로 본다).
+        detect_identity_collisions(entry_combos)
+        combos.extend(entry_combos)
     return combos
 
 
@@ -619,6 +780,9 @@ def main():
     unique_index, ambiguous_index = build_textrag_aegis_index(textrag_items)
     identity_map = load_json(IDENTITY_MAP_JSON) if IDENTITY_MAP_JSON.exists() else None
     identity_verified = load_identity_verified_map(identity_map)
+    # P2-A.6: 새로 나타난(등재 안 된) identity collision은 여기서 즉시 실패한다 --
+    # canonicalize()가 조용히 넘기지 않도록 먼저 전수 감사한다.
+    identity_collisions = audit_identity_collision_coverage(identity_verified)
 
     combos = canonicalize(body, unique_index, ambiguous_index, rathena_lookup, identity_verified)
 
@@ -626,6 +790,9 @@ def main():
     status_counts = {}
     for c in combos:
         status_counts[c["status"]] = status_counts.get(c["status"], 0) + 1
+    identity_collision_groups = sorted({
+        c["identityCollision"]["canonicalId"] for c in combos if c["identityCollision"]
+    })
 
     out = {
         "meta": {
@@ -639,6 +806,10 @@ def main():
             "statusCounts": status_counts,
             "identityMapUsed": IDENTITY_MAP_JSON.exists(),
             "identityVerifiedItemCount": len(identity_verified),
+            # P2-A.6: textragKey 충돌(복수 AegisName -> 1개 textragKey) 전수 + 실제 콤보
+            # variant에 나타나 canonical/duplicate로 해소된 그룹 수.
+            "identityCollisionKeys": sorted(identity_collisions.keys()),
+            "identityCollisionGroupCount": len(identity_collision_groups),
         },
         "combos": combos,
     }
@@ -650,6 +821,7 @@ def main():
 
     print(f"OK - wrote {OUT_JSON} ({len(body)} source entries, {total_variants} variants)")
     print("status counts:", status_counts)
+    print(f"identity collision keys audited: {len(identity_collisions)}, groups resolved in combos: {len(identity_collision_groups)}")
     print(f"identity map verified items used: {len(identity_verified)}")
 
 

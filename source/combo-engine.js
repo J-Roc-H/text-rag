@@ -18,7 +18,18 @@
 // 재등록만 막을 뿐 다른 id 간 dedup은 없음). 즉 두 variant가 동시에 만족되면 공유 Script가
 // 만족된 개수만큼 반복 적용되어 additive 보너스가 중첩된다 — "공유라서 1회만" 적용되는
 // 동작은 원작에 없다. 이 엔진은 db-combos.json의 각 variant(=각 combo record, id로 구분)를
-// 완전히 독립적으로 매칭·적용해 이 동작을 그대로 재현한다(변형 간 dedup을 하지 않는다).
+// 완전히 독립적으로 매칭·적용해 이 동작을 그대로 재현한다(variant 간 매처 레벨 dedup을
+// 하지 않는다).
+//
+// 예외 — identity collision(P2-A.6): 서로 다른 rAthena AegisName 두 개가 TextRAG에서
+// 같은 textragKey로 합쳐진 경우(예: Mage_Coat/Mage_Coat_, 둘 다 '매직코트'), variant
+// 2개의 requiredItems가 TextRAG identity 기준으로 완전히 같아져 원작에서는 있을 수 없는
+// "같은 슬롯 alias 두 개 동시 장착"처럼 보일 수 있다. 이 경우는 매처가 아니라
+// tools/canonicalize_combos.py(IDENTITY_COLLISION_JUDGMENTS, rAthena item_db_equip.yml
+// 실코드 대조로 증거 기반 판정)가 데이터 생성 시점에 해소한다 -- 근거가 확인된 duplicate
+// variant는 status를 verified가 아닌 runtime-blocked로 낮춰서 db-combos.json에 미리
+// 반영해 둔다. 매처는 그 결과(status==='verified'만 통과)를 그대로 따를 뿐, "textragKey가
+// 같다"는 이유만으로 임의로 1회 적용하거나 source entry 단위로 일반 dedup을 하지 않는다.
 // ══════════════════════════════════════════════
 
 // 장착 장비(p.equip 기준) + 그 장비에 실제로 꽂힌 카드만 모은다. 인벤토리 보유만으로는
@@ -61,9 +72,11 @@ function _countByKey(list) {
 }
 
 // 요구사항 §4: 동일 아이템 2회 이상 요구를 multiplicity로 보존한다 — Set이 아니라 개수
-// 비교. 요구사항 §8: status!=='verified'(unsupported/source-needed, ammo 포함)는 절대
-// 매칭 후보에 넣지 않는다. rAthena variant 중복 semantics(파일 상단 주석)에 따라 variant
-// (=combo record) 간 dedup을 하지 않는다 — 동시에 만족된 variant는 전부 독립적으로 반환한다.
+// 비교. 요구사항 §8: status!=='verified'(unsupported/source-needed/runtime-blocked)는
+// 절대 매칭 후보에 넣지 않는다. rAthena variant 중복 semantics(파일 상단 주석)에 따라
+// variant(=combo record) 간 매처 레벨 dedup을 하지 않는다 — status가 둘 다 verified라면
+// 동시에 만족된 variant를 전부 독립적으로 반환한다(identity collision duplicate는
+// canonicalize_combos.py가 이미 runtime-blocked로 낮춰뒀으므로 여기 도달하지 않는다).
 function matchCombos(loadout, comboList) {
   if (!Array.isArray(comboList)) return [];
   var activeCounts = _countByKey(loadout);
@@ -71,6 +84,12 @@ function matchCombos(loadout, comboList) {
   return comboList.filter(function (combo) {
     if (!combo || combo.status !== 'verified') return false;
     if (!Array.isArray(combo.requiredItems) || combo.requiredItems.length < 2) return false;
+    // ammo 하드 블록: activeAmmo 정본이 없는 한 requiredItems에 isAmmo:true가 하나라도
+    // 있으면 무조건 false. getActiveLoadout이 애초에 ammo를 절대 수집하지 않아 구조적으로도
+    // 매칭될 수 없지만, status 필드가 잘못 verified로 태깅된 데이터가 들어와도 안전하도록
+    // 여기서도 명시적으로 한 번 더 막는다(방어적 이중 확인, canonicalize_combos.py의
+    // any_ammo→runtime-blocked 강등과는 별개의 런타임 계층).
+    if (combo.requiredItems.some(function (ri) { return ri.isAmmo === true; })) return false;
 
     var requiredCounts = {};
     for (var i = 0; i < combo.requiredItems.length; i++) {
@@ -90,7 +109,10 @@ function matchCombos(loadout, comboList) {
 // 표현을 만들지 않고 그 값을 fx의 같은 자리에 그대로 더한다. subKey가 있으면
 // _ITEM_EFF_COUNTER_KEYS(raceAtk/elemAtk/sizeAtk/raceDmgReduce/elemReduce 등)와 같은
 // "맵 누적" 방식, 없으면 나머지 키와 같은 "단순 additive" 방식이다 — collectItemEffects의
-// 두 기존 패턴과 동일하다.
+// 두 기존 패턴과 동일하다. ledger에는 source(기존 관례: 출처 표시용 문자열)와 별개로
+// sourceId를 항상 남긴다 — source는 카드/장비면 display name이라 콤보 id와 우연히 같은
+// 문자열이 될 일이 없지만, sourceId는 "이 ledger 항목이 정확히 어느 combo record에서
+// 왔는가"를 다른 필드 파싱 없이 바로 조회하기 위한 안정 식별자다.
 function _applyComboEffect(fx, comboId, effect) {
   if (!effect || !effect.type || !fx[effect.type]) return;
   var bucket = fx[effect.type];
@@ -99,14 +121,14 @@ function _applyComboEffect(fx, comboId, effect) {
     if (!bucket[effect.key]) bucket[effect.key] = {};
     bucket[effect.key][effect.subKey] = (bucket[effect.key][effect.subKey] || 0) + effect.value;
     fx.ledger.push({
-      source: comboId, sourceType: 'combo', type: effect.type, key: effect.key,
+      source: comboId, sourceId: comboId, sourceType: 'combo', type: effect.type, key: effect.key,
       value: (function () { var o = {}; o[effect.subKey] = effect.value; return o; })(),
       active: true,
     });
   } else {
     bucket[effect.key] = (bucket[effect.key] || 0) + effect.value;
     fx.ledger.push({
-      source: comboId, sourceType: 'combo', type: effect.type, key: effect.key,
+      source: comboId, sourceId: comboId, sourceType: 'combo', type: effect.type, key: effect.key,
       value: effect.value, active: true,
     });
   }

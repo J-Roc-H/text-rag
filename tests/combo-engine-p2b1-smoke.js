@@ -12,13 +12,13 @@ const {
 
 function comboLedgerEntries(s, comboId) {
   var ledger = (s.itemEffects && s.itemEffects.ledger) || [];
-  return ledger.filter(function (e) { return e.sourceType === 'combo' && e.source === comboId; });
+  return ledger.filter(function (e) { return e.sourceType === 'combo' && e.sourceId === comboId; });
 }
 
 function makeCombo(id, requiredItems, effects) {
   return { id: id, status: 'verified', requiredItems: requiredItems, effects: effects, unsupportedEffects: [], conditionalRaw: [] };
 }
-function req(textragKey) { return { textragKey: textragKey, resolved: true, isAmmo: false }; }
+function req(textragKey, isAmmo) { return { textragKey: textragKey, resolved: true, isAmmo: !!isAmmo }; }
 
 // ══════════════════════════════════════════════
 // A/B — 장착 장비 2개로 combo 활성, 하나 해제하면 비활성
@@ -119,9 +119,12 @@ function req(textragKey) { return { textragKey: textragKey, resolved: true, isAm
 {
   const unsupported = { id: 't-f', status: 'unsupported', requiredItems: [req('테스트콤보검'), req('테스트콤보투구')], effects: [{ type: 'stat', key: 'str', subKey: null, value: 99 }] };
   const sourceNeeded = { id: 't-g', status: 'source-needed', requiredItems: [req('테스트콤보검'), req('테스트콤보투구')], effects: [{ type: 'stat', key: 'agi', subKey: null, value: 99 }] };
-  // ammo: status는 verified로 잘못 태깅된 데이터가 와도 -- getActiveLoadout이 애초에 ammo를
-  // 절대 수집하지 않으므로(p.activeAmmo 자체가 없음) 구조적으로 매칭될 수 없어야 한다.
-  const ammo = makeCombo('t-h', [req('테스트콤보검'), req('테스트화살')], [{ type: 'stat', key: 'dex', subKey: null, value: 99 }]);
+  // ammo: status가 verified로(잘못) 태깅된 데이터가 와도 두 겹으로 막힌다 -- (1) 구조적으로
+  // getActiveLoadout이 애초에 ammo를 절대 수집하지 않고(p.activeAmmo 자체가 없음),
+  // (2) matchCombos 자체도 requiredItems.isAmmo===true를 만나면 하드 블록한다(요구사항:
+  // "activeAmmo 정본 전까지 matcher에서 무조건 false"). isAmmo:true를 실제로 표시해야
+  // (2)번 방어선을 제대로 태운다 -- 표시 안 하면 (1)번만 검증하는 셈이 된다.
+  const ammo = makeCombo('t-h', [req('테스트콤보검'), req('테스트화살', true)], [{ type: 'stat', key: 'dex', subKey: null, value: 99 }]);
 
   const DB = makeDB({
     '테스트콤보검': { type: '무기', atk: 10, wType: '단검', weaponLv: 1 },
@@ -132,7 +135,7 @@ function req(textragKey) { return { textragKey: textragKey, resolved: true, isAm
   const s = runCalcStats(DB, { player: makePlayer({ 무기: '테스트콤보검', 투구_상단: '테스트콤보투구' }) });
   assert.strictEqual(comboLedgerEntries(s, 't-f').length, 0, 'F: unsupported combo는 적용되지 않음');
   assert.strictEqual(comboLedgerEntries(s, 't-g').length, 0, 'G: source-needed combo는 적용되지 않음');
-  assert.strictEqual(comboLedgerEntries(s, 't-h').length, 0, 'H: ammo(장착 불가능한 요구항목) combo는 적용되지 않음(활성 로드아웃에 화살 자체가 없음)');
+  assert.strictEqual(comboLedgerEntries(s, 't-h').length, 0, 'H: ammo(isAmmo:true 요구항목) combo는 적용되지 않음(구조적 배제 + matchCombos 하드 블록)');
   assert.strictEqual(s.str, 1, 'F: STR 기본값 그대로(99 미적용)');
   assert.strictEqual(s.agi, 1, 'G: AGI 기본값 그대로(99 미적용)');
   assert.strictEqual(s.dex, 1, 'H: DEX 기본값 그대로(99 미적용)');
@@ -211,6 +214,7 @@ function req(textragKey) { return { textragKey: textragKey, resolved: true, isAm
   assert.strictEqual(entries.length, 1, 'L: ledger에 콤보 entry 1개');
   assert.strictEqual(entries[0].sourceType, 'combo', 'L: sourceType=combo');
   assert.strictEqual(entries[0].source, 't-l-stable-id', 'L: source=stable combo id');
+  assert.strictEqual(entries[0].sourceId, 't-l-stable-id', 'L: sourceId=stable combo id(source와 별개 필드로도 조회 가능)');
   assert.deepStrictEqual(entries[0].value, { 드래곤: 9 }, 'L: subKey 효과는 {subKey:value} 맵으로 기록(기존 raceAtk 관례와 동일)');
   console.log('OK - L: ledger sourceType=combo, stable combo id');
 }
@@ -285,37 +289,59 @@ function req(textragKey) { return { textragKey: textragKey, resolved: true, isAm
 }
 
 // ══════════════════════════════════════════════
-// O(추가) — rAthena 실코드로 확인한 "variant 동시 만족 시 중복 적용" semantics를 실데이터로
-// 직접 증명한다. rathena-pre-0009-01/02는 P2-A identity 매핑상 requiredItems가 완전히
-// 동일(['고대의마법','매직코트']) -- 원작에서는 Mage_Coat/Mage_Coat_(성별 외형 변형, 같은
-// 방어구 슬롯)라 실제로는 동시에 만족될 수 없지만, TextRAG가 이 둘을 하나의 identity로
-// 합친 결과 두 variant record가 동시에 매칭 가능해졌다. 이 테스트는 matcher가 그 경우
-// "공유라서 1회만" 적용하도록 몰래 dedup하지 않고, 확정한 원작 semantics대로 variant마다
-// 독립적으로 적용해 값을 중첩시키는지 확인한다(과제 지시: "구현 전에 조사 후 규칙 고정").
+// O-1(P2-A.6 정정) — identity collision(매직코트 = Mage_Coat/Mage_Coat_) duplicate는
+// canonical 한 번만 적용되고, duplicate는 전혀 적용되지 않아야 한다. P2-B1 최초 버전은
+// 이 케이스를 "variant 동시 만족 -> 원작대로 독립 중첩"으로 잘못 다뤘다(중복 적용 버그) --
+// canonicalize_combos.py의 IDENTITY_COLLISION_JUDGMENTS 감사(rAthena item_db_equip.yml
+// 실코드 대조: 둘 다 Locations.Armor=true인 같은 방어구 슬롯의 exclusive alias, 원작에서
+// 동시 장착 자체가 불가능)가 duplicate(rathena-pre-0009-02)를 runtime-blocked로 낮췄고,
+// matcher는 그 status만 그대로 따른다(매처 쪽에 별도 dedup 로직을 추가하지 않았다).
 // ══════════════════════════════════════════════
 {
   const db = require('../source/data/db-combos.json');
   const v1 = db.combos.find(function (c) { return c.id === 'rathena-pre-0009-01'; });
   const v2 = db.combos.find(function (c) { return c.id === 'rathena-pre-0009-02'; });
-  assert.ok(v1 && v2 && v1.status === 'verified' && v2.status === 'verified', 'O: 0009-01/02가 둘 다 verified여야 함');
-  assert.deepStrictEqual(
-    v1.requiredItems.map(function (r) { return r.textragKey; }).sort(),
-    v2.requiredItems.map(function (r) { return r.textragKey; }).sort(),
-    'O: 두 variant의 requiredItems textragKey가 TextRAG identity 기준으로 완전히 동일해야 이 테스트가 의미 있음'
-  );
+  assert.ok(v1 && v1.status === 'verified', 'O-1: canonical(0009-01)은 verified');
+  assert.ok(v2 && v2.status === 'runtime-blocked', 'O-1: duplicate(0009-02)는 identity collision으로 runtime-blocked');
+  assert.strictEqual(v2.identityCollision && v2.identityCollision.canonicalId, 'rathena-pre-0009-01', 'O-1: duplicate의 identityCollision.canonicalId가 canonical을 가리킴');
+  assert.strictEqual(v2.identityCollision.role, 'duplicate', 'O-1: role=duplicate');
+  assert.strictEqual(v1.identityCollision.role, 'canonical', 'O-1: canonical 쪽도 role=canonical로 표시됨(대칭 문서화)');
+
   const neededItemNames = v1.requiredItems.map(function (r) { return r.textragKey; });
   const DB = makeDB(pickRealItems(neededItemNames), [v1, v2]);
   const equip = {};
   neededItemNames.forEach(function (key, idx) { equip[['무기', '방패'][idx]] = key; });
   const s = runCalcStats(DB, { player: makePlayer(equip) });
-  assert.strictEqual(comboLedgerEntries(s, 'rathena-pre-0009-01').length, v1.effects.length, 'O: variant 1도 독립적으로 매칭됨(효과 ' + v1.effects.length + '개 전부)');
-  assert.strictEqual(comboLedgerEntries(s, 'rathena-pre-0009-02').length, v2.effects.length, 'O: variant 2도 독립적으로 매칭됨(공유 Script라고 억제되지 않음)');
-  // bInt,4가 두 variant 모두에서 각각 적용되어 additive 중첩(총 +8)됨 -- rAthena
-  // status_calc_pc가 sd->combos의 각 entry마다 run_script를 호출하는 것과 동일.
-  // (매직코트 자신도 db-items.json에 int:1을 따로 갖고 있어 +1 추가 -- 콤보와 아이템 자체
-  // 효과가 서로를 지우거나 중복 계산하지 않고 그대로 공존한다는 부가 확인이기도 하다.)
-  assert.strictEqual(s.int, 10, 'O: INT 기본 1 + 매직코트 자체 int 1 + variant당 4씩 두 번 = 10(중첩, dedup 아님)');
-  console.log('OK - O: 실데이터 variant 동시 만족 시 원작대로 독립 중첩 적용(dedup 없음)');
+  assert.strictEqual(comboLedgerEntries(s, 'rathena-pre-0009-01').length, v1.effects.length, 'O-1: canonical만 적용됨(효과 ' + v1.effects.length + '개 전부)');
+  assert.strictEqual(comboLedgerEntries(s, 'rathena-pre-0009-02').length, 0, 'O-1: duplicate는 전혀 적용되지 않음(runtime-blocked라 matchCombos 통과 못함)');
+  // bInt,4가 canonical 한 번만 적용됨 -- 매직코트 자신의 db-items.json int:1과는 별개로
+  // 정상 공존(콤보 쪽만 1회로 억제됐을 뿐 아이템 자체 효과는 그대로).
+  assert.strictEqual(s.int, 6, 'O-1: INT 기본 1 + 매직코트 자체 int 1 + canonical 콤보 4 = 6(duplicate 중복 없음)');
+  console.log('OK - O-1: identity collision duplicate는 1회도 적용되지 않고 canonical만 적용됨');
+}
+
+// ══════════════════════════════════════════════
+// O-2 — identity collision이 아닌, 진짜로 서로 다른 아이템을 요구하는 두 콤보가 우연히
+// 아이템 하나를 공유하는 경우(0001-01: 드래곤슬레이어+드래곤의숨결, 0001-03: 드래곤의숨결+
+// 드래곤킬러 -- 드래곤슬레이어≠드래곤킬러, identity collision 표 어디에도 없는 서로 다른
+// 실제 아이템)는 여전히 각자 독립적으로 매칭·적용돼야 한다. 즉 O-1의 수정이 "textragKey가
+// 겹치면 무조건 1회"라는 일반 dedup으로 새지 않았음을 함께 증명한다(요구사항: source entry
+// 단위 일반 dedup 금지 -- 이 둘은 서로 다른 entry(1,1)이기도 하다).
+// ══════════════════════════════════════════════
+{
+  const db = require('../source/data/db-combos.json');
+  const v1 = db.combos.find(function (c) { return c.id === 'rathena-pre-0001-01'; });
+  const v3 = db.combos.find(function (c) { return c.id === 'rathena-pre-0001-03'; });
+  assert.ok(v1 && v3 && v1.status === 'verified' && v3.status === 'verified', 'O-2: 0001-01/03 둘 다 verified');
+  assert.strictEqual(v1.identityCollision, null, 'O-2: 0001-01은 identity collision 대상이 아님');
+  assert.strictEqual(v3.identityCollision, null, 'O-2: 0001-03도 identity collision 대상이 아님');
+
+  const neededItemNames = ['드래곤슬레이어', '드래곤의숨결', '드래곤킬러'];
+  const DB = makeDB(pickRealItems(neededItemNames), [v1, v3]);
+  const s = runCalcStats(DB, { player: makePlayer({ 무기: '드래곤슬레이어', 악세1: '드래곤의숨결', 방패: '드래곤킬러' }) });
+  assert.strictEqual(comboLedgerEntries(s, 'rathena-pre-0001-01').length, 1, 'O-2: 0001-01 독립 적용');
+  assert.strictEqual(comboLedgerEntries(s, 'rathena-pre-0001-03').length, 1, 'O-2: 0001-03도 독립 적용(dedup 안 됨)');
+  console.log('OK - O-2: identity collision 아닌 우연한 아이템 공유는 여전히 독립 중첩(일반 dedup으로 새지 않음)');
 }
 
 // ══════════════════════════════════════════════
@@ -343,7 +369,15 @@ function req(textragKey) { return { textragKey: textragKey, resolved: true, isAm
 
   const comboUnresolved = { id: 'unit-2', status: 'verified', requiredItems: [{ textragKey: null }, req('유닛무기')], effects: [] };
   assert.strictEqual(api.matchCombos(loadout, [comboUnresolved]).length, 0, 'matcher: textragKey가 null(미해결 identity)이면 절대 매칭하지 않음');
-  console.log('OK - matcher 단위 테스트: getActiveLoadout/matchCombos 계약');
+
+  // matchCombos의 isAmmo 하드 블록을 getActiveLoadout 우회 없이 직접 증명한다: 가상의
+  // loadout에 ammo textragKey가 "이미 들어있다고" 가정해도(현실에는 절대 없지만) status가
+  // verified이고 요구 아이템 수가 채워지면 matchCombos 자체가 isAmmo:true 하나만으로
+  // 여전히 차단해야 한다(구조적 방어와 별개인 두 번째 방어선).
+  const fakeLoadoutWithAmmo = loadout.concat([{ key: '유닛화살', kind: 'equipment', source: '유닛화살' }]);
+  const comboAmmo = { id: 'unit-3', status: 'verified', requiredItems: [req('유닛무기'), req('유닛화살', true)], effects: [] };
+  assert.strictEqual(api.matchCombos(fakeLoadoutWithAmmo, [comboAmmo]).length, 0, 'matcher: loadout에 요구 아이템이 다 있어도 isAmmo:true면 matchCombos가 하드 블록');
+  console.log('OK - matcher 단위 테스트: getActiveLoadout/matchCombos 계약(isAmmo 하드 블록 포함)');
 }
 
 console.log('ALL TESTS PASS - combo-engine-p2b1-smoke');
