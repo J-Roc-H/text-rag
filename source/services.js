@@ -485,10 +485,6 @@ function svcCraftRate(sk,lv,s){
 function svcCraftMaterials(name,lv,product){
   let sk=DB.skills[name];
   if(sk && sk.mats && sk.mats[lv]) return sk.mats[lv];
-  if(name==='파머시'){
-    let herb=product==='하얀포션'?'하얀허브':product==='노란포션'?'옐로 허브':'빨간 허브';
-    return {'빈병':1,[herb]:1};
-  }
   if(name==='화살 제조') return {'목재':5,'깃털':1};
   if(name==='철 제조') return {'철광석':1+lv};
   if(name==='속성석 제조') return {'속성석 원석':2+lv};
@@ -496,7 +492,6 @@ function svcCraftMaterials(name,lv,product){
   return {};
 }
 function svcCraftOutputNames(name,lv,pharmacyProduct){
-  if(name==='파머시') return [pharmacyProduct];
   if(name==='화살 제조') return ['화살'];
   if(name==='단검 제작') return [['나이프','카타르','쇼텔'][lv-1]||'나이프'];
   if(name==='검 제작') return [['소드','롱소드','투핸드소드'][lv-1]||'소드'];
@@ -511,10 +506,6 @@ function svcCraftOutputNames(name,lv,pharmacyProduct){
   return [];
 }
 function svcCraftOutputLabel(name,lv,pharmacyProduct){
-  if(name==='파머시'){
-    let q=1+Math.floor(lv/3);
-    return `${pharmacyProduct} x${q}`;
-  }
   if(name==='화살 제조') return '화살 x100';
   if(name==='철 제조') return `철 x${lv}`;
   if(name==='강철 제조') return `강철 x${lv}`;
@@ -565,31 +556,116 @@ function svcCraftCard(name,product){
     </div>
   </div>`;
 }
+// ── 파머시 — db-production.json 기반 메뉴얼 게이팅 제조 ──
+// 메뉴얼은 보유 조건일 뿐 소모하지 않는다. 성공·실패 무관하게 재료 + 공용 소모(약사발)를 뗀다.
+function svcPharmacyRecipeList(p){
+  let lv=(p.skills&&p.skills['파머시'])||0;
+  return Object.keys(DB.production||{}).filter(rid=>{
+    let r=DB.production[rid];
+    if(!r || r.deferred || r.profession!=='alchemist') return false;
+    let reqLv=(r.requirements&&r.requirements.skillLevel)||1;
+    if(lv<reqLv) return false;
+    let manual=r.requirements&&r.requirements.manual;
+    if(manual && ((p.inventory&&p.inventory[manual])||0)<=0) return false;
+    return true;
+  });
+}
+function svcPharmacyMaxCraft(p,recipe,spCost){
+  let max=20;
+  (recipe.materials||[]).forEach(m=>{ max=Math.min(max, Math.floor(((p.inventory&&p.inventory[m.item])||0)/Math.max(1,m.amount))); });
+  (recipe.sharedConsumption||[]).forEach(m=>{ max=Math.min(max, Math.floor(((p.inventory&&p.inventory[m.item])||0)/Math.max(1,m.amount))); });
+  if(spCost>0) max=Math.min(max, Math.floor((p.sp||0)/spCost));
+  return Math.max(0,max);
+}
+function svcPharmacyCard(rid,recipe){
+  let p=G.player, sk=DB.skills['파머시'], lv=(p.skills&&p.skills['파머시'])||0, s=calcStats();
+  let sp=typeof sk.spCost==='function'?sk.spCost(lv):(sk.spCost||0);
+  let max=svcPharmacyMaxCraft(p,recipe,sp);
+  let matText=(recipe.materials||[]).map(m=>`${svcHtml(m.item)} ${m.amount} (보유 ${(p.inventory&&p.inventory[m.item])||0})`).join(' · ')||'재료 없음';
+  let sharedText=(recipe.sharedConsumption||[]).map(m=>`${svcHtml(m.item)} ${m.amount} (보유 ${(p.inventory&&p.inventory[m.item])||0})`).join(' · ');
+  let outputOk=!!DB.items[recipe.result.item];
+  let matsOk=(recipe.materials||[]).every(m=>!!DB.items[m.item]) && (recipe.sharedConsumption||[]).every(m=>!!DB.items[m.item]);
+  let valid=outputOk&&matsOk;
+  let rate=svcCraftRate(sk,lv,s);
+  let id=window.__svcPharmacyRecipes.push(rid)-1;
+  return `<div style="padding:8px 4px;border-bottom:1px dashed var(--border);">
+    <div style="display:flex;justify-content:space-between;gap:8px;">
+      <b style="font-size:11px;">⚗️ ${svcHtml(recipe.category||'')} · ${svcHtml(recipe.result.item)} x${recipe.result.amount}</b>
+      <span style="font-size:10px;color:var(--gold-light);">성공 ${Math.round(rate)}%</span>
+    </div>
+    <div style="font-size:10px;color:var(--text-dim);margin-top:3px;">재료: ${matText}</div>
+    ${sharedText?`<div style="font-size:10px;color:var(--text-dim);">공용 소모: ${sharedText}</div>`:''}
+    <div style="font-size:10px;margin-top:2px;">SP ${sp}/회 · 실패해도 재료·공용 소모는 차감됩니다.</div>
+    ${valid?'':'<div style="font-size:10px;color:var(--red-light);margin-top:3px;">⚠ 재료/산출물 DB 미등록 — 제조를 차단했습니다.</div>'}
+    <div style="display:flex;gap:3px;margin-top:5px;">
+      <button class="m-btn" onclick="servicePharmacyBatch(${id},1)" ${!valid||max<1?'disabled':''}>1회</button>
+      <button class="m-btn" onclick="servicePharmacyBatch(${id},5)" ${!valid||max<1?'disabled':''}>5회</button>
+      <button class="m-btn ok" onclick="servicePharmacyBatch(${id},'max')" ${!valid||max<1?'disabled':''}>최대 ${max}</button>
+    </div>
+  </div>`;
+}
+window.servicePharmacyBatch = function(idx,requested){
+  let rid=(window.__svcPharmacyRecipes||[])[idx];
+  let recipe=rid && DB.production && DB.production[rid];
+  if(!recipe) return;
+  let p=G.player, name='파머시', sk=DB.skills[name], lv=(p.skills&&p.skills[name])||0;
+  if(!sk||lv<=0) return;
+  if(G.cooldowns[name]>0){ log(`⏳ <b>[${name}]</b> 쿨타임 중`,'warning'); return; }
+
+  let manual=recipe.requirements&&recipe.requirements.manual;
+  if(manual && ((p.inventory&&p.inventory[manual])||0)<=0){
+    log(`⚠ <b>[${svcHtml(recipe.result.item)}]</b> 제조 메뉴얼이 없습니다: ${svcHtml(manual)}`,'error');
+    return;
+  }
+  if(!DB.items[recipe.result.item] || (recipe.materials||[]).some(m=>!DB.items[m.item]) || (recipe.sharedConsumption||[]).some(m=>!DB.items[m.item])){
+    log(`⚠ <b>[파머시]</b> 재료/산출물이 아이템 DB에 없어 제조를 차단했습니다.`,'error');
+    return;
+  }
+
+  let spCost=typeof sk.spCost==='function'?sk.spCost(lv):(sk.spCost||0);
+  let max=svcPharmacyMaxCraft(p,recipe,spCost);
+  let count=requested==='max'?max:Math.min(max,Math.max(1,Number(requested)||1));
+  if(count<=0){ log(`⚠ <b>[파머시]</b> 재료·약사발 또는 SP가 부족합니다.`,'warning'); return; }
+
+  let s=calcStats(), success=0, fail=0, attempted=0;
+  for(let i=0;i<count;i++){
+    let matsOk=(recipe.materials||[]).every(m=>((p.inventory&&p.inventory[m.item])||0)>=m.amount)
+      && (recipe.sharedConsumption||[]).every(m=>((p.inventory&&p.inventory[m.item])||0)>=m.amount);
+    if((p.sp||0)<spCost || !matsOk) break;
+    p.sp-=spCost;
+    // 성공/실패 무관 — 재료 + 공용 소모(약사발) 차감. 메뉴얼은 소모하지 않는다.
+    (recipe.materials||[]).forEach(m=>{ p.inventory[m.item]-=m.amount; if(p.inventory[m.item]<=0) delete p.inventory[m.item]; });
+    (recipe.sharedConsumption||[]).forEach(m=>{ p.inventory[m.item]-=m.amount; if(p.inventory[m.item]<=0) delete p.inventory[m.item]; });
+    attempted++;
+    let rate=svcCraftRate(sk,lv,s);
+    if(Math.random()*100<rate){
+      p.inventory[recipe.result.item]=(p.inventory[recipe.result.item]||0)+recipe.result.amount;
+      success++;
+    }else fail++;
+  }
+  if(attempted>0){
+    if(sk.cooldown>0) G.cooldowns[name]=Math.max(1,Math.round(sk.cooldown/(s.aspdDelay||300)));
+    log(`⚗️ <b>[파머시]</b> ${svcHtml(recipe.result.item)} ${attempted}회 제조 · 성공 ${success} / 실패 ${fail}`,(success?'loot':'warning'));
+    if(typeof checkQuestGather==='function') checkQuestGather();
+    svcSave(); updateUI();
+  }
+  svcShowCraftHub(name);
+};
 function svcShowCraftHub(focusName){
   let p=G.player;
   window.__svcCraftRecipes=[];
+  window.__svcPharmacyRecipes=[];
   let learned=Array.from(SVC_CRAFT_SKILLS).filter(n=>((p.skills&&p.skills[n])||0)>0);
   let rows='';
   learned.forEach(name=>{
     if(name==='파머시'){
-      let lv=p.skills[name]||0;
-      [['빨간포션',1],['노란포션',3],['하얀포션',5]].forEach(([product,minLv])=>{
-        if(lv>=minLv) rows+=svcCraftCard(name,product);
-      });
+      let manualsMissing = svcPharmacyRecipeList(p).length===0;
+      svcPharmacyRecipeList(p).forEach(rid=>{ rows+=svcPharmacyCard(rid,DB.production[rid]); });
+      if(manualsMissing) rows+=`<div style="padding:10px;color:var(--text-dim);font-size:10px;">보유한 제조 메뉴얼 조건을 만족하는 레시피가 없습니다. 알데바란 알케미스트 길드 등에서 메뉴얼을 먼저 구입하세요.</div>`;
     }else rows+=svcCraftCard(name,null);
   });
   let head = focusName ? `<div style="font-size:10px;color:var(--text-dim);margin-bottom:5px;">선택 스킬: <b>${svcHtml(focusName)}</b> · 배운 제조 스킬을 한 곳에서 처리합니다.</div>` : '';
   openModal('🛠️ 제조',head+(rows||'<div style="padding:10px;color:var(--text-dim);">배운 제조 스킬이 없습니다.</div>'),[{label:'닫기',action:()=>{}}]);
-}
-function svcRunPharmacy(sk,learnedLv,product,s){
-  let p=G.player, mats=svcCraftMaterials('파머시',learnedLv,product);
-  if(!svcHasMats(p,mats,1)) return {msg:'❌ 재료 부족',type:'error'};
-  if(!consumeMats(p,mats)) return {msg:'❌ 재료 부족',type:'error'};
-  let sr=svcCraftRate(sk,learnedLv,s);
-  if(Math.random()*100>sr) return {msg:`❌ [파머시] ${product} 제조 실패`,type:'warning'};
-  let q=1+Math.floor(learnedLv/3);
-  p.inventory[product]=(p.inventory[product]||0)+q;
-  return {msg:`⚗️ ${product} x${q} 제조 성공`,type:'level-up'};
 }
 window.serviceCraftBatch = function(idx,requested){
   let recipe=(window.__svcCraftRecipes||[])[idx];
@@ -619,9 +695,7 @@ window.serviceCraftBatch = function(idx,requested){
     if((p.sp||0)<spCost || !svcHasMats(p,mats,1)) break;
     let before=svcCloneInventory(p.inventory);
     p.sp-=spCost;
-    let result;
-    if(name==='파머시') result=svcRunPharmacy(sk,lv,recipe.product,s);
-    else result=sk.effect(p,s,null,lv);
+    let result=sk.effect(p,s,null,lv);
     attempted++;
 
     // 어떤 제조 스킬도 DB 미등록 키를 새로 만들 수 없다.

@@ -40,6 +40,7 @@ BLOCKS = {
     "DB_MAPS": "db-maps.json",
     "DB_NPCS": "db-npcs.json",
     "DB_ITEMS": "db-items.json",
+    "DB_PRODUCTION": "db-production.json",
 }
 
 NPC_SERVICES = {
@@ -131,6 +132,40 @@ def audit_npcs(npcs, maps, items):
     return errors, sorted(set(warnings))
 
 
+def audit_production(production, items):
+    """제조·파머시 레시피 감사.
+
+    deferred 레시피(예: 호문클루스 엠브리오)는 이번 구현 범위 밖이라
+    재료/결과물 미등록이어도 빌드를 막지 않는다 — UI·실행에 노출되지 않기 때문.
+    """
+    errors = []
+    item_names = set(items)
+
+    for rid, recipe in production.items():
+        if recipe.get("deferred"):
+            continue
+
+        result = recipe.get("result") or {}
+        result_item = result.get("item")
+        if not result_item or result_item not in item_names:
+            errors.append(f'{rid}: 결과물 아이템 DB 미등록 -> {result_item}')
+
+        manual = (recipe.get("requirements") or {}).get("manual")
+        if manual and manual not in item_names:
+            errors.append(f'{rid}: 메뉴얼 아이템 DB 미등록 -> {manual}')
+
+        for mat in recipe.get("materials") or []:
+            mat_item = mat.get("item")
+            if not mat_item or mat_item not in item_names:
+                errors.append(f'{rid}: 재료 아이템 DB 미등록 -> {mat_item}')
+
+        for shared in recipe.get("sharedConsumption") or []:
+            shared_item = shared.get("item")
+            if not shared_item or shared_item not in item_names:
+                errors.append(f'{rid}: 공용 소모 아이템 DB 미등록 -> {shared_item}')
+
+    return errors
+
 
 def audit_quest_item_sources(template, parsed):
     """Fail the build when a gather quest has no real acquisition route."""
@@ -186,6 +221,12 @@ def main():
             print(f"  - {warning}")
     else:
         print("OK - npc audit")
+
+    production_errors = audit_production(parsed["DB_PRODUCTION"], parsed["DB_ITEMS"])
+    if production_errors:
+        joined = "\n  - ".join(production_errors)
+        raise ValueError(f"제조 데이터 오류:\n  - {joined}")
+    print("OK - production audit")
 
     for marker_key, filename in BLOCKS.items():
         marker = "{{__DATA_" + marker_key + "__}}"
