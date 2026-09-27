@@ -981,6 +981,8 @@ body.work-mode p {
 <script id="db-production" type="application/json">{{__DATA_DB_PRODUCTION__}}</script>
 <!-- [길드·상점 분리 v0.1] 상점 품목 목록 정본 (NPC의 shopId가 참조) -->
 <script id="db-shops" type="application/json">{{__DATA_DB_SHOPS__}}</script>
+<!-- [보스 기척] MVP 원작 리젠 주기 (rAthena pre-re boss_monster) -->
+<script id="db-mvp-respawn" type="application/json">{{__DATA_DB_MVP_RESPAWN__}}</script>
 <!-- ════ BLOCK 3: HTML 뼈대 ════ -->
 <div id="loading"><div class="ld-title">룬 미드가츠</div><div class="ld-bar-track"><div class="ld-bar-fill" id="ld-bar"></div></div><div class="ld-tip" id="ld-tip">데이터 로딩 중...</div></div>
 <div id="battle-flash"></div><div id="notif-area"></div>
@@ -1012,6 +1014,7 @@ body.work-mode p {
 <div id="bottom-menu">
 <!-- [P1-13 2차] 상황별 보조행동: NPC는 그 맵에 있을 때만, 귀환은 던전+날개 보유 시. 도감은 ⋯ 메뉴 -->
 <button class="menu-btn" id="ctx-return" style="display:none" onclick="useItem('나비의 날개')">🦋 귀환</button>
+<button class="menu-btn" id="ctx-boss" style="display:none" onclick="challengeBoss()">👣 흔적</button>
 <button class="menu-btn" onclick="showMapModal()">🗺 이동</button>
 <button class="menu-btn" id="ctx-npc" onclick="showNpcModal()">💬 NPC</button>
 <button class="menu-btn" id="ctx-skill" style="display:none" onclick="showSkillModal()">✨ 스킬<i class="tab-badge" id="skill-badge" style="display:none"></i></button>
@@ -1273,6 +1276,7 @@ function loadDB(){
   DB.combos       = (j('db-combos').combos) || [];
   DB.production   = j('db-production');
   DB.shops        = j('db-shops');
+  DB.mvpRespawn   = j('db-mvp-respawn');
   DB.maps         = j('db-maps');
   DB.npcs         = j('db-npcs');
   DB.skills       = (typeof DB_SKILLS !== 'undefined') ? DB_SKILLS : {};
@@ -3352,6 +3356,9 @@ function normalizeSave(p){
   if(p.equip) Object.keys(p.equip).forEach(slot=>{ p.equip[slot]=migrateItemKey(p.equip[slot]); });
   Object.values(p.hotbar).forEach(slot=>{ if(slot && slot.type==='item') slot.name=migrateItemKey(slot.name); });
   migrateSkillKeys(p);
+  // [보스 기척] 보스 옵션 값 이관(normal→기척기록, 보스만사냥→보스우선탐사) + 발견 기록 보강
+  if(p.options && 'bossMode' in p.options) p.options.bossMode = normalizeBossMode(p.options.bossMode);
+  if(!p.discoveries || typeof p.discoveries !== 'object' || Array.isArray(p.discoveries)) p.discoveries = {};
 
   // [데이터 마이그레이션] 인벤의 유령 키 제거.
   // 드롭명이 아이템DB에 없던 시절에 쌓인 것들이라 팔 수도 쓸 수도 없는 죽은 데이터다.
@@ -5138,6 +5145,16 @@ function updateContextActions(){
   show('ctx-npc',hasNpc);
   show('ctx-return',md.type==='던전'&&wing>0);
   let rb=document.getElementById('ctx-return'); if(rb) rb.title=`나비의 날개 (${wing}개) — 귀환 지점으로`;
+  // [보스 기척] 이 맵의 보스 기척이 있을 때만. 리젠 대기 중이면 비활성 + 남은 시간
+  let br=md.hasMvp?getBossRecord(p,String(md.hasMvp)):null, bb=document.getElementById('ctx-boss');
+  show('ctx-boss',!!(br&&br.charges>0));
+  if(bb&&br&&br.charges>0){
+    let bm=DB.monsters[String(md.hasMvp)]||{}, alive=isBossAlive(p,String(md.hasMvp),Date.now());
+    let lab=`👣 ${bm.name} 흔적 ${br.charges}`+(G.pendingBossEncounter===String(md.hasMvp)?' · 추적 중':'');
+    if(bb.textContent!==lab) bb.textContent=lab;
+    bb.disabled=!alive;
+    bb.title=alive?`기척 ${br.charges}/${BOSS_CHARGE_CAP} — 눌러서 직접 조우`:`아직 돌아오지 않았다 — 약 ${Math.max(1,Math.ceil((br.respawnAt-Date.now())/60000))}분 뒤`;
+  }
   let qn=countCompletableQuests(), qb=document.getElementById('quest-badge');
   if(qb){ qb.textContent=qn?'!':''; qb.style.display=qn?'':'none'; }
   // [P1-13 3차] 점진 공개 — 스킬·퀘스트 버튼, 스킬 포인트 배지, 핫바(등록 슬롯이 있거나 스킬 공개 후)
@@ -6266,7 +6283,7 @@ function awardKillReward(p, mon, set, stats){
   if(!p.killCount) p.killCount = {};
   p.killCount[mon.name] = (p.killCount[mon.name]||0) + 1;
   addZoneKill();
-  if(mon.isMvp) logMvpDefeat(mon); // [세계경험 개편 3단계] 사건 블록 → 그 아래 기존 EXP/제니/드롭 로그가 그대로 이어진다
+  if(mon.isMvp){ logMvpDefeat(mon); noteBossDefeat(mon); } // [세계경험 개편 3단계] 사건 블록 → 그 아래 기존 EXP/제니/드롭 로그가 그대로 이어진다
   let _rm = returnerMult(p);
   let getExp = Math.floor((mon.exp||0) * (set.expRate||1) * _rm);
   let getJexp = Math.floor((mon.jexp||0) * (set.expRate||1) * _rm);
@@ -6575,6 +6592,7 @@ function processTurn(){
           log(`✅ ${_am.emoji}${_am.name} 처치! (광역)`,'combat');
           p.totalKills=(p.totalKills||0)+1;
           if(!p.killCount)p.killCount={};p.killCount[_am.name]=(p.killCount[_am.name]||0)+1;
+          noteBossDefeat(_am); // [보스 기척]
           addZoneKill(); // [2-9]
           let _rm=returnerMult(p), _ae=Math.floor((_am.exp||0)*(set.expRate||1)*_rm),_aj=Math.floor((_am.jexp||0)*(set.expRate||1)*_rm);
           p.baseExp+=_ae;p.jobExp+=_aj;p.records.totalExp+=_ae;
@@ -9175,6 +9193,7 @@ function useSkill(name){
     triggerItemEffects('onKill', { player:p, target:t, stats:s, log:log }, (s.itemEffects&&s.itemEffects.events.onKill)||[]);
     p.totalKills = (p.totalKills||0) + 1;
     if(!p.killCount) p.killCount = {}; p.killCount[t.name] = (p.killCount[t.name] || 0) + 1; // ⚔️ 스킬 처치 기록!
+    noteBossDefeat(t); // [보스 기척]
     addZoneKill(); // [2-9]
 
     let set = p.settings || {expRate:1, dropRate:1, cardRate:1}; let _rm = returnerMult(p); let getExp = Math.floor(t.exp * set.expRate * _rm); let getJexp = Math.floor(t.jexp * set.expRate * _rm);
@@ -11201,6 +11220,99 @@ function moveZone(dir){
   updateUI();
 }
 
+// ── [보스 기척] 자동은 멈추지 않는다 (2026-09-27 설계) ──────────────────────
+// 자동사냥 중 MVP는 교전 대신 "기척"으로 기록한다(서식지 기억 + 기척 1회 충전, 상한 3).
+// 사용자가 원할 때 「흔적」으로 조우한다(기척 1회 소모). 처치하면 원작 리젠 주기
+// (db-mvp-respawn.json, rAthena pre-re boss_monster) 동안 목격되지 않고, 지나면 다시 목격 확률을 굴린다.
+// 보스 우선 탐사: 이긴 적 있는 보스가 리젠되면 그 맵의 다음 출현이 보스다(리젠당 1회).
+// 기록은 p.discoveries['boss:<id>'] — 범용 발견 기록(type별 확장 예정).
+const BOSS_SIGHT_CHANCE = 0.01;          // 출현 1회당 — 구 '일반 조우' MVP 난입 확률 그대로
+const BOSS_CHARGE_CAP = 3;
+const MVP_RESPAWN_DEFAULT_MS = 7200000;  // source-needed 보스용 게임 기본값(원작 근거 아님)
+const BOSS_MODE_ALIASES = Object.freeze({ 'normal':'기척기록', '보스만사냥':'보스우선탐사' });
+function normalizeBossMode(v){
+  v = BOSS_MODE_ALIASES[v] || v;
+  return (v==='기척기록'||v==='조우하지않음'||v==='보스우선탐사') ? v : '기척기록';
+}
+function getBossRecord(p, gid){ return (p && p.discoveries && p.discoveries['boss:'+gid]) || null; }
+function ensureBossRecord(p, gid){
+  if(!p.discoveries || typeof p.discoveries !== 'object' || Array.isArray(p.discoveries)) p.discoveries = {};
+  let key = 'boss:'+gid;
+  if(!p.discoveries[key]) p.discoveries[key] = { type:'boss', id:String(gid), maps:[], sightings:0, charges:0, defeats:0,
+    firstSeenAt:null, lastSeenAt:null, lastDefeatAt:null, respawnAt:0, priorityPending:false };
+  return p.discoveries[key];
+}
+function mvpRespawnMs(gid){
+  let e = (DB.mvpRespawn||{})[String(gid)];
+  if(e && e.status==='verified' && e.delayMs > 0) return e.delayMs + Math.floor(Math.random() * ((e.varianceMs||0) + 1));
+  return MVP_RESPAWN_DEFAULT_MS;
+}
+function isBossAlive(p, gid, now){ let r = getBossRecord(p, gid); return !r || !r.respawnAt || now >= r.respawnAt; }
+function recordBossSighting(p, gid, mapName){
+  let mon = DB.monsters[String(gid)]; if(!mon) return;
+  let r = ensureBossRecord(p, gid), now = Date.now(), first = !r.sightings;
+  r.sightings++; r.lastSeenAt = now; if(!r.firstSeenAt) r.firstSeenAt = now;
+  if(mapName && !r.maps.includes(mapName)) r.maps.push(mapName);
+  r.charges = Math.min(BOSS_CHARGE_CAP, (r.charges||0) + 1);
+  if(!p.seenCount) p.seenCount = {};
+  p.seenCount[mon.name] = (p.seenCount[mon.name]||0) + 1;
+  if(G.silentSummary){ if(!G.silentSummary.sightings) G.silentSummary.sightings = []; G.silentSummary.sightings.push({ id:String(gid), name:mon.name, map:mapName }); }
+  logEvent('warning', first
+    ? [`${mapName} 깊은 곳에서 거대한 기척이 스쳐 지나갔다.`, `<b>${mon.emoji}${mon.name}</b>의 서식지를 기억해 두었다.`]
+    : [`${mapName}에서 다시 <b>${mon.emoji}${mon.name}</b>의 기척을 느꼈다.`, `흔적을 쫓을 수 있다. (기척 ${r.charges}/${BOSS_CHARGE_CAP})`], '보스 기척');
+  if(typeof updateContextActions === 'function' && !G.silentMode) updateContextActions();
+}
+// 처치 경로 3곳(awardKillReward·광역·스킬 단일)이 공통으로 부른다. isMvp 전투 개체만 대상.
+function noteBossDefeat(mon){
+  if(!mon || !mon.isMvp || !mon.sourceId) return;
+  let p = G.player; if(!p) return;
+  let r = ensureBossRecord(p, mon.sourceId), now = Date.now();
+  if(G.currentMap && !r.maps.includes(G.currentMap)) r.maps.push(G.currentMap);
+  r.defeats++; r.lastDefeatAt = now; r.respawnAt = now + mvpRespawnMs(mon.sourceId); r.priorityPending = true;
+}
+function spawnBossEncounter(gid, initDist){
+  let p = G.player, mvpMon = DB.monsters[String(gid)]; if(!mvpMon) return false;
+  G.battles.push(createCombatMonster(gid,mvpMon,{currentHp:mvpMon.hp,maxHp:mvpMon.hp,statusEffects:{},distance:initDist,isMvp:true}));
+  if(!p.seenCount) p.seenCount = {};
+  p.seenCount[mvpMon.name] = (p.seenCount[mvpMon.name]||0) + 1;
+  spawnMvpSlaves(mvpMon, initDist);
+  logSep();
+  logMvpAppear(mvpMon);
+  ensureCombatRecord();
+  renderMonsters();
+  return true;
+}
+// 하단 「흔적」 — 기척 1회를 소모해 다음 출현을 보스로 지정한다. 자동사냥이 꺼져 있으면 켠다.
+function challengeBoss(){
+  let p = G.player; if(!p) return;
+  let md = DB.maps[G.currentMap]; if(!md || !md.hasMvp) return;
+  let gid = String(md.hasMvp), r = getBossRecord(p, gid), mon = DB.monsters[gid];
+  if(!mon || !r || !r.charges) return;
+  if(!isBossAlive(p, gid, Date.now())){ notify(`${mon.name}은(는) 아직 돌아오지 않았습니다.`, 'gold'); return; }
+  if(G.pendingBossEncounter === gid){ notify('이미 흔적을 쫓고 있습니다.', 'gold'); return; }
+  openModal(`${mon.emoji} ${mon.name}의 흔적`,
+    `<div style="line-height:1.7">Lv.${mon.lv} · HP ${Number(mon.hp).toLocaleString()} · ${mon.element||''} ${mon.race||''}<br>`+
+    `내 캐릭터: Lv.${p.baseLv} · HP ${p.hp}/${p.maxHp}<br>`+
+    `<span style="color:var(--text-dim)">기척 1회(보유 ${r.charges})를 소모합니다. 지금 교전이 끝나면 다음 출현으로 나타납니다.</span></div>`,
+    [{label:'흔적을 쫓는다', cls:'danger', action:()=>{
+        G.pendingBossEncounter = gid;
+        log(`👣 <b>${mon.name}</b>의 흔적을 쫓기 시작했다.`, 'location');
+        if(!G.autoHunt) toggleHunt();
+        updateContextActions();
+      }},
+     {label:'취소', action:()=>{}}]);
+}
+// 오프라인 외삽 구간의 기척 — 표본의 출현 횟수를 같은 비율로 늘려 목격 확률만 굴린다(교전 없음).
+function extrapolateBossSightings(p, summary, factor, huntMap){
+  let md = DB.maps[huntMap]; if(!md || !md.hasMvp) return;
+  if(normalizeBossMode(p.options && p.options.bossMode) === '조우하지않음') return;
+  let gid = String(md.hasMvp), n = Math.min(100000, Math.round((summary.spawnEvents||0) * factor));
+  for(let i = 0; i < n; i++){
+    if(!isBossAlive(p, gid, Date.now())) break;
+    if(Math.random() < BOSS_SIGHT_CHANCE) recordBossSighting(p, gid, huntMap);
+  }
+}
+
 function spawnMonsters(){
   let md=DB.maps[G.currentMap]; if(!md||md.safe){ log('몬스터가 없습니다.','system'); if(G.autoHunt)toggleHunt(); return; }
   let p = G.player;
@@ -11209,30 +11321,29 @@ function spawnMonsters(){
   ensureSettings(p);
   if (!p.seenCount) p.seenCount = {};
 
-  let bossMode = (p.options && p.options.bossMode) || 'normal';
+  let bossMode = normalizeBossMode(p.options && p.options.bossMode);
   const initDist = getInitialDistance(p);
   let nm = [];
+  let bossGid = md.hasMvp ? String(md.hasMvp) : null;
 
-  // ── 보스만사냥 모드 ──
-  if(bossMode === '보스만사냥' && md.hasMvp){
-    let mvpMon = DB.monsters[String(md.hasMvp)];
-    if(mvpMon){
-      G.battles.push(createCombatMonster(md.hasMvp,mvpMon,{currentHp:mvpMon.hp,maxHp:mvpMon.hp,statusEffects:{},distance:initDist,isMvp:true}));
-      nm.push(mvpMon.emoji + mvpMon.name);
-      p.seenCount[mvpMon.name] = (p.seenCount[mvpMon.name]||0) + 1;
-      spawnMvpSlaves(mvpMon, initDist);
-      logSep();
-      logMvpAppear(mvpMon);
-      ensureCombatRecord();
-      renderMonsters(); return;
+  // ── [보스 기척] 사용자가 쫓기로 한 흔적 → 이번 출현은 보스 ──
+  if(bossGid && G.pendingBossEncounter === bossGid){
+    G.pendingBossEncounter = null;
+    let r = getBossRecord(p, bossGid);
+    if(r && r.charges > 0 && isBossAlive(p, bossGid, Date.now()) && spawnBossEncounter(bossGid, initDist)){ r.charges--; return; }
+  }
+  // ── [보스 우선 탐사] 이긴 적 있는 보스가 리젠됐으면 먼저 조우 (리젠당 1회) ──
+  if(bossGid && bossMode === '보스우선탐사'){
+    let r = getBossRecord(p, bossGid);
+    if(r && r.defeats > 0 && r.priorityPending && isBossAlive(p, bossGid, Date.now())){
+      r.priorityPending = false;
+      if(spawnBossEncounter(bossGid, initDist)) return;
     }
   }
 
-  // ── 일반 몬스터 출현 (보스만사냥이 아닌 경우) ──
-  if(!md.monsters || !md.monsters.length){
-    // monsters 배열이 없는 맵이더라도 보스만사냥이면 위에서 처리됨
-    if(bossMode !== '보스만사냥'){ log('몬스터가 없습니다.','system'); if(G.autoHunt)toggleHunt(); return; }
-  }
+  // ── 일반 몬스터 출현 ──
+  if(!md.monsters || !md.monsters.length){ log('몬스터가 없습니다.','system'); if(G.autoHunt)toggleHunt(); return; }
+  if(G.silentSummary) G.silentSummary.spawnEvents = (G.silentSummary.spawnEvents||0) + 1; // 오프라인 외삽의 기척 표본
 
   // 일반 스폰
   if(md.monsters && md.monsters.length){
@@ -11258,15 +11369,9 @@ function spawnMonsters(){
     }
   }
 
-  // ── 일반 조우 모드: 낮은 확률로 MVP 추가 등장 ──
-  if(bossMode === 'normal' && md.hasMvp && Math.random() < 0.01){
-    let mvpMon = DB.monsters[String(md.hasMvp)];
-    if(mvpMon){
-      G.battles.push(createCombatMonster(md.hasMvp,mvpMon,{currentHp:mvpMon.hp,maxHp:mvpMon.hp,statusEffects:{},distance:initDist,isMvp:true}));
-      nm.push(mvpMon.emoji + mvpMon.name);
-      p.seenCount[mvpMon.name] = (p.seenCount[mvpMon.name]||0) + 1;
-      spawnMvpSlaves(mvpMon, initDist);
-    }
+  // ── [보스 기척] 낮은 확률의 MVP는 교전하지 않고 기척으로 기록 (리젠 대기 중이면 목격 없음) ──
+  if(bossGid && bossMode !== '조우하지않음' && isBossAlive(p, bossGid, Date.now()) && Math.random() < BOSS_SIGHT_CHANCE){
+    recordBossSighting(p, bossGid, G.currentMap);
   }
 
   if(!nm.length) return;
@@ -11356,7 +11461,7 @@ setInterval(() => {
   if(!p.achieves) p.achieves = [];
   if(!p.options) p.options = {};
   // 신규 옵션 누락 시 기본값 보완 (레거시 세이브 호환)
-  const _optDef = { huntStyle:'immediate', workMode:false, hpPotPct:40, spPotPct:0, healHpPct:60, buffFreq:0, bossMode:'normal', useBuffNpc:false, respawnMin:0, respawnMax:2, zoneKillTh:50 };
+  const _optDef = { huntStyle:'immediate', workMode:false, hpPotPct:40, spPotPct:0, healHpPct:60, buffFreq:0, bossMode:'기척기록', useBuffNpc:false, respawnMin:0, respawnMax:2, zoneKillTh:50 };
   Object.keys(_optDef).forEach(k=>{ if(!(k in p.options)) p.options[k]=_optDef[k]; });
 
   p.records.playTime++;
@@ -11436,7 +11541,7 @@ function showRecordModal() {
 function showCombatOptionModal() {
   let p = G.player; if(!p) return;
   if(!p.options) p.options = {};
-  const _optDef2 = { huntStyle:'immediate', workMode:false, hpPotPct:40, spPotPct:0, healHpPct:60, buffFreq:0, bossMode:'normal', useBuffNpc:false, respawnMin:0, respawnMax:2, zoneKillTh:50 };
+  const _optDef2 = { huntStyle:'immediate', workMode:false, hpPotPct:40, spPotPct:0, healHpPct:60, buffFreq:0, bossMode:'기척기록', useBuffNpc:false, respawnMin:0, respawnMax:2, zoneKillTh:50 };
   Object.keys(_optDef2).forEach(k=>{ if(!(k in p.options)) p.options[k]=_optDef2[k]; });
   let o = p.options;
 
@@ -11460,12 +11565,12 @@ function showCombatOptionModal() {
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <b>👑 보스(MVP) 조우</b>
         <select id="opt-bossMode" style="padding:4px; font-family:inherit;">
-          <option value="조우하지않음" ${o.bossMode==='조우하지않음'?'selected':''}>조우하지 않음</option>
-          <option value="normal" ${o.bossMode==='normal'?'selected':''}>일반 조우 (낮은 확률)</option>
-          <option value="보스만사냥" ${o.bossMode==='보스만사냥'?'selected':''}>보스만 사냥</option>
+          <option value="기척기록" ${normalizeBossMode(o.bossMode)==='기척기록'?'selected':''}>기척 기록 (자동 중 교전 안 함)</option>
+          <option value="보스우선탐사" ${normalizeBossMode(o.bossMode)==='보스우선탐사'?'selected':''}>보스 우선 탐사</option>
+          <option value="조우하지않음" ${normalizeBossMode(o.bossMode)==='조우하지않음'?'selected':''}>조우하지 않음</option>
         </select>
       </div>
-      <div style="font-size:10px; color:var(--text-dim); margin-top:4px;">MVP가 있는 맵에서만 적용됩니다. 보스만 사냥 시 일반 몬스터는 출현하지 않습니다.</div>
+      <div style="font-size:10px; color:var(--text-dim); margin-top:4px;">MVP가 있는 맵에서만 적용됩니다. 자동사냥은 보스와 싸우지 않고 기척을 기록합니다 — 기척이 있으면 하단 「흔적」으로 직접 조우하세요. 보스 우선 탐사: 이긴 적 있는 보스가 리젠되면 자동사냥이 먼저 조우합니다.</div>
     </div>
 
     <!-- ■ 리젠 대기시간 [전투설정 신규] -->
@@ -12370,6 +12475,10 @@ function processOfflineTicks(elapsedMs, resume = true) {
   let itemKeys = Object.keys(summary.items);
   if(itemKeys.length)    log(`🎁 획득 아이템: ${itemKeys.map(k=>`${k}×${summary.items[k]}`).join(', ')}`, 'loot');
   if(summary.deaths > 0) log(`💀 전투 중 ${summary.deaths}회 쓰러졌습니다. (자동 귀환 처리됨)`, 'warning');
+  if(summary.sightings && summary.sightings.length){ // [보스 기척]
+    let byName = {}; summary.sightings.forEach(x=>{ let k = `${x.name} (${x.map})`; byName[k] = (byName[k]||0) + 1; });
+    logEvent('warning', Object.keys(byName).map(k=>`👣 ${k}${byName[k]>1?` ×${byName[k]}`:''}`).concat(['하단 「흔적」으로 직접 조우할 수 있다.']), '부재 중 발견한 기척');
+  }
   logSep();
   // 오프라인 처리 중 사망으로 마을에 있으면 원래 사냥 맵으로 복귀 → 자동사냥 즉시 재개
   // (재접속 정산은 resume:false — 위치는 마지막 안전지역 규칙을 호출부가 적용)
@@ -12387,7 +12496,10 @@ function processOfflineTicks(elapsedMs, resume = true) {
 function extrapolateOffline(p, summary, kc0, inv0, restMs, sampleMs, huntMap){
   if(restMs <= 0 || sampleMs <= 0 || summary.huntStopped) return;
   let dist = [], sampleKills = 0;   // 표본 처치 분포 (AOE 경로도 killCount는 올리므로 전 경로 포괄)
+  // [보스 기척] MVP는 원작 리젠 주기가 있어 표본 비율로 늘리면 안 된다 — 외삽 분포에서 제외
+  let mvpNames = new Set(Object.values(DB.maps||{}).filter(m=>m&&m.hasMvp).map(m=>(DB.monsters[String(m.hasMvp)]||{}).name).filter(Boolean));
   for(let n in (p.killCount||{})){
+    if(mvpNames.has(n)) continue;
     let d = (p.killCount[n]||0) - (kc0[n]||0);
     if(d > 0){ dist.push([n, d]); sampleKills += d; }
   }
@@ -12430,6 +12542,7 @@ function extrapolateOffline(p, summary, kc0, inv0, restMs, sampleMs, huntMap){
         }
       }
     }
+    extrapolateBossSightings(p, summary, factor, huntMap); // [보스 기척]
   } finally {
     G.silentMode = false; G.silentSummary = null;
   }

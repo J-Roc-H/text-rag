@@ -201,7 +201,7 @@ function runUseSkill(DB, G, name) {
   const fn = new Function(
     'G', 'DB', 'calcStats', 'getSkillSpCost', 'getEffectiveSkills', 'triggerItemEffects',
     'parseItem', 'log', 'closeModal',
-    'queueManualCombatOverride', 'spawnDmg', 'gainBaseExp', 'getJobLvCap', 'addZoneKill',
+    'queueManualCombatOverride', 'spawnDmg', 'gainBaseExp', 'getJobLvCap', 'addZoneKill', 'noteBossDefeat',
     'idleTrack', 'returnerMult', 'rollDrops', 'checkQuestKill', 'checkJobQuestKill',
     'logSep', 'updateUI',
     consumeMatsSrc + '\n' + canUseSkillItemCostSrc + '\n' + commitSkillItemCostSrc + '\n' +
@@ -211,7 +211,7 @@ function runUseSkill(DB, G, name) {
     G, DB, () => runCalcStats(DB, G), getSkillSpCost, getEffectiveSkills, triggerItemEffects,
     parseItemFn,
     (msg, type) => logs.push({ msg, type }), () => {},
-    () => false, () => {}, () => {}, () => 1, () => {},
+    () => false, () => {}, () => {}, () => 1, () => {}, () => {},
     () => {}, () => 1, () => {}, () => {}, () => {}, () => {}, () => {}
   );
   useSkillFn(name);
