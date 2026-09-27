@@ -321,27 +321,72 @@ function req(textragKey, isAmmo) { return { textragKey: textragKey, resolved: tr
 }
 
 // ══════════════════════════════════════════════
-// O-2 — identity collision이 아닌, 진짜로 서로 다른 아이템을 요구하는 두 콤보가 우연히
-// 아이템 하나를 공유하는 경우(0001-01: 드래곤슬레이어+드래곤의숨결, 0001-03: 드래곤의숨결+
-// 드래곤킬러 -- 드래곤슬레이어≠드래곤킬러, identity collision 표 어디에도 없는 서로 다른
-// 실제 아이템)는 여전히 각자 독립적으로 매칭·적용돼야 한다. 즉 O-1의 수정이 "textragKey가
-// 겹치면 무조건 1회"라는 일반 dedup으로 새지 않았음을 함께 증명한다(요구사항: source entry
-// 단위 일반 dedup 금지 -- 이 둘은 서로 다른 entry(1,1)이기도 하다).
+// O-2 — identity collision이 아닌 진짜 독립 중첩을, 실제로 장착 가능한 loadout으로
+// 증명한다(P2-B closeout 보완: 이전 버전은 드래곤킬러(type=무기)를 방패 슬롯에 넣는
+// 장착 불가능한 loadout을 썼다 -- calcStats()가 슬롯 검증을 안 해서 통과했을 뿐, 실제
+// resolveEquipSlot이라면 절대 만들어질 수 없는 상태였다. 아래 두 케이스는 각 아이템의
+// 실제 db-items.json type이 배치한 슬롯과 정확히 일치하는 "장착 가능한" loadout이다).
+//
+// O-2a: 같은 source entry(23) 안 multi-variant 동시 중첩. 0023-01(디바인크로스+
+// 스피리츄얼링)과 0023-02(디바인크로스+스피리츄얼링_C)는 identity collision이 아니다
+// (스피리츄얼링/스피리츄얼링_C는 서로 다른 textragKey -- IDENTITY_COLLISION_JUDGMENTS
+// 어디에도 없다, 진짜 다른 두 아이템). 무기 1개 + 악세1/악세2에 서로 다른 반지를 하나씩
+// 꽂으면 두 콤보가 동시에 독립 적용돼야 한다(rAthena variant 독립 중첩 원칙, entry 36과
+// 달리 여기는 진짜 서로 다른 액세서리라 canonical 선택 대상이 아니다).
 // ══════════════════════════════════════════════
 {
   const db = require('../source/data/db-combos.json');
-  const v1 = db.combos.find(function (c) { return c.id === 'rathena-pre-0001-01'; });
-  const v3 = db.combos.find(function (c) { return c.id === 'rathena-pre-0001-03'; });
-  assert.ok(v1 && v3 && v1.status === 'verified' && v3.status === 'verified', 'O-2: 0001-01/03 둘 다 verified');
-  assert.strictEqual(v1.identityCollision, null, 'O-2: 0001-01은 identity collision 대상이 아님');
-  assert.strictEqual(v3.identityCollision, null, 'O-2: 0001-03도 identity collision 대상이 아님');
+  const v1 = db.combos.find(function (c) { return c.id === 'rathena-pre-0023-01'; });
+  const v2 = db.combos.find(function (c) { return c.id === 'rathena-pre-0023-02'; });
+  assert.ok(v1 && v2 && v1.status === 'verified' && v2.status === 'verified', 'O-2a: 0023-01/02 둘 다 verified');
+  assert.strictEqual(v1.identityCollision, null, 'O-2a: 0023-01은 identity collision 대상이 아님(스피리츄얼링≠스피리츄얼링_C)');
+  assert.strictEqual(v2.identityCollision, null, 'O-2a: 0023-02도 identity collision 대상이 아님');
 
-  const neededItemNames = ['드래곤슬레이어', '드래곤의숨결', '드래곤킬러'];
-  const DB = makeDB(pickRealItems(neededItemNames), [v1, v3]);
-  const s = runCalcStats(DB, { player: makePlayer({ 무기: '드래곤슬레이어', 악세1: '드래곤의숨결', 방패: '드래곤킬러' }) });
-  assert.strictEqual(comboLedgerEntries(s, 'rathena-pre-0001-01').length, 1, 'O-2: 0001-01 독립 적용');
-  assert.strictEqual(comboLedgerEntries(s, 'rathena-pre-0001-03').length, 1, 'O-2: 0001-03도 독립 적용(dedup 안 됨)');
-  console.log('OK - O-2: identity collision 아닌 우연한 아이템 공유는 여전히 독립 중첩(일반 dedup으로 새지 않음)');
+  const neededItemNames = ['디바인크로스', '스피리츄얼링', '스피리츄얼링_C'];
+  const DB = makeDB(pickRealItems(neededItemNames), [v1, v2]);
+  const s = runCalcStats(DB, { player: makePlayer({ 무기: '디바인크로스', 악세1: '스피리츄얼링', 악세2: '스피리츄얼링_C' }) });
+
+  [[v1, '0023-01'], [v2, '0023-02']].forEach(function (pair) {
+    var combo = pair[0], label = pair[1];
+    var entries = comboLedgerEntries(s, combo.id);
+    assert.strictEqual(entries.length, combo.effects.length, 'O-2a: ' + label + ' ledger entry 개수가 canonical effects 개수(' + combo.effects.length + ')와 일치');
+    combo.effects.forEach(function (eff) {
+      var hit = entries.find(function (e) { return e.type === eff.type && e.key === eff.key && (eff.subKey == null || e.value[eff.subKey] === eff.value); });
+      assert.ok(hit, 'O-2a: ' + label + ' 효과(' + eff.type + '.' + eff.key + (eff.subKey ? '.' + eff.subKey : '') + ')가 ledger에 남음');
+    });
+  });
+  console.log('OK - O-2a: 같은 entry(23) multi-variant가 실제 장착 가능한 loadout으로 독립 중첩(각자 전체 ledger row 보존)');
+}
+
+// ══════════════════════════════════════════════
+// O-2b — 서로 다른 source entry(9, 33) 콤보의 독립 중첩. 0009-01(고대의마법+매직코트)과
+// 0033-02(요정의귀+스컬캡)는 요구 아이템이 완전히 겹치지 않는 진짜 별개 콤보다. 무기/갑옷/
+// 투구_상단/투구_중단 4슬롯을 모두 채우면 두 콤보가 동시에, 서로 간섭 없이 각자의 전체
+// ledger row를 남겨야 한다(요구사항: source entry 단위 일반 dedup이 이런 완전 무관한
+// 조합까지 새어 들어가지 않았음을 실제 장착 가능한 데이터로 재확인).
+// ══════════════════════════════════════════════
+{
+  const db = require('../source/data/db-combos.json');
+  const v9 = db.combos.find(function (c) { return c.id === 'rathena-pre-0009-01'; });
+  const v33 = db.combos.find(function (c) { return c.id === 'rathena-pre-0033-02'; });
+  assert.ok(v9 && v33 && v9.status === 'verified' && v33.status === 'verified', 'O-2b: 0009-01/0033-02 둘 다 verified');
+  assert.strictEqual(v33.identityCollision, null, 'O-2b: 0033-02는 identity collision 대상이 아님');
+
+  const neededItemNames = ['고대의마법', '매직코트', '스컬캡', '요정의귀'];
+  const DB = makeDB(pickRealItems(neededItemNames), [v9, v33]);
+  const s = runCalcStats(DB, { player: makePlayer({ 무기: '고대의마법', 갑옷: '매직코트', 투구_상단: '스컬캡', 투구_중단: '요정의귀' }) });
+
+  [[v9, '0009-01'], [v33, '0033-02']].forEach(function (pair) {
+    var combo = pair[0], label = pair[1];
+    var entries = comboLedgerEntries(s, combo.id);
+    assert.strictEqual(entries.length, combo.effects.length, 'O-2b: ' + label + ' ledger entry 개수가 canonical effects 개수(' + combo.effects.length + ')와 일치');
+    combo.effects.forEach(function (eff) {
+      var hit = entries.find(function (e) { return e.type === eff.type && e.key === eff.key; });
+      assert.ok(hit, 'O-2b: ' + label + ' 효과(' + eff.type + '.' + eff.key + ')가 ledger에 남음');
+      assert.strictEqual(hit.value, eff.value, 'O-2b: ' + label + ' ' + eff.key + ' 값 일치');
+    });
+  });
+  console.log('OK - O-2b: 서로 다른 entry(9, 33)의 완전 무관한 콤보가 실제 장착 가능한 loadout으로 독립 중첩(각자 전체 ledger row 보존)');
 }
 
 // ══════════════════════════════════════════════

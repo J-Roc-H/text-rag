@@ -4,8 +4,8 @@
 충돌)를 canonicalize_combos.py가 IDENTITY_COLLISION_JUDGMENTS(rAthena item_db_equip.yml
 실코드 대조로 확인한 근거)로만 해소하는지, 그리고 그 결과가 db-combos.json에 정확히
 반영됐는지 검증한다. 실제 함수(compute_identity_collisions/audit_identity_collision_
-coverage/detect_identity_collisions/canonicalize)와 실제 산출물(db-combos.json)을 그대로
-쓴다 -- 재구현 금지.
+coverage/resolve_global_identity_collisions/canonicalize)와 실제 산출물(db-combos.json)을
+그대로 쓴다 -- 재구현 금지.
 
 실행: python tests/combo-identity-collision-audit-test.py
 """
