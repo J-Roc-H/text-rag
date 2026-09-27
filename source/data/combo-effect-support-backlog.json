@@ -32,19 +32,6 @@
       ]
     },
     {
-      "constant": "bMatkRate",
-      "occurrenceCombos": 6,
-      "soloFixRuntimeReadyPotential": 4,
-      "affectedComboIds": [
-        "rathena-pre-0012-01",
-        "rathena-pre-0013-01",
-        "rathena-pre-0013-02",
-        "rathena-pre-0023-01",
-        "rathena-pre-0023-02",
-        "rathena-pre-0053-01"
-      ]
-    },
-    {
       "constant": "bAddClass",
       "occurrenceCombos": 4,
       "soloFixRuntimeReadyPotential": 3,
@@ -133,16 +120,6 @@
         "rathena-pre-0043-01",
         "rathena-pre-0048-01",
         "rathena-pre-0053-01"
-      ]
-    },
-    {
-      "constant": "bUseSPrate",
-      "occurrenceCombos": 3,
-      "soloFixRuntimeReadyPotential": 3,
-      "affectedComboIds": [
-        "rathena-pre-0033-02",
-        "rathena-pre-0035-01",
-        "rathena-pre-0035-02"
       ]
     },
     {
@@ -270,6 +247,14 @@
       "soloFixRuntimeReadyPotential": 1,
       "affectedComboIds": [
         "rathena-pre-0010-01"
+      ]
+    },
+    {
+      "constant": "bMatkRate",
+      "occurrenceCombos": 1,
+      "soloFixRuntimeReadyPotential": 0,
+      "affectedComboIds": [
+        "rathena-pre-0012-01"
       ]
     },
     {

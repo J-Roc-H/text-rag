@@ -32,15 +32,15 @@ COMPLEXITY_WEIGHT = {"low": 1, "medium": 2, "high": 3}
 # 이미 기록돼 있다 -- 여기서는 그 근거를 요약해 complexity 등급만 매긴다.
 COMPLEXITY = {
     "bLongAtkRate": ("low", "isRangedWeapon 구조 데이터 이미 존재, getOutgoingAtkPctMul류 함수 1개 추가"),
-    # P2-A.4-정정(2026-09-27): bUseSPrate/bAddClass/bSubRace는 verdict가
-    # engine-extension-required가 아니라 stacking-scope-mismatch로 바뀌었지만(consumer는
-    # 이미 존재), "필요한 엔진 작업"은 여전히 유효한 개념이라 이 backlog에도 포함한다.
-    "bUseSPrate": ("low", "additive SP cost rate accumulator 필요 -- 기존 cardSpCostMul(곱연산)과 별개로 %를 누적한 뒤 마지막에 한 번만 배율 변환하는 필드/소비처만 추가하면 됨(getSkillSpCost 자체 구조는 그대로 재사용 가능)"),
+    # P2-A.4-정정(2026-09-27): bAddClass/bSubRace는 verdict가 engine-extension-required가
+    # 아니라 stacking-scope-mismatch로 바뀌었지만(consumer는 이미 존재), "필요한 엔진
+    # 작업"은 여전히 유효한 개념이라 이 backlog에도 포함한다. bUseSPrate/bMatkRate는
+    # P2-A.5에서 실제로 엔진 확장이 완료돼 SAFE_CONSTANTS로 이동했다(더 이상 이 표에
+    # 없음, gen_combo_effect_support_matrix.py 참조).
     "bAddClass": ("medium", "평타(processTurn 블록)와 물리 스킬(스킬 데미지 계산 지점) 공통으로 소비하는 physicalClassAtk류 모듈 필요 -- Class_All/Class_Boss는 트리거 자체는 이미 확인됐으나 스킬 데미지 경로 자체를 새로 노출해야 함"),
     "bSubRace": ("medium", "all+specific race additive reduction 모델 필요 -- applyIncomingItemReduction을 '곱연산 순차 적용'에서 'race_fix=all+specific 합산 후 단 한 번 적용'으로 바꿔야 함(기존 raceDmgReduce 자체 값 변경은 아님)"),
     "bAddEff": ("medium", "seProc 이벤트 구조 재사용 가능하나 turns 기본값 정책을 새로 정해야 함(rAthena가 안 줌)"),
     "bResEff": ("medium", "isStatusImmune 옆에 부분 저항 % 롤 로직 추가 -- 패턴은 있으나 새 필드 필요"),
-    "bMatkRate": ("medium", "buildMatkBreakdown에 %가산 항 추가 -- 계산식은 단순하나 신규 canonical 필드"),
     "bSkillAtk": ("medium", "skillDmg canonical 필드는 이미 있음, 스킬 데미지 계산 지점에 곱연산 삽입 필요(그 지점 자체 존재 여부 미확인)"),
     "bLongAtkDef": ("high", "몬스터 공격의 원거리/근접 판별 메타데이터 자체가 없음(신규 데이터 모델)"),
     "bAspdRate": ("high", "%기반 아스피드와 기존 flat aspd(*20ms) 단위 체계를 통합하는 리팩터 필요"),

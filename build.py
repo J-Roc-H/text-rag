@@ -374,9 +374,17 @@ COMBO_KNOWN_EFFECT_KEYS = {
     ("event", "soulgain"),
     # P2-A.4 신규(bCastrate 리터럴만 -- stacking parity 확인, COMBO_EFFECT_SUPPORT_AUDIT.md
     # §7/§11 참조). bUseSPrate/bAddClass/bSubRace,RC_All은 P2-A.4-정정(2026-09-27)에서
-    # SAFE 취소됐다(consumer는 있었지만 stacking/scope parity가 원작과 달랐음) --
-    # 아래 COMBO_RUNTIME_SAFE_KEYS도 이 세 키를 포함하지 않는다.
+    # SAFE 취소됐다(consumer는 있었지만 stacking/scope parity가 원작과 달랐음, 그때는
+    # 기존 spCostMul/atkPct/bossAtk/dmgReduceAll을 오재사용했었다).
     ("combat", "castReduction"),
+    # P2-A.5 신규(엔진 확장 -- bMatkRate/bUseSPrate를 기존 곱연산 필드 재사용 없이 새
+    # additive canonical 필드로 안전하게 연결, COMBO_ENGINE_EXTENSION_P2A5.md 참조).
+    # matkPct: rAthena status.cpp SCB_MATK 블록(matk=(base+ematk)*matk_rate/100) 실코드
+    # 재현, calcStats MATK 계산부에 실제 연결(template.html). spCostRatePct:
+    # rAthena skill.cpp skill_get_requirement(req.sp=req.sp*dsprate/100) 실코드
+    # 재현, getSkillSpCost()에 실제 연결(item-effects.js) -- 기존 spCostMul과는
+    # 별개 필드로 함께 곱해진다(오재사용 없음, §3/§4 감사 근거).
+    ("combat", "matkPct"), ("combat", "spCostRatePct"),
 }
 
 # P2-A.4-정정(2026-09-27) — SAFE의 정의를 "consumer 존재"에서 "consumer + scope +

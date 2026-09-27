@@ -12,6 +12,14 @@ L은 verified 정확한 개수를 하드코딩하지 않는다(§13: "숫자를 
 완화하지 않는다"). M-Q는 이번 정정의 근거(원작 stacking/scope 실코드)를 숫자로
 직접 재현해 같은 실수가 재발하지 않도록 고정한다.
 
+**P2-A.5 재정정(같은 날 후속 단계)**: bUseSPrate는 P2-A.5에서 다시 SAFE가 됐다 --
+이번엔 기존 spCostMul(곱연산, 이 사고의 원인)을 재사용하지 않고 신규 additive 필드
+spCostRatePct를 만들어 rAthena `sd->dsprate+=val`의 additive stacking을 정확히
+재현했다(item-effects.js getSkillSpCost). 아래 E/M/Q는 그 재정정을 반영해 갱신했다
+-- bAddClass/bSubRace(RC_All)는 P2-A.5 범위 밖이라 여전히 stacking-scope-mismatch로
+unsupported다(F-I, N-O 그대로 유지). P2-A.5 전용 회귀는
+tests/combo-engine-extension-p2a5-test.py 참조.
+
 실행: python tests/combo-effect-support-test.py
 """
 import os
@@ -83,17 +91,17 @@ def main():
     check('D: rawStatement가 getequiprefinerycnt를 그대로 보존', 'getequiprefinerycnt' in c4['bCastrate']['rawStatement'])
 
     # ══════════════════════════════════════════════
-    # E(정정) -- bUseSPrate는 SAFE가 취소됐다(stacking-scope-mismatch). 리터럴
-    # 형태(실데이터 rathena-pre-0033-01/02: "bonus bUseSPrate,-3")도 이제 unsupported로
-    # 남고, spCostMul 같은 canonical effect를 만들지 않는다.
+    # E(P2-A.5 재정정) -- bUseSPrate는 다시 SAFE다 -- 이번엔 spCostMul(사고 원인)이
+    # 아니라 신규 additive 필드 spCostRatePct로. 리터럴 형태(실데이터
+    # rathena-pre-0033-02: "bonus bUseSPrate,-3")는 spCostRatePct=-3 effect를 만들고,
+    # spCostMul은 여전히 건드리지 않는다(오재사용 없음).
     # ══════════════════════════════════════════════
     kind_e, payload_e = cc.parse_statement("bonus bUseSPrate,-3")
-    check('E: bUseSPrate,-3은 더 이상 effect가 아니라 unsupported', kind_e == "unsupported")
-    check('E: reason에 stacking 불일치 근거 명시', 'dsprate' in payload_e['reason'] or 'stacking' in payload_e['reason'].lower())
-    check('E: 실데이터 rathena-pre-0033-02는 spCostMul effect를 만들지 않음',
+    check('E: bUseSPrate,-3 -> effect(spCostRatePct=-3)', kind_e == "effect" and payload_e["key"] == "spCostRatePct" and payload_e["value"] == -3)
+    check('E: 실데이터 rathena-pre-0033-02 effects에 spCostRatePct=-3 반영',
+          ("combat", "spCostRatePct", None, -3) in effects_of('rathena-pre-0033-02'))
+    check('E: 실데이터 rathena-pre-0033-02는 spCostMul effect를 만들지 않음(오재사용 없음)',
           not any(k == 'spCostMul' for _, k, _, _ in effects_of('rathena-pre-0033-02')))
-    c33 = unsupported_of('rathena-pre-0033-02')
-    check('E: rathena-pre-0033-02의 bUseSPrate가 unsupportedEffects에 남음', 'bUseSPrate' in c33)
 
     # ══════════════════════════════════════════════
     # F(정정) -- bAddClass,Class_All도 SAFE가 취소됐다(scope-mismatch). 실데이터
@@ -177,20 +185,25 @@ def main():
           and ("combat", "bossAtk") not in build.COMBO_KNOWN_EFFECT_KEYS
           and ("combat", "dmgReduceAll") not in build.COMBO_KNOWN_EFFECT_KEYS)
     verified_count = sum(1 for c in real_combos['combos'] if c['status'] == 'verified')
-    check('L: verified 수가 P2-A.3 종료 시점(38) 이상 유지', verified_count >= 38)
-    check('L: verified 순증분이 정확히 bCastrate 2건만큼(40)임을 generator 결과로 확인(하드코딩 아님, A/B 검증과 정합)', verified_count == 38 + 2)
+    # P2-A.4-정정 시점 기준선(38+bCastrate 2건=40) 이상이어야 한다 -- 그 이후 P2-A.5가
+    # bMatkRate/bUseSPrate를 신규 SAFE로 추가하며 더 늘었으므로 상한을 고정하지 않는다
+    # (§13 정신 계승: 숫자를 맞추려고 판정을 조작하지 않는다, 실제 값은 generator 결과).
+    check('L: verified 수가 P2-A.4-정정 시점(40) 이상 유지(이후 P2-A.5가 추가로 늘림)', verified_count >= 40)
 
     # ══════════════════════════════════════════════
-    # M(신규) -- bUseSPrate additive-vs-multiplicative mismatch: 원작 기대값(60%)과
-    # 기존에 SAFE로 취급했던 곱연산 결과(64%)가 실제로 다름을 숫자로 고정한다.
+    # M(P2-A.5 재정정) -- bUseSPrate additive-vs-multiplicative mismatch: 원작
+    # 기대값(60%)과 당시 SAFE로 취급했던 곱연산 결과(64%)가 실제로 다름을 숫자로
+    # 계속 고정하되(재발 방지 근거는 그대로 유효), P2-A.5가 신규 additive 필드
+    # (spCostRatePct)로 이 mismatch를 실제로 해결했음을 함께 확인한다.
     # ══════════════════════════════════════════════
     rathena_expected_pct = 100 + (-20) + (-20)  # sd->dsprate += val 두 번 -- additive
     check('M: rAthena additive 기대값은 SP 소비 60%', rathena_expected_pct == 60)
-    multiplicative_result_pct = round(0.8 * 0.8 * 100)  # 기존(취소된) cardSpCostMul 곱연산 방식
+    multiplicative_result_pct = round(0.8 * 0.8 * 100)  # 사고 원인이었던 cardSpCostMul 곱연산 방식
     check('M: 곱연산 방식은 64%로 원작과 다름(재발 방지 고정)', multiplicative_result_pct == 64)
     check('M: 60 != 64 -- 두 방식이 실제로 다른 결과를 낸다는 것 자체를 확인', rathena_expected_pct != multiplicative_result_pct)
-    check('M: canonicalize_combos.py는 이 mismatch 때문에 bUseSPrate를 더 이상 변환하지 않음',
-          cc.parse_statement("bonus bUseSPrate,-20")[0] == "unsupported")
+    check('M: P2-A.5 신규 spCostRatePct는 additive이므로 -20+-20=-40(=60%)를 정확히 재현',
+          cc.parse_statement("bonus bUseSPrate,-20")[1]["value"] == -20
+          and cc.parse_statement("bonus bUseSPrate,-20")[1]["key"] == "spCostRatePct")
 
     # ══════════════════════════════════════════════
     # N(신규) -- bAddClass normal-vs-skill scope mismatch: TextRAG의 cardAtkPct/
@@ -237,14 +250,15 @@ def main():
     check('P: 크기가 원작(20)과 TextRAG(0.20*100=20)에서 일치', abs(abs(rathena_castrate_total) - textrag_total_fraction * 100) < 1e-9)
 
     # ══════════════════════════════════════════════
-    # Q(신규) -- SAFE requires consumer + scope + stacking: matrix에서 bCastrate는
-    # 3축 전부 true, 취소된 3종(bUseSPrate/bAddClass/bSubRace)은 stackingParity 또는
-    # scopeParity 중 하나 이상 false다.
+    # Q(P2-A.5 재정정) -- SAFE requires consumer + scope + stacking: matrix에서
+    # bCastrate/bUseSPrate/bMatkRate(P2-A.5 신규)는 3축 전부 true, 여전히 취소 상태인
+    # bAddClass/bSubRace는 stackingParity 또는 scopeParity 중 하나 이상 false다.
     # ══════════════════════════════════════════════
-    m_castrate = matrix_by_const['bCastrate']
-    check('Q: bCastrate는 consumer+scope+stacking 3축 전부 true', m_castrate['consumerPresent'] is True and m_castrate['scopeParity'] is True and m_castrate['stackingParity'] is True)
-    check('Q: bCastrate verdict는 safe-existing-consumer', m_castrate['verdict'] == 'safe-existing-consumer')
-    for const, failing_axis in (('bUseSPrate', 'stackingParity'), ('bAddClass', 'scopeParity'), ('bSubRace', 'stackingParity')):
+    for safe_const in ('bCastrate', 'bUseSPrate', 'bMatkRate'):
+        entry = matrix_by_const[safe_const]
+        check(f'Q: {safe_const}는 consumer+scope+stacking 3축 전부 true', entry['consumerPresent'] is True and entry['scopeParity'] is True and entry['stackingParity'] is True)
+        check(f'Q: {safe_const} verdict는 safe-existing-consumer', entry['verdict'] == 'safe-existing-consumer')
+    for const, failing_axis in (('bAddClass', 'scopeParity'), ('bSubRace', 'stackingParity')):
         entry = matrix_by_const[const]
         check(f'Q: {const}는 verdict가 stacking-scope-mismatch', entry['verdict'] == 'stacking-scope-mismatch')
         check(f'Q: {const}는 consumerPresent=true(consumer 자체는 있었음)', entry['consumerPresent'] is True)

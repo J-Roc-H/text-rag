@@ -134,6 +134,28 @@ VERIFIED_SIMPLE_BONUS = {
                   'fraction=-n/100, additive stacking parity 확인(pc.cpp SP_CASTRATE, P2-A.4-정정 §7)'),
     "bCastRate": ("combat", "castReduction", lambda v: -v / 100.0,
                   'doc: "bonus bCastrate,n" (대소문자 변형) — 위와 동일'),
+    # ══ P2-A.5 신규(엔진 확장, COMBO_ENGINE_EXTENSION_P2A5.md 참조) ══
+    # "bonus bMatkRate,n; Magical attack power + n%" — rAthena status.cpp(pre-RE,
+    # SCB_MATK 블록) 실코드 확인: matk=(base_matk+ematk)*matk_rate/100(0% 하한
+    # clamp), matk_rate는 100 기준 `sd->matk_rate += val`로 additive 누적. 신규
+    # canonical 필드 combat.matkPct(additive, "10=10%")를 calcStats가 (base+flat
+    # item matk)에 곱연산으로 적용하도록 새로 연결했다(template.html MATK 계산부,
+    # P2-A.5). 값은 변환 없이 그대로("10=10%") 저장 -- consumer가 additive 누적을
+    # 이미 담당한다.
+    "bMatkRate": ("combat", "matkPct", None,
+                  'doc: "bonus bMatkRate,n; Magical attack power + n%" — '
+                  '(base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)'),
+    # "bonus bUseSPrate,n; SP consumption + n%" — rAthena skill.cpp
+    # (skill_get_requirement) 실코드 확인: req.sp=req.sp*dsprate/100(정수 나눗셈),
+    # dsprate는 100 기준 `sd->dsprate += val`(status.cpp)로 additive 누적, 0% 하한
+    # clamp. 신규 canonical 필드 combat.spCostRatePct(additive, "10=10%")를
+    # getSkillSpCost()가 기존 spCostMul(곱연산, db-items.json 실사용 0건 재확인)과는
+    # 별개로 곱해 최종 배율을 만든다(P2-A.5). 값은 변환 없이 그대로 저장.
+    "bUseSPrate": ("combat", "spCostRatePct", None,
+                   'doc: "bonus bUseSPrate,n; SP consumption + n%" — '
+                   'dsprate additive 누적 실코드 재현, getSkillSpCost 실코드 재확인(skill.cpp skill_get_requirement, P2-A.5)'),
+    "bUseSPRate": ("combat", "spCostRatePct", None,
+                   'doc: "bonus bUseSPrate,n" (대소문자 변형) — 위와 동일'),
 }
 
 # bAllStats,n -> 6개 스탯 전부 +n (문서: "STR+n, AGI+n, VIT+n, INT+n, DEX+n, LUK+n") —
@@ -190,22 +212,23 @@ SOULGAIN_RACE_BONUS2 = {
 # source-needed 처리되므로, 여기는 "왜 안 되는지"를 남기고 싶은 대표 상수만 적는다.)
 UNSUPPORTED_REASONS = {
     "bAspdRate": '"bonus bAspdRate,n; Attack speed + n%" — P0의 flat aspd(스탯포인트류, *20ms)와 단위/의미가 다른 %기반 공격속도 보너스. 대응 vocabulary 없음.',
-    "bMatkRate": '"bonus bMatkRate,n; Magical attack power + n%" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7).',
+    # P2-A.5(엔진 확장)에서 bMatkRate 리터럴 1-인자 형태가 VERIFIED_SIMPLE_BONUS로
+    # 이동했다(matkPct 신규 canonical 필드, consumer+scope+stacking 3축 확인 완료).
+    # 아래는 리터럴 정수로 안 잡히는 나머지 형태(동적 표현식: getequiprefinerycnt/
+    # min() 등)에 대해서만 쓰인다 -- 값 평가는 여전히 금지(§11).
+    "bMatkRate": '"bonus bMatkRate,min(...)/getequiprefinerycnt(...)" (동적 표현식) — 값을 평가하지 않으므로 unsupported 유지. 리터럴 1-인자 `bonus bMatkRate,n` 형태는 VERIFIED_SIMPLE_BONUS(matkPct) 참조(P2-A.5).',
     # bCastrate 리터럴 1-인자 형태만 VERIFIED_SIMPLE_BONUS로 이동했다(stacking parity
     # 확인 완료, 위 표 참조). 아래는 그 표로 안 잡히는 나머지 형태(스킬 지정 bonus2,
     # 동적 표현식)에 대해서만 여기 reason이 쓰인다.
     "bCastrate": '"bonus2 bCastrate,"SKILL",n;" (스킬 지정 2-인자 형태) — P0 castReduction은 스킬 전체에 일괄 적용되는 값이라 스킬별 캐스팅 소비처가 없음(engine-extension-required, P2-A.4 §10). 리터럴 1-인자 `bonus bCastrate,n` 형태는 VERIFIED_SIMPLE_BONUS 참조.',
-    # P2-A.4-정정(2026-09-27): bUseSPrate는 SAFE였다가 취소됐다(stacking-scope-mismatch).
-    # rAthena pc.cpp 재확인: `case SP_SPRATE: sd->dsprate += val;` -- additive 누적,
-    # 최종 SP 소비 배율은 `(100+dsprate)/100` 단 한 번만 곱한다(즉 -20%+-20%=-40%
-    # 누적 후 60%). TextRAG는 `fx.combat.spCostMul *= Number(it.spCostMul)`로
-    # 각 소스를 독립적으로 곱연산(0.8*0.8=64%) -- 단일 효과만 있을 땐 결과가 같아
-    # (100+n)/100==1+n/100 이라 최초 검증에서 놓쳤으나, 소스가 2개 이상이면 원작(60%)과
-    # TextRAG(64%)가 달라진다. engine-extension 필요 사항: %가산을 누적한 뒤 마지막에
-    # 한 번만 배율로 변환하는 spCostRatePct류 additive accumulator가 필요하다 -- 기존
-    # spCostMul(곱연산 배율) 필드 자체는 이번에 바꾸지 않는다(런타임 코드 동결).
-    "bUseSPrate": '"bonus bUseSPrate,n; SP consumption + n%" — stacking parity 불일치로 SAFE 취소(P2-A.4-정정): rAthena `sd->dsprate+=val`(additive, 최종 한 번만 배율화)인데 TextRAG cardSpCostMul은 소스별 곱연산 누적이라 2개 이상 중첩 시 결과가 달라짐(engine-extension-required).',
-    "bUseSPRate": '"bonus bUseSPrate,n" (대소문자 변형) — bUseSPrate와 동일 사유.',
+    # P2-A.5(엔진 확장)에서 bUseSPrate 리터럴 1-인자 형태가 VERIFIED_SIMPLE_BONUS로
+    # 이동했다 -- P2-A.4-정정이 지적한 stacking-scope-mismatch(당시 기존 spCostMul
+    # 곱연산 필드를 오재사용해 발생)를 신규 additive 필드 spCostRatePct(getSkillSpCost
+    # 실코드 재확인, skill.cpp skill_get_requirement)로 해결했다. 기존 spCostMul은
+    # 건드리지 않았고(db-items.json 실사용 0건 재확인), 둘은 getSkillSpCost()에서
+    # 별개로 곱해진다. 아래는 동적 표현식 형태에만 쓰인다.
+    "bUseSPrate": '"bonus bUseSPrate,getequiprefinerycnt(...)" (동적 표현식) — 값을 평가하지 않으므로 unsupported 유지. 리터럴 1-인자 형태는 VERIFIED_SIMPLE_BONUS(spCostRatePct) 참조(P2-A.5).',
+    "bUseSPRate": '"bonus bUseSPrate,..." (대소문자 변형) — bUseSPrate와 동일 사유.',
     # P2-A.4-정정(2026-09-27): bAddClass도 SAFE였다가 취소됐다(scope-mismatch).
     # rAthena battle.cpp 재확인: addclass/addrace는 battle_calc_cardfix(attack_type,...)를
     # 통해 평타(BF_WEAPON -- battle_calc_weapon_attack이 물리 스킬 데미지도 계산)와

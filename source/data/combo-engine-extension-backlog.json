@@ -6,21 +6,6 @@
   },
   "backlog": [
     {
-      "constant": "bMatkRate",
-      "verdict": "engine-extension-required",
-      "unlockPotentialCombos": 27,
-      "engineComplexity": "medium",
-      "engineComplexityReason": "buildMatkBreakdown에 %가산 항 추가 -- 계산식은 단순하나 신규 canonical 필드",
-      "priorityScore": 13.5,
-      "sampleComboIds": [
-        "rathena-pre-0004-01",
-        "rathena-pre-0004-02",
-        "rathena-pre-0005-01",
-        "rathena-pre-0005-02",
-        "rathena-pre-0012-01"
-      ]
-    },
-    {
       "constant": "bAddClass",
       "verdict": "stacking-scope-mismatch",
       "unlockPotentialCombos": 13,
@@ -48,21 +33,6 @@
         "rathena-pre-0019-01",
         "rathena-pre-0020-01",
         "rathena-pre-0021-01"
-      ]
-    },
-    {
-      "constant": "bUseSPrate",
-      "verdict": "stacking-scope-mismatch",
-      "unlockPotentialCombos": 5,
-      "engineComplexity": "low",
-      "engineComplexityReason": "additive SP cost rate accumulator 필요 -- 기존 cardSpCostMul(곱연산)과 별개로 %를 누적한 뒤 마지막에 한 번만 배율 변환하는 필드/소비처만 추가하면 됨(getSkillSpCost 자체 구조는 그대로 재사용 가능)",
-      "priorityScore": 5.0,
-      "sampleComboIds": [
-        "rathena-pre-0033-01",
-        "rathena-pre-0033-02",
-        "rathena-pre-0035-01",
-        "rathena-pre-0035-02",
-        "rathena-pre-0067-01"
       ]
     },
     {
@@ -473,17 +443,6 @@
       "priorityScore": 0.333,
       "sampleComboIds": [
         "rathena-pre-0046-01"
-      ]
-    },
-    {
-      "constant": "bUseSPRate",
-      "verdict": "stacking-scope-mismatch",
-      "unlockPotentialCombos": 1,
-      "engineComplexity": "high",
-      "engineComplexityReason": "저빈도 니치 메커닉 -- 반사/파괴/즉사 등 P0에 대응 개념 자체가 없어 개별 신규 설계 필요",
-      "priorityScore": 0.333,
-      "sampleComboIds": [
-        "rathena-pre-0084-01"
       ]
     },
     {

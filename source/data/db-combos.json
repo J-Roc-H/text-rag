@@ -8,9 +8,9 @@
   "totalSourceEntries": 105,
   "totalVariants": 156,
   "statusCounts": {
-   "verified": 40,
+   "verified": 47,
    "source-needed": 58,
-   "unsupported": 58
+   "unsupported": 51
   },
   "identityMapUsed": true,
   "identityVerifiedItemCount": 225
@@ -418,6 +418,13 @@
    "conditionalRaw": [],
    "effects": [
     {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 6,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    },
+    {
      "type": "stat",
      "key": "dex",
      "subKey": null,
@@ -426,11 +433,6 @@
     }
    ],
    "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bMatkRate,6",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
-    },
     {
      "rawStatement": "bonus bCastrate,-getequiprefinerycnt(EQI_HEAD_TOP)",
      "constant": "bCastrate",
@@ -474,6 +476,13 @@
    "conditionalRaw": [],
    "effects": [
     {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 6,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    },
+    {
      "type": "stat",
      "key": "dex",
      "subKey": null,
@@ -482,11 +491,6 @@
     }
    ],
    "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bMatkRate,6",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
-    },
     {
      "rawStatement": "bonus bCastrate,-getequiprefinerycnt(EQI_HEAD_TOP)",
      "constant": "bCastrate",
@@ -530,6 +534,13 @@
    "conditionalRaw": [],
    "effects": [
     {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 6,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    },
+    {
      "type": "stat",
      "key": "dex",
      "subKey": null,
@@ -538,11 +549,6 @@
     }
    ],
    "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bMatkRate,6",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
-    },
     {
      "rawStatement": "bonus bCastrate,-getequiprefinerycnt(EQI_HAND_R)",
      "constant": "bCastrate",
@@ -586,6 +592,13 @@
    "conditionalRaw": [],
    "effects": [
     {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 6,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    },
+    {
      "type": "stat",
      "key": "dex",
      "subKey": null,
@@ -594,11 +607,6 @@
     }
    ],
    "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bMatkRate,6",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
-    },
     {
      "rawStatement": "bonus bCastrate,-getequiprefinerycnt(EQI_HAND_R)",
      "constant": "bCastrate",
@@ -1180,7 +1188,7 @@
     {
      "rawStatement": "bonus bMatkRate,min(5, getequiprefinerycnt(EQI_HAND_R)-5)",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
+     "reason": "\"bonus bMatkRate,min(...)/getequiprefinerycnt(...)\" (동적 표현식) — 값을 평가하지 않으므로 unsupported 유지. 리터럴 1-인자 `bonus bMatkRate,n` 형태는 VERIFIED_SIMPLE_BONUS(matkPct) 참조(P2-A.5)."
     },
     {
      "rawStatement": "bonus2 bSubEle,Ele_Neutral,min(30, getequiprefinerycnt(EQI_GARMENT)*3)",
@@ -1226,23 +1234,22 @@
    "effects": [
     {
      "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 5,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    },
+    {
+     "type": "combat",
      "key": "elemReduce",
      "subKey": "무속성",
      "value": 25,
      "reason": "doc: \"bonus2 bSubEle,e,x; +x% damage reduction against attack element e\""
     }
    ],
-   "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bMatkRate,5",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
-    }
-   ],
-   "status": "unsupported",
-   "statusReasons": [
-    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
-   ]
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0013-02",
@@ -1277,23 +1284,22 @@
    "effects": [
     {
      "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 5,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    },
+    {
+     "type": "combat",
      "key": "elemReduce",
      "subKey": "무속성",
      "value": 25,
      "reason": "doc: \"bonus2 bSubEle,e,x; +x% damage reduction against attack element e\""
     }
    ],
-   "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bMatkRate,5",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
-    }
-   ],
-   "status": "unsupported",
-   "statusReasons": [
-    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
-   ]
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0014-01",
@@ -1340,7 +1346,7 @@
     {
      "rawStatement": "bonus bMatkRate,getequiprefinerycnt(EQI_HAND_R)-5",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
+     "reason": "\"bonus bMatkRate,min(...)/getequiprefinerycnt(...)\" (동적 표현식) — 값을 평가하지 않으므로 unsupported 유지. 리터럴 1-인자 `bonus bMatkRate,n` 형태는 VERIFIED_SIMPLE_BONUS(matkPct) 참조(P2-A.5)."
     }
    ],
    "status": "unsupported",
@@ -1405,7 +1411,7 @@
     {
      "rawStatement": "bonus bMatkRate,getequiprefinerycnt(EQI_HAND_R)",
      "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
+     "reason": "\"bonus bMatkRate,min(...)/getequiprefinerycnt(...)\" (동적 표현식) — 값을 평가하지 않으므로 unsupported 유지. 리터럴 1-인자 `bonus bMatkRate,n` 형태는 VERIFIED_SIMPLE_BONUS(matkPct) 참조(P2-A.5)."
     }
    ],
    "status": "source-needed",
@@ -1825,6 +1831,13 @@
    "conditionalRaw": [],
    "effects": [
     {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 10,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    },
+    {
      "type": "stat",
      "key": "dex",
      "subKey": null,
@@ -1846,17 +1859,9 @@
      "reason": "doc: \"bonus2 bSubRace,r,x; +x% damage reduction against race r\""
     }
    ],
-   "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bMatkRate,10",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
-    }
-   ],
-   "status": "unsupported",
-   "statusReasons": [
-    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
-   ]
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0023-02",
@@ -1890,6 +1895,13 @@
    "conditionalRaw": [],
    "effects": [
     {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 10,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    },
+    {
      "type": "stat",
      "key": "dex",
      "subKey": null,
@@ -1911,17 +1923,9 @@
      "reason": "doc: \"bonus2 bSubRace,r,x; +x% damage reduction against race r\""
     }
    ],
-   "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bMatkRate,10",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
-    }
-   ],
-   "status": "unsupported",
-   "statusReasons": [
-    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
-   ]
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0024-01",
@@ -1976,15 +1980,16 @@
      "subKey": null,
      "value": 15,
      "reason": "doc: \"bonus bSPrecovRate,n; Natural SP recovery ratio + n%\""
-    }
-   ],
-   "unsupportedEffects": [
+    },
     {
-     "rawStatement": "bonus bMatkRate,7",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 7,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
     }
    ],
+   "unsupportedEffects": [],
    "status": "source-needed",
    "statusReasons": [
     "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
@@ -2043,15 +2048,16 @@
      "subKey": null,
      "value": 15,
      "reason": "doc: \"bonus bSPrecovRate,n; Natural SP recovery ratio + n%\""
-    }
-   ],
-   "unsupportedEffects": [
+    },
     {
-     "rawStatement": "bonus bMatkRate,7",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 7,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
     }
    ],
+   "unsupportedEffects": [],
    "status": "source-needed",
    "statusReasons": [
     "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
@@ -2589,14 +2595,16 @@
    ],
    "rawScript": "bonus bUseSPrate,-3;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus bUseSPrate,-3",
-     "constant": "bUseSPrate",
-     "reason": "\"bonus bUseSPrate,n; SP consumption + n%\" — stacking parity 불일치로 SAFE 취소(P2-A.4-정정): rAthena `sd->dsprate+=val`(additive, 최종 한 번만 배율화)인데 TextRAG cardSpCostMul은 소스별 곱연산 누적이라 2개 이상 중첩 시 결과가 달라짐(engine-extension-required)."
+     "type": "combat",
+     "key": "spCostRatePct",
+     "subKey": null,
+     "value": -3,
+     "reason": "doc: \"bonus bUseSPrate,n; SP consumption + n%\" — dsprate additive 누적 실코드 재현, getSkillSpCost 실코드 재확인(skill.cpp skill_get_requirement, P2-A.5)"
     }
    ],
+   "unsupportedEffects": [],
    "status": "source-needed",
    "statusReasons": [
     "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
@@ -2632,18 +2640,18 @@
    ],
    "rawScript": "bonus bUseSPrate,-3;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus bUseSPrate,-3",
-     "constant": "bUseSPrate",
-     "reason": "\"bonus bUseSPrate,n; SP consumption + n%\" — stacking parity 불일치로 SAFE 취소(P2-A.4-정정): rAthena `sd->dsprate+=val`(additive, 최종 한 번만 배율화)인데 TextRAG cardSpCostMul은 소스별 곱연산 누적이라 2개 이상 중첩 시 결과가 달라짐(engine-extension-required)."
+     "type": "combat",
+     "key": "spCostRatePct",
+     "subKey": null,
+     "value": -3,
+     "reason": "doc: \"bonus bUseSPrate,n; SP consumption + n%\" — dsprate additive 누적 실코드 재현, getSkillSpCost 실코드 재확인(skill.cpp skill_get_requirement, P2-A.5)"
     }
    ],
-   "status": "unsupported",
-   "statusReasons": [
-    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
-   ]
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0034-01",
@@ -2778,23 +2786,22 @@
    "effects": [
     {
      "type": "combat",
+     "key": "spCostRatePct",
+     "subKey": null,
+     "value": -20,
+     "reason": "doc: \"bonus bUseSPrate,n; SP consumption + n%\" — dsprate additive 누적 실코드 재현, getSkillSpCost 실코드 재확인(skill.cpp skill_get_requirement, P2-A.5)"
+    },
+    {
+     "type": "combat",
      "key": "maxHp",
      "subKey": null,
      "value": 300,
      "reason": "doc: \"bonus bMaxHP,n; MaxHP + n\""
     }
    ],
-   "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bUseSPrate,-20",
-     "constant": "bUseSPrate",
-     "reason": "\"bonus bUseSPrate,n; SP consumption + n%\" — stacking parity 불일치로 SAFE 취소(P2-A.4-정정): rAthena `sd->dsprate+=val`(additive, 최종 한 번만 배율화)인데 TextRAG cardSpCostMul은 소스별 곱연산 누적이라 2개 이상 중첩 시 결과가 달라짐(engine-extension-required)."
-    }
-   ],
-   "status": "unsupported",
-   "statusReasons": [
-    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
-   ]
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0035-02",
@@ -2829,23 +2836,22 @@
    "effects": [
     {
      "type": "combat",
+     "key": "spCostRatePct",
+     "subKey": null,
+     "value": -20,
+     "reason": "doc: \"bonus bUseSPrate,n; SP consumption + n%\" — dsprate additive 누적 실코드 재현, getSkillSpCost 실코드 재확인(skill.cpp skill_get_requirement, P2-A.5)"
+    },
+    {
+     "type": "combat",
      "key": "maxHp",
      "subKey": null,
      "value": 300,
      "reason": "doc: \"bonus bMaxHP,n; MaxHP + n\""
     }
    ],
-   "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bUseSPrate,-20",
-     "constant": "bUseSPrate",
-     "reason": "\"bonus bUseSPrate,n; SP consumption + n%\" — stacking parity 불일치로 SAFE 취소(P2-A.4-정정): rAthena `sd->dsprate+=val`(additive, 최종 한 번만 배율화)인데 TextRAG cardSpCostMul은 소스별 곱연산 누적이라 2개 이상 중첩 시 결과가 달라짐(engine-extension-required)."
-    }
-   ],
-   "status": "unsupported",
-   "statusReasons": [
-    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
-   ]
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": []
   },
   {
    "id": "rathena-pre-0036-01",
@@ -3732,17 +3738,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,3;\nbonus bMatkRate,3;\n",
    "conditionalRaw": [],
-   "effects": [],
+   "effects": [
+    {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 3,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    }
+   ],
    "unsupportedEffects": [
     {
      "rawStatement": "bonus2 bAddClass,Class_All,3",
      "constant": "bAddClass",
      "reason": "\"bonus2 bAddClass,c,x;\" — scope 불일치로 SAFE 취소(P2-A.4-정정): rAthena battle_calc_cardfix는 평타+물리 스킬(+마법 스킬 별도)에 광범위하게 적용되는데 TextRAG cardAtkPct/cardBossAtk는 평타 블록에만 연결돼 있음(engine-extension-required). Class_All/Class_Boss 포함 모든 enum 값에 적용."
-    },
-    {
-     "rawStatement": "bonus bMatkRate,3",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     }
    ],
    "status": "source-needed",
@@ -3780,17 +3789,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,3;\nbonus bMatkRate,3;\n",
    "conditionalRaw": [],
-   "effects": [],
+   "effects": [
+    {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 3,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    }
+   ],
    "unsupportedEffects": [
     {
      "rawStatement": "bonus2 bAddClass,Class_All,3",
      "constant": "bAddClass",
      "reason": "\"bonus2 bAddClass,c,x;\" — scope 불일치로 SAFE 취소(P2-A.4-정정): rAthena battle_calc_cardfix는 평타+물리 스킬(+마법 스킬 별도)에 광범위하게 적용되는데 TextRAG cardAtkPct/cardBossAtk는 평타 블록에만 연결돼 있음(engine-extension-required). Class_All/Class_Boss 포함 모든 enum 값에 적용."
-    },
-    {
-     "rawStatement": "bonus bMatkRate,3",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     }
    ],
    "status": "source-needed",
@@ -4609,17 +4621,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,5;\nbonus bMatkRate,5;\nbonus2 bResEff,Eff_Freeze,10000;\nbonus2 bSkillHeal2,\"AM_POTIONPITCHER\",3;\nbonus2 bSkillHeal2,\"AL_HEAL\",3;\nbonus2 bSkillHeal2,\"PR_SANCTUARY\",3;\n",
    "conditionalRaw": [],
-   "effects": [],
+   "effects": [
+    {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 5,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    }
+   ],
    "unsupportedEffects": [
     {
      "rawStatement": "bonus2 bAddClass,Class_All,5",
      "constant": "bAddClass",
      "reason": "\"bonus2 bAddClass,c,x;\" — scope 불일치로 SAFE 취소(P2-A.4-정정): rAthena battle_calc_cardfix는 평타+물리 스킬(+마법 스킬 별도)에 광범위하게 적용되는데 TextRAG cardAtkPct/cardBossAtk는 평타 블록에만 연결돼 있음(engine-extension-required). Class_All/Class_Boss 포함 모든 enum 값에 적용."
-    },
-    {
-     "rawStatement": "bonus bMatkRate,5",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus2 bResEff,Eff_Freeze,10000",
@@ -4644,7 +4659,7 @@
    ],
    "status": "unsupported",
    "statusReasons": [
-    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
+    "일부 효과만 canonical 변환됨 — effects/unsupportedEffects 분리 참조"
    ]
   },
   {
@@ -6028,17 +6043,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,5;\nbonus bMatkRate,3;\nbonus bHealPower,5;\n",
    "conditionalRaw": [],
-   "effects": [],
+   "effects": [
+    {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 3,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    }
+   ],
    "unsupportedEffects": [
     {
      "rawStatement": "bonus2 bAddClass,Class_All,5",
      "constant": "bAddClass",
      "reason": "\"bonus2 bAddClass,c,x;\" — scope 불일치로 SAFE 취소(P2-A.4-정정): rAthena battle_calc_cardfix는 평타+물리 스킬(+마법 스킬 별도)에 광범위하게 적용되는데 TextRAG cardAtkPct/cardBossAtk는 평타 블록에만 연결돼 있음(engine-extension-required). Class_All/Class_Boss 포함 모든 enum 값에 적용."
-    },
-    {
-     "rawStatement": "bonus bMatkRate,3",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bHealPower,5",
@@ -6081,17 +6099,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,5;\nbonus bMatkRate,3;\nbonus bHealPower,5;\n",
    "conditionalRaw": [],
-   "effects": [],
+   "effects": [
+    {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 3,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    }
+   ],
    "unsupportedEffects": [
     {
      "rawStatement": "bonus2 bAddClass,Class_All,5",
      "constant": "bAddClass",
      "reason": "\"bonus2 bAddClass,c,x;\" — scope 불일치로 SAFE 취소(P2-A.4-정정): rAthena battle_calc_cardfix는 평타+물리 스킬(+마법 스킬 별도)에 광범위하게 적용되는데 TextRAG cardAtkPct/cardBossAtk는 평타 블록에만 연결돼 있음(engine-extension-required). Class_All/Class_Boss 포함 모든 enum 값에 적용."
-    },
-    {
-     "rawStatement": "bonus bMatkRate,3",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bHealPower,5",
@@ -6134,17 +6155,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,5;\nbonus bMatkRate,3;\nbonus bHealPower,5;\n",
    "conditionalRaw": [],
-   "effects": [],
+   "effects": [
+    {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 3,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    }
+   ],
    "unsupportedEffects": [
     {
      "rawStatement": "bonus2 bAddClass,Class_All,5",
      "constant": "bAddClass",
      "reason": "\"bonus2 bAddClass,c,x;\" — scope 불일치로 SAFE 취소(P2-A.4-정정): rAthena battle_calc_cardfix는 평타+물리 스킬(+마법 스킬 별도)에 광범위하게 적용되는데 TextRAG cardAtkPct/cardBossAtk는 평타 블록에만 연결돼 있음(engine-extension-required). Class_All/Class_Boss 포함 모든 enum 값에 적용."
-    },
-    {
-     "rawStatement": "bonus bMatkRate,3",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bHealPower,5",
@@ -6187,17 +6211,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,5;\nbonus bMatkRate,3;\nbonus bHealPower,5;\n",
    "conditionalRaw": [],
-   "effects": [],
+   "effects": [
+    {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 3,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    }
+   ],
    "unsupportedEffects": [
     {
      "rawStatement": "bonus2 bAddClass,Class_All,5",
      "constant": "bAddClass",
      "reason": "\"bonus2 bAddClass,c,x;\" — scope 불일치로 SAFE 취소(P2-A.4-정정): rAthena battle_calc_cardfix는 평타+물리 스킬(+마법 스킬 별도)에 광범위하게 적용되는데 TextRAG cardAtkPct/cardBossAtk는 평타 블록에만 연결돼 있음(engine-extension-required). Class_All/Class_Boss 포함 모든 enum 값에 적용."
-    },
-    {
-     "rawStatement": "bonus bMatkRate,3",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bHealPower,5",
@@ -6240,17 +6267,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,5;\nbonus bMatkRate,3;\nbonus bHealPower,5;\n",
    "conditionalRaw": [],
-   "effects": [],
+   "effects": [
+    {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 3,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    }
+   ],
    "unsupportedEffects": [
     {
      "rawStatement": "bonus2 bAddClass,Class_All,5",
      "constant": "bAddClass",
      "reason": "\"bonus2 bAddClass,c,x;\" — scope 불일치로 SAFE 취소(P2-A.4-정정): rAthena battle_calc_cardfix는 평타+물리 스킬(+마법 스킬 별도)에 광범위하게 적용되는데 TextRAG cardAtkPct/cardBossAtk는 평타 블록에만 연결돼 있음(engine-extension-required). Class_All/Class_Boss 포함 모든 enum 값에 적용."
-    },
-    {
-     "rawStatement": "bonus bMatkRate,3",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bHealPower,5",
@@ -6293,17 +6323,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,5;\nbonus bMatkRate,3;\nbonus bHealPower,5;\n",
    "conditionalRaw": [],
-   "effects": [],
+   "effects": [
+    {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 3,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    }
+   ],
    "unsupportedEffects": [
     {
      "rawStatement": "bonus2 bAddClass,Class_All,5",
      "constant": "bAddClass",
      "reason": "\"bonus2 bAddClass,c,x;\" — scope 불일치로 SAFE 취소(P2-A.4-정정): rAthena battle_calc_cardfix는 평타+물리 스킬(+마법 스킬 별도)에 광범위하게 적용되는데 TextRAG cardAtkPct/cardBossAtk는 평타 블록에만 연결돼 있음(engine-extension-required). Class_All/Class_Boss 포함 모든 enum 값에 적용."
-    },
-    {
-     "rawStatement": "bonus bMatkRate,3",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bHealPower,5",
@@ -6346,17 +6379,20 @@
    ],
    "rawScript": "bonus2 bAddClass,Class_All,5;\nbonus bMatkRate,3;\nbonus bHealPower,5;\n",
    "conditionalRaw": [],
-   "effects": [],
+   "effects": [
+    {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 3,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    }
+   ],
    "unsupportedEffects": [
     {
      "rawStatement": "bonus2 bAddClass,Class_All,5",
      "constant": "bAddClass",
      "reason": "\"bonus2 bAddClass,c,x;\" — scope 불일치로 SAFE 취소(P2-A.4-정정): rAthena battle_calc_cardfix는 평타+물리 스킬(+마법 스킬 별도)에 광범위하게 적용되는데 TextRAG cardAtkPct/cardBossAtk는 평타 블록에만 연결돼 있음(engine-extension-required). Class_All/Class_Boss 포함 모든 enum 값에 적용."
-    },
-    {
-     "rawStatement": "bonus bMatkRate,3",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
     },
     {
      "rawStatement": "bonus bHealPower,5",
@@ -6399,14 +6435,16 @@
    ],
    "rawScript": "bonus bUseSPrate,-25;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus bUseSPrate,-25",
-     "constant": "bUseSPrate",
-     "reason": "\"bonus bUseSPrate,n; SP consumption + n%\" — stacking parity 불일치로 SAFE 취소(P2-A.4-정정): rAthena `sd->dsprate+=val`(additive, 최종 한 번만 배율화)인데 TextRAG cardSpCostMul은 소스별 곱연산 누적이라 2개 이상 중첩 시 결과가 달라짐(engine-extension-required)."
+     "type": "combat",
+     "key": "spCostRatePct",
+     "subKey": null,
+     "value": -25,
+     "reason": "doc: \"bonus bUseSPrate,n; SP consumption + n%\" — dsprate additive 누적 실코드 재현, getSkillSpCost 실코드 재확인(skill.cpp skill_get_requirement, P2-A.5)"
     }
    ],
+   "unsupportedEffects": [],
    "status": "source-needed",
    "statusReasons": [
     "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
@@ -6461,19 +6499,20 @@
     },
     {
      "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 5,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    },
+    {
+     "type": "combat",
      "key": "elemReduce",
      "subKey": "무속성",
      "value": 5,
      "reason": "doc: \"bonus2 bSubEle,e,x; +x% damage reduction against attack element e\""
     }
    ],
-   "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bMatkRate,5",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
-    }
-   ],
+   "unsupportedEffects": [],
    "status": "source-needed",
    "statusReasons": [
     "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
@@ -6520,6 +6559,13 @@
    "conditionalRaw": [],
    "effects": [
     {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 10,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    },
+    {
      "type": "stat",
      "key": "int",
      "subKey": null,
@@ -6534,13 +6580,7 @@
      "reason": "doc: \"bonus2 bSubRace,r,x; +x% damage reduction against race r\""
     }
    ],
-   "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bMatkRate,10",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
-    }
-   ],
+   "unsupportedEffects": [],
    "status": "source-needed",
    "statusReasons": [
     "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
@@ -6587,6 +6627,13 @@
    "conditionalRaw": [],
    "effects": [
     {
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 10,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
+    },
+    {
      "type": "stat",
      "key": "int",
      "subKey": null,
@@ -6601,13 +6648,7 @@
      "reason": "doc: \"bonus2 bSubRace,r,x; +x% damage reduction against race r\""
     }
    ],
-   "unsupportedEffects": [
-    {
-     "rawStatement": "bonus bMatkRate,10",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
-    }
-   ],
+   "unsupportedEffects": [],
    "status": "source-needed",
    "statusReasons": [
     "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
@@ -7789,15 +7830,16 @@
      "subKey": null,
      "value": 0.1,
      "reason": "doc: \"bonus bCastrate,n; Increases/decreases variable cast time by n%\" — fraction=-n/100, additive stacking parity 확인(pc.cpp SP_CASTRATE, P2-A.4-정정 §7)"
-    }
-   ],
-   "unsupportedEffects": [
+    },
     {
-     "rawStatement": "bonus bUseSPRate,-10",
-     "constant": "bUseSPRate",
-     "reason": "\"bonus bUseSPrate,n\" (대소문자 변형) — bUseSPrate와 동일 사유."
+     "type": "combat",
+     "key": "spCostRatePct",
+     "subKey": null,
+     "value": -10,
+     "reason": "doc: \"bonus bUseSPrate,n\" (대소문자 변형) — 위와 동일"
     }
    ],
+   "unsupportedEffects": [],
    "status": "source-needed",
    "statusReasons": [
     "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"
@@ -9096,15 +9138,16 @@
      "subKey": null,
      "value": 1,
      "reason": "doc: \"bonus bInt,n; INT + n\""
-    }
-   ],
-   "unsupportedEffects": [
+    },
     {
-     "rawStatement": "bonus bMatkRate,2",
-     "constant": "bMatkRate",
-     "reason": "\"bonus bMatkRate,n; Magical attack power + n%\" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7)."
+     "type": "combat",
+     "key": "matkPct",
+     "subKey": null,
+     "value": 2,
+     "reason": "doc: \"bonus bMatkRate,n; Magical attack power + n%\" — (base+flat matk)*rate/100 실코드 재현, additive stacking parity 확인(status.cpp SCB_MATK, P2-A.5)"
     }
    ],
+   "unsupportedEffects": [],
    "status": "source-needed",
    "statusReasons": [
     "필요 아이템 중 TextRAG 매핑이 없거나 모호함(추측 매핑 금지)"

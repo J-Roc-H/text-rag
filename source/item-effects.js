@@ -39,6 +39,11 @@ function makeEmptyItemEffects() {
       armorElement: null, immune: null, magicImmune: false,
       spCostMul: 1, healBoost: 0, castReduction: 0, doubleAtkCard: 0,
       defIgnore: false, hpDrainSelf: 0, dropBonus: null,
+      // P2-A.5: bMatkRate/bUseSPrate(rAthena pre-RE `sd->matk_rate`/`sd->dsprate`,
+      // 둘 다 100 기준 additive accumulator) 대응 신규 필드. "10 = 10%"(형제
+      // %필드와 같은 관례) additive 누적, 기존 spCostMul(곱연산 배율, 기본값 1)과는
+      // 별개 필드다 -- 재사용하지 않는다(COMBO_ENGINE_EXTENSION_P2A5.md §6 근거).
+      matkPct: 0, spCostRatePct: 0,
     },
     status: {},
     skill: { skillDmg: null, grantSkill: null },
@@ -75,6 +80,10 @@ var _ITEM_EFF_SIMPLE_COMBAT_KEYS = [
   'mdef', 'maxHp', 'maxSp', 'hit', 'flee', 'crit', 'aspd',
   'maxHpPct', 'maxSpPct', 'hpRegenPct', 'spRegenPct', 'atkPct',
   'bossAtk', 'dmgReduceAll', 'rangedDmgReduce', 'healBoost', 'castReduction', 'hpDrainSelf',
+  // P2-A.5: matkPct/spCostRatePct 둘 다 rAthena additive accumulator(matk_rate/
+  // dsprate)와 정확히 같은 방식으로 이 제네릭 루프에 태워 추가 코드 없이 additive
+  // 누적 + ledger 기록 + mergeItemEffectsIntoBonus 병합까지 재사용한다.
+  'matkPct', 'spCostRatePct',
 ];
 var _ITEM_EFF_COUNTER_KEYS = ['raceAtk', 'elemAtk', 'sizeAtk', 'magicRaceAtk', 'raceDmgReduce', 'elemReduce'];
 
@@ -410,9 +419,25 @@ function mergeItemEffectsIntoBonus(fx, bonus) {
 // 스킬 선택(4곳: 힐/티어/버프/폴백)과 실제 차감(1곳), 수동 스킬 사용의 판정·차감·환불
 // (3곳)까지 총 8개 호출부가 전부 이 값을 봐야 "판정 40인데 차감 28" 같은 불일치가
 // 생기지 않는다(P0-C2 지시 §5).
+//
+// P2-A.5 확장(bUseSPrate): rAthena skill.cpp 실코드 확인(`skill_get_requirement`,
+// pinned commit e985006) 결과 실제 SP 소비식은
+//   req.sp = base_sp_cost (+ sp_rate 항, 별개 스킬 자체 메커닉이라 여기 대상 아님)
+//   if (dsprate != 100) req.sp = req.sp * dsprate / 100;   // 정수 나눗셈(절삭)
+//   ... (skillusesprate/skillusesp -- bUseSPrate와 무관한 별개 상수, 대상 아님)
+//   req.sp = cap_value(req.sp * sp_skill_rate_bonus/100, 0, SHRT_MAX);
+// dsprate는 status.cpp에서 100을 기준으로 시작해 `sd->dsprate += val`(additive,
+// P2-A.5 재확인)로 누적되고 `if(dsprate<0) dsprate=0` 하한 clamp가 걸린다(음수로
+// 못 내려감, 0%가 하한). 새 canonical 필드 spCostRatePct(additive, "10=10%")를
+// stats.cardSpCostRatePct로 노출해 (100+spCostRatePct)/100을 rate 배율로 삼고,
+// 기존 spCostMul(콤보 SAFE 취소 사유였던 그 곱연산 필드, db-items.json에 실제
+// 사용처 0건 재확인됨)은 건드리지 않은 채 같은 최종 곱셈에 함께 곱한다 -- 둘 다
+// 기본값(0%/1.0)일 때 기존 결과와 완전히 동일(zero-effect parity).
 function getSkillSpCost(baseCost, stats) {
-  var mul = (stats && stats.cardSpCostMul != null) ? stats.cardSpCostMul : 1;
-  return Math.max(0, Math.floor((baseCost || 0) * mul));
+  var legacyMul = (stats && stats.cardSpCostMul != null) ? stats.cardSpCostMul : 1;
+  var ratePct = (stats && stats.cardSpCostRatePct != null) ? stats.cardSpCostRatePct : 0;
+  var rateMul = Math.max(0, 100 + ratePct) / 100; // dsprate 0% 하한 clamp와 동일
+  return Math.max(0, Math.floor((baseCost || 0) * rateMul * legacyMul));
 }
 
 // ══════════════════════════════════════════════

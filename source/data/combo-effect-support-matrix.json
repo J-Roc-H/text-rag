@@ -13,9 +13,9 @@
     "safeDefinition": "consumerPresent && scopeParity && stackingParity 모두 true여야 safe-existing-consumer(P2-A.4-정정 §2)",
     "generatedFrom": "source/data/db-combos.json (재생성 후 census) + index.html/pc.cpp/battle.cpp(rAthena pinned e985006) 실코드 재확인 + ITEM_EFFECT_P0_CLOSEOUT.md",
     "verdictCounts": {
-      "safe-existing-consumer": 2,
-      "stacking-scope-mismatch": 4,
-      "engine-extension-required": 30,
+      "safe-existing-consumer": 5,
+      "stacking-scope-mismatch": 2,
+      "engine-extension-required": 29,
       "trigger-model-missing": 2,
       "identity-mapping-gap": 3,
       "dynamic-expression": 4,
@@ -51,36 +51,43 @@
       "stackingParity": true
     },
     {
-      "constant": "bUseSPrate",
-      "verdict": "stacking-scope-mismatch",
-      "canonicalTarget": null,
-      "instanceCount": 5,
-      "comboCount": 5,
-      "sampleComboIds": [
-        "rathena-pre-0033-01",
-        "rathena-pre-0033-02",
-        "rathena-pre-0035-01",
-        "rathena-pre-0035-02",
-        "rathena-pre-0067-01"
-      ],
-      "evidence": "consumer: getSkillSpCost `baseCost*mul`(존재). scope: SP 소비 전체에 적용 -- 동일. stacking 불일치: rAthena pc.cpp `case SP_SPRATE: sd->dsprate += val;`(additive, 최종 (100+dsprate)/100 배율을 한 번만 적용 -- 예: -20%+-20%=-40% 누적 후 60%). TextRAG cardSpCostMul은 소스별 곱연산 누적(`fx.combat.spCostMul*=Number(it.spCostMul)`, 0.8*0.8=64%) -- 소스 1개일 땐 결과가 같아 최초 검증에서 놓쳤으나 2개 이상이면 원작(60%)과 달라짐(재확인 P2-A.4-정정 §3, 테스트 M).",
+      "constant": "bMatkRate",
+      "verdict": "safe-existing-consumer",
+      "canonicalTarget": {
+        "type": "combat",
+        "key": "matkPct"
+      },
+      "instanceScope": "리터럴 1-인자 `bonus bMatkRate,n;` 형태만(동적 표현식 제외)",
+      "evidence": "consumer: template.html calcStats MATK 계산부에 신규 연결 -- `bonusMAtk = Math.floor((baseMAtk+itemFlatMAtk)*matkRateMul) - baseMAtk` (matkRateMul = Math.max(0,100+bonus.matkPct)/100). scope: rAthena status.cpp(pre-RE, SCB_MATK) 실코드 확인 -- `matk_min/max = base + ematk; if(matk_rate!=100) matk *= matk_rate/100;` -- base+flat 아이템 MATK 전체에 적용되는 단일 배율(스킬별 분기 없음), TextRAG도 동일 범위. stacking: rAthena `sd->matk_rate += val`(100 기준 additive, 0% 하한 clamp)이고 TextRAG collector도 matkPct를 `_ITEM_EFF_SIMPLE_COMBAT_KEYS`(additive) 경로로 누적 -- +6+4=+10%로 정확히 일치(P2-A.5, 테스트 G/H).",
       "consumerPresent": true,
       "scopeParity": true,
-      "stackingParity": false
+      "stackingParity": true
+    },
+    {
+      "constant": "bUseSPrate",
+      "verdict": "safe-existing-consumer",
+      "canonicalTarget": {
+        "type": "combat",
+        "key": "spCostRatePct"
+      },
+      "instanceScope": "리터럴 1-인자 `bonus bUseSPrate,n;` 형태만(동적 표현식 제외)",
+      "evidence": "consumer: item-effects.js getSkillSpCost() 신규 필드 -- `rateMul=Math.max(0,100+cardSpCostRatePct)/100` 곱연산 경로. scope: rAthena skill.cpp skill_get_requirement 실코드 확인 -- `req.sp = req.sp * dsprate / 100;`(스킬 SP 소비 전체에 적용, 스킬별 분기 없음), TextRAG도 getSkillSpCost() 단일 정본 경로에서 동일 범위로 적용. stacking: rAthena `sd->dsprate += val`(100 기준 additive, 0% 하한 clamp -- status.cpp `if(dsprate<0) dsprate=0`)이고 TextRAG collector도 spCostRatePct를 같은 additive 경로로 누적 -- 신규 필드라 기존 spCostMul(곱연산, db-items.json 실사용 0건)을 오재사용하지 않는다(P2-A.5, 테스트 A-F).",
+      "consumerPresent": true,
+      "scopeParity": true,
+      "stackingParity": true
     },
     {
       "constant": "bUseSPRate",
-      "verdict": "stacking-scope-mismatch",
-      "canonicalTarget": null,
-      "instanceCount": 1,
-      "comboCount": 1,
-      "sampleComboIds": [
-        "rathena-pre-0084-01"
-      ],
-      "evidence": "bUseSPrate의 대소문자 변형, 동일 사유",
+      "verdict": "safe-existing-consumer",
+      "canonicalTarget": {
+        "type": "combat",
+        "key": "spCostRatePct"
+      },
+      "instanceScope": "bUseSPrate의 대소문자 변형, 동일 조건",
+      "evidence": "bUseSPrate와 동일",
       "consumerPresent": true,
       "scopeParity": true,
-      "stackingParity": false
+      "stackingParity": true
     },
     {
       "constant": "bAddClass",
@@ -503,24 +510,6 @@
         "rathena-pre-0010-02"
       ],
       "evidence": "matk는 파생값, 직접 가산 지점 불명확(bonus.matk와 동일 의미인지 미확정)",
-      "consumerPresent": false,
-      "scopeParity": null,
-      "stackingParity": null
-    },
-    {
-      "constant": "bMatkRate",
-      "verdict": "engine-extension-required",
-      "canonicalTarget": null,
-      "instanceCount": 27,
-      "comboCount": 27,
-      "sampleComboIds": [
-        "rathena-pre-0004-01",
-        "rathena-pre-0004-02",
-        "rathena-pre-0005-01",
-        "rathena-pre-0005-02",
-        "rathena-pre-0012-01"
-      ],
-      "evidence": "buildMatkBreakdown: bonus.matk는 flat만 가산, %기반 MATK 필드 자체가 없음(P2-A.4 §7)",
       "consumerPresent": false,
       "scopeParity": null,
       "stackingParity": null

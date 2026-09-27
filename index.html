@@ -37691,6 +37691,10 @@ function buildMatkBreakdown(s, totInt, baseMAtk, bonus, se) {
   let parts = [];
   parts.push({ type: "기본값", value: baseMAtk, formula: `INT(${totInt}) + (INT/5)²` });
   if (bonus.matk && bonus.matk > 0) parts.push({ type: "장비/카드 보너스", value: bonus.matk });
+  // P2-A.5: matkPct는 (기본값+장비/카드 보너스)에 곱연산으로 적용된다(rAthena
+  // status.cpp 실코드 순서, calcStats MATK 계산부 주석 참조) -- 별도 수치란으로
+  // 표시해 상태창이 "실제로 반영된 배율"을 숨기지 않게 한다.
+  if (bonus.matkPct) parts.push({ type: "마법 공격력 배율", value: (bonus.matkPct > 0 ? '+' : '') + bonus.matkPct, unit: "%" });
   if (se.lexAeterna) parts.push({ type: "렉스 에테르나", value: baseMAtk, description: "다음 마법 피해 2배" });
 
   return { name: "MATK", value: s.totalMAtk, breakdown: parts };
@@ -37835,7 +37839,8 @@ function calcStats(playerOverride){
     armorElement:null, immune:null, magicImmune:false,
     spCostMul:1, healBoost:0, castReduction:0,
     doubleAtkCard:0, defIgnore:false, hpDrainSelf:0,
-    skillDmg:null, grantSkill:null, dropBonus:null };
+    skillDmg:null, grantSkill:null, dropBonus:null,
+    matkPct:0, spCostRatePct:0 };
 
   let wAtk=0; p.weaponType="맨손"; p.weaponElement="무속성";
 
@@ -38011,7 +38016,16 @@ function calcStats(playerOverride){
 
   // MATK: INT + floor(INT/5)^2  (± 랜덤 범위는 텍스트게임상 고정값으로 처리)
   let baseMAtk = totInt + Math.pow(Math.floor(totInt/5), 2);
-  let bonusMAtk = bonus.matk || 0;
+  // P2-A.5: bMatkRate -- rAthena status.cpp(pre-RE, SCB_MATK 블록) 실코드 확인 결과
+  // 순서는 matk=(base_matk+ematk)*matk_rate/100(0% 하한 clamp)이고, 스킬 pseudobuff/
+  // 소모품 MATK/SC_MAGICPOWER는 이 배율 *이후*에 더해진다. TextRAG의 imposMannus/
+  // ampMagic/lexAeterna는 rAthena 실제 스킬과 1:1 대응이 아닌 기존 근사치라 이번
+  // 단계에서 그 공식/순서를 바꾸지 않는다(범위 밖, COMBO_ENGINE_EXTENSION_P2A5.md
+  // §8-9) -- 새 배율은 "base + 아이템 flat MATK"에만 적용하고 기존 버프 가산은
+  // 그대로 그 뒤에 이어붙인다. matkPct=0(기존 아이템 전부)이면 결과가 완전히 동일.
+  let itemFlatMAtk = bonus.matk || 0;
+  let matkRateMul = Math.max(0, 100 + (bonus.matkPct||0)) / 100;
+  let bonusMAtk = Math.floor((baseMAtk + itemFlatMAtk) * matkRateMul) - baseMAtk;
   if(se.imposMannus) bonusMAtk += (se.imposMannus.matkBonus||0); // 임포시티오 마누스
   if(se.ampMagic)    bonusMAtk += Math.floor(baseMAtk*(se.ampMagic.matkBonus||0)); // 마법력 증폭
   if(se.lexAeterna)  bonusMAtk += baseMAtk; // 렉스 에테르나: 다음 마법 피해 2배
@@ -38231,6 +38245,10 @@ function calcStats(playerOverride){
     cardDefIgnore:bonus.defIgnore, cardHpDrainSelf:bonus.hpDrainSelf,
     cardSkillDmg:bonus.skillDmg, cardGrantSkill:bonus.grantSkill,
     cardDropBonus:bonus.dropBonus,
+    // P2-A.5: bMatkRate/bUseSPrate 신규 필드. cardMatkPct는 표시/진단용(실제 MATK
+    // 반영은 이미 위 matk:totalMAtk에 끝남 -- P1 "단일 calcStats 정본" 원칙 유지).
+    // cardSpCostRatePct는 getSkillSpCost()가 직접 읽는 소비 경로다.
+    cardMatkPct:bonus.matkPct, cardSpCostRatePct:bonus.spCostRatePct,
     // P0-B: 아이템/카드 효과 집계 원본(ledger/pending/unsupported/events 포함) — P0-C 이후
     // 소비처가 이 값을 재사용한다. calcStats 자신의 위 cardXxx 필드들과 별개로, 집계
     // 출처 추적이 필요한 소비처는 이쪽을 본다.
@@ -38379,12 +38397,14 @@ var EFFECT_LEDGER_FORMATTERS = {
   elemAtk:       { group:'공격', fmt:function(v){ return Object.keys(v).map(function(k){ return k+' 대상 피해 '+_fxPct(v[k]); }); } },
   sizeAtk:       { group:'공격', fmt:function(v){ return Object.keys(v).map(function(k){ return k+' 대상 피해 '+_fxPct(v[k]); }); } },
   bossAtk:       { group:'공격', fmt:function(v){ return ['보스(MVP) 피해 '+_fxPct(v)]; } },
+  matkPct:       { group:'공격', fmt:function(v){ return ['마법 공격력 '+_fxPct(v)]; } },
   defIgnore:     { group:'공격', fmt:function(){ return ['DEF 무시']; } },
   dmgReduceAll:  { group:'방어', fmt:function(v){ return ['모든 피해 -'+v+'%']; } },
   raceDmgReduce: { group:'방어', fmt:function(v){ return Object.keys(v).map(function(k){ return k+'에게 받는 피해 -'+v[k]+'%'; }); } },
   elemReduce:    { group:'방어', fmt:function(v){ return Object.keys(v).map(function(k){ return k+' 공격에 받는 피해 -'+v[k]+'%'; }); } },
   immune:        { group:'상태', fmt:function(v){ return v.map(function(k){ var d=DB.statusEffects&&DB.statusEffects[k]; return (d?d.name:k)+' 면역'; }); } },
   spCostMul:     { group:'자원', fmt:function(v){ return ['SP 소비 ×'+v]; } },
+  spCostRatePct: { group:'자원', fmt:function(v){ return ['SP 소비 '+_fxPct(v)]; } },
   castReduction: { group:'자원', fmt:function(v){ return ['캐스팅 -'+Math.round(v*100)+'%']; } },
   hpDrainSelf:   { group:'자원', fmt:function(){ return ['전투 중 자기 HP 소모']; } },
   raceBonus:     { group:'발동', fmt:function(v){ return ['공격 시 '+v.race+' 대상 피해 '+v.dmgMult+'배']; } },
@@ -38425,7 +38445,8 @@ function _effectIdentityDiscriminator(key, value, idx, subKeys){
   if(key==='seProc') return value && value.se;
   if(key==='autoSpell') return value && value.skill;
   return null; // 단일값 키(atkPct/bossAtk/defIgnore/dmgReduceAll/spCostMul/castReduction/
-               // hpDrainSelf/lifesteal/hpDrain/spDrain/inflict/dropBonus)는 key 자체로 충분
+               // hpDrainSelf/lifesteal/hpDrain/spDrain/inflict/dropBonus/matkPct/
+               // spCostRatePct)는 key 자체로 충분
 }
 function _ledgerEntryRows(entry){
   var key = entry.key;
@@ -50649,6 +50670,11 @@ function makeEmptyItemEffects() {
       armorElement: null, immune: null, magicImmune: false,
       spCostMul: 1, healBoost: 0, castReduction: 0, doubleAtkCard: 0,
       defIgnore: false, hpDrainSelf: 0, dropBonus: null,
+      // P2-A.5: bMatkRate/bUseSPrate(rAthena pre-RE `sd->matk_rate`/`sd->dsprate`,
+      // 둘 다 100 기준 additive accumulator) 대응 신규 필드. "10 = 10%"(형제
+      // %필드와 같은 관례) additive 누적, 기존 spCostMul(곱연산 배율, 기본값 1)과는
+      // 별개 필드다 -- 재사용하지 않는다(COMBO_ENGINE_EXTENSION_P2A5.md §6 근거).
+      matkPct: 0, spCostRatePct: 0,
     },
     status: {},
     skill: { skillDmg: null, grantSkill: null },
@@ -50685,6 +50711,10 @@ var _ITEM_EFF_SIMPLE_COMBAT_KEYS = [
   'mdef', 'maxHp', 'maxSp', 'hit', 'flee', 'crit', 'aspd',
   'maxHpPct', 'maxSpPct', 'hpRegenPct', 'spRegenPct', 'atkPct',
   'bossAtk', 'dmgReduceAll', 'rangedDmgReduce', 'healBoost', 'castReduction', 'hpDrainSelf',
+  // P2-A.5: matkPct/spCostRatePct 둘 다 rAthena additive accumulator(matk_rate/
+  // dsprate)와 정확히 같은 방식으로 이 제네릭 루프에 태워 추가 코드 없이 additive
+  // 누적 + ledger 기록 + mergeItemEffectsIntoBonus 병합까지 재사용한다.
+  'matkPct', 'spCostRatePct',
 ];
 var _ITEM_EFF_COUNTER_KEYS = ['raceAtk', 'elemAtk', 'sizeAtk', 'magicRaceAtk', 'raceDmgReduce', 'elemReduce'];
 
@@ -51020,9 +51050,25 @@ function mergeItemEffectsIntoBonus(fx, bonus) {
 // 스킬 선택(4곳: 힐/티어/버프/폴백)과 실제 차감(1곳), 수동 스킬 사용의 판정·차감·환불
 // (3곳)까지 총 8개 호출부가 전부 이 값을 봐야 "판정 40인데 차감 28" 같은 불일치가
 // 생기지 않는다(P0-C2 지시 §5).
+//
+// P2-A.5 확장(bUseSPrate): rAthena skill.cpp 실코드 확인(`skill_get_requirement`,
+// pinned commit e985006) 결과 실제 SP 소비식은
+//   req.sp = base_sp_cost (+ sp_rate 항, 별개 스킬 자체 메커닉이라 여기 대상 아님)
+//   if (dsprate != 100) req.sp = req.sp * dsprate / 100;   // 정수 나눗셈(절삭)
+//   ... (skillusesprate/skillusesp -- bUseSPrate와 무관한 별개 상수, 대상 아님)
+//   req.sp = cap_value(req.sp * sp_skill_rate_bonus/100, 0, SHRT_MAX);
+// dsprate는 status.cpp에서 100을 기준으로 시작해 `sd->dsprate += val`(additive,
+// P2-A.5 재확인)로 누적되고 `if(dsprate<0) dsprate=0` 하한 clamp가 걸린다(음수로
+// 못 내려감, 0%가 하한). 새 canonical 필드 spCostRatePct(additive, "10=10%")를
+// stats.cardSpCostRatePct로 노출해 (100+spCostRatePct)/100을 rate 배율로 삼고,
+// 기존 spCostMul(콤보 SAFE 취소 사유였던 그 곱연산 필드, db-items.json에 실제
+// 사용처 0건 재확인됨)은 건드리지 않은 채 같은 최종 곱셈에 함께 곱한다 -- 둘 다
+// 기본값(0%/1.0)일 때 기존 결과와 완전히 동일(zero-effect parity).
 function getSkillSpCost(baseCost, stats) {
-  var mul = (stats && stats.cardSpCostMul != null) ? stats.cardSpCostMul : 1;
-  return Math.max(0, Math.floor((baseCost || 0) * mul));
+  var legacyMul = (stats && stats.cardSpCostMul != null) ? stats.cardSpCostMul : 1;
+  var ratePct = (stats && stats.cardSpCostRatePct != null) ? stats.cardSpCostRatePct : 0;
+  var rateMul = Math.max(0, 100 + ratePct) / 100; // dsprate 0% 하한 clamp와 동일
+  return Math.max(0, Math.floor((baseCost || 0) * rateMul * legacyMul));
 }
 
 // ══════════════════════════════════════════════

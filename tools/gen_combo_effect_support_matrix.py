@@ -73,8 +73,8 @@ _VERDICT_DEFAULT_FLAGS = {
     "stacking-scope-mismatch": (True, None, None),  # scope/stacking 중 실패한 축만 개별 override
 }
 
-# 오직 이 2개만 SAFE로 남는다(bCastrate/대소문자 변형) -- consumer+scope+stacking
-# 3축 모두 실코드로 확인 완료.
+# bCastrate(P2-A.4-정정) + bMatkRate/bUseSPrate(P2-A.5 엔진 확장)만 SAFE로 남는다 --
+# consumer+scope+stacking 3축 모두 실코드로 확인 완료.
 SAFE_CONSTANTS = {
     "bCastrate": {
         "canonicalTarget": {"type": "combat", "key": "castReduction"},
@@ -92,29 +92,49 @@ SAFE_CONSTANTS = {
         "instanceScope": "bCastrate의 대소문자 변형, 동일 조건",
         "evidence": "bCastrate와 동일",
     },
+    "bMatkRate": {
+        "canonicalTarget": {"type": "combat", "key": "matkPct"},
+        "instanceScope": "리터럴 1-인자 `bonus bMatkRate,n;` 형태만(동적 표현식 제외)",
+        "evidence": (
+            "consumer: template.html calcStats MATK 계산부에 신규 연결 -- "
+            "`bonusMAtk = Math.floor((baseMAtk+itemFlatMAtk)*matkRateMul) - baseMAtk` "
+            "(matkRateMul = Math.max(0,100+bonus.matkPct)/100). "
+            "scope: rAthena status.cpp(pre-RE, SCB_MATK) 실코드 확인 -- "
+            "`matk_min/max = base + ematk; if(matk_rate!=100) matk *= matk_rate/100;` -- "
+            "base+flat 아이템 MATK 전체에 적용되는 단일 배율(스킬별 분기 없음), TextRAG도 동일 범위. "
+            "stacking: rAthena `sd->matk_rate += val`(100 기준 additive, 0% 하한 clamp)이고 TextRAG "
+            "collector도 matkPct를 `_ITEM_EFF_SIMPLE_COMBAT_KEYS`(additive) 경로로 누적 -- "
+            "+6+4=+10%로 정확히 일치(P2-A.5, 테스트 G/H)."
+        ),
+    },
+    "bUseSPrate": {
+        "canonicalTarget": {"type": "combat", "key": "spCostRatePct"},
+        "instanceScope": "리터럴 1-인자 `bonus bUseSPrate,n;` 형태만(동적 표현식 제외)",
+        "evidence": (
+            "consumer: item-effects.js getSkillSpCost() 신규 필드 -- "
+            "`rateMul=Math.max(0,100+cardSpCostRatePct)/100` 곱연산 경로. "
+            "scope: rAthena skill.cpp skill_get_requirement 실코드 확인 -- "
+            "`req.sp = req.sp * dsprate / 100;`(스킬 SP 소비 전체에 적용, 스킬별 분기 없음), "
+            "TextRAG도 getSkillSpCost() 단일 정본 경로에서 동일 범위로 적용. "
+            "stacking: rAthena `sd->dsprate += val`(100 기준 additive, 0% 하한 clamp -- "
+            "status.cpp `if(dsprate<0) dsprate=0`)이고 TextRAG collector도 spCostRatePct를 같은 "
+            "additive 경로로 누적 -- 신규 필드라 기존 spCostMul(곱연산, db-items.json 실사용 0건)을 "
+            "오재사용하지 않는다(P2-A.5, 테스트 A-F)."
+        ),
+    },
+    "bUseSPRate": {
+        "canonicalTarget": {"type": "combat", "key": "spCostRatePct"},
+        "instanceScope": "bUseSPrate의 대소문자 변형, 동일 조건",
+        "evidence": "bUseSPrate와 동일",
+    },
 }
 
 # 최초 P2-A.4에서 SAFE였다가 이번 정정으로 stacking-scope-mismatch로 재판정된 3종.
 # consumer는 실제로 존재(consumerPresent=True)하지만 scope 또는 stacking이 원작과 달라
 # false로 표시한다.
 REVERTED_MISMATCHES = {
-    "bUseSPrate": {
-        "scopeParity": True,
-        "stackingParity": False,
-        "evidence": (
-            "consumer: getSkillSpCost `baseCost*mul`(존재). scope: SP 소비 전체에 적용 -- 동일. "
-            "stacking 불일치: rAthena pc.cpp `case SP_SPRATE: sd->dsprate += val;`(additive, 최종 "
-            "(100+dsprate)/100 배율을 한 번만 적용 -- 예: -20%+-20%=-40% 누적 후 60%). TextRAG "
-            "cardSpCostMul은 소스별 곱연산 누적(`fx.combat.spCostMul*=Number(it.spCostMul)`, "
-            "0.8*0.8=64%) -- 소스 1개일 땐 결과가 같아 최초 검증에서 놓쳤으나 2개 이상이면 원작(60%)과 "
-            "달라짐(재확인 P2-A.4-정정 §3, 테스트 M)."
-        ),
-    },
-    "bUseSPRate": {
-        "scopeParity": True,
-        "stackingParity": False,
-        "evidence": "bUseSPrate의 대소문자 변형, 동일 사유",
-    },
+    # bUseSPrate/bUseSPRate는 P2-A.5에서 신규 additive 필드(spCostRatePct)로 SAFE 재확정
+    # 됐다 -- 위 SAFE_CONSTANTS 참조. 여기 남은 것은 여전히 취소 상태인 2종뿐이다.
     "bAddClass": {
         "scopeParity": False,
         "stackingParity": True,
@@ -146,8 +166,11 @@ REVERTED_MISMATCHES = {
 }
 
 # 이미 P0-close/P2-A 단계에서 문서화된, 그대로 유지되는 판정(재확인만).
+# bMatkRate는 P2-A.5에서 SAFE_CONSTANTS로 이동했다(위 참조) -- 리터럴 형태만 SAFE고
+# 동적 표현식 인스턴스는 여전히 unsupported로 남지만 별도 matrix row는 만들지 않는다
+# (bCastrate의 스킬 지정/동적 표현식 인스턴스와 같은 기존 관례 -- constant 이름이
+# SAFE_CONSTANTS에 있으면 census에서 스킵, UNSUPPORTED_REASONS 텍스트로만 근거 유지).
 VERDICT_TABLE = {
-    "bMatkRate": ("engine-extension-required", "buildMatkBreakdown: bonus.matk는 flat만 가산, %기반 MATK 필드 자체가 없음(P2-A.4 §7)"),
     "bMatk": ("engine-extension-required", "matk는 파생값, 직접 가산 지점 불명확(bonus.matk와 동일 의미인지 미확정)"),
     "bAtk": ("engine-extension-required", "문서 자체가 unofficial 표기, bBaseAtk와 관계 불명확"),
     "bAtkRate": ("engine-extension-required", "%기반 ATK 가산 vocabulary 없음(bBaseAtk는 flat)"),
