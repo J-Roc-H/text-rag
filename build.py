@@ -65,6 +65,7 @@ BLOCKS = {
     "DB_COMBOS": "db-combos.json",
     "DB_PRODUCTION": "db-production.json",
     "DB_SHOPS": "db-shops.json",
+    "DB_MVP_RESPAWN": "db-mvp-respawn.json",
 }
 
 NPC_SERVICES = {
@@ -394,6 +395,49 @@ def audit_item_effects(items):
     return fails, sorted(set(warns))
 
 
+def audit_monster_drops(monsters, items):
+    """몬스터 드롭 키 실존 감사 -- 런타임 runValidationGate() ①과 같은 규칙.
+
+    rollDrops()는 DB.items[k]를 그대로 조회하므로 없는 키는 에러 없이 드롭만
+    사라진다. 아이템 키를 정본화(ITEM_KEY_ALIASES)할 때 드롭표를 같이 안 고친
+    2026-09-27 사고(81건)의 재발 방지: 빌드 단계에서 즉시 실패시킨다.
+    """
+    errors = []
+    for mid, mon in monsters.items():
+        for name in (mon.get("drops") or {}):
+            if name not in items:
+                errors.append(f'{mon.get("name")}({mid}) -> {name}')
+    return errors
+
+
+def audit_mvp_respawn(respawn, maps, monsters):
+    """[보스 기척] MVP 리젠 주기 데이터 감사.
+
+    hasMvp로 쓰이는 모든 보스에 행이 있어야 한다(없으면 런타임이 조용히 기본값을 쓴다).
+    verified 행은 양수 delayMs와 출처(ref)가 필수, source-needed 행은 추측값(delayMs)을 넣지 않는다.
+    """
+    errors = []
+    for name, m in maps.items():
+        gid = m.get("hasMvp")
+        if gid and str(gid) not in respawn:
+            errors.append(f"{name}: hasMvp {gid} 리젠 행 없음")
+    for gid, e in respawn.items():
+        if gid.startswith("_"):
+            continue
+        if gid not in monsters:
+            errors.append(f"{gid}: 몬스터 DB 미등록")
+        st = e.get("status")
+        if st == "verified":
+            if not (isinstance(e.get("delayMs"), int) and e["delayMs"] > 0) or not e.get("ref"):
+                errors.append(f"{gid}: verified인데 delayMs/ref 없음")
+        elif st == "source-needed":
+            if e.get("delayMs") is not None:
+                errors.append(f"{gid}: source-needed에 추측 delayMs")
+        else:
+            errors.append(f"{gid}: 알 수 없는 status {st}")
+    return errors
+
+
 def audit_quest_item_sources(template, parsed):
     """Fail the build when a gather quest has no real acquisition route."""
     targets = set(re.findall(r"type\s*:\s*['\"]gather['\"][\s\S]{0,220}?target\s*:\s*['\"]([^'\"]+)['\"]", template))
@@ -660,6 +704,16 @@ def main():
     template = open(TEMPLATE_PATH, encoding="utf-8-sig", newline=None).read()
     raw, parsed = load_data_files()
     audit_quest_item_sources(template, parsed)
+    drop_errors = audit_monster_drops(parsed["DB_MONSTERS"], parsed["DB_ITEMS"])
+    if drop_errors:
+        joined = "\n  - ".join(drop_errors)
+        raise ValueError(f"몬스터 드롭 키 DB 미등록 (조용한 드롭 실패):\n  - {joined}")
+    print("OK - monster drop key audit")
+    respawn_errors = audit_mvp_respawn(parsed["DB_MVP_RESPAWN"], parsed["DB_MAPS"], parsed["DB_MONSTERS"])
+    if respawn_errors:
+        joined = "\n  - ".join(respawn_errors)
+        raise ValueError(f"MVP 리젠 데이터 오류:\n  - {joined}")
+    print("OK - mvp respawn audit")
 
     map_errors, map_warnings = audit_maps(parsed["DB_MAPS"])
     if map_errors:
