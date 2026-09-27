@@ -7,18 +7,21 @@
       "trigger-model-missing",
       "identity-mapping-gap",
       "engine-extension-required",
-      "dynamic-expression"
+      "dynamic-expression",
+      "stacking-scope-mismatch"
     ],
-    "generatedFrom": "source/data/db-combos.json (재생성 후 census) + index.html 실코드 재확인(calcStats/getSkillSpCost/applyIncomingItemReduction/isStatusImmune/_triggerOnHitEvent/triggerItemEffects) + ITEM_EFFECT_P0_CLOSEOUT.md",
+    "safeDefinition": "consumerPresent && scopeParity && stackingParity 모두 true여야 safe-existing-consumer(P2-A.4-정정 §2)",
+    "generatedFrom": "source/data/db-combos.json (재생성 후 census) + index.html/pc.cpp/battle.cpp(rAthena pinned e985006) 실코드 재확인 + ITEM_EFFECT_P0_CLOSEOUT.md",
     "verdictCounts": {
-      "safe-existing-consumer": 7,
+      "safe-existing-consumer": 2,
+      "stacking-scope-mismatch": 4,
       "engine-extension-required": 30,
       "trigger-model-missing": 2,
-      "identity-mapping-gap": 4,
+      "identity-mapping-gap": 3,
       "dynamic-expression": 4,
       "canonical-but-runtime-deferred": 1
     },
-    "note": "safe-existing-consumer 항목은 이미 tools/canonicalize_combos.py에 반영되어 db-combos.json effects[]에 나타난다. 나머지는 여전히 unsupportedEffects[]에 남아 있으며 §24 지시대로 개수를 억지로 늘리지 않는다."
+    "note": "safe-existing-consumer 항목은 이미 tools/canonicalize_combos.py에 반영되어 db-combos.json effects[]에 나타난다. stacking-scope-mismatch는 P2-A.4 최초 판정에서 SAFE였다가 이번 정정으로 취소된 3종 전용이다."
   },
   "entries": [
     {
@@ -29,7 +32,10 @@
         "key": "castReduction"
       },
       "instanceScope": "리터럴 1-인자 `bonus bCastrate,n;` 형태만(스킬 지정 bonus2, 동적 표현식은 제외)",
-      "evidence": "index.html calcStats: `castReduction=Math.min(1.0, base+(bonus.castReduction||0))`, 하한 clamp 없음 -- fraction=-n/100 (P2-A.4 §9)"
+      "evidence": "consumer: index.html calcStats `castReduction=Math.min(1.0, base+(bonus.castReduction||0))`. scope: bCastrate/castReduction 둘 다 '캐스팅 전체'에 걸리는 단일 전역 값(스킬별 분기 없음) -- 범위 동일. stacking: rAthena pc.cpp(pre-re) `case SP_CASTRATE: sd->castrate += val;`(additive)이고 TextRAG도 collector `fx.combat.castReduction=(fx.combat.castReduction||0)+n`(additive) -- 두 소스가 -10%씩 있으면 원작 -20%/TextRAG -0.20 fraction으로 정확히 일치(재확인 P2-A.4-정정 §7).",
+      "consumerPresent": true,
+      "scopeParity": true,
+      "stackingParity": true
     },
     {
       "constant": "bCastRate",
@@ -39,57 +45,78 @@
         "key": "castReduction"
       },
       "instanceScope": "bCastrate의 대소문자 변형, 동일 조건",
-      "evidence": "bCastrate와 동일"
+      "evidence": "bCastrate와 동일",
+      "consumerPresent": true,
+      "scopeParity": true,
+      "stackingParity": true
     },
     {
       "constant": "bUseSPrate",
-      "verdict": "safe-existing-consumer",
-      "canonicalTarget": {
-        "type": "combat",
-        "key": "spCostMul"
-      },
-      "instanceScope": "리터럴 1-인자 형태만",
-      "evidence": "index.html getSkillSpCost: `baseCost*mul`; 아이템 파서: `fx.combat.spCostMul*=Number(it.spCostMul)`(곱연산, 기본값 1) -- multiplier=1+n/100 (P2-A.4 §11)"
+      "verdict": "stacking-scope-mismatch",
+      "canonicalTarget": null,
+      "instanceCount": 5,
+      "comboCount": 5,
+      "sampleComboIds": [
+        "rathena-pre-0033-01",
+        "rathena-pre-0033-02",
+        "rathena-pre-0035-01",
+        "rathena-pre-0035-02",
+        "rathena-pre-0067-01"
+      ],
+      "evidence": "consumer: getSkillSpCost `baseCost*mul`(존재). scope: SP 소비 전체에 적용 -- 동일. stacking 불일치: rAthena pc.cpp `case SP_SPRATE: sd->dsprate += val;`(additive, 최종 (100+dsprate)/100 배율을 한 번만 적용 -- 예: -20%+-20%=-40% 누적 후 60%). TextRAG cardSpCostMul은 소스별 곱연산 누적(`fx.combat.spCostMul*=Number(it.spCostMul)`, 0.8*0.8=64%) -- 소스 1개일 땐 결과가 같아 최초 검증에서 놓쳤으나 2개 이상이면 원작(60%)과 달라짐(재확인 P2-A.4-정정 §3, 테스트 M).",
+      "consumerPresent": true,
+      "scopeParity": true,
+      "stackingParity": false
     },
     {
       "constant": "bUseSPRate",
-      "verdict": "safe-existing-consumer",
-      "canonicalTarget": {
-        "type": "combat",
-        "key": "spCostMul"
-      },
-      "instanceScope": "bUseSPrate의 대소문자 변형, 동일 조건",
-      "evidence": "bUseSPrate와 동일"
+      "verdict": "stacking-scope-mismatch",
+      "canonicalTarget": null,
+      "instanceCount": 1,
+      "comboCount": 1,
+      "sampleComboIds": [
+        "rathena-pre-0084-01"
+      ],
+      "evidence": "bUseSPrate의 대소문자 변형, 동일 사유",
+      "consumerPresent": true,
+      "scopeParity": true,
+      "stackingParity": false
     },
     {
-      "constant": "bAddClass:Class_All",
-      "verdict": "safe-existing-consumer",
-      "canonicalTarget": {
-        "type": "combat",
-        "key": "atkPct"
-      },
-      "instanceScope": "bonus2 bAddClass,Class_All,x -- 실 데이터 관측값 전부",
-      "evidence": "index.html getOutgoingAtkPctMul: `1+(cardAtkPct||0)/100`, 대상 필터 없음 -- Class_All(전체 몬스터)과 트리거 일치 (P2-A.4 §8)"
+      "constant": "bAddClass",
+      "verdict": "stacking-scope-mismatch",
+      "canonicalTarget": null,
+      "instanceCount": 13,
+      "comboCount": 13,
+      "sampleComboIds": [
+        "rathena-pre-0003-01",
+        "rathena-pre-0003-02",
+        "rathena-pre-0003-03",
+        "rathena-pre-0044-01",
+        "rathena-pre-0044-02"
+      ],
+      "evidence": "consumer: getOutgoingAtkPctMul/applyOutgoingRaceElemSizeBossAtk(존재). stacking은 양쪽 다 additive라 일치. scope 불일치: rAthena battle.cpp `battle_calc_cardfix(attack_type,...)`는 battle_calc_weapon_attack(평타+물리 스킬 공용 함수) 경로와 battle_calc_magic_attack(BF_MAGIC, magic_addclass 별도) 경로 양쪽에서 광범위하게 호출된다. TextRAG cardAtkPct/cardBossAtk는 P0-C5가 이미 확정한 대로 processTurn()의 '평타 블록'에만 연결돼 스킬 데미지 경로를 전혀 커버하지 못함 -- Class_All/Class_Boss 등 모든 enum 값에 적용(재확인 P2-A.4-정정 §4, 테스트 N).",
+      "consumerPresent": true,
+      "scopeParity": false,
+      "stackingParity": true
     },
     {
-      "constant": "bAddClass:Class_Boss",
-      "verdict": "safe-existing-consumer",
-      "canonicalTarget": {
-        "type": "combat",
-        "key": "bossAtk"
-      },
-      "instanceScope": "bonus2 bAddClass,Class_Boss,x -- 실 데이터 0건(향후 대비 등재)",
-      "evidence": "index.html applyOutgoingRaceElemSizeBossAtk: `if(cardBossAtk && target.isMvp) mul+=cardBossAtk/100` -- Class_Boss 트리거와 일치 (P2-A.4 §8)"
-    },
-    {
-      "constant": "bSubRace:RC_All",
-      "verdict": "safe-existing-consumer",
-      "canonicalTarget": {
-        "type": "combat",
-        "key": "dmgReduceAll"
-      },
-      "instanceScope": "bonus2 bSubRace,RC_All,x",
-      "evidence": "index.html applyIncomingItemReduction: `if(all) result*=(1-all/100)`, 종족 조건 없음 -- RC_All(전종족)과 트리거 일치 (P2-A.4 §17)"
+      "constant": "bSubRace",
+      "verdict": "stacking-scope-mismatch",
+      "canonicalTarget": null,
+      "instanceCount": 15,
+      "comboCount": 8,
+      "sampleComboIds": [
+        "rathena-pre-0043-01",
+        "rathena-pre-0045-01",
+        "rathena-pre-0046-01",
+        "rathena-pre-0047-01",
+        "rathena-pre-0048-01"
+      ],
+      "evidence": "RC_All 인스턴스 한정. consumer: applyIncomingItemReduction(존재). scope: '종족 무관 전체 감소'라는 트리거 조건은 dmgReduceAll과 일치. stacking(cross-field 합성) 불일치: rAthena battle.cpp `race_fix = subrace[targetRace] + subrace[RC_ALL];`(먼저 합산한 뒤 단 한 번만 적용). TextRAG applyIncomingItemReduction은 dmgReduceAll과 raceDmgReduce를 순차 곱연산으로 따로 적용(`result*=(1-all/100)` 다음 `result*=(1-race/100)`) -- RC_All(-30%)+특정종족(+30%) 예시에서 원작은 0(상쇄)인데 TextRAG는 result*1.30*0.70=result*0.91(9% 감소)로 달라짐(재확인 P2-A.4-정정 §5, 테스트 O). 특정 종족만 있는 기존 raceDmgReduce 매핑 자체는 건드리지 않았다(§6).",
+      "consumerPresent": true,
+      "scopeParity": true,
+      "stackingParity": false
     },
     {
       "constant": "autobonus",
@@ -103,7 +130,10 @@
         "rathena-pre-0102-01",
         "rathena-pre-0105-01"
       ],
-      "evidence": "공격 시 확률적 자기 버프 스크립트 실행 메커닉 자체가 P0에 없음(중첩 스크립트 내부는 파싱하지 않음, §16/§20)"
+      "evidence": "공격 시 확률적 자기 버프 스크립트 실행 메커닉 자체가 P0에 없음(중첩 스크립트 내부는 파싱하지 않음, §16/§20)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "autobonus2",
@@ -116,7 +146,10 @@
         "rathena-pre-0048-01",
         "rathena-pre-0049-01"
       ],
-      "evidence": "위와 동일(피격 시 버전)"
+      "evidence": "위와 동일(피격 시 버전)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bAddDefMonster",
@@ -127,7 +160,10 @@
       "sampleComboIds": [
         "rathena-pre-0055-01"
       ],
-      "evidence": "몬스터 ID 단위 조건부 방어, P0 vocabulary 없음"
+      "evidence": "몬스터 ID 단위 조건부 방어, P0 vocabulary 없음",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bAddEff",
@@ -141,7 +177,10 @@
         "rathena-pre-0030-01",
         "rathena-pre-0032-01"
       ],
-      "evidence": "_triggerOnHitEvent case inflict는 stun/confusion/random_debuff 3종 고정 필드만 지원(turns도 하드코딩); 실 데이터의 Eff_Stone/Eff_Curse/Eff_Blind는 그 3종에 없음(P2-A.4 §14)"
+      "evidence": "_triggerOnHitEvent case inflict는 stun/confusion/random_debuff 3종 고정 필드만 지원(turns도 하드코딩); 실 데이터의 Eff_Stone/Eff_Curse/Eff_Blind는 그 3종에 없음(P2-A.4 §14)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bAddEffWhenHit",
@@ -154,7 +193,10 @@
         "rathena-pre-0076-01",
         "rathena-pre-0078-01"
       ],
-      "evidence": "bAutoSpellWhenHit과 동일 사유(events.onDamaged 집계 코드 없음, P2-A.4 §15)"
+      "evidence": "bAutoSpellWhenHit과 동일 사유(events.onDamaged 집계 코드 없음, P2-A.4 §15)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bAddEle",
@@ -165,7 +207,10 @@
       "sampleComboIds": [
         "rathena-pre-0079-01"
       ],
-      "evidence": "공격 시 속성별 가산 vocabulary 없음(elemAtk와 트리거 다름)"
+      "evidence": "공격 시 속성별 가산 vocabulary 없음(elemAtk와 트리거 다름)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bAddItemHealRate",
@@ -177,7 +222,10 @@
         "rathena-pre-0045-01",
         "rathena-pre-0101-01"
       ],
-      "evidence": "healBoost 계열, 위와 동일"
+      "evidence": "healBoost 계열, 위와 동일",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bAddMonsterDropItem",
@@ -191,7 +239,10 @@
         "rathena-pre-0091-01",
         "rathena-pre-0101-01"
       ],
-      "evidence": "P0 dropBonus는 기존 드롭 테이블 가산일 뿐 신규 드롭 추가 메커닉이 없음"
+      "evidence": "P0 dropBonus는 기존 드롭 테이블 가산일 뿐 신규 드롭 추가 메커닉이 없음",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bAddSize",
@@ -204,7 +255,10 @@
         "rathena-pre-0064-01",
         "rathena-pre-0105-01"
       ],
-      "evidence": "사이즈 조건부 공격 vocabulary 없음(sizeAtk는 카드 전용, rAthena Size_* enum 대조 전)"
+      "evidence": "사이즈 조건부 공격 vocabulary 없음(sizeAtk는 카드 전용, rAthena Size_* enum 대조 전)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bAspdRate",
@@ -219,7 +273,10 @@
         "rathena-pre-0047-01",
         "rathena-pre-0063-01"
       ],
-      "evidence": "P0 flat aspd(*20ms)와 단위/의미가 다른 %기반 공격속도, 대응 소비처 없음"
+      "evidence": "P0 flat aspd(*20ms)와 단위/의미가 다른 %기반 공격속도, 대응 소비처 없음",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bAtk",
@@ -230,7 +287,10 @@
       "sampleComboIds": [
         "rathena-pre-0022-01"
       ],
-      "evidence": "문서 자체가 unofficial 표기, bBaseAtk와 관계 불명확"
+      "evidence": "문서 자체가 unofficial 표기, bBaseAtk와 관계 불명확",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bAtkRate",
@@ -241,7 +301,10 @@
       "sampleComboIds": [
         "rathena-pre-0099-01"
       ],
-      "evidence": "%기반 ATK 가산 vocabulary 없음(bBaseAtk는 flat)"
+      "evidence": "%기반 ATK 가산 vocabulary 없음(bBaseAtk는 flat)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bAutoSpell",
@@ -256,7 +319,10 @@
         "rathena-pre-0091-01",
         "rathena-pre-0093-01"
       ],
-      "evidence": "_triggerOnHitEvent case autoSpell 존재(DB.skills[evt.skill].effect 호출)하나 rAthena 스킬ID가 DB.skills 어떤 키와도 대응하지 않음(전수 grep 0건, P2-A.4 §12)"
+      "evidence": "_triggerOnHitEvent case autoSpell 존재(DB.skills[evt.skill].effect 호출)하나 rAthena 스킬ID가 DB.skills 어떤 키와도 대응하지 않음(전수 grep 0건, P2-A.4 §12)",
+      "consumerPresent": true,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bAutoSpellWhenHit",
@@ -270,7 +336,10 @@
         "rathena-pre-0016-01",
         "rathena-pre-0027-01"
       ],
-      "evidence": "events.onDamaged는 항상 빈 배열(집계 코드 자체 없음, ITEM_EFFECT_P0_CLOSEOUT.md 재확인, P2-A.4 §13)"
+      "evidence": "events.onDamaged는 항상 빈 배열(집계 코드 자체 없음, ITEM_EFFECT_P0_CLOSEOUT.md 재확인, P2-A.4 §13)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bBreakArmorRate",
@@ -281,7 +350,10 @@
       "sampleComboIds": [
         "rathena-pre-0007-01"
       ],
-      "evidence": "파괴 메커닉, P0 vocabulary 없음"
+      "evidence": "파괴 메커닉, P0 vocabulary 없음",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bBreakWeaponRate",
@@ -292,7 +364,10 @@
       "sampleComboIds": [
         "rathena-pre-0007-01"
       ],
-      "evidence": "파괴 메커닉, P0 vocabulary 없음"
+      "evidence": "파괴 메커닉, P0 vocabulary 없음",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bDef",
@@ -304,7 +379,10 @@
         "rathena-pre-0026-01",
         "rathena-pre-0026-02"
       ],
-      "evidence": "리터럴 형태는 이미 VERIFIED_SIMPLE_BONUS(SAFE); 이 항목은 동적 표현식 인스턴스만(getequiprefinerycnt)"
+      "evidence": "리터럴 형태는 이미 VERIFIED_SIMPLE_BONUS(SAFE); 이 항목은 동적 표현식 인스턴스만(getequiprefinerycnt)",
+      "consumerPresent": null,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bDelayRate",
@@ -316,7 +394,10 @@
         "rathena-pre-0050-01",
         "rathena-pre-0050-02"
       ],
-      "evidence": "공격 딜레이 %가산 vocabulary 없음(aspd와 별개 필드)"
+      "evidence": "공격 딜레이 %가산 vocabulary 없음(aspd와 별개 필드)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bDelayrate",
@@ -327,7 +408,10 @@
       "sampleComboIds": [
         "rathena-pre-0051-01"
       ],
-      "evidence": "bDelayRate의 대소문자 변형, 동일 사유"
+      "evidence": "bDelayRate의 대소문자 변형, 동일 사유",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bHealPower",
@@ -342,7 +426,10 @@
         "rathena-pre-0066-03",
         "rathena-pre-0066-04"
       ],
-      "evidence": "healBoost 계열 전체가 원작검증필요 상태(P0-close)"
+      "evidence": "healBoost 계열 전체가 원작검증필요 상태(P0-close)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bHealpower2",
@@ -353,7 +440,10 @@
       "sampleComboIds": [
         "rathena-pre-0045-01"
       ],
-      "evidence": "bHealPower2의 대소문자 변형"
+      "evidence": "bHealPower2의 대소문자 변형",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bHit",
@@ -364,7 +454,10 @@
       "sampleComboIds": [
         "rathena-pre-0064-01"
       ],
-      "evidence": "리터럴 형태는 이미 SAFE; 동적 표현식 인스턴스만"
+      "evidence": "리터럴 형태는 이미 SAFE; 동적 표현식 인스턴스만",
+      "consumerPresent": null,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bLongAtkDef",
@@ -376,7 +469,10 @@
         "rathena-pre-0050-01",
         "rathena-pre-0050-02"
       ],
-      "evidence": "받는 원거리 피해 감소 -- applyIncomingItemReduction 주석이 이미 확인한 대로 몬스터 공격의 원거리/근접 판별 메타데이터가 전혀 없음(m.range/m.distance 모두 무관, P0-C3 재확인) -- bLongAtkRate보다 고복잡도(신규 몬스터 공격 메타데이터 필요)"
+      "evidence": "받는 원거리 피해 감소 -- applyIncomingItemReduction 주석이 이미 확인한 대로 몬스터 공격의 원거리/근접 판별 메타데이터가 전혀 없음(m.range/m.distance 모두 무관, P0-C3 재확인) -- bLongAtkRate보다 고복잡도(신규 몬스터 공격 메타데이터 필요)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bLongAtkRate",
@@ -391,7 +487,10 @@
         "rathena-pre-0020-01",
         "rathena-pre-0021-01"
       ],
-      "evidence": "isRangedWeapon 구조 데이터는 존재하나 이를 조건으로 ATK%를 가산하는 소비처가 없음 -- 저복잡도(공격자 자신의 무기타입만 보면 됨, P2-A.4 §18)"
+      "evidence": "isRangedWeapon 구조 데이터는 존재하나 이를 조건으로 ATK%를 가산하는 소비처가 없음 -- 저복잡도(공격자 자신의 무기타입만 보면 됨, P2-A.4 §18)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bMatk",
@@ -403,7 +502,10 @@
         "rathena-pre-0010-01",
         "rathena-pre-0010-02"
       ],
-      "evidence": "matk는 파생값, 직접 가산 지점 불명확(bonus.matk와 동일 의미인지 미확정)"
+      "evidence": "matk는 파생값, 직접 가산 지점 불명확(bonus.matk와 동일 의미인지 미확정)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bMatkRate",
@@ -418,7 +520,10 @@
         "rathena-pre-0005-02",
         "rathena-pre-0012-01"
       ],
-      "evidence": "buildMatkBreakdown: bonus.matk는 flat만 가산, %기반 MATK 필드 자체가 없음(P2-A.4 §7)"
+      "evidence": "buildMatkBreakdown: bonus.matk는 flat만 가산, %기반 MATK 필드 자체가 없음(P2-A.4 §7)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bMdef",
@@ -430,7 +535,10 @@
         "rathena-pre-0026-01",
         "rathena-pre-0026-02"
       ],
-      "evidence": "bDef와 동일 -- 동적 표현식 인스턴스만"
+      "evidence": "bDef와 동일 -- 동적 표현식 인스턴스만",
+      "consumerPresent": null,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bNoCastCancel",
@@ -441,7 +549,10 @@
       "sampleComboIds": [
         "rathena-pre-0060-01"
       ],
-      "evidence": "인자 없는 플래그형 보너스, vocabulary 없음"
+      "evidence": "인자 없는 플래그형 보너스, vocabulary 없음",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bPerfectHitAddRate",
@@ -453,7 +564,10 @@
         "rathena-pre-0077-01",
         "rathena-pre-0082-01"
       ],
-      "evidence": "대응 vocabulary 없음"
+      "evidence": "대응 vocabulary 없음",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bResEff",
@@ -468,7 +582,10 @@
         "rathena-pre-0048-01",
         "rathena-pre-0053-01"
       ],
-      "evidence": "isStatusImmune은 이진 면역만(cardImmune 배열), 부분 저항 % 자료구조 자체가 없음(P2-A.4 §16)"
+      "evidence": "isStatusImmune은 이진 면역만(cardImmune 배열), 부분 저항 % 자료구조 자체가 없음(P2-A.4 §16)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bSPDrainValue",
@@ -481,7 +598,10 @@
         "rathena-pre-0081-01",
         "rathena-pre-0086-01"
       ],
-      "evidence": "평타 SP회복 vocabulary 없음"
+      "evidence": "평타 SP회복 vocabulary 없음",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bSPGainRace",
@@ -492,7 +612,10 @@
       "sampleComboIds": [
         "rathena-pre-0097-01"
       ],
-      "evidence": "RC_Player_Human 등 RACE_ENUM_MAP 미등재 enum 인스턴스(soulgain 자체는 SAFE, 이 특정 enum만 gap)"
+      "evidence": "RC_Player_Human 등 RACE_ENUM_MAP 미등재 enum 인스턴스(soulgain 자체는 SAFE, 이 특정 enum만 gap)",
+      "consumerPresent": true,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bShortWeaponDamageReturn",
@@ -503,7 +626,10 @@
       "sampleComboIds": [
         "rathena-pre-0029-01"
       ],
-      "evidence": "반사 메커닉, P0 vocabulary 없음"
+      "evidence": "반사 메커닉, P0 vocabulary 없음",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bSkillAtk",
@@ -518,7 +644,10 @@
         "rathena-pre-0062-02",
         "rathena-pre-0062-03"
       ],
-      "evidence": "ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, 명시보류로 이미 확정(P2-A.4 §6)"
+      "evidence": "ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, 명시보류로 이미 확정(P2-A.4 §6)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bSkillHeal",
@@ -529,7 +658,10 @@
       "sampleComboIds": [
         "rathena-pre-0046-01"
       ],
-      "evidence": "healBoost 계열, 위와 동일"
+      "evidence": "healBoost 계열, 위와 동일",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bSkillHeal2",
@@ -541,7 +673,10 @@
         "rathena-pre-0046-01",
         "rathena-pre-0053-01"
       ],
-      "evidence": "healBoost 계열, 위와 동일"
+      "evidence": "healBoost 계열, 위와 동일",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bSpeedRate",
@@ -553,7 +688,10 @@
         "rathena-pre-0011-01",
         "rathena-pre-0081-01"
       ],
-      "evidence": "이동속도, vocabulary 없음"
+      "evidence": "이동속도, vocabulary 없음",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bSubEle",
@@ -564,22 +702,10 @@
       "sampleComboIds": [
         "rathena-pre-0012-01"
       ],
-      "evidence": "리터럴 형태는 이미 SAFE(VERIFIED_ELEMENT_BONUS2); 동적 표현식 인스턴스만"
-    },
-    {
-      "constant": "bSubRace",
-      "verdict": "identity-mapping-gap",
-      "canonicalTarget": null,
-      "instanceCount": 8,
-      "comboCount": 8,
-      "sampleComboIds": [
-        "rathena-pre-0043-01",
-        "rathena-pre-0045-01",
-        "rathena-pre-0046-01",
-        "rathena-pre-0047-01",
-        "rathena-pre-0048-01"
-      ],
-      "evidence": "RC_Player_Human 등 미등재 enum 인스턴스 -- TextRAG 몬스터 모델에 '플레이어 종족' 개념 자체가 없음(P2-A.4 §17). RC_All은 SAFE(아래 별도 항목)"
+      "evidence": "리터럴 형태는 이미 SAFE(VERIFIED_ELEMENT_BONUS2); 동적 표현식 인스턴스만",
+      "consumerPresent": null,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "bUnbreakableArmor",
@@ -590,7 +716,10 @@
       "sampleComboIds": [
         "rathena-pre-0046-01"
       ],
-      "evidence": "인자 없는 플래그형 보너스, 파괴 메커닉 자체가 없음(weaponUnbreakable과 동급, P0-close 엔진미지원)"
+      "evidence": "인자 없는 플래그형 보너스, 파괴 메커닉 자체가 없음(weaponUnbreakable과 동급, P0-close 엔진미지원)",
+      "consumerPresent": false,
+      "scopeParity": null,
+      "stackingParity": null
     },
     {
       "constant": "skill",
@@ -601,7 +730,10 @@
       "sampleComboIds": [
         "rathena-pre-0043-01"
       ],
-      "evidence": "bAutoSpell과 동일한 rAthena 스킬 ID -> TextRAG 스킬 키 identity 문제"
+      "evidence": "bAutoSpell과 동일한 rAthena 스킬 ID -> TextRAG 스킬 키 identity 문제",
+      "consumerPresent": true,
+      "scopeParity": null,
+      "stackingParity": null
     }
   ]
 }

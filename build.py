@@ -372,41 +372,52 @@ COMBO_KNOWN_EFFECT_KEYS = {
     ("combat", "hpRegenPct"), ("combat", "spRegenPct"),
     ("combat", "raceDmgReduce"), ("combat", "raceAtk"), ("combat", "elemReduce"),
     ("event", "soulgain"),
-    # P2-A.4 신규(bCastrate/bUseSPrate 리터럴, bAddClass Class_All/Class_Boss,
-    # bSubRace RC_All -- 실코드 재확인, COMBO_EFFECT_SUPPORT_AUDIT.md 참조)
-    ("combat", "castReduction"), ("combat", "spCostMul"),
-    ("combat", "atkPct"), ("combat", "bossAtk"), ("combat", "dmgReduceAll"),
+    # P2-A.4 신규(bCastrate 리터럴만 -- stacking parity 확인, COMBO_EFFECT_SUPPORT_AUDIT.md
+    # §7/§11 참조). bUseSPrate/bAddClass/bSubRace,RC_All은 P2-A.4-정정(2026-09-27)에서
+    # SAFE 취소됐다(consumer는 있었지만 stacking/scope parity가 원작과 달랐음) --
+    # 아래 COMBO_RUNTIME_SAFE_KEYS도 이 세 키를 포함하지 않는다.
+    ("combat", "castReduction"),
 }
 
-# P2-A.4 — "verified 상태인데 실제 게임 코드 소비처가 없는" 상태를 구조적으로 막는
-# 두 번째 허용목록(과제 지시 §22-23). COMBO_KNOWN_EFFECT_KEYS(생성 스크립트가 실제로
-# 만들어내는 canonical 키 전체)와 이 목록이 갈라지면(즉 새 key를 canonicalize_combos.py에
-# 추가하면서 실제 소비처 확인 없이 COMBO_KNOWN_EFFECT_KEYS만 넓힌 경우) 아래
-# assert가 즉시 잡는다. 각 key의 소비처 실코드 근거는
-# source/data/combo-effect-support-matrix.json과 COMBO_EFFECT_SUPPORT_AUDIT.md에
-# 있다 -- 이 두 집합을 하나로 합치지 않는 이유는 "canonical 변환 가능"과 "게임에
-# 실제 영향을 줌"이 별개 질문이기 때문이다(과제 핵심 질문).
-COMBO_CONSUMER_BACKED_KEYS = set(COMBO_KNOWN_EFFECT_KEYS)
-assert COMBO_CONSUMER_BACKED_KEYS == COMBO_KNOWN_EFFECT_KEYS, (
-    "COMBO_KNOWN_EFFECT_KEYS와 COMBO_CONSUMER_BACKED_KEYS가 갈라짐 -- "
-    "새 canonical key를 추가했다면 실제 소비처를 먼저 확인하고 두 목록을 함께 갱신할 것"
+# P2-A.4-정정(2026-09-27) — SAFE의 정의를 "consumer 존재"에서 "consumer + scope +
+# stacking 3축 모두 원작과 일치"로 보강했다(과제 지시 §2/§8). 독립검증에서 bUseSPrate/
+# bAddClass/bSubRace,RC_All 3종이 consumer는 있었지만 stacking(bUseSPrate) 또는
+# scope(bAddClass) 또는 cross-field 합성 방식(bSubRace RC_All)이 원작과 달라 잘못
+# SAFE로 승격됐던 사실이 드러났다 -- 상세 근거는 COMBO_EFFECT_SUPPORT_AUDIT.md §11
+# (정정 섹션)과 source/data/combo-effect-support-matrix.json의 각 entry의
+# consumerPresent/scopeParity/stackingParity 필드 참조.
+#
+# COMBO_RUNTIME_SAFE_KEYS는 COMBO_KNOWN_EFFECT_KEYS(생성 스크립트가 실제로 만들어내는
+# canonical 키 전체)와 지금은 항상 같아야 한다(아래 assert) -- 갈라지면(새 key를
+# canonicalize_combos.py에 추가하면서 3축 확인 없이 COMBO_KNOWN_EFFECT_KEYS만 넓힌
+# 경우) 즉시 FAIL한다. 이름 자체가 "consumer 존재"가 아니라 "런타임에 안전하게 쓸 수
+# 있음"을 뜻하도록 바꿨다(구 이름 COMBO_CONSUMER_BACKED_KEYS는 이번 사고의 원인 중
+# 하나였다 -- consumer 유무만으로 이름 붙여서 stacking/scope 확인이 빠진 것처럼
+# 보이지 않았다).
+COMBO_RUNTIME_SAFE_KEYS = set(COMBO_KNOWN_EFFECT_KEYS)
+assert COMBO_RUNTIME_SAFE_KEYS == COMBO_KNOWN_EFFECT_KEYS, (
+    "COMBO_KNOWN_EFFECT_KEYS와 COMBO_RUNTIME_SAFE_KEYS가 갈라짐 -- "
+    "새 canonical key를 추가했다면 consumer+scope+stacking 3축을 모두 실코드로 확인하고 "
+    "두 목록을 함께 갱신할 것(§2)"
 )
 
 
 def audit_combo_consumer_backed(combos_data):
-    """P2-A.4: 모든 combo effects[] 항목의 canonical (type,key)가
-    COMBO_CONSUMER_BACKED_KEYS(실제 게임 코드 소비처가 확인된 목록)에 있는지 재확인한다.
-    이 값은 COMBO_KNOWN_EFFECT_KEYS와 지금은 항상 같지만(위 assert), 두 목록의 "의미"가
-    다르므로 별도 함수/별도 카운터("SUPPORT WARN")로 유지한다 -- "verified인데 게임에
-    영향 없음" 상태가 생기면(향후 누군가 COMBO_KNOWN_EFFECT_KEYS만 넓히고 이 함수를
-    지나치면) 여기서 FAIL로 잡는다."""
+    """P2-A.4(-정정): 모든 combo effects[] 항목의 canonical (type,key)가
+    COMBO_RUNTIME_SAFE_KEYS(consumer+scope+stacking 3축 모두 원작과 일치함이 실코드로
+    확인된 목록)에 있는지 재확인한다. 이 값은 COMBO_KNOWN_EFFECT_KEYS와 지금은 항상
+    같지만(위 assert), 두 목록의 "의미"가 다르므로 별도 함수/별도 카운터("SUPPORT WARN")로
+    유지한다 -- "verified인데 게임에 영향 없거나 원작과 다르게 동작함" 상태가 생기면
+    (향후 누군가 COMBO_KNOWN_EFFECT_KEYS만 넓히고 3축 확인 없이 이 함수를 지나치면)
+    여기서 FAIL로 잡는다. 함수 이름은 하위호환을 위해 그대로 둔다(호출부/테스트 다수가
+    참조 중) -- 검사 대상 집합의 이름만 COMBO_RUNTIME_SAFE_KEYS로 바뀌었다."""
     fails = []
     for combo in combos_data.get("combos", []):
         cid = combo.get("id")
         for eff in combo.get("effects", []):
             key_pair = (eff.get("type"), eff.get("key"))
-            if key_pair not in COMBO_CONSUMER_BACKED_KEYS:
-                fails.append(f"{cid}: consumer 확인 안 된 canonical key {key_pair} -- verified 판정 근거 없음(§22-23)")
+            if key_pair not in COMBO_RUNTIME_SAFE_KEYS:
+                fails.append(f"{cid}: consumer+scope+stacking 3축 확인 안 된 canonical key {key_pair} -- verified 판정 근거 없음(§2/§22-23)")
     return fails
 
 

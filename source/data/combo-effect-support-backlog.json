@@ -45,6 +45,17 @@
       ]
     },
     {
+      "constant": "bAddClass",
+      "occurrenceCombos": 4,
+      "soloFixRuntimeReadyPotential": 3,
+      "affectedComboIds": [
+        "rathena-pre-0003-01",
+        "rathena-pre-0003-02",
+        "rathena-pre-0003-03",
+        "rathena-pre-0053-01"
+      ]
+    },
+    {
       "constant": "autobonus",
       "occurrenceCombos": 3,
       "soloFixRuntimeReadyPotential": 0,
@@ -122,6 +133,16 @@
         "rathena-pre-0043-01",
         "rathena-pre-0048-01",
         "rathena-pre-0053-01"
+      ]
+    },
+    {
+      "constant": "bUseSPrate",
+      "occurrenceCombos": 3,
+      "soloFixRuntimeReadyPotential": 3,
+      "affectedComboIds": [
+        "rathena-pre-0033-02",
+        "rathena-pre-0035-01",
+        "rathena-pre-0035-02"
       ]
     },
     {

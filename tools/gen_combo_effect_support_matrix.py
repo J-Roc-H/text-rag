@@ -1,20 +1,31 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-P2-A.4 -- source/data/combo-effect-support-matrix.json 생성.
+P2-A.4(-정정, 2026-09-27) -- source/data/combo-effect-support-matrix.json 생성.
 
 핵심 질문: rAthena combo Script의 미지원 효과 중, TextRAG의 기존 P0 canonical
 field + 실제 gameplay consumer까지 정확히 연결되는 것만 안전하게 지원할 수 있는가?
 "parser가 읽을 수 있음 != 게임에서 실제 지원됨"을 구조적으로 기록한다.
+
+**정정 이력(2026-09-27)**: 최초 P2-A.4는 SAFE 조건을 "canonical field + consumer
+존재"로만 판정했다. 독립검증에서 bUseSPrate/bAddClass/bSubRace(RC_All) 3종이 consumer는
+있었지만 원작과 stacking/scope가 달라(트리거 조건 일치 != 결과 일치) 잘못 SAFE로
+승격됐음이 드러났다. 이후 SAFE는 반드시 아래 3축을 모두 만족해야 한다:
+  - consumerPresent: 실제 게임 코드가 그 canonical key를 읽어 적용하는가
+  - scopeParity:     원작이 적용되는 공격/스킬/트리거 범위와 TextRAG 소비처의 범위가 같은가
+  - stackingParity:  여러 소스가 겹칠 때 원작의 결합 방식(additive/multiplicative/
+                     cross-field 합산 등)과 TextRAG의 결합 방식이 같은가
+하나라도 false/null(검증 불가)이면 safe-existing-consumer 금지. 상세 내역은
+COMBO_EFFECT_SUPPORT_AUDIT.md §11(정정 섹션) 참조.
 
 이 스크립트는 데이터만 만든다(canonicalize_combos.py/calcStats/전투 코드 어디에도
 연결하지 않는다). 실행:
 
     python3 tools/gen_combo_effect_support_matrix.py
 
-verdict 6종(전부 "maybe" 없이 하나로 확정, "정확성이 우선"이므로 다수가
+verdict 7종(전부 "maybe" 없이 하나로 확정, "정확성이 우선"이므로 다수가
 engine-extension-required로 끝나는 것을 정상으로 취급한다):
-  - safe-existing-consumer:      canonical field + 실제 gameplay consumer 모두 확인됨
+  - safe-existing-consumer:      consumer+scope+stacking 3축 모두 원작과 일치 확인됨
                                   (canonicalize_combos.py가 이미 지원 중)
   - canonical-but-runtime-deferred: P0가 이미 canonical 필드는 갖고 있으나 그 필드
                                   자체가 게임에 아무 영향을 주지 않음(P0-close "명시보류")
@@ -27,9 +38,12 @@ engine-extension-required로 끝나는 것을 정상으로 취급한다):
                                   (새 계산식/새 필드가 있어야 함 -- 이번 단계는 추가하지 않음)
   - dynamic-expression:          getequiprefinerycnt() 등 값 자체가 동적 표현식이라
                                   평가하지 않음(상수 추출만, §16/§20)
+  - stacking-scope-mismatch:     consumer는 실제로 존재하나(consumerPresent=true),
+                                  scope 또는 stacking 중 하나 이상이 원작과 달라 결과가
+                                  달라질 수 있음 -- "트리거 조건 일치"만으로 SAFE 판정하면
+                                  안 된다는 이번 정정의 핵심 교훈을 담는 전용 verdict.
 """
 import json
-import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -44,46 +58,90 @@ VERDICT_ENUM = [
     "identity-mapping-gap",
     "engine-extension-required",
     "dynamic-expression",
+    "stacking-scope-mismatch",
 ]
 
-# 이미 canonicalize_combos.py가 지원하는 constant -> (canonicalTarget, evidence).
-# tools/canonicalize_combos.py의 VERIFIED_SIMPLE_BONUS/VERIFIED_CLASS_BONUS2/
-# SUBRACE_TO_ALL_KEY와 정확히 같은 집합이어야 한다(아래 census 후 교차검증).
+# consumerPresent/scopeParity/stackingParity 기본값: 검증 불가/해당없음은 None(모른다는
+# 뜻을 false와 구분하기 위해 명시적으로 null을 쓴다 -- JSON에서는 null로 직렬화된다).
+_VERDICT_DEFAULT_FLAGS = {
+    "safe-existing-consumer": (True, True, True),
+    "canonical-but-runtime-deferred": (False, None, None),
+    "trigger-model-missing": (False, None, None),
+    "identity-mapping-gap": (True, None, None),  # 트리거는 있으나 식별자 매핑 불가로 검증 자체가 불가
+    "engine-extension-required": (False, None, None),
+    "dynamic-expression": (None, None, None),  # 값 자체를 평가하지 않으므로 판단 불가
+    "stacking-scope-mismatch": (True, None, None),  # scope/stacking 중 실패한 축만 개별 override
+}
+
+# 오직 이 2개만 SAFE로 남는다(bCastrate/대소문자 변형) -- consumer+scope+stacking
+# 3축 모두 실코드로 확인 완료.
 SAFE_CONSTANTS = {
     "bCastrate": {
         "canonicalTarget": {"type": "combat", "key": "castReduction"},
         "instanceScope": "리터럴 1-인자 `bonus bCastrate,n;` 형태만(스킬 지정 bonus2, 동적 표현식은 제외)",
-        "evidence": "index.html calcStats: `castReduction=Math.min(1.0, base+(bonus.castReduction||0))`, 하한 clamp 없음 -- fraction=-n/100 (P2-A.4 §9)",
+        "evidence": (
+            "consumer: index.html calcStats `castReduction=Math.min(1.0, base+(bonus.castReduction||0))`. "
+            "scope: bCastrate/castReduction 둘 다 '캐스팅 전체'에 걸리는 단일 전역 값(스킬별 분기 없음) -- 범위 동일. "
+            "stacking: rAthena pc.cpp(pre-re) `case SP_CASTRATE: sd->castrate += val;`(additive)이고 "
+            "TextRAG도 collector `fx.combat.castReduction=(fx.combat.castReduction||0)+n`(additive) -- "
+            "두 소스가 -10%씩 있으면 원작 -20%/TextRAG -0.20 fraction으로 정확히 일치(재확인 P2-A.4-정정 §7)."
+        ),
     },
     "bCastRate": {
         "canonicalTarget": {"type": "combat", "key": "castReduction"},
         "instanceScope": "bCastrate의 대소문자 변형, 동일 조건",
         "evidence": "bCastrate와 동일",
     },
+}
+
+# 최초 P2-A.4에서 SAFE였다가 이번 정정으로 stacking-scope-mismatch로 재판정된 3종.
+# consumer는 실제로 존재(consumerPresent=True)하지만 scope 또는 stacking이 원작과 달라
+# false로 표시한다.
+REVERTED_MISMATCHES = {
     "bUseSPrate": {
-        "canonicalTarget": {"type": "combat", "key": "spCostMul"},
-        "instanceScope": "리터럴 1-인자 형태만",
-        "evidence": "index.html getSkillSpCost: `baseCost*mul`; 아이템 파서: `fx.combat.spCostMul*=Number(it.spCostMul)`(곱연산, 기본값 1) -- multiplier=1+n/100 (P2-A.4 §11)",
+        "scopeParity": True,
+        "stackingParity": False,
+        "evidence": (
+            "consumer: getSkillSpCost `baseCost*mul`(존재). scope: SP 소비 전체에 적용 -- 동일. "
+            "stacking 불일치: rAthena pc.cpp `case SP_SPRATE: sd->dsprate += val;`(additive, 최종 "
+            "(100+dsprate)/100 배율을 한 번만 적용 -- 예: -20%+-20%=-40% 누적 후 60%). TextRAG "
+            "cardSpCostMul은 소스별 곱연산 누적(`fx.combat.spCostMul*=Number(it.spCostMul)`, "
+            "0.8*0.8=64%) -- 소스 1개일 땐 결과가 같아 최초 검증에서 놓쳤으나 2개 이상이면 원작(60%)과 "
+            "달라짐(재확인 P2-A.4-정정 §3, 테스트 M)."
+        ),
     },
     "bUseSPRate": {
-        "canonicalTarget": {"type": "combat", "key": "spCostMul"},
-        "instanceScope": "bUseSPrate의 대소문자 변형, 동일 조건",
-        "evidence": "bUseSPrate와 동일",
+        "scopeParity": True,
+        "stackingParity": False,
+        "evidence": "bUseSPrate의 대소문자 변형, 동일 사유",
     },
-    "bAddClass:Class_All": {
-        "canonicalTarget": {"type": "combat", "key": "atkPct"},
-        "instanceScope": "bonus2 bAddClass,Class_All,x -- 실 데이터 관측값 전부",
-        "evidence": "index.html getOutgoingAtkPctMul: `1+(cardAtkPct||0)/100`, 대상 필터 없음 -- Class_All(전체 몬스터)과 트리거 일치 (P2-A.4 §8)",
+    "bAddClass": {
+        "scopeParity": False,
+        "stackingParity": True,
+        "evidence": (
+            "consumer: getOutgoingAtkPctMul/applyOutgoingRaceElemSizeBossAtk(존재). stacking은 양쪽 다 "
+            "additive라 일치. scope 불일치: rAthena battle.cpp `battle_calc_cardfix(attack_type,...)`는 "
+            "battle_calc_weapon_attack(평타+물리 스킬 공용 함수) 경로와 battle_calc_magic_attack(BF_MAGIC, "
+            "magic_addclass 별도) 경로 양쪽에서 광범위하게 호출된다. TextRAG cardAtkPct/cardBossAtk는 "
+            "P0-C5가 이미 확정한 대로 processTurn()의 '평타 블록'에만 연결돼 스킬 데미지 경로를 전혀 "
+            "커버하지 못함 -- Class_All/Class_Boss 등 모든 enum 값에 적용(재확인 P2-A.4-정정 §4, 테스트 N)."
+        ),
     },
-    "bAddClass:Class_Boss": {
-        "canonicalTarget": {"type": "combat", "key": "bossAtk"},
-        "instanceScope": "bonus2 bAddClass,Class_Boss,x -- 실 데이터 0건(향후 대비 등재)",
-        "evidence": "index.html applyOutgoingRaceElemSizeBossAtk: `if(cardBossAtk && target.isMvp) mul+=cardBossAtk/100` -- Class_Boss 트리거와 일치 (P2-A.4 §8)",
-    },
-    "bSubRace:RC_All": {
-        "canonicalTarget": {"type": "combat", "key": "dmgReduceAll"},
-        "instanceScope": "bonus2 bSubRace,RC_All,x",
-        "evidence": "index.html applyIncomingItemReduction: `if(all) result*=(1-all/100)`, 종족 조건 없음 -- RC_All(전종족)과 트리거 일치 (P2-A.4 §17)",
+    "bSubRace": {
+        # bSubRace 자체는 RACE_ENUM_MAP에 있는 특정 종족에 한해 여전히 safe(P0부터 유지, 안 건드림).
+        # 이 엔트리는 RC_All 인스턴스 전용 재판정이다.
+        "scopeParity": True,
+        "stackingParity": False,
+        "evidence": (
+            "RC_All 인스턴스 한정. consumer: applyIncomingItemReduction(존재). scope: '종족 무관 전체 "
+            "감소'라는 트리거 조건은 dmgReduceAll과 일치. stacking(cross-field 합성) 불일치: rAthena "
+            "battle.cpp `race_fix = subrace[targetRace] + subrace[RC_ALL];`(먼저 합산한 뒤 단 한 번만 "
+            "적용). TextRAG applyIncomingItemReduction은 dmgReduceAll과 raceDmgReduce를 순차 곱연산으로 "
+            "따로 적용(`result*=(1-all/100)` 다음 `result*=(1-race/100)`) -- RC_All(-30%)+특정종족(+30%) "
+            "예시에서 원작은 0(상쇄)인데 TextRAG는 result*1.30*0.70=result*0.91(9% 감소)로 달라짐"
+            "(재확인 P2-A.4-정정 §5, 테스트 O). 특정 종족만 있는 기존 raceDmgReduce 매핑 자체는 "
+            "건드리지 않았다(§6)."
+        ),
     },
 }
 
@@ -99,9 +157,6 @@ VERDICT_TABLE = {
     "bAddEff": ("engine-extension-required", "_triggerOnHitEvent case inflict는 stun/confusion/random_debuff 3종 고정 필드만 지원(turns도 하드코딩); 실 데이터의 Eff_Stone/Eff_Curse/Eff_Blind는 그 3종에 없음(P2-A.4 §14)"),
     "bAddEffWhenHit": ("trigger-model-missing", "bAutoSpellWhenHit과 동일 사유(events.onDamaged 집계 코드 없음, P2-A.4 §15)"),
     "bResEff": ("engine-extension-required", "isStatusImmune은 이진 면역만(cardImmune 배열), 부분 저항 % 자료구조 자체가 없음(P2-A.4 §16)"),
-    "bSubRace": ("identity-mapping-gap", "RC_Player_Human 등 미등재 enum 인스턴스 -- TextRAG 몬스터 모델에 '플레이어 종족' 개념 자체가 없음(P2-A.4 §17). RC_All은 SAFE(아래 별도 항목)"),
-    "bAddClass": ("engine-extension-required", "Class_Normal/Class_Guardian/Class_Battlefield -- '보스 아님 전용' 소비처나 WoE 가디언/전장 몬스터 분류가 P0에 없음(P2-A.4 §8). Class_All/Class_Boss는 SAFE(아래 별도 항목)"),
-    "bCastrate": ("engine-extension-required", "스킬 지정 2-인자 bonus2 bCastrate,\"SKILL\",n -- 스킬별 캐스팅 소비처 없음(P2-A.4 §10). 리터럴 1-인자 형태는 SAFE(아래 별도 항목)"),
     "bLongAtkRate": ("engine-extension-required", "isRangedWeapon 구조 데이터는 존재하나 이를 조건으로 ATK%를 가산하는 소비처가 없음 -- 저복잡도(공격자 자신의 무기타입만 보면 됨, P2-A.4 §18)"),
     "bLongAtkDef": ("engine-extension-required", "받는 원거리 피해 감소 -- applyIncomingItemReduction 주석이 이미 확인한 대로 몬스터 공격의 원거리/근접 판별 메타데이터가 전혀 없음(m.range/m.distance 모두 무관, P0-C3 재확인) -- bLongAtkRate보다 고복잡도(신규 몬스터 공격 메타데이터 필요)"),
     "bAspdRate": ("engine-extension-required", "P0 flat aspd(*20ms)와 단위/의미가 다른 %기반 공격속도, 대응 소비처 없음"),
@@ -141,6 +196,15 @@ VERDICT_TABLE = {
 }
 
 
+def _flags_for(verdict, overrides=None):
+    consumer, scope, stacking = _VERDICT_DEFAULT_FLAGS[verdict]
+    if overrides:
+        consumer = overrides.get("consumerPresent", consumer)
+        scope = overrides.get("scopeParity", scope)
+        stacking = overrides.get("stackingParity", stacking)
+    return {"consumerPresent": consumer, "scopeParity": scope, "stackingParity": stacking}
+
+
 def main():
     combos = json.load(open(COMBOS_JSON, encoding="utf-8"))["combos"]
 
@@ -160,12 +224,25 @@ def main():
             "canonicalTarget": info["canonicalTarget"],
             "instanceScope": info["instanceScope"],
             "evidence": info["evidence"],
+            **_flags_for("safe-existing-consumer"),
         })
 
-    seen = set(SAFE_CONSTANTS.keys())
+    for const, info in REVERTED_MISMATCHES.items():
+        entries.append({
+            "constant": const,
+            "verdict": "stacking-scope-mismatch",
+            "canonicalTarget": None,
+            "instanceCount": unsupported_instances.get(const, 0),
+            "comboCount": len(unsupported_combos.get(const, set())),
+            "sampleComboIds": sorted(unsupported_combos.get(const, set()))[:5],
+            "evidence": info["evidence"],
+            **_flags_for("stacking-scope-mismatch", info),
+        })
+
+    seen = set(SAFE_CONSTANTS.keys()) | set(REVERTED_MISMATCHES.keys())
     for const in sorted(unsupported_instances.keys()):
         if const in seen:
-            continue  # bDef/bMdef/bHit/bSubEle/bCastrate/bSubRace/bAddClass -- 별도 인스턴스 항목으로 위에서 이미 판정
+            continue
         verdict, evidence = VERDICT_TABLE.get(
             const, ("engine-extension-required", "P0 vocabulary에 대응 필드 없음(doc/item_bonus.txt 대조, 상세 재검증은 저빈도라 생략)")
         )
@@ -177,6 +254,7 @@ def main():
             "comboCount": len(unsupported_combos[const]),
             "sampleComboIds": sorted(unsupported_combos[const])[:5],
             "evidence": evidence,
+            **_flags_for(verdict),
         })
 
     verdict_counts = Counter(e["verdict"] for e in entries)
@@ -185,9 +263,10 @@ def main():
         "meta": {
             "purpose": "rAthena combo Script 미지원 효과 중 실제 gameplay consumer까지 확인된 것만 구분(parser가 읽을 수 있음 != 게임에서 실제 지원됨)",
             "verdictEnum": VERDICT_ENUM,
-            "generatedFrom": "source/data/db-combos.json (재생성 후 census) + index.html 실코드 재확인(calcStats/getSkillSpCost/applyIncomingItemReduction/isStatusImmune/_triggerOnHitEvent/triggerItemEffects) + ITEM_EFFECT_P0_CLOSEOUT.md",
+            "safeDefinition": "consumerPresent && scopeParity && stackingParity 모두 true여야 safe-existing-consumer(P2-A.4-정정 §2)",
+            "generatedFrom": "source/data/db-combos.json (재생성 후 census) + index.html/pc.cpp/battle.cpp(rAthena pinned e985006) 실코드 재확인 + ITEM_EFFECT_P0_CLOSEOUT.md",
             "verdictCounts": dict(verdict_counts),
-            "note": "safe-existing-consumer 항목은 이미 tools/canonicalize_combos.py에 반영되어 db-combos.json effects[]에 나타난다. 나머지는 여전히 unsupportedEffects[]에 남아 있으며 §24 지시대로 개수를 억지로 늘리지 않는다.",
+            "note": "safe-existing-consumer 항목은 이미 tools/canonicalize_combos.py에 반영되어 db-combos.json effects[]에 나타난다. stacking-scope-mismatch는 P2-A.4 최초 판정에서 SAFE였다가 이번 정정으로 취소된 3종 전용이다.",
         },
         "entries": entries,
     }

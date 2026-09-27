@@ -123,20 +123,17 @@ VERIFIED_SIMPLE_BONUS = {
     # 기존 DEX 기반 castReduction과 완전히 같은 방식으로 합성된다. 이 매핑은 리터럴
     # 1-인자 `bonus` 형태에만 적용된다 — 스킬 지정 2-인자 `bonus2 bCastrate,"SKILL",n`
     # 형태는 여전히 UNSUPPORTED_REASONS를 거친다(스킬별 캐스팅 소비처 없음, 아래 참조).
+    # rAthena pc.cpp(pre-re, non-RENEWAL_CAST) 확인: `case SP_CASTRATE: sd->castrate
+    # += val;` -- additive 누적. TextRAG castReduction도 additive(calcStats:
+    # `Math.min(1.0, base+(bonus.castReduction||0))`, collector:
+    # `fx.combat.castReduction=(fx.combat.castReduction||0)+n`, P2-A.4-정정 재확인)라
+    # stacking parity 확인됨 -- SAFE 유지. 리터럴 1-인자 `bonus` 형태에만 적용된다 --
+    # 스킬 지정 2-인자 `bonus2 bCastrate,"SKILL",n`은 여전히 UNSUPPORTED_REASONS를 거친다.
     "bCastrate": ("combat", "castReduction", lambda v: -v / 100.0,
                   'doc: "bonus bCastrate,n; Increases/decreases variable cast time by n%" — '
-                  'fraction=-n/100, calcStats castReduction 실코드 재확인(P2-A.4 §9)'),
+                  'fraction=-n/100, additive stacking parity 확인(pc.cpp SP_CASTRATE, P2-A.4-정정 §7)'),
     "bCastRate": ("combat", "castReduction", lambda v: -v / 100.0,
                   'doc: "bonus bCastrate,n" (대소문자 변형) — 위와 동일'),
-    # "bonus bUseSPrate,n; SP consumption + n%" — 실코드 재확인(getSkillSpCost:
-    # `baseCost*mul`, 아이템 파서: `fx.combat.spCostMul*=Number(it.spCostMul)`) 결과
-    # cardSpCostMul은 이미 곱연산 배율(기본값 1)이므로 n% -> (100+n)/100 배율 변환이
-    # 정확히 대응한다(P2-A.4 §11).
-    "bUseSPrate": ("combat", "spCostMul", lambda v: 1 + v / 100.0,
-                   'doc: "bonus bUseSPrate,n; SP consumption + n%" — '
-                   'multiplier=1+n/100, getSkillSpCost 실코드 재확인(P2-A.4 §11)'),
-    "bUseSPRate": ("combat", "spCostMul", lambda v: 1 + v / 100.0,
-                   'doc: "bonus bUseSPrate,n" (대소문자 변형) — 위와 동일'),
 }
 
 # bAllStats,n -> 6개 스탯 전부 +n (문서: "STR+n, AGI+n, VIT+n, INT+n, DEX+n, LUK+n") —
@@ -161,26 +158,32 @@ SOULGAIN_RACE_BONUS2 = {
     "bSPGainRace": RACE_ENUM_MAP,
 }
 
-# ══ P2-A.4 신규 ══
-# bonus2 bSubRace,RC_All,x — RC_All(전종족)은 RACE_ENUM_MAP(db-monsters.json 10종)에
-# 없지만, "종족 필터 없는 전체 피해 감소"라는 의미 자체가 P0 dmgReduceAll
-# (applyIncomingItemReduction: `if(all) result*=(1-all/100)`, 종족 조건 없음)과
-# 트리거 조건이 정확히 일치한다(실코드 재확인, P2-A.4 §17). RC_Player_Human 등 다른
-# 미등재 enum은 여전히 대응 소비처가 없어 UNSUPPORTED_REASONS로 간다(TextRAG 전투
-# 대상은 항상 몬스터이며 "플레이어 종족"이라는 개념 자체가 없음).
-SUBRACE_TO_ALL_KEY = {"RC_All": ("combat", "dmgReduceAll")}
-
-# bonus2 bAddClass,c,x — 실제 콤보 데이터에 관측된 값은 Class_All뿐이었다(census
-# 재확인, P2-A.4 §8). Class_All은 대상 필터가 없는 P0 cardAtkPct(getOutgoingAtkPctMul,
-# `1+(cardAtkPct||0)/100`, 종족/보스 구분 없이 전체 적용)와 정확히 같은 의미다.
-# Class_Boss는 실 데이터엔 없으나 cardBossAtk(applyOutgoingRaceElemSizeBossAtk,
-# target.isMvp일 때만 가산)와 트리거 조건이 정확히 일치해 향후 대비로 함께 등재한다.
-# Class_Normal/Class_Guardian/Class_Battlefield는 "보스 아님 전용" 소비처나 WoE
-# 가디언/전장 몬스터 분류 자체가 P0에 없어 계속 미지원(engine-extension-required).
-VERIFIED_CLASS_BONUS2 = {
-    "Class_All": ("combat", "atkPct"),
-    "Class_Boss": ("combat", "bossAtk"),
-}
+# ══ P2-A.4-정정(2026-09-27): bSubRace RC_All -> dmgReduceAll 매핑을 철회했다. ══
+# 최초 판정(P2-A.4)은 "종족 필터 없음"이라는 트리거 조건 일치만 보고 SAFE로 승격했으나,
+# 독립검증에서 stacking parity를 놓쳤음이 드러났다. rAthena battle.cpp 재확인:
+#   race_fix = subrace[targetRace] + subrace[RC_ALL];  (하나로 합산 후 단 한 번 적용)
+# 즉 RC_All(-30%)과 특정 종족(+30%)이 공존하면 원작은 0(상쇄)이 된다. 그러나 TextRAG
+# applyIncomingItemReduction은 dmgReduceAll과 raceDmgReduce를 순차 곱연산으로 따로
+# 적용한다(`result*=(1-all/100)` 다음 `result*=(1-race/100)`) -- 위 예시에서
+# result*1.30*0.70=result*0.91(9% 감소)가 되어 원작의 0%와 다르다. RC_All 자체의 항상
+# 같은 콤보에 동반되는 RC_Player_Human(identity-mapping-gap)이 어차피 그 콤보들을
+# unsupported로 묶어두므로 실질적 unlock 손실은 없다(solo-fix potential 0, P2-A.3부터
+# 이미 확인된 값). engine-extension 필요 사항: all+specific을 먼저 합산한 뒤 단 한 번만
+# 적용하는 구조로 applyIncomingItemReduction을 바꿔야 한다 -- 이번 정정에서는 구현하지
+# 않는다(런타임 코드 동결).
+#
+# bonus2 bAddClass,c,x -- 최초 판정(P2-A.4)은 Class_All/Class_Boss를 cardAtkPct/
+# cardBossAtk로 SAFE 승격했으나, 독립검증에서 scope parity를 놓쳤음이 드러났다. rAthena
+# battle.cpp 재확인: addclass/addrace는 `battle_calc_cardfix(attack_type, ...)`를 통해
+# 평타(BF_WEAPON, battle_calc_weapon_attack 경로 -- 이 함수 자체가 물리 스킬 데미지도
+# 계산한다)와 마법(BF_MAGIC, magic_addclass 별도 누적)에 걸쳐 광범위하게 적용된다. 반면
+# TextRAG의 cardAtkPct/cardBossAtk 소비처(getOutgoingAtkPctMul/
+# applyOutgoingRaceElemSizeBossAtk)는 P0-C5가 이미 확정한 대로 processTurn()의 "평타
+# 블록"에만 연결돼 있고 스킬 데미지 경로에는 전혀 연결되지 않는다 -- 적용범위가 원작보다
+# 훨씬 좁다(stacking 자체는 양쪽 다 additive라 일치하지만, scope 불일치가 SAFE 조건
+# 하나라도 어기면 금지라는 원칙에 걸린다). engine-extension 필요 사항: 평타+물리
+# 스킬(+가능하면 마법 스킬 별도 경로)이 공유하는 physicalClassAtk류 공통 소비처가
+# 필요하다 -- 이번 정정에서는 구현하지 않는다.
 
 # census에서 실제 관측됐지만 이번 단계에서 canonical 변환하지 않는 상수 + 그 이유.
 # (완전한 목록이 아니어도 된다 — 표에 없는 상수는 전부 자동으로 "알려지지 않은 상수"로
@@ -188,10 +191,30 @@ VERIFIED_CLASS_BONUS2 = {
 UNSUPPORTED_REASONS = {
     "bAspdRate": '"bonus bAspdRate,n; Attack speed + n%" — P0의 flat aspd(스탯포인트류, *20ms)와 단위/의미가 다른 %기반 공격속도 보너스. 대응 vocabulary 없음.',
     "bMatkRate": '"bonus bMatkRate,n; Magical attack power + n%" — 실코드 재확인(buildMatkBreakdown: `bonus.matk` flat만 가산, %기반 MATK 필드 자체가 없음) 결과 여전히 engine-extension-required(P2-A.4 §7).',
-    # bCastrate/bUseSPrate 리터럴 1-인자 형태는 P2-A.4에서 VERIFIED_SIMPLE_BONUS로
-    # 이동했다(실코드 재확인 결과 안전, 위 표 참조). 아래는 그 표로 안 잡히는 나머지
-    # 형태(스킬 지정 bonus2, 동적 표현식)에 대해서만 여기 reason이 쓰인다.
+    # bCastrate 리터럴 1-인자 형태만 VERIFIED_SIMPLE_BONUS로 이동했다(stacking parity
+    # 확인 완료, 위 표 참조). 아래는 그 표로 안 잡히는 나머지 형태(스킬 지정 bonus2,
+    # 동적 표현식)에 대해서만 여기 reason이 쓰인다.
     "bCastrate": '"bonus2 bCastrate,"SKILL",n;" (스킬 지정 2-인자 형태) — P0 castReduction은 스킬 전체에 일괄 적용되는 값이라 스킬별 캐스팅 소비처가 없음(engine-extension-required, P2-A.4 §10). 리터럴 1-인자 `bonus bCastrate,n` 형태는 VERIFIED_SIMPLE_BONUS 참조.',
+    # P2-A.4-정정(2026-09-27): bUseSPrate는 SAFE였다가 취소됐다(stacking-scope-mismatch).
+    # rAthena pc.cpp 재확인: `case SP_SPRATE: sd->dsprate += val;` -- additive 누적,
+    # 최종 SP 소비 배율은 `(100+dsprate)/100` 단 한 번만 곱한다(즉 -20%+-20%=-40%
+    # 누적 후 60%). TextRAG는 `fx.combat.spCostMul *= Number(it.spCostMul)`로
+    # 각 소스를 독립적으로 곱연산(0.8*0.8=64%) -- 단일 효과만 있을 땐 결과가 같아
+    # (100+n)/100==1+n/100 이라 최초 검증에서 놓쳤으나, 소스가 2개 이상이면 원작(60%)과
+    # TextRAG(64%)가 달라진다. engine-extension 필요 사항: %가산을 누적한 뒤 마지막에
+    # 한 번만 배율로 변환하는 spCostRatePct류 additive accumulator가 필요하다 -- 기존
+    # spCostMul(곱연산 배율) 필드 자체는 이번에 바꾸지 않는다(런타임 코드 동결).
+    "bUseSPrate": '"bonus bUseSPrate,n; SP consumption + n%" — stacking parity 불일치로 SAFE 취소(P2-A.4-정정): rAthena `sd->dsprate+=val`(additive, 최종 한 번만 배율화)인데 TextRAG cardSpCostMul은 소스별 곱연산 누적이라 2개 이상 중첩 시 결과가 달라짐(engine-extension-required).',
+    "bUseSPRate": '"bonus bUseSPrate,n" (대소문자 변형) — bUseSPrate와 동일 사유.',
+    # P2-A.4-정정(2026-09-27): bAddClass도 SAFE였다가 취소됐다(scope-mismatch).
+    # rAthena battle.cpp 재확인: addclass/addrace는 battle_calc_cardfix(attack_type,...)를
+    # 통해 평타(BF_WEAPON -- battle_calc_weapon_attack이 물리 스킬 데미지도 계산)와
+    # 마법(BF_MAGIC, magic_addclass 별도)에 걸쳐 광범위하게 적용된다. TextRAG의
+    # cardAtkPct/cardBossAtk 소비처는 P0-C5가 이미 확정한 대로 processTurn()의 "평타
+    # 블록"에만 연결돼 있어 스킬 데미지 경로를 전혀 커버하지 못한다 -- scope가 원작보다
+    # 훨씬 좁음. engine-extension 필요 사항: 평타+물리 스킬(+마법 스킬 별도)이 공유하는
+    # 공통 physical/magic class 배율 소비처가 필요하다.
+    "bAddClass": '"bonus2 bAddClass,c,x;" — scope 불일치로 SAFE 취소(P2-A.4-정정): rAthena battle_calc_cardfix는 평타+물리 스킬(+마법 스킬 별도)에 광범위하게 적용되는데 TextRAG cardAtkPct/cardBossAtk는 평타 블록에만 연결돼 있음(engine-extension-required). Class_All/Class_Boss 포함 모든 enum 값에 적용.',
     "bSkillAtk": '"bonus2 bSkillAtk,sk,n; Increases damage of skill sk by n%" — 실코드 재확인(ITEM_EFFECT_P0_CLOSEOUT.md: skillDmg 소비처 0건, "명시보류") 결과 canonical-but-runtime-deferred로 확정(P2-A.4 §6).',
     "bAutoSpell": '"bonus3/4 bAutoSpell,sk,y,n;" — 실코드 재확인(_triggerOnHitEvent case autoSpell: `DB.skills[evt.skill]`) 결과 onHit 트리거 자체는 존재하나, rAthena 스킬 ID(예: NJ_HUUJIN)가 TextRAG DB.skills의 어떤 키와도 대응하지 않음(전수 grep 0건) — identity-mapping-gap(P2-A.4 §12, 스킬명 추측 금지).',
     "bAutoSpellWhenHit": '"bonus3 bAutoSpellWhenHit,sk,y,n;" — 실코드 재확인(events.onDamaged는 항상 빈 배열, 집계 코드 자체가 없음, ITEM_EFFECT_P0_CLOSEOUT.md 재확인) 결과 trigger-model-missing으로 확정(P2-A.4 §13). bAutoSpell과 별개로, 이쪽은 스킬 식별 문제 이전에 트리거 자체가 없음.',
@@ -381,20 +404,17 @@ def parse_statement(stmt):
     m = _BONUS2_RE.match(stmt + ";")
     if m:
         const, enum_val, val = m.group(1), m.group(2), int(m.group(3))
-        # P2-A.4: bSubRace,RC_All -- 종족 필터 없는 dmgReduceAll과 트리거가 정확히
-        # 일치(RACE_ENUM_MAP 일반 조회보다 먼저 확인, §17).
-        if const == "bSubRace" and enum_val in SUBRACE_TO_ALL_KEY:
-            etype, ekey = SUBRACE_TO_ALL_KEY[enum_val]
-            return ("effect", {"type": etype, "key": ekey, "subKey": None, "value": val,
-                                "reason": 'doc: "bonus2 bSubRace,RC_All,x;" RC_All(전종족)은 종족 필터 없는 P0 dmgReduceAll과 트리거 조건 일치(P2-A.4 §17)'})
-        # P2-A.4: bAddClass -- Class_All/Class_Boss만 안전(§8), 나머지는 여전히 미지원.
-        if const == "bAddClass":
-            if enum_val in VERIFIED_CLASS_BONUS2:
-                etype, ekey = VERIFIED_CLASS_BONUS2[enum_val]
-                return ("effect", {"type": etype, "key": ekey, "subKey": None, "value": val,
-                                    "reason": f'doc: "bonus2 bAddClass,c,x;" {enum_val} -> P0 {ekey} 실코드 재확인(P2-A.4 §8)'})
+        # P2-A.4-정정(2026-09-27): bSubRace,RC_All -> dmgReduceAll 매핑과 bAddClass ->
+        # atkPct/bossAtk 매핑을 철회했다. 둘 다 "트리거 조건 일치"만 확인하고 stacking/
+        # scope parity를 놓쳐 SAFE로 잘못 승격했던 것 -- 근거는 위 UNSUPPORTED_REASONS
+        # 진입부(bSubRace/bAddClass 항목)와 COMBO_EFFECT_SUPPORT_AUDIT.md §11(정정
+        # 섹션) 참조. RC_All/Class_All/Class_Boss 모두 이제 아래 VERIFIED_RACE_BONUS2/
+        # UNSUPPORTED_REASONS의 일반 경로를 그대로 타 unsupported로 남는다.
+        if const == "bSubRace" and enum_val == "RC_All":
             return ("unsupported", {"rawStatement": stmt, "constant": const,
-                                     "reason": f'Class enum "{enum_val}"에 대응하는 P0 소비처 없음(Class_All/Class_Boss만 안전, P2-A.4 §8, engine-extension-required)'})
+                                     "reason": 'RC_All -- dmgReduceAll과 트리거는 같지만 stacking parity 불일치로 SAFE 취소(P2-A.4-정정): '
+                                                'rAthena battle.cpp는 subrace[targetRace]+subrace[RC_ALL]을 합산 후 단 한 번만 적용하지만 '
+                                                'TextRAG는 dmgReduceAll/raceDmgReduce를 순차 곱연산으로 따로 적용해 결과가 달라짐(engine-extension-required)'})
         if const in VERIFIED_RACE_BONUS2:
             etype, ekey, enum_map, reason = VERIFIED_RACE_BONUS2[const]
             if enum_val in enum_map:
