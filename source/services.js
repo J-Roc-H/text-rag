@@ -377,7 +377,7 @@ window.serviceDungeonUnlock = function(nm){
 function svcExchangeRecipes(n){
   if(Array.isArray(n.exchanges)) return n.exchanges;
   if(n.service === 'exchange_gem'){
-    let gems=['루비','아메디스트','지르콘'];
+    let gems=['루비','아메디스트','질콘'];
     return gems.map((g,i)=>({
       label:`${g} x2 → ${gems[(i+1)%gems.length]} x1`,
       give:{[g]:2}, receive:{[gems[(i+1)%gems.length]]:1}

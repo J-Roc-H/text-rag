@@ -309,7 +309,7 @@ function aiDungeonHtml(st){
 function aiExchangeRecipes(n){
   if(Array.isArray(n.exchanges)) return n.exchanges;
   if(n.service==='exchange_gem'){
-    let gems=['루비','자수정','지르콘']; return gems.map((g,i)=>({label:`${g} x2 → ${gems[(i+1)%gems.length]} x1`,give:{[g]:2},receive:{[gems[(i+1)%gems.length]]:1}}));
+    let gems=['루비','아메디스트','질콘']; return gems.map((g,i)=>({label:`${g} x2 → ${gems[(i+1)%gems.length]} x1`,give:{[g]:2},receive:{[gems[(i+1)%gems.length]]:1}}));
   }
   if(n.service==='exchange_smile') return [{label:'육류 x1 → 재료 랜덤 3개',give:{'육류':1},random:{pool:['솜털','젤로피','클로버'],rolls:3}}];
   return [];
