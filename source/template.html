@@ -930,6 +930,8 @@ body.work-mode p {
 <script id="db-items" type="application/json">{{__DATA_DB_ITEMS__}}</script>
 <!-- [제조·파머시 통합 v0.2] 제조 레시피 정본 -->
 <script id="db-production" type="application/json">{{__DATA_DB_PRODUCTION__}}</script>
+<!-- [길드·상점 분리 v0.1] 상점 품목 목록 정본 (NPC의 shopId가 참조) -->
+<script id="db-shops" type="application/json">{{__DATA_DB_SHOPS__}}</script>
 <!-- ════ BLOCK 3: HTML 뼈대 ════ -->
 <div id="loading"><div class="ld-title">룬 미드가츠</div><div class="ld-bar-track"><div class="ld-bar-fill" id="ld-bar"></div></div><div class="ld-tip" id="ld-tip">데이터 로딩 중...</div></div>
 <div id="battle-flash"></div><div id="notif-area"></div>
@@ -1186,6 +1188,7 @@ function loadDB(){
   DB.monsterAiProfiles = j('db-monster-ai-profiles');
   DB.items        = j('db-items');
   DB.production   = j('db-production');
+  DB.shops        = j('db-shops');
   DB.maps         = j('db-maps');
   DB.npcs         = j('db-npcs');
   DB.skills       = (typeof DB_SKILLS !== 'undefined') ? DB_SKILLS : {};
@@ -8031,7 +8034,9 @@ function shopMaxTradeQty(){
 
 // ── 좌측: 구매 목록 ──
 function renderShopBuyList(){
-  let p=G.player; let sells=(shopState.npcData&&shopState.npcData.sells)||[];
+  // [길드·상점 분리 v0.1] 인라인 sells가 없으면 shopId로 db-shops.json 목록을 참조한다
+  // (예: 크리스토퍼/폴 스패너가 blacksmith_supply를 공유).
+  let p=G.player; let sells=(shopState.npcData&&shopState.npcData.sells)||(shopState.npcData&&shopState.npcData.shopId&&DB.shops&&DB.shops[shopState.npcData.shopId])||[];
   let h=`<div id="shop-list" style="display:flex;flex-direction:column;gap:5px;max-height:50vh;overflow-y:auto;">`;
   if(!sells.length) h+=`<div style="color:var(--text-dim);text-align:center;padding:20px;font-size:11px;">판매 중인 상품이 없습니다.</div>`;
   sells.forEach(itemName=>{
@@ -15069,7 +15074,7 @@ const JOB1_QUESTS = {
       },
       {
         id:"complete", type:"reward",
-        dialog:[{ speaker:"상인 조합장", text:"이제 그대는 상인이다. 세상 모든 것이 그대의 상품이 될 수 있다네. 더 높은 경지를 원한다면 알베르타의 대장장이 조합장이나 연금술사 조합장을 찾아가게." }]
+        dialog:[{ speaker:"상인 조합장", text:"이제 그대는 상인이다. 세상 모든 것이 그대의 상품이 될 수 있다네. 더 높은 경지를 원한다면 아인브로크의 대장장이 조합장이나 알데바란의 연금술사 조합장을 찾아가게." }]
       }
     ],
     reward:{ job:"상인", zeny:200, items:{} }
