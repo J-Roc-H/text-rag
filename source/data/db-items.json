@@ -23025,21 +23025,6 @@
     "weight": 10,
     "weightSrc": "type"
   },
-  "바토리 카드": {
-    "type": "카드",
-    "emoji": "🃏",
-    "effect": {
-      "effect": "raceBonus",
-      "race": "악마",
-      "dmgMult": 1.2,
-      "_pendingVerification": true
-    },
-    "desc": "바토리 카드 카드",
-    "buy": 0,
-    "sell": 10,
-    "weight": 10,
-    "weightSrc": "type"
-  },
   "미스틸테인 카드": {
     "type": "카드",
     "emoji": "🃏",
@@ -32275,18 +32260,20 @@
     "type": "잡템",
     "emoji": "🔥",
     "desc": "뜨겁게 타오르는 심장 모양의 결정.",
-    "buy": 0,
+    "_aegis": "Burning_Heart",
+    "buy": 924,
     "sell": 462,
-    "weight": 1,
+    "weight": 10,
     "weightSrc": "official"
   },
-  "타오르는 심장": {
+  "프레임 하트": {
     "type": "잡템",
     "emoji": "❤️‍🔥",
-    "desc": "불꽃처럼 뜨겁게 타오르는 심장.",
-    "buy": 0,
+    "desc": "불꽃처럼 뜨겁게 타오르는 속성석.",
+    "_aegis": "Flame_Heart",
+    "buy": 3000,
     "sell": 1500,
-    "weight": 30,
+    "weight": 300,
     "weightSrc": "official"
   },
   "탄탄멘": {
@@ -33390,6 +33377,27 @@
     "buy": 54000,
     "sell": 27000,
     "weight": 50,
+    "weightSrc": "estimate"
+  },
+
+  "아쿠아마린": {
+    "type": "잡템",
+    "emoji": "🔷",
+    "desc": "맑은 하늘빛을 띠는 보석, 아쿠아마린.",
+    "_aegis": "Skyblue_Jewel",
+    "buy": 6000,
+    "sell": 3000,
+    "weight": 10,
+    "weightSrc": "estimate"
+  },
+  "에메랄드": {
+    "type": "잡템",
+    "emoji": "💚",
+    "desc": "짙은 초록빛을 띠는 보석, 에메랄드.",
+    "_aegis": "Azure_Jewel",
+    "buy": 6000,
+    "sell": 3000,
+    "weight": 10,
     "weightSrc": "estimate"
   }
 }
