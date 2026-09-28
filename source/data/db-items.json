@@ -14,11 +14,10 @@
     "weaponLv": 1,
     "slots": 3
   },
-  "Tooth of Bat": {
+  "박쥐의 이빨": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "원작 데이터(rAthena pre-re). 한글명 미정.",
-    "_krPending": true,
+    "emoji": "🦷",
+    "desc": "작고 날카로운 박쥐 이빨.",
     "_aegis": "Tooth_Of_Bat",
     "buy": 34,
     "sell": 17,
@@ -38,11 +37,10 @@
     "def": 1,
     "slots": 1
   },
-  "Zircon": {
+  "질콘": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "원작 데이터(rAthena pre-re). 한글명 미정.",
-    "_krPending": true,
+    "emoji": "🔵",
+    "desc": "청록빛으로 빛나는 보석, 질콘.",
     "_aegis": "Bluish_Green_Jewel",
     "buy": 6000,
     "sell": 3000,
@@ -139,11 +137,10 @@
     "def": 1,
     "slots": 0
   },
-  "Orc's Fang": {
+  "오크의 송곳니": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "원작 데이터(rAthena pre-re). 한글명 미정.",
-    "_krPending": true,
+    "emoji": "🦷",
+    "desc": "오크류 몬스터의 날카로운 송곳니.",
     "_aegis": "Orcish_Cuspid",
     "buy": 220,
     "sell": 110,
@@ -361,11 +358,10 @@
     "weight": 30,
     "weightSrc": "official"
   },
-  "Garnet": {
+  "가넷": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "원작 데이터(rAthena pre-re). 한글명 미정.",
-    "_krPending": true,
+    "emoji": "💎",
+    "desc": "짙은 붉은빛을 띠는 보석, 가넷.",
     "_aegis": "Dark_Red_Jewel",
     "buy": 6000,
     "sell": 3000,
@@ -935,11 +931,10 @@
     "weaponLv": 3,
     "slots": 0
   },
-  "Evil Horn": {
+  "악마의 뿔": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "원작 데이터(rAthena pre-re). 한글명 미정.",
-    "_krPending": true,
+    "emoji": "😈",
+    "desc": "악마의 날카로운 뿔.",
     "_aegis": "Evil_Horn",
     "buy": 1200,
     "sell": 600,
@@ -17255,15 +17250,6 @@
     "weight": 1,
     "weightSrc": "official"
   },
-  "늑대발톱": {
-    "type": "잡템",
-    "emoji": "🦴",
-    "desc": "단단한 늑대 발톱.",
-    "buy": 0,
-    "sell": 10,
-    "weight": 10,
-    "weightSrc": "type"
-  },
   "벌레껍질": {
     "type": "잡템",
     "emoji": "🐚",
@@ -17405,15 +17391,6 @@
     "desc": "질긴 식물 줄기.",
     "buy": 0,
     "sell": 8,
-    "weight": 10,
-    "weightSrc": "type"
-  },
-  "박쥐의이빨": {
-    "type": "잡템",
-    "emoji": "🦷",
-    "desc": "작고 날카로운 박쥐 이빨.",
-    "buy": 0,
-    "sell": 6,
     "weight": 10,
     "weightSrc": "type"
   },
@@ -18275,7 +18252,7 @@
     "weight": 10,
     "weightSrc": "type"
   },
-  "날카로운비늘": {
+  "날카로운 비늘": {
     "type": "잡템",
     "emoji": "🐍",
     "desc": "날카롭게 서 있는 비늘.",
@@ -19031,15 +19008,6 @@
     "weight": 10,
     "weightSrc": "type"
   },
-  "악마의뿔": {
-    "type": "잡템",
-    "emoji": "😈",
-    "desc": "악마의 날카로운 뿔.",
-    "buy": 0,
-    "sell": 150,
-    "weight": 10,
-    "weightSrc": "type"
-  },
   "어둠의결정체": {
     "type": "잡템",
     "emoji": "⚫",
@@ -19058,7 +19026,7 @@
     "weight": 10,
     "weightSrc": "type"
   },
-  "에르늄원석": {
+  "에르늄 원석": {
     "type": "재료",
     "emoji": "🔷",
     "desc": "에르늄의 원석 상태.",
@@ -19250,7 +19218,7 @@
     "weight": 10,
     "weightSrc": "type"
   },
-  "저주받은루비": {
+  "저주받은 루비": {
     "type": "잡템",
     "emoji": "💎",
     "desc": "저주가 깃든 루비.",
@@ -19348,15 +19316,6 @@
     "desc": "지어스의 지렁이 껍질.",
     "buy": 0,
     "sell": 15,
-    "weight": 10,
-    "weightSrc": "type"
-  },
-  "지르콘": {
-    "type": "재료",
-    "emoji": "🔵",
-    "desc": "투명하게 빛나는 지르콘 보석.",
-    "buy": 0,
-    "sell": 350,
     "weight": 10,
     "weightSrc": "type"
   },
@@ -19701,7 +19660,7 @@
     "weight": 10,
     "weightSrc": "type"
   },
-  "거친 바람": {
+  "러프 윈드": {
     "type": "잡템",
     "emoji": "💨",
     "desc": "바람의 정령에서 채취한 에너지 결정.",
@@ -23061,21 +23020,6 @@
     "target": "투구_상단",
     "suffix": "오브 스펠마스터",
     "desc": "Max HP·SP -10% / 변동 캐스팅 10% 감소 / 다크로드 카드 착용 시 캐스팅 추가 20% 감소",
-    "buy": 0,
-    "sell": 10,
-    "weight": 10,
-    "weightSrc": "type"
-  },
-  "바토리 카드": {
-    "type": "카드",
-    "emoji": "🃏",
-    "effect": {
-      "effect": "raceBonus",
-      "race": "악마",
-      "dmgMult": 1.2,
-      "_pendingVerification": true
-    },
-    "desc": "바토리 카드 카드",
     "buy": 0,
     "sell": 10,
     "weight": 10,
@@ -28592,7 +28536,7 @@
     "weight": 1,
     "weightSrc": "official"
   },
-  "끔찍한 입": {
+  "죽은자의 이빨": {
     "type": "잡템",
     "emoji": "👄",
     "desc": "흉측하게 생긴 입 모양 살점.",
@@ -29849,16 +29793,6 @@
     "weight": 1,
     "weightSrc": "official"
   },
-  "반짝이는 가루": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
-  },
   "반짝이는 별": {
     "type": "잡템",
     "emoji": "❓",
@@ -29943,25 +29877,23 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "별 조각": {
+  "별의 조각": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "✨",
+    "desc": "밤하늘에서 떨어진 별의 조각.",
     "buy": 0,
     "sell": 10,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "estimate"
   },
-  "별가루": {
+  "별의 가루": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "✨",
+    "desc": "반짝이는 별의 가루.",
     "buy": 0,
-    "sell": 10,
+    "sell": 5,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "estimate"
   },
   "보석": {
     "type": "잡템",
@@ -30013,15 +29945,14 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "부디레드": {
+  "레드 블러드": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "🔴",
+    "desc": "속성석 제조에 쓰이는 붉은 결정.",
     "buy": 0,
-    "sell": 10,
+    "sell": 15,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "estimate"
   },
   "부러진 바늘": {
     "type": "잡템",
@@ -30827,7 +30758,7 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "썩은 손톱": {
+  "죽은자의 손톱": {
     "type": "잡템",
     "emoji": "🧟",
     "desc": "언데드 몬스터의 썩어버린 손톱.",
@@ -30985,16 +30916,6 @@
     "_stub": true
   },
   "암녹색 염료": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
-  },
-  "암적색 보석": {
     "type": "잡템",
     "emoji": "❓",
     "desc": "용도가 알려지지 않은 물건.",
@@ -31248,16 +31169,6 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "엠베레타르콘": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
-  },
   "엠페리움": {
     "type": "잡템",
     "emoji": "❓",
@@ -31318,15 +31229,14 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "옐로 라이브": {
+  "그린 라이브": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "🟢",
+    "desc": "속성석 제조에 쓰이는 초록빛 결정.",
     "buy": 0,
-    "sell": 10,
+    "sell": 15,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "estimate"
   },
   "옐로 허브": {
     "type": "소모품",
@@ -31359,15 +31269,14 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "오리데콘 스톤": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+  "오리데오콘 원석": {
+    "type": "재료",
+    "emoji": "🪨",
+    "desc": "정제 전의 오리데오콘 원석.",
     "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "sell": 1000,
+    "weight": 10,
+    "weightSrc": "estimate"
   },
   "오리데콘 해머": {
     "type": "잡템",
@@ -31417,7 +31326,7 @@
     "weight": 1,
     "weightSrc": "official"
   },
-  "오크 영웅의 증표": {
+  "오크용자의 증표": {
     "type": "잡템",
     "emoji": "🏅",
     "desc": "오크 영웅에게서만 나오는 명예의 증표.",
@@ -31554,15 +31463,14 @@
     "weight": 1,
     "weightSrc": "official"
   },
-  "위대한 자연": {
+  "그레이트 네이쳐": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "🌿",
+    "desc": "자연의 힘이 응축된 속성석.",
     "buy": 0,
-    "sell": 10,
+    "sell": 20,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "estimate"
   },
   "위저드리 스태프": {
     "type": "잡템",
@@ -31940,15 +31848,14 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "진홍색 보석": {
+  "진주": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "🦪",
+    "desc": "은은한 광택을 내는 진주.",
     "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "sell": 250,
+    "weight": 5,
+    "weightSrc": "estimate"
   },
   "질긴 덩굴": {
     "type": "잡템",
@@ -32086,25 +31993,14 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "청록색 보석": {
+  "윈드 오브 버듀어": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "🍃",
+    "desc": "속성석 제조에 쓰이는 바람의 결정.",
     "buy": 0,
-    "sell": 10,
+    "sell": 15,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
-  },
-  "초록의 바람": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "estimate"
   },
   "촌촌 인형": {
     "type": "잡템",
@@ -32147,16 +32043,6 @@
     "_stub": true
   },
   "카디널 주얼": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
-  },
-  "카디널 주얼[1]": {
     "type": "잡템",
     "emoji": "❓",
     "desc": "용도가 알려지지 않은 물건.",
@@ -32295,44 +32181,41 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "크리스탈 주얼": {
+  "다이아몬드 1캐럿": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "💎",
+    "desc": "투명하게 빛나는 1캐럿짜리 다이아몬드.",
     "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "sell": 9200,
+    "weight": 10,
+    "weightSrc": "estimate"
   },
-  "크리스탈 주얼(레드)": {
+  "다이아몬드 2캐럿": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "💎",
+    "desc": "투명하게 빛나는 2캐럿짜리 다이아몬드.",
     "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "sell": 18400,
+    "weight": 10,
+    "weightSrc": "estimate"
   },
-  "크리스탈 주얼(옐로)": {
+  "다이아몬드 3캐럿": {
     "type": "잡템",
-    "emoji": "💛",
-    "desc": "노란빛을 띠는 3캐럿짜리 크리스탈 보석.",
+    "emoji": "💎",
+    "desc": "투명하게 빛나는 3캐럿짜리 다이아몬드.",
     "buy": 0,
     "sell": 27500,
     "weight": 10,
     "weightSrc": "official"
   },
-  "크리스탈 주얼(화이트)": {
+  "손상된 다이아몬드": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "💔",
+    "desc": "흠집이 나 상품 가치가 떨어진 다이아몬드.",
     "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "sell": 4500,
+    "weight": 10,
+    "weightSrc": "estimate"
   },
   "크리스탈 파편": {
     "type": "잡템",
@@ -32377,18 +32260,20 @@
     "type": "잡템",
     "emoji": "🔥",
     "desc": "뜨겁게 타오르는 심장 모양의 결정.",
-    "buy": 0,
+    "_aegis": "Burning_Heart",
+    "buy": 924,
     "sell": 462,
-    "weight": 1,
+    "weight": 10,
     "weightSrc": "official"
   },
-  "타오르는 심장": {
+  "프레임 하트": {
     "type": "잡템",
     "emoji": "❤️‍🔥",
-    "desc": "불꽃처럼 뜨겁게 타오르는 심장.",
-    "buy": 0,
+    "desc": "불꽃처럼 뜨겁게 타오르는 속성석.",
+    "_aegis": "Flame_Heart",
+    "buy": 3000,
     "sell": 1500,
-    "weight": 30,
+    "weight": 300,
     "weightSrc": "official"
   },
   "탄탄멘": {
@@ -32615,15 +32500,14 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "푸른 보석": {
+  "사파이어": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "💙",
+    "desc": "깊은 푸른빛을 내는 보석, 사파이어.",
     "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "sell": 350,
+    "weight": 5,
+    "weightSrc": "estimate"
   },
   "새끼악마의 날개": {
     "type": "잡템",
@@ -32905,15 +32789,14 @@
     "weight": 1,
     "weightSrc": "official"
   },
-  "황금 보석": {
+  "토파즈": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "💛",
+    "desc": "황금빛으로 빛나는 보석, 토파즈.",
     "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "sell": 350,
+    "weight": 5,
+    "weightSrc": "estimate"
   },
   "황수정": {
     "type": "잡템",
@@ -32985,15 +32868,14 @@
     "weightSrc": "stub",
     "_stub": true
   },
-  "흰색 보석": {
+  "오팔": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "🤍",
+    "desc": "은은한 빛깔이 감도는 흰 보석, 오팔.",
     "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "sell": 300,
+    "weight": 5,
+    "weightSrc": "estimate"
   },
   "히나레": {
     "type": "잡템",
@@ -33495,6 +33377,27 @@
     "buy": 54000,
     "sell": 27000,
     "weight": 50,
+    "weightSrc": "estimate"
+  },
+
+  "아쿠아마린": {
+    "type": "잡템",
+    "emoji": "🔷",
+    "desc": "맑은 하늘빛을 띠는 보석, 아쿠아마린.",
+    "_aegis": "Skyblue_Jewel",
+    "buy": 6000,
+    "sell": 3000,
+    "weight": 10,
+    "weightSrc": "estimate"
+  },
+  "에메랄드": {
+    "type": "잡템",
+    "emoji": "💚",
+    "desc": "짙은 초록빛을 띠는 보석, 에메랄드.",
+    "_aegis": "Azure_Jewel",
+    "buy": 6000,
+    "sell": 3000,
+    "weight": 10,
     "weightSrc": "estimate"
   }
 }
