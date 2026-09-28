@@ -54,3 +54,4 @@
 - 완전히 이해할 때까지 질문 후 작업 시작
 - **JS 문법 검증**: `<script>` 블록별로 추출해 `node --check` — 전체 HTML은 node가 직접 못 읽음
 - **`build.py` 재실행 후 diff로 의도한 수정분과 일치하는지 확인** 후 커밋
+- **코드 저장소에 문서 파일을 만들지 않는다** — `*_PATCH_NOTES.md`·`*_AUDIT.md`·`*_CLOSEOUT.md`·`docs/` 금지. 패치 근거·검증 결과·미확인·다음 시작점은 `_mobile-inbox/YYYY-MM-DD.md`(text-rag-docs)에 쓴다 — 데스크탑 `/wrapup-dev`가 vault로 회수한다. 예외: 이 파일, `MONSTER_AI_AUDIT.md`(도구 입력), `source/reference/**/README.md`, `versions/README.md`. 코드 주석에서 문서 파일명을 새로 인용하지 말고 커밋 SHA·vault DEVREF를 가리킨다
