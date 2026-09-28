@@ -13,7 +13,7 @@ CORS로 막힌다(DEVREF-E 보류-01).
 장소/NPC 상호작용은 source/actor-interaction.js, 아이템/카드 효과 집계(P0-B)는
 source/item-effects.js, 콤보 매칭·적용(P2-B1)은 source/combo-engine.js로 분리 관리하되
 빌드 시 </body> 직전에 모두 인라인한다.
-최종 index.html / 룬미드가츠_v9.20.html 은 계속 단일 HTML이다.
+최종 index.html / 룬미드가츠_v9.21.html 은 계속 단일 HTML이다.
 
 item-effects.js는 template.html 본문의 <script id="block-engine"> 안 calcStats()가
 정의된 훨씬 이전 위치보다 늦게(다른 주입 스크립트와 함께 </body> 직전에) 실행되지만,
@@ -50,7 +50,7 @@ COMBO_IDENTITY_JSON_PATH = os.path.join(DATA_DIR, "combo-item-identity.json")
 # BLOCKS에 넣지 않는다(runtime 미연결). identity builder가 이 파일을 읽어 identity
 # map에 반영한다(tools/build_combo_item_identity.py).
 COMBO_IDENTITY_REVIEW_JSON_PATH = os.path.join(DATA_DIR, "combo-item-identity-reviewed.json")
-OUTPUT_PATH = os.path.join(BASE, "룬미드가츠_v9.20.html")
+OUTPUT_PATH = os.path.join(BASE, "룬미드가츠_v9.21.html")
 # GitHub Pages는 루트의 index.html을 서빙한다 — 버전 올려도 폰 북마크 URL이
 # 안 바뀌게 매 빌드마다 같은 내용을 index.html에도 복사한다 (2026-09-20)
 INDEX_PATH = os.path.join(BASE, "index.html")
