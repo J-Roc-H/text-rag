@@ -483,6 +483,7 @@ html[data-theme="dark"] .mon-card.mvp{background:#262114;} /* [스타일] 플랫
 #notif-area{position:fixed;top:46px;right:195px;display:flex;flex-direction:column;gap:3px;z-index:200;pointer-events:none;}
 .notif{background:rgba(255,255,255,0.95);border:1px solid;padding:5px 12px;font-size:11px;font-weight:600;border-radius:3px;box-shadow:0 2px 5px rgba(0,0,0,0.1);animation:nslide .25s ease,nfade .3s ease 2.7s forwards;}
 @keyframes nslide{from{transform:translateX(15px);opacity:0}to{transform:translateX(0);opacity:1}} @keyframes nfade{from{opacity:1}to{opacity:0}}
+.away-sum{line-height:1.75;font-size:12px}.away-sum b{font-variant-numeric:tabular-nums}.away-est{font-size:10px;padding:0 4px;border:1px solid var(--border);border-radius:3px;color:var(--text-dim)}.away-note{font-size:11px;color:var(--text-dim)}
 .notif.gold{border-color:var(--blue-light);color:var(--gold-light);} .notif.red{border-color:var(--red);color:var(--red);}
 
 #battle-flash{position:fixed;inset:0;pointer-events:none;z-index:100;opacity:0;}
@@ -3969,7 +3970,14 @@ function rollDrops(p, mon, opts, stats){
     registerLegacyAutoPickup(mon,name);
     recordCombatEvent('loot',{item:name,monster:mon.name});
     if(isCard){ if(!p.cardCodex) p.cardCodex = {}; p.cardCodex[k] = true; }
-    if(opts.summary) opts.summary.items[name] = (opts.summary.items[name]||0) + 1;
+    if(opts.summary){
+      opts.summary.items[name] = (opts.summary.items[name]||0) + 1;
+      // [방치 요약] 카드·희귀 드롭(원작 드롭률 AWAY_RARE_DROP_PCT% 이하)은 주요 사건으로도 남긴다
+      if(isCard || mon.drops[k] <= AWAY_RARE_DROP_PCT){
+        if(!opts.summary.events) opts.summary.events = [];
+        opts.summary.events.push({ kind:isCard?'card':'rare', item:isCard?k:name, monster:mon.name, phase:opts.summary.phase||'sample' });
+      }
+    }
     if(!opts.silent){
       // [세계경험 개편 3단계] 카드는 일반 드롭과 구분되는 사건 블록으로 먼저 알린다 —
       // 그 아래 기존 "획득!" 로그는 그대로 유지(수치·인벤 반영 로그는 감산하지 않는다, §9)
@@ -11295,7 +11303,7 @@ function recordBossSighting(p, gid, mapName){
   r.charges = Math.min(BOSS_CHARGE_CAP, (r.charges||0) + 1);
   if(!p.seenCount) p.seenCount = {};
   p.seenCount[mon.name] = (p.seenCount[mon.name]||0) + 1;
-  if(G.silentSummary){ if(!G.silentSummary.sightings) G.silentSummary.sightings = []; G.silentSummary.sightings.push({ id:String(gid), name:mon.name, map:mapName }); }
+  if(G.silentSummary){ if(!G.silentSummary.sightings) G.silentSummary.sightings = []; G.silentSummary.sightings.push({ id:String(gid), name:mon.name, map:mapName, phase:G.silentSummary.phase||'sample' }); }
   logEvent('warning', first
     ? [`${mapName} 깊은 곳에서 거대한 기척이 스쳐 지나갔다.`, `<b>${mon.emoji}${mon.name}</b>의 서식지를 기억해 두었다.`]
     : [`${mapName}에서 다시 <b>${mon.emoji}${mon.name}</b>의 기척을 느꼈다.`, `흔적을 쫓을 수 있다. (기척 ${r.charges}/${BOSS_CHARGE_CAP})`], '보스 기척');
@@ -12479,6 +12487,72 @@ huntTick = function(){
 const OFFLINE_CAP_MS = 12 * 3600 * 1000;
 const OFFLINE_SIM_MS = 30 * 60 * 1000;
 
+// ── [방치 요약] 돌아왔을 때 보여주는 결과 (2026-09-27) ──────────────────────
+// 재접속·탭 복귀 모두 processOfflineTicks를 거치므로 여기 하나로 처리한다.
+// 오프라인은 표본(실제 시뮬) + 외삽(비율 추정)이라 사건마다 phase를 달아 추정분을 구분 표기한다.
+const AWAY_RARE_DROP_PCT = 1;          // 원작 드롭률(%) 이하 비카드 드롭 = 희귀
+const AWAY_MODAL_MIN_MS = 5 * 60000;   // 이보다 짧은 부재는 로그 카드만
+const AWAY_LIST_MAX = 6;
+function _awayFmtMs(ms){
+  let m = Math.round(ms / 60000);
+  return m >= 60 ? `${Math.floor(m/60)}시간${m%60?` ${m%60}분`:''}` : `${Math.max(1,m)}분`;
+}
+function _awayGroup(list, keyFn){
+  let g = {};
+  (list||[]).forEach(x=>{ let k = keyFn(x); if(!g[k]) g[k] = { n:0, est:0, x }; g[k].n++; if(x.phase==='extrapolate') g[k].est++; });
+  return Object.keys(g).map(k=>({ key:k, n:g[k].n, est:g[k].est, x:g[k].x }));
+}
+function _awayCount(n, est){ return `${n>1?` ×${n}`:''}${est?` <span class="away-est">추정${est<n?` ${est}`:''}</span>`:''}`; }
+// 요약 줄 목록 — 로그 카드(full=false)와 창(full=true)이 같은 규칙을 쓴다
+function awaySummaryLines(summary, full){
+  let m = summary.meta || {}, L = [];
+  L.push(`${m.timeStr||''}${m.map?` · ${m.map}`:''}${m.wasCapped?' (최대 12시간치)':''}`);
+  let nums = [`⚔ 처치 <b>${(summary.kills||0).toLocaleString()}</b>`, `✨ EXP <b>+${(summary.exp||0).toLocaleString()}</b>`];
+  if(summary.jexp) nums.push(`JEXP +${summary.jexp.toLocaleString()}`);
+  if(summary.zeny) nums.push(`💰 <b>+${summary.zeny.toLocaleString()}z</b>`);
+  L.push(nums.join(' · '));
+  let ups = [];
+  if(m.lv && m.lv[1] > m.lv[0]) ups.push(`Base Lv ${m.lv[0]}→<b>${m.lv[1]}</b>`);
+  if(m.jlv && m.jlv[1] > m.jlv[0]) ups.push(`Job Lv ${m.jlv[0]}→<b>${m.jlv[1]}</b>`);
+  if(ups.length) L.push('⬆ ' + ups.join(' · '));
+  // 주요 사건
+  let ev = [];
+  _awayGroup(summary.sightings, x=>x.id).forEach(g=>ev.push(`👣 <b>${g.x.name}</b>의 기척${_awayCount(g.n,g.est)} <span style="color:var(--text-dim)">(${g.x.map})</span>`));
+  let evs = summary.events || [];
+  _awayGroup(evs.filter(e=>e.kind==='card'), x=>x.item).forEach(g=>ev.push(`🃏 <b>${g.x.item}</b>${_awayCount(g.n,g.est)}`));
+  let rare = _awayGroup(evs.filter(e=>e.kind==='rare'), x=>x.item);
+  rare.slice(0, full ? rare.length : 3).forEach(g=>ev.push(`💎 희귀 드롭: <b>${g.x.item}</b>${_awayCount(g.n,g.est)}`));
+  if(!full && rare.length > 3) ev.push(`💎 그 밖의 희귀 드롭 ${rare.length-3}종`);
+  if(summary.deaths) ev.push(`💀 ${summary.deaths}회 쓰러짐 (휴식 후 사냥터로 복귀)`);
+  if(m.potOut) ev.push('🧪 자동 회복약이 떨어졌다 — 보충 필요');
+  if(ev.length){ L.push('<b>주요 사건</b>'); ev.forEach(x=>L.push('&nbsp;&nbsp;' + x)); }
+  let keys = Object.keys(summary.items||{});
+  if(keys.length){
+    let total = keys.reduce((a,k)=>a+summary.items[k],0);
+    let shown = full ? keys : keys.slice(0, AWAY_LIST_MAX);
+    L.push(`🎁 아이템 ${keys.length}종 ${total.toLocaleString()}개: ` + shown.map(k=>`${k}×${summary.items[k]}`).join(', ') + (shown.length < keys.length ? ` 외 ${keys.length-shown.length}종` : ''));
+  }
+  if(m.restMs > 0 && m.sampleMs > 0)
+    L.push(`<span class="away-note">처음 ${_awayFmtMs(m.sampleMs)}은 실제 기록, 이후 ${_awayFmtMs(m.restMs)}은 그 비율로 추정한 결과입니다.</span>`);
+  return L;
+}
+// 다른 창(귀환 선물·스탯 환급 등)이 열려 있으면 닫힐 때까지 기다렸다 띄운다
+function showAwaySummaryModal(summary){
+  let tries = 0;
+  const go = ()=>{
+    let ov = document.getElementById('modal-overlay');
+    if(ov && ov.classList.contains('open') && tries++ < 240){ setTimeout(go, 500); return; }
+    let p = G.player; if(!p) return;
+    let md = DB.maps[G.currentMap] || {}, acts = [];
+    let br = md.hasMvp ? getBossRecord(p, String(md.hasMvp)) : null;
+    if(br && br.charges > 0 && isBossAlive(p, String(md.hasMvp), Date.now()))
+      acts.push({ label:`👣 ${(DB.monsters[String(md.hasMvp)]||{}).name} 흔적 쫓기`, cls:'danger', close:false, action:()=>challengeBoss() });
+    acts.push({ label:'확인', cls:'ok', action:()=>{} });
+    openModal('🌙 자리를 비운 동안', `<div class="away-sum">${awaySummaryLines(summary, true).map(x=>`<div>${x}</div>`).join('')}</div>`, acts);
+  };
+  go();
+}
+
 function processOfflineTicks(elapsedMs, resume = true) {
   if(!G.autoHunt || !G.player) return;
   let huntMap = G.currentMap; // 오프라인 처리 전 사냥 맵 저장
@@ -12493,6 +12567,7 @@ function processOfflineTicks(elapsedMs, resume = true) {
   let p = G.player;
   let kc0 = Object.assign({}, p.killCount || {});
   let inv0 = Object.assign({}, p.inventory || {});
+  let lv0 = p.baseLv||1, jl0 = p.jobLv||1, pot0 = AUTO_HP_POTS.reduce((a,n)=>a+(inv0[n]||0),0);
 
   // [P0-02③④] 온라인 엔진(huntTick→processTurn)을 그대로 N틱 돌린다.
   // 구버전은 여기서 _silentTurn() 이라는 별도 축약 전투식을 돌렸다 — 아래 함수 주석 참조.
@@ -12509,15 +12584,12 @@ function processOfflineTicks(elapsedMs, resume = true) {
               : offSec >= 60   ? `${Math.floor(offSec/60)}분 ${offSec%60}초`
               : `${offSec}초`;
   log(`🌙 <b>[오프라인 사냥 보상]</b> 자리를 비운 <b>${timeStr}</b>동안 자동 사냥이 진행되었습니다.${wasCapped?' (최대 12시간치 적용)':''}${summary.timeCapped?' (계산 시간 상한 도달 — 일부 구간 생략)':''}`, 'level-up');
-  if(summary.kills > 0)  log(`⚔️ 처치: <b>${summary.kills}</b>마리 / EXP +${summary.exp.toLocaleString()} / JEXP +${summary.jexp.toLocaleString()}`, 'system');
-  if(summary.zeny > 0)   log(`💰 획득 제니: <b>+${summary.zeny.toLocaleString()}z</b>`, 'system');
-  let itemKeys = Object.keys(summary.items);
-  if(itemKeys.length)    log(`🎁 획득 아이템: ${itemKeys.map(k=>`${k}×${summary.items[k]}`).join(', ')}`, 'loot');
-  if(summary.deaths > 0) log(`💀 전투 중 ${summary.deaths}회 쓰러졌습니다. (자동 귀환 처리됨)`, 'warning');
-  if(summary.sightings && summary.sightings.length){ // [보스 기척]
-    let byName = {}; summary.sightings.forEach(x=>{ let k = `${x.name} (${x.map})`; byName[k] = (byName[k]||0) + 1; });
-    logEvent('warning', Object.keys(byName).map(k=>`👣 ${k}${byName[k]>1?` ×${byName[k]}`:''}`).concat(['하단 「흔적」으로 직접 조우할 수 있다.']), '부재 중 발견한 기척');
-  }
+  // [방치 요약] 세부 수치·사건은 요약 카드 하나로. 오래 비웠으면 창으로도 보여준다
+  summary.meta = { elapsedMs, timeStr, wasCapped, map:huntMap, sampleMs, restMs:Math.max(0, effMs - sampleMs),
+    lv:[lv0, p.baseLv||1], jlv:[jl0, p.jobLv||1],
+    potOut: pot0 > 0 && AUTO_HP_POTS.reduce((a,n)=>a+((p.inventory||{})[n]||0),0) === 0 };
+  logEvent('system', awaySummaryLines(summary, false), '자리를 비운 동안');
+  if(elapsedMs >= AWAY_MODAL_MIN_MS) showAwaySummaryModal(summary);
   logSep();
   // 오프라인 처리 중 사망으로 마을에 있으면 원래 사냥 맵으로 복귀 → 자동사냥 즉시 재개
   // (재접속 정산은 resume:false — 위치는 마지막 안전지역 규칙을 호출부가 적용)
@@ -12567,6 +12639,7 @@ function extrapolateOffline(p, summary, kc0, inv0, restMs, sampleMs, huntMap){
   // awardKillReward에 stats를 넘겨 item dropBonus가 온라인과 동일하게 적용되게 한다.
   // 외삽 구간 동안 장비가 바뀌지 않으므로 루프 밖에서 한 번만 계산한다.
   let s = calcStats();
+  summary.phase = 'extrapolate'; // [방치 요약] 이후 기록되는 사건은 추정 구간
   try{
     for(let i = 0; i < extraKills; i++){
       let r = Math.random() * sampleKills, name = dist[0][0];
