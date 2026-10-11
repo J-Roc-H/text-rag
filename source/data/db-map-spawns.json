@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "P3.1",
+  "scope": "한국 서비스 Renewal 직전 Pre-Renewal 출현군 확정분만 반영. 수량·좌표·리젠·랜덤 워프는 보류.",
+  "policy": [
+    "mapId + TextRag monsterId가 원작 스폰 식별자다.",
+    "충돌·미결속 항목은 placements에 넣지 않는다.",
+    "원작 수량·좌표·리젠과 맵 연결은 이 데이터로 추정하지 않는다."
+  ],
+  "directMaps": [
+    {
+      "mapId": "c_tower1",
+      "mapKey": "알데바란 시계탑 1층",
+      "displayName": "시계탑 지상 1층",
+      "monsters": [152, 97, 486, 148]
+    }
+  ],
+  "placements": {
+    "c_tower2": [86, 152, 96, 97, 148, 144],
+    "c_tower3": [86, 152, 95, 148],
+    "c_tower4": [80, 86, 152, 96, 95, 148, 145, 144],
+    "alde_dun01": [133, 418],
+    "alde_dun02": [454, 418, 130, 129],
+    "alde_dun03": [133, 147, 149],
+    "alde_dun04": [80, 486, 142],
+    "gl_knt01": [393, 152, 84, 83, 85, 89],
+    "gl_knt02": [84, 83, 90, 85, 89, 143]
+  },
+  "blocked": {
+    "gl_knt01": ["앨리스: TextRag 296·313 ID 충돌군", "검은 버섯: TextRag 미결속"],
+    "gl_knt02": ["앨리스: TextRag 296·313 ID 충돌군"]
+  }
+}
