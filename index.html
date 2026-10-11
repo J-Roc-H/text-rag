@@ -62650,6 +62650,9 @@ function applyComboEffects(p, DB, fx, parseItem) {
     {x:1090,y:95,text:'아루나펠츠'},
     {x:1325,y:610,text:'이세계'}
   ];
+  // The detailed layer needs enough room for every original dungeon floor.
+  // Keep the base-world coordinates intact and grow only the scrollable canvas.
+  const WM_BOUNDS = {minX:-80,maxX:2380,minY:40,maxY:1820};
 
   const WM_STATE = {selected:null, showAll:false};
 
@@ -62687,9 +62690,67 @@ function applyComboEffects(p, DB, fx, parseItem) {
     const m=mapData(name);
     return m ? (m.displayName || name) : String(name);
   }
-  function isMapGroup(name){
+  function isDungeonMap(name){
     const m=mapData(name);
-    return !!(m && m.kind==='group');
+    // `kind:group` is retained solely for legacy-save migration and unlock state.
+    // It is never a playable or visible world-map node.
+    return !!(m && m.type==='던전' && m.kind!=='group');
+  }
+  function groupRecord(groupId){
+    if(!groupId) return null;
+    return allNames().find(name=>{
+      const m=mapData(name);
+      return m && m.kind==='group' && m.groupId===groupId;
+    }) || null;
+  }
+  function dungeonAnchor(name){
+    const m=mapData(name);
+    // Split floors inherit the original entrance area's anchor through their
+    // legacy group. This is layout-only; it never invents a movement edge.
+    const group=groupRecord(m && m.groupId);
+    return group ? nearestBase(group) : nearestBase(name);
+  }
+  function dungeonOrder(name){
+    const m=mapData(name);
+    const physical=canonicalMapName(name);
+    const ownGroup=groupRecord(m && m.groupId);
+    // A direct first floor connected to a split group (c_tower1, for example)
+    // stays at the beginning of that same local dungeon sequence.
+    const linkedGroup=ownGroup || allNames().find(groupName=>{
+      const group=mapData(groupName);
+      return group && group.kind==='group' && mapConnections(groupName).includes(physical);
+    });
+    if(linkedGroup){
+      const group=mapData(linkedGroup);
+      const memberIndex=(group.members||[]).indexOf(physical);
+      return `${group.groupId || linkedGroup}|${String(memberIndex < 0 ? 0 : memberIndex+1).padStart(3,'0')}|${displayNameFor(name)}`;
+    }
+    return `~|${displayNameFor(name)}`;
+  }
+  function dungeonPosition(base, occupied){
+    // A coarse grid gives every real floor room for its Korean label.  Unlike
+    // the former ring, it never collapses eight floors onto one city icon.
+    for(let ring=1;ring<=24;ring++){
+      for(let dx=-ring;dx<=ring;dx++){
+        for(let dy=-ring;dy<=ring;dy++){
+          if(Math.max(Math.abs(dx),Math.abs(dy))!==ring) continue;
+          const point=[base[0]+dx*100, base[1]+dy*72];
+          if(point[0]<WM_BOUNDS.minX || point[0]>WM_BOUNDS.maxX || point[1]<WM_BOUNDS.minY || point[1]>WM_BOUNDS.maxY) continue;
+          const clear=occupied.every(other=>Math.abs(point[0]-other[0])>=88 || Math.abs(point[1]-other[1])>=58);
+          if(clear) return point;
+        }
+      }
+    }
+    // Last-resort full-canvas scan.  It still preserves the no-overlap rule
+    // instead of silently stacking independent dungeon floors.
+    for(let y=WM_BOUNDS.minY+36;y<=WM_BOUNDS.maxY-36;y+=72){
+      for(let x=WM_BOUNDS.minX+50;x<=WM_BOUNDS.maxX-50;x+=100){
+        const point=[x,y];
+        const clear=occupied.every(other=>Math.abs(point[0]-other[0])>=88 || Math.abs(point[1]-other[1])>=58);
+        if(clear) return point;
+      }
+    }
+    return [base[0],base[1]];
   }
 
   function undirectedNeighbors(name){
@@ -62723,22 +62784,21 @@ function applyComboEffects(p, DB, fx, parseItem) {
     });
     if(!WM_STATE.showAll) return result;
 
-    // The world map only gains representative dungeon groups here.  Physical maps
-    // (for example alde_dun01) stay in the group's detail view, never as global nodes.
-    const groups={};
-    allNames().filter(n=>isMapGroup(n) && !result[n]).sort((a,b)=>a.localeCompare(b,'ko')).forEach(n=>{
-      const anchor=nearestBase(n);
-      (groups[anchor]||(groups[anchor]=[])).push(n);
+    // Expanded view shows every original dungeon map as its own node.  Legacy
+    // compression labels such as "알데바란 시계탑 심층" are deliberately excluded.
+    const clusters={};
+    allNames().filter(n=>!result[n] && isDungeonMap(n)).sort((a,b)=>dungeonOrder(a).localeCompare(dungeonOrder(b),'ko')).forEach(n=>{
+      const anchor=dungeonAnchor(n);
+      (clusters[anchor]||(clusters[anchor]=[])).push(n);
     });
 
-    Object.keys(groups).forEach(anchor=>{
+    const occupied=Object.values(result).map(point=>point.slice());
+    Object.keys(clusters).sort((a,b)=>a.localeCompare(b,'ko')).forEach(anchor=>{
       const base=result[anchor] || WM_LAYOUT[anchor] || [650,385];
-      groups[anchor].forEach((name,i)=>{
-        const ring=Math.floor(i/6);
-        const slot=i%6;
-        const r=48 + ring*38;
-        const angle=(-Math.PI/2) + slot*(Math.PI*2/6) + ring*0.22;
-        result[name]=[base[0]+Math.cos(angle)*r, base[1]+Math.sin(angle)*r];
+      clusters[anchor].forEach(name=>{
+        const point=dungeonPosition(base,occupied);
+        result[name]=point;
+        occupied.push(point);
       });
     });
     return result;
@@ -62789,18 +62849,14 @@ function applyComboEffects(p, DB, fx, parseItem) {
     const adjacent=cur!==name && mapConnections(cur).includes(canonicalMapName(name));
     const mvp=m.hasMvp ? '<span class="wm-badge danger">MVP</span>' : '';
     const safe=m.safe ? '<span class="wm-badge safe">안전</span>' : '';
-    const isGroup=isMapGroup(name);
-    const memberCount=isGroup && Array.isArray(m.members) ? m.members.filter(mapData).length : 0;
     let action='';
-    if(isGroup) action=`<button class="wm-action primary" onclick="worldMapOpenGroup()">실제 맵 ${memberCount}곳 보기</button>`;
-    else if(cur===name) action='<button class="wm-action" disabled>현재 위치</button>';
+    if(cur===name) action='<button class="wm-action" disabled>현재 위치</button>';
     else if(adjacent) action=`<button class="wm-action primary" onclick="worldMapMoveSelected()">이 지역으로 이동</button>`;
     else action='<button class="wm-action" disabled>인접 지역에서 이동 가능</button>';
 
     return `<div class="wm-detail-head"><div class="wm-detail-icon">${esc(m.emoji||'📍')}</div><div><b>${esc(displayNameFor(name))}</b><div class="wm-sub">${esc(m.type||'미상')} · 권장 Lv.${esc(m.level||'?')}</div></div></div>
       <div class="wm-badges">${safe}${mvp}</div>
       <p class="wm-desc">${esc(m.desc||'')}</p>
-      ${isGroup?`<div class="wm-group-summary">원작 기준 실맵 ${memberCount}곳 · 세부 목록에서 출현 몬스터를 확인할 수 있습니다.</div>`:''}
       <div class="wm-route-label">현재 위치에서</div>
       <div class="wm-route">${esc(routeText(path))}</div>
       ${action}`;
@@ -62851,7 +62907,7 @@ function applyComboEffects(p, DB, fx, parseItem) {
       </g>`;
     }).join('');
 
-    return `<svg class="wm-svg" viewBox="100 20 1450 850" role="img" aria-label="룬 미드가츠 세계지도">
+    return `<svg class="wm-svg" viewBox="-100 20 2500 1850" role="img" aria-label="룬 미드가츠 세계지도">
       ${labels}<g class="wm-edges">${edges.join('')}</g><g class="wm-nodes">${nodes}</g>
     </svg>`;
   }
@@ -62859,7 +62915,7 @@ function applyComboEffects(p, DB, fx, parseItem) {
   function mapHtml(){
     const current=(typeof G!=='undefined' && G.currentMap) ? G.currentMap : '프론테라';
     if(!WM_STATE.selected || !mapData(WM_STATE.selected)) WM_STATE.selected=current;
-    const toggle=WM_STATE.showAll ? '주요 경로만' : '던전 대표 표시';
+    const toggle=WM_STATE.showAll ? '주요 경로만' : '던전·세부지역 표시';
     return `<style>
       .wm-shell{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:12px;min-height:560px;color:var(--text)}
       .wm-toolbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px;font-size:11px}
@@ -62868,22 +62924,22 @@ function applyComboEffects(p, DB, fx, parseItem) {
       .wm-toggle{margin-left:auto;border:1px solid var(--border);background:var(--bg-dark);color:var(--text);padding:5px 8px;border-radius:5px;cursor:pointer;font-size:11px}
       .wm-canvas{border:1px solid var(--border);background:linear-gradient(180deg,#f7fbfd,#eef5f8);border-radius:8px;overflow:auto;min-height:520px}
       html[data-theme="dark"] .wm-canvas{background:linear-gradient(180deg,#101923,#15212d)}
-      .wm-svg{display:block;width:100%;min-width:980px;height:auto;min-height:520px}
+      .wm-svg{display:block;width:100%;min-width:1500px;height:auto;min-height:1110px}
       .wm-region-label{font-size:22px;fill:var(--text-dim);opacity:.22;font-weight:700;letter-spacing:2px}
       .wm-edge{stroke:#9fb2bf;stroke-width:2;opacity:.55}.wm-edge.one-way{stroke-dasharray:5 4}.wm-edge.route{stroke:#d39a35;stroke-width:4;opacity:.95}
       .wm-node{cursor:pointer}.wm-node .wm-ring{fill:transparent;stroke:transparent;stroke-width:4}.wm-node .wm-core{stroke-width:2}.wm-node.town .wm-core{fill:#e9f4ef;stroke:#4f8c77}.wm-node.field .wm-core{fill:#eaf2f7;stroke:#5d87a4}.wm-node.dungeon .wm-core{fill:#f6eaea;stroke:#9a6060}
       html[data-theme="dark"] .wm-node.town .wm-core{fill:#183027} html[data-theme="dark"] .wm-node.field .wm-core{fill:#172c39} html[data-theme="dark"] .wm-node.dungeon .wm-core{fill:#352020}
       .wm-node.current .wm-ring{stroke:#d39a35}.wm-node.selected .wm-ring{stroke:#3979a8;stroke-dasharray:3 2}.wm-node.current.selected .wm-ring{stroke:#d39a35;stroke-dasharray:none}
       .wm-emoji{font-size:16px;pointer-events:none}.wm-label{font-size:11px;fill:var(--text);font-weight:600;pointer-events:none}.wm-node.compact .wm-label{font-size:9px;font-weight:500}.wm-mvp{font-size:11px;fill:#a34f4f;pointer-events:none}
-      .wm-side{border:1px solid var(--border);border-radius:8px;background:var(--bg-dark);padding:12px;align-self:stretch}.wm-side h4{font-size:11px;color:var(--text-dim);margin:0 0 10px}.wm-detail-head{display:flex;align-items:center;gap:9px}.wm-detail-head b{font-size:14px}.wm-detail-icon{font-size:26px}.wm-sub{font-size:10px;color:var(--text-dim);margin-top:2px}.wm-badges{margin:9px 0 4px}.wm-badge{display:inline-block;font-size:9px;padding:2px 5px;border:1px solid var(--border);border-radius:10px;margin-right:4px}.wm-badge.safe{color:#3b745d}.wm-badge.danger{color:#9a4c4c}.wm-desc{font-size:11px;line-height:1.55;color:var(--text);min-height:34px}.wm-group-summary{font-size:10px;line-height:1.55;margin:8px 0;padding:7px;border-radius:5px;background:var(--bg-panel);color:var(--text-dim)}.wm-route-label{font-size:10px;color:var(--text-dim);margin-top:14px}.wm-route{font-size:11px;line-height:1.5;margin:4px 0 12px;padding:7px;background:var(--bg-panel);border-radius:5px;word-break:keep-all}.wm-action{width:100%;padding:7px;border-radius:5px;border:1px solid var(--border);background:var(--bg-panel);color:var(--text);font-size:11px}.wm-action.primary{background:var(--blue-light);border-color:var(--blue-light);color:#fff;cursor:pointer}.wm-action:disabled{opacity:.6}
+      .wm-side{border:1px solid var(--border);border-radius:8px;background:var(--bg-dark);padding:12px;align-self:stretch}.wm-side h4{font-size:11px;color:var(--text-dim);margin:0 0 10px}.wm-detail-head{display:flex;align-items:center;gap:9px}.wm-detail-head b{font-size:14px}.wm-detail-icon{font-size:26px}.wm-sub{font-size:10px;color:var(--text-dim);margin-top:2px}.wm-badges{margin:9px 0 4px}.wm-badge{display:inline-block;font-size:9px;padding:2px 5px;border:1px solid var(--border);border-radius:10px;margin-right:4px}.wm-badge.safe{color:#3b745d}.wm-badge.danger{color:#9a4c4c}.wm-desc{font-size:11px;line-height:1.55;color:var(--text);min-height:34px}.wm-route-label{font-size:10px;color:var(--text-dim);margin-top:14px}.wm-route{font-size:11px;line-height:1.5;margin:4px 0 12px;padding:7px;background:var(--bg-panel);border-radius:5px;word-break:keep-all}.wm-action{width:100%;padding:7px;border-radius:5px;border:1px solid var(--border);background:var(--bg-panel);color:var(--text);font-size:11px}.wm-action.primary{background:var(--blue-light);border-color:var(--blue-light);color:#fff;cursor:pointer}.wm-action:disabled{opacity:.6}
       .wm-note{grid-column:1/-1;color:var(--text-dim);font-size:10px;margin-top:-5px}
-      @media(max-width:760px){.wm-shell{grid-template-columns:1fr;min-height:0}.wm-side{min-height:180px}.wm-canvas{min-height:430px}.wm-svg{min-width:920px;min-height:430px}.wm-toggle{margin-left:0}.wm-note{grid-column:1}}
+      @media(max-width:760px){.wm-shell{grid-template-columns:1fr;min-height:0}.wm-side{min-height:180px}.wm-canvas{min-height:430px}.wm-svg{min-width:1500px;min-height:1110px}.wm-toggle{margin-left:0}.wm-note{grid-column:1}}
     </style>
     <div class="wm-toolbar">
       <div class="wm-legend"><span><i class="wm-dot town"></i>마을</span><span><i class="wm-dot field"></i>필드</span><span><i class="wm-dot dungeon"></i>던전</span><span>◎ 현재 위치</span><span>━ 선택 경로</span><span>┄ 단방향 연결</span></div>
       <button class="wm-toggle" onclick="worldMapToggleAll()">${toggle}</button>
     </div>
-    <div class="wm-shell"><div class="wm-canvas">${renderSvg()}</div><aside class="wm-side"><h4>선택 지역</h4><div id="wm-detail">${detailHtml(WM_STATE.selected)}</div></aside><div class="wm-note">기본 지도에는 주요 경로만 표시합니다. 던전 대표를 선택하면 원작 기준 실제 맵과 출현 몬스터를 확인할 수 있습니다.</div></div>`;
+    <div class="wm-shell"><div class="wm-canvas">${renderSvg()}</div><aside class="wm-side"><h4>선택 지역</h4><div id="wm-detail">${detailHtml(WM_STATE.selected)}</div></aside><div class="wm-note">기본 지도에는 주요 경로만 표시합니다. 세부 표시에서는 원작 던전 맵을 개별 노드로 표시하며, 이전 압축 그룹명은 표시하지 않습니다.</div></div>`;
   }
 
   window.worldMapSelect=function(name){
@@ -62904,12 +62960,6 @@ function applyComboEffects(p, DB, fx, parseItem) {
     const dest=WM_STATE.selected;
     if(!dest || typeof tryMove!=='function') return;
     tryMove(dest);
-  };
-
-  window.worldMapOpenGroup=function(){
-    const selected=WM_STATE.selected;
-    if(!selected || !isMapGroup(selected) || typeof showMapGroupModal!=='function') return;
-    showMapGroupModal(selected);
   };
 
   // Overrides the legacy hard-coded ASCII world map after the main bundle loads.
