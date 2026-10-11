@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "P6.1",
+  "scope": "시계탑 한국 Pre-RE 확정 연결만 반영. 랜덤 워프 목적지·확률·좌표와 미확정 층간 경로는 보류.",
+  "edges": [
+    {"from": "알데바란", "to": "c_tower1", "rule": "알데바란 중앙 건물에서 지상 진입", "source": "한국 인벤 2009 지상편"},
+    {"from": "c_tower1", "to": "alde_dun01", "rule": "지상 1층 6시 워프를 통한 지하 1층 진입", "source": "한국 인벤 2009 지하편"},
+    {"from": "c_tower3", "to": "c_tower4", "rule": "시계탑 열쇠를 쓰는 3층 11시 NPC가 4층 이동 제공", "requires": {"items": ["시계탑의 열쇠"]}, "source": "한국 인벤 2009 지상편"}
+  ],
+  "replaceConnections": [
+    {"mapId": "c_tower1", "connected": ["alde_dun01"]}
+  ],
+  "deferred": [
+    "지상·지하 랜덤 워프 목적지 집합·확률·좌표",
+    "지하 1~4층과 지상 1~3층의 일반 왕복 경로",
+    "4층 다수 워프의 개별 목적지"
+  ]
+}

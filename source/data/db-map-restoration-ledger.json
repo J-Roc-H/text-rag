@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "P8.1",
+  "canon": "한국 서비스 Renewal 직전 Pre-Renewal",
+  "policy": ["실체 키는 원작 mapId, 한국어 지명은 UI 그룹 라벨이다.","스폰은 한국 Pre-RE 출현군과 TextRag 몬스터 결속이 모두 확정된 mapId에만 허용한다.","연결은 한국 Pre-RE로 확정된 방향 연결만 허용한다.","수량·좌표·리젠·랜덤 워프·MVP는 별도 근거 없이는 허용하지 않는다."],
+  "groups": [
+    {"groupId":"gl_knight","mapIds":["gl_knt01","gl_knt02"],"spawnApproved":["gl_knt01","gl_knt02"]},
+    {"groupId":"gl_sewer","mapIds":["gl_sew01","gl_sew02","gl_sew03","gl_sew04"],"spawnApproved":[]},
+    {"groupId":"clock_tower","mapIds":["c_tower2","c_tower3","c_tower4","alde_dun01","alde_dun02","alde_dun03","alde_dun04"],"spawnApproved":["c_tower2","c_tower3","c_tower4","alde_dun01","alde_dun02","alde_dun03","alde_dun04"]},
+    {"groupId":"turtle_island","mapIds":["tur_dun01","tur_dun02","tur_dun03","tur_dun04"],"spawnApproved":[]},
+    {"groupId":"einbech_mine","mapIds":["ein_dun01","ein_dun02"],"spawnApproved":[]},
+    {"groupId":"abyss_lake","mapIds":["abyss_01","abyss_02","abyss_03"],"spawnApproved":[]},
+    {"groupId":"odin_temple","mapIds":["odin_tem01","odin_tem02","odin_tem03"],"spawnApproved":[]},
+    {"groupId":"thanatos_tower","mapIds":["tha_t05","tha_t06","tha_t07","tha_t08","tha_t09","tha_t10","tha_t11","tha_t12"],"spawnApproved":[]},
+    {"groupId":"ra_sanctuary","mapIds":["ra_san01","ra_san02","ra_san03","ra_san04","ra_san05"],"spawnApproved":[]},
+    {"groupId":"ice_dungeon","mapIds":["ice_dun01","ice_dun02","ice_dun03"],"spawnApproved":[]},
+    {"groupId":"thor_volcano","mapIds":["thor_v01","thor_v02","thor_v03"],"spawnApproved":[]},
+    {"groupId":"gefenia","mapIds":["gefenia01","gefenia02","gefenia03","gefenia04"],"spawnApproved":[]}
+  ],
+  "directMaps": [{"mapId":"c_tower1","spawnApproved":true}],
+  "approvedEdges":["알데바란>c_tower1","c_tower1>alde_dun01","c_tower3>c_tower4"]
+}

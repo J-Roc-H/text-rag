@@ -1,0 +1,16 @@
+{
+  "groups": [
+    {"legacyKey":"글래스트 헤임 기사단","groupId":"gl_knight","maps":[["gl_knt01","글레스트헤임 기사단 1층"],["gl_knt02","글레스트헤임 기사단 2층"]]},
+    {"legacyKey":"글래스트 헤임 지하수로","groupId":"gl_sewer","maps":[["gl_sew01","글레스트헤임 지하 수로 1층"],["gl_sew02","글레스트헤임 지하 수로 2층"],["gl_sew03","글레스트헤임 지하 수로 3층"],["gl_sew04","글레스트헤임 지하 수로 4층"]]},
+    {"legacyKey":"알데바란 시계탑 심층","groupId":"clock_tower","maps":[["c_tower2","시계탑 지상 2층"],["c_tower3","시계탑 지상 3층"],["c_tower4","시계탑 지상 4층"],["alde_dun01","시계탑 지하 1층"],["alde_dun02","시계탑 지하 2층"],["alde_dun03","시계탑 지하 3층"],["alde_dun04","시계탑 지하 4층"]]},
+    {"legacyKey":"거북섬","groupId":"turtle_island","maps":[["tur_dun01","거북섬 던전"],["tur_dun02","거북이 섬 던전"],["tur_dun03","양거촌"],["tur_dun04","구양궁"]]},
+    {"legacyKey":"광산 던전","groupId":"einbech_mine","maps":[["ein_dun01","아인베흐 광산 1층"],["ein_dun02","아인베흐 광산 2층"]]},
+    {"legacyKey":"어비스 호수 심층","groupId":"abyss_lake","maps":[["abyss_01","휘겔 어비스 호수 지하 동굴 1층"],["abyss_02","휘겔 어비스 호수 지하 동굴 2층"],["abyss_03","휘겔 어비스 호수 지하 동굴 3층"]]},
+    {"legacyKey":"오딘 신전","groupId":"odin_temple","maps":[["odin_tem01","휘겔 오딘 신전 서쪽 지역"],["odin_tem02","휘겔 오딘 신전 남쪽 지역"],["odin_tem03","휘겔 오딘 신전 북쪽 지역"]]},
+    {"legacyKey":"타나토스 타워 상층","groupId":"thanatos_tower","maps":[["tha_t05","타나토스 타워 상층부"],["tha_t06","타나토스 타워 상층부"],["tha_t07","타나토스 타워 상층부 천사의 방"],["tha_t08","타나토스 타워 상층부 천사의 방"],["tha_t09","타나토스 타워 상층부 고뇌의 방"],["tha_t10","타나토스 타워 상층부 슬픔의 방"],["tha_t11","타나토스 타워 상층부 절망의 방"],["tha_t12","타나토스 타워 상층부 증오의 방"]]},
+    {"legacyKey":"아루나펠츠 신전 성역","groupId":"ra_sanctuary","maps":[["ra_san01","1층 북쪽 구역"],["ra_san02","1층 서쪽 구역"],["ra_san03","1층 동쪽 구역"],["ra_san04","1층 남쪽 구역"],["ra_san05","2층 중앙 구역"]]},
+    {"legacyKey":"얼음 동굴","groupId":"ice_dungeon","maps":[["ice_dun01","라헬 얼음 동굴 1층"],["ice_dun02","라헬 얼음 동굴 2층"],["ice_dun03","라헬 얼음 동굴 3층"]]},
+    {"legacyKey":"토르 화산","groupId":"thor_volcano","maps":[["thor_v01","화산 던전 1층"],["thor_v02","화산 던전 2층"],["thor_v03","화산 던전 3층"]]},
+    {"legacyKey":"게페니아","groupId":"gefenia","maps":[["gefenia01","게페니아 1층"],["gefenia02","게페니아 2층"],["gefenia03","게페니아 3층"],["gefenia04","게페니아 4층"]]}
+  ]
+}
