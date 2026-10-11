@@ -16,6 +16,8 @@ const source = read('source', 'world-map.js');
 assert(source.includes('isDungeonEntrance(name)'), 'overview must retain actual dungeon entrances');
 assert(source.includes('overviewDungeonEntries()'), 'overview must build the entrance layer');
 assert(source.includes('detailDungeonMaps(name)'), 'physical floors belong in the selected-dungeon detail');
+assert(source.includes('worldMapToggleEntrances'), 'overview must offer a non-destructive entrance visibility control');
+assert(source.includes('worldMapFocus'), 'overview must offer current/selected-map focus controls');
 assert(source.includes("m.kind!=='group'"), 'legacy compression groups must stay invisible');
 assert(!source.includes('worldMapOpenGroup'), 'world map must not reopen legacy compression-group detail');
 new Function(source);
@@ -73,6 +75,17 @@ assert(overviewNodes.includes('페이욘 동굴 1층'), 'Payon Cave entrance rem
 assert(overviewNodes.includes('c_tower1'), 'clock-tower physical entrance remains on the world overview');
 assert(!overviewNodes.includes(groupKey), 'discarded clock-tower deep-group never appears as a world-map node');
 assert(!worldLabels(main.html).includes(groupKey), 'discarded compression label is never user-facing');
+
+// A dense world overview can fold entrance markers for orientation, but this
+// must be presentation-only: one action restores the same physical entries.
+main.world.worldMapToggleEntrances();
+const geographyNodes=globalNodeNames(main.detail.innerHTML);
+assert(!geographyNodes.includes('루티에 장난감 공장'), 'geographic view can hide an entrance marker without deleting the dungeon');
+assert(!geographyNodes.includes('페이욘 동굴 1층'), 'geographic view can hide an independent entrance marker without deleting it');
+main.world.worldMapToggleEntrances();
+const restoredNodes=globalNodeNames(main.detail.innerHTML);
+assert(restoredNodes.includes('루티에 장난감 공장'), 'entrance toggle restores Toy Factory');
+assert(restoredNodes.includes('페이욘 동굴 1층'), 'entrance toggle restores Payon Cave');
 
 main.world.worldMapSelect('c_tower1');
 const clockLabels=['시계탑 지상 1층','시계탑 지상 2층','시계탑 지상 3층','시계탑 지상 4층','시계탑 지하 1층','시계탑 지하 2층','시계탑 지하 3층','시계탑 지하 4층'];

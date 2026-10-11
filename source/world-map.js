@@ -62,7 +62,11 @@
   // 패널에서만 펼친다. 모든 층을 전역 캔버스에 뿌려 지도를 망가뜨리지 않는다.
   const WM_BOUNDS = {minX:100,maxX:1600,minY:35,maxY:880};
 
-  const WM_STATE = {selected:null};
+  // Keep every original dungeon entrance available, while allowing the player
+  // to temporarily read the geographic backbone without 40+ entrance labels.
+  // The filter only affects the overview canvas; it never removes a map,
+  // dungeon detail, monster roster, or movement route.
+  const WM_STATE = {selected:null, showDungeonEntrances:true};
 
   function esc(v){
     return String(v == null ? '' : v)
@@ -343,10 +347,15 @@
 
   function renderSvg(){
     const layout=visibleLayout();
-    const names=Object.keys(layout);
     const current=(typeof G!=='undefined' && G.currentMap) ? G.currentMap : '프론테라';
     const currentAnchor=layout[current] ? current : (Object.keys(layout).find(entry=>detailDungeonMaps(entry).includes(canonicalMapName(current)) && isDungeonMap(entry)) || nearestBase(current));
     const selected=WM_STATE.selected && mapData(WM_STATE.selected) ? WM_STATE.selected : current;
+    // A compact geographic view still retains the current/selected entrance so
+    // the player never loses the context of the map they are inspecting.
+    const names=Object.keys(layout).filter(name=>
+      WM_STATE.showDungeonEntrances || !!WM_LAYOUT[name] || name===currentAnchor || name===selected
+    );
+    const visible=new Set(names);
     const path=shortestPath(current,selected);
     const routeEdges=new Set();
     for(let i=0;i<path.length-1;i++) routeEdges.add(edgeKey(path[i],path[i+1]));
@@ -357,7 +366,7 @@
       const m=mapData(a);
       if(!m) return;
       mapConnections(a).forEach(b=>{
-        if(!layout[b]) return;
+        if(!layout[b] || !visible.has(b)) return;
         const key=edgeKey(a,b);
         if(seen.has(key)) return;
         seen.add(key);
@@ -377,7 +386,7 @@
       const compact=!WM_LAYOUT[name];
       const displayName=displayNameFor(name);
       const label=displayName.length>12 ? displayName.slice(0,11)+'…' : displayName;
-      return `<g class="wm-node ${cls}${isCurrent?' current':''}${isSelected?' selected':''}${compact?' compact':''}" data-name="${esc(name)}" transform="translate(${x},${y})" onclick="worldMapSelect(this.getAttribute('data-name'))">
+      return `<g class="wm-node ${cls}${isCurrent?' current':''}${isSelected?' selected':''}${compact?' compact':''}" data-name="${esc(name)}" data-x="${x}" data-y="${y}" transform="translate(${x},${y})" onclick="worldMapSelect(this.getAttribute('data-name'))">
         <circle class="wm-ring" r="${compact?18:23}"></circle>
         <circle class="wm-core" r="${compact?14:18}"></circle>
         <text class="wm-emoji" text-anchor="middle" y="5">${esc(m.emoji||'📍')}</text>
@@ -394,10 +403,15 @@
   function mapHtml(){
     const current=(typeof G!=='undefined' && G.currentMap) ? G.currentMap : '프론테라';
     if(!WM_STATE.selected || !mapData(WM_STATE.selected)) WM_STATE.selected=current;
+    const entranceCount=overviewDungeonEntries().length;
+    const entranceLabel=WM_STATE.showDungeonEntrances
+      ? `던전 입구 ${entranceCount}곳 숨기기`
+      : `던전 입구 ${entranceCount}곳 표시`;
     return `<style>
       .wm-shell{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:12px;min-height:560px;color:var(--text)}
       .wm-toolbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px;font-size:11px}
       .wm-legend{display:flex;gap:10px;flex-wrap:wrap;color:var(--text-dim)}
+      .wm-view-controls{display:flex;gap:5px;margin-left:auto}.wm-control{padding:4px 7px;border:1px solid var(--border);border-radius:4px;background:var(--bg-panel);color:var(--text);font-size:10px;cursor:pointer}.wm-control.active{background:var(--blue-light);border-color:var(--blue-light);color:#fff}
       .wm-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:3px;vertical-align:-1px}.wm-dot.town{background:#4f8c77}.wm-dot.field{background:#5d87a4}.wm-dot.dungeon{background:#9a6060}
       .wm-canvas{border:1px solid var(--border);background:linear-gradient(180deg,#f7fbfd,#eef5f8);border-radius:8px;overflow:auto;min-height:520px}
       html[data-theme="dark"] .wm-canvas{background:linear-gradient(180deg,#101923,#15212d)}
@@ -410,12 +424,34 @@
       .wm-emoji{font-size:16px;pointer-events:none}.wm-label{font-size:11px;fill:var(--text);font-weight:600;pointer-events:none}.wm-node.compact .wm-label{font-size:10px;font-weight:500}.wm-mvp{font-size:11px;fill:#a34f4f;pointer-events:none}
       .wm-side{border:1px solid var(--border);border-radius:8px;background:var(--bg-dark);padding:12px;align-self:stretch}.wm-side h4{font-size:11px;color:var(--text-dim);margin:0 0 10px}.wm-detail-head{display:flex;align-items:center;gap:9px}.wm-detail-head b{font-size:14px}.wm-detail-icon{font-size:26px}.wm-sub{font-size:10px;color:var(--text-dim);margin-top:2px}.wm-badges{margin:9px 0 4px}.wm-badge{display:inline-block;font-size:9px;padding:2px 5px;border:1px solid var(--border);border-radius:10px;margin-right:4px}.wm-badge.safe{color:#3b745d}.wm-badge.danger{color:#9a4c4c}.wm-desc{font-size:11px;line-height:1.55;color:var(--text);min-height:34px}.wm-dungeon-list{margin:10px 0;padding:8px;background:var(--bg-panel);border-radius:5px}.wm-list-title{font-size:10px;font-weight:700;color:var(--text-dim);margin-bottom:5px}.wm-dungeon-list ul{margin:0;padding:0;list-style:none;max-height:190px;overflow:auto}.wm-dungeon-list li{padding:5px 0;border-top:1px solid var(--border);font-size:10px;line-height:1.4}.wm-dungeon-list li:first-child{border-top:0}.wm-dungeon-list li b{display:block;color:var(--text)}.wm-dungeon-list li span{display:block;color:var(--text-dim);font-size:9px}.wm-route-label{font-size:10px;color:var(--text-dim);margin-top:14px}.wm-route{font-size:11px;line-height:1.5;margin:4px 0 12px;padding:7px;background:var(--bg-panel);border-radius:5px;word-break:keep-all}.wm-action{width:100%;padding:7px;border-radius:5px;border:1px solid var(--border);background:var(--bg-panel);color:var(--text);font-size:11px}.wm-action.primary{background:var(--blue-light);border-color:var(--blue-light);color:#fff;cursor:pointer}.wm-action:disabled{opacity:.6}
       .wm-note{grid-column:1/-1;color:var(--text-dim);font-size:10px;margin-top:-5px}
-      @media(max-width:760px){.wm-shell{grid-template-columns:1fr;min-height:0}.wm-side{min-height:180px}.wm-canvas{min-height:430px}.wm-svg{min-width:1200px;min-height:680px}.wm-note{grid-column:1}}
+      @media(max-width:760px){.wm-toolbar{align-items:flex-start}.wm-view-controls{margin-left:0;width:100%}.wm-control{flex:1}.wm-shell{grid-template-columns:1fr;min-height:0}.wm-side{min-height:180px}.wm-canvas{min-height:430px}.wm-svg{min-width:1200px;min-height:680px}.wm-note{grid-column:1}}
     </style>
     <div class="wm-toolbar">
       <div class="wm-legend"><span><i class="wm-dot town"></i>마을</span><span><i class="wm-dot field"></i>필드</span><span><i class="wm-dot dungeon"></i>던전</span><span>◎ 현재 위치</span><span>━ 선택 경로</span><span>┄ 단방향 연결</span></div>
+      <div class="wm-view-controls"><button class="wm-control ${WM_STATE.showDungeonEntrances?'active':''}" onclick="worldMapToggleEntrances()">${entranceLabel}</button><button class="wm-control" onclick="worldMapFocus('current')">현재 위치 보기</button><button class="wm-control" onclick="worldMapFocus('selected')">선택 위치 보기</button></div>
     </div>
-    <div class="wm-shell"><div class="wm-canvas">${renderSvg()}</div><aside class="wm-side"><h4>선택 지역</h4><div id="wm-detail">${detailHtml(WM_STATE.selected)}</div></aside><div class="wm-note">도시·필드와 실제 던전 입구를 모두 표시합니다. 던전을 선택하면 원작 층별 실맵과 확인된 출현군을 보며, 이전 압축 그룹명은 지도에 표시하지 않습니다.</div></div>`;
+    <div class="wm-shell"><div class="wm-canvas">${renderSvg()}</div><aside class="wm-side"><h4>선택 지역</h4><div id="wm-detail">${detailHtml(WM_STATE.selected)}</div></aside><div class="wm-note">던전 입구 ${entranceCount}곳은 실제 입구 노드입니다. 지형 우선 보기는 노드만 잠시 접고, 선택한 던전의 원작 층별 실맵·출현군·이동 경로는 그대로 유지합니다. 이전 압축 그룹명은 지도에 표시하지 않습니다.</div></div>`;
+  }
+
+  function renderMapModal(){
+    const body=typeof document!=='undefined' ? document.getElementById('modal-body') : null;
+    if(body) body.innerHTML=mapHtml();
+  }
+
+  function focusMap(target){
+    const current=(typeof G!=='undefined' && G.currentMap) ? G.currentMap : '프론테라';
+    const name=target==='current' ? current : WM_STATE.selected;
+    if(!name || typeof document==='undefined' || typeof document.querySelector!=='function') return;
+    const node=document.querySelector(`.wm-node[data-name="${String(name).replace(/"/g,'\\"')}"]`);
+    const canvas=document.querySelector('.wm-canvas');
+    if(!node || !canvas) return;
+    const x=Number(node.getAttribute('data-x'));
+    const y=Number(node.getAttribute('data-y'));
+    if(!Number.isFinite(x) || !Number.isFinite(y)) return;
+    // ViewBox is 1500×860 from x=100/y=20. Convert that stable map coordinate
+    // to the scrollable SVG width so the same focus works on desktop and mobile.
+    canvas.scrollLeft=Math.max(0,((x-100)/1500)*canvas.scrollWidth-canvas.clientWidth/2);
+    canvas.scrollTop=Math.max(0,((y-20)/860)*canvas.scrollHeight-canvas.clientHeight/2);
   }
 
   window.worldMapSelect=function(name){
@@ -425,6 +461,14 @@
     document.querySelectorAll('.wm-node').forEach(el=>{ if(el.getAttribute('data-name')===name) el.classList.add('selected'); });
     const d=document.getElementById('wm-detail'); if(d) d.innerHTML=detailHtml(name);
   };
+
+  window.worldMapToggleEntrances=function(){
+    WM_STATE.showDungeonEntrances=!WM_STATE.showDungeonEntrances;
+    renderMapModal();
+    setTimeout(()=>focusMap('selected'),0);
+  };
+
+  window.worldMapFocus=function(target){ focusMap(target); };
 
   window.worldMapMoveSelected=function(){
     const dest=WM_STATE.selected;
@@ -440,5 +484,6 @@
     }
     if(!WM_STATE.selected || !mapData(WM_STATE.selected)) WM_STATE.selected=(typeof G!=='undefined'&&G.currentMap)||'프론테라';
     openModal('🗺 세계지도', mapHtml(), [{label:'닫기',action:()=>{}}]);
+    setTimeout(()=>focusMap('current'),0);
   };
 })();
