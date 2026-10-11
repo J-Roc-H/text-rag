@@ -397,6 +397,17 @@ def split_statements(script):
     return unconditional, conditional
 
 
+# P3-A(AutoSpell Skill Identity): rAthena skill ID -> TextRAG DB.skills 키는 아래 두 개만 증거 기반으로 허용한다
+# (pin e985006171d2eb320ee512a653f4c83aea3d81b6 db/pre-re/skill_db.yml: MG_LIGHTNINGBOLT Id 20 /
+# MG_FROSTDIVER Id 15, 둘 다 Magic/Attack/MaxLevel 10, template.html DB.skills에 실재). 이름 유사만으로
+# 매핑을 늘리지 않는다. maxLv는 위 skill_db.yml 값이며 LV 상한 검사에 쓴다.
+AUTOSPELL_SKILL_MAP = {
+    "MG_LIGHTNINGBOLT": ("라이트닝 볼트", 10),
+    "MG_FROSTDIVER": ("프로스트 다이버", 10),
+}
+# 무조건 3-인자 `bonus3 bAutoSpell,"SKILL",LV,RATE;` 만. rate는 1000 기준(pc.cpp 3126-3165).
+_AUTOSPELL_RE = re.compile(r'^bonus3\s+bAutoSpell\s*,\s*"([A-Z_0-9]+)"\s*,\s*(\d+)\s*,\s*(\d+)\s*;?\s*$')
+
 _BONUS_RE = re.compile(r"^bonus\s+(\w+)\s*,\s*(-?\d+)\s*;?\s*$")
 _BONUS2_RE = re.compile(r'^bonus2\s+(\w+)\s*,\s*"?([A-Za-z_]\w*)"?\s*,\s*(-?\d+)\s*;?\s*$')
 
@@ -459,6 +470,15 @@ def parse_statement(stmt):
                                      "reason": f'종족 enum "{enum_val}"이 TextRAG 확인된 10종에 없음 — 추측 금지'})
         reason = UNSUPPORTED_REASONS.get(const, f'알려지지 않은 rAthena bonus2 상수(rawScript만 보존): {const}')
         return ("unsupported", {"rawStatement": stmt, "constant": const, "reason": reason})
+
+    m = _AUTOSPELL_RE.match(stmt + ";")
+    if m and m.group(1) in AUTOSPELL_SKILL_MAP:
+        skill, max_lv = AUTOSPELL_SKILL_MAP[m.group(1)]
+        lv, rate_raw = int(m.group(2)), int(m.group(3))
+        if 1 <= lv <= max_lv and 0 < rate_raw <= 1000:
+            return ("effect", {"type": "event", "key": "autoSpell", "subKey": None,
+                               "value": {"skill": skill, "lv": lv, "rate": rate_raw / 1000.0},
+                               "reason": 'doc: "bonus3 bAutoSpell,sk,y,n; 공격 시 n/1000 확률로 스킬 sk Lv y 자동 시전" == P0 onHit autoSpell 이벤트(P3-A: 증거 기반 2종만)'})
 
     # bonus/bonus2/bonus3/bonus4/bonus5(동적 표현식·인자 없는 플래그형 등 위 정규식에
     # 안 걸린 나머지 형태), autobonus, 함수 호출식(getequiprefinerycnt 등) 전부 여기로 —

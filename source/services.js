@@ -180,28 +180,9 @@ window.kafraWarpTo = function(dest, cost){
   svcKafraMove(dest, cost, '🚃 <b>[카프라 워프]</b>');
 };
 
-function svcReadWarehouse(){
-  try{
-    let raw = localStorage.getItem('rmc_warehouse');
-    let wh = raw ? JSON.parse(raw) : {};
-    if(typeof migrateItemLedger === 'function' && migrateItemLedger(wh)){
-      localStorage.setItem('rmc_warehouse', JSON.stringify(wh));
-    }
-    return wh;
-  }catch(e){
-    log('⚠ 창고 데이터를 읽을 수 없습니다.','error');
-    return {};
-  }
-}
-function svcWriteWarehouse(wh){
-  try{
-    localStorage.setItem('rmc_warehouse', JSON.stringify(wh));
-    return true;
-  }catch(e){
-    log('⚠ 창고 저장에 실패했습니다. 이동을 취소했습니다.','error');
-    return false;
-  }
-}
+// [P1-15] 창고 접근은 template.html의 WarehouseStore 단일 경계를 지난다(실패는 로그로 알림).
+function svcReadWarehouse(){ return WarehouseStore.read({ report:true }); }
+function svcWriteWarehouse(wh){ return WarehouseStore.write(wh, { report:true }); }
 function svcWarehouseButtons(idx, direction, qty){
   let n10 = Math.min(10, qty);
   return `<span style="display:flex;gap:2px;flex-shrink:0;">

@@ -317,14 +317,13 @@
       "constant": "bAutoSpell",
       "verdict": "identity-mapping-gap",
       "canonicalTarget": null,
-      "instanceCount": 10,
-      "comboCount": 6,
+      "instanceCount": 8,
+      "comboCount": 4,
       "sampleComboIds": [
         "rathena-pre-0020-01",
         "rathena-pre-0065-01",
         "rathena-pre-0085-01",
-        "rathena-pre-0091-01",
-        "rathena-pre-0093-01"
+        "rathena-pre-0091-01"
       ],
       "evidence": "_triggerOnHitEvent case autoSpell 존재(DB.skills[evt.skill].effect 호출)하나 rAthena 스킬ID가 DB.skills 어떤 키와도 대응하지 않음(전수 grep 0건, P2-A.4 §12)",
       "consumerPresent": true,

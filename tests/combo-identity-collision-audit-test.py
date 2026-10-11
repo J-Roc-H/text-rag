@@ -120,9 +120,9 @@ def main():
     for c in real_combos['combos']:
         counts[c['status']] = counts.get(c['status'], 0) + 1
     check('D: 전체 variant 수 156(불변)', sum(counts.values()) == 156)
-    check('D: verified 41건(47 - identity collision duplicate 6건)', counts.get('verified') == 41)
+    check('D: verified 43건(47 - identity collision duplicate 6건 + P3-A AutoSpell 2건)', counts.get('verified') == 43)
     check('D: runtime-blocked 6건(identity collision duplicate 6건, ammo는 현재 0건)', counts.get('runtime-blocked') == 6)
-    check('D: unsupported 51건(불변 -- identity collision이 상태를 바꾸지 않음)', counts.get('unsupported') == 51)
+    check('D: unsupported 49건(identity collision은 상태를 바꾸지 않음; 51 - P3-A AutoSpell 2건)', counts.get('unsupported') == 49)
     check('D: source-needed 58건(불변)', counts.get('source-needed') == 58)
     check('D: meta.statusCounts가 재계산 값과 일치', real_combos['meta']['statusCounts'] == counts)
     check('D: meta.identityCollisionKeys가 6종 전부 포함', set(real_combos['meta']['identityCollisionKeys']) == expected_keys)

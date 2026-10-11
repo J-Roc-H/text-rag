@@ -113,7 +113,30 @@ function matchCombos(loadout, comboList) {
 // sourceId를 항상 남긴다 — source는 카드/장비면 display name이라 콤보 id와 우연히 같은
 // 문자열이 될 일이 없지만, sourceId는 "이 ledger 항목이 정확히 어느 combo record에서
 // 왔는가"를 다른 필드 파싱 없이 바로 조회하기 위한 안정 식별자다.
+//
+// P3-A: type:'event' 레코드의 실제 bucket은 fx.events.<trigger>라 위 generic merge로는 조용히
+// drop된다. 그래서 event.autoSpell 하나만 기존 P0 fx.events.onHit 큐에 넣는 전용 adapter를 둔다 --
+// 다른 event key(soulgain 등)는 이 기회에 켜지 않는다(여전히 drop). 실행은 기존 P0
+// triggerItemEffects/_triggerOnHitEvent의 autoSpell executor가 그대로 소비한다.
+function _applyComboAutoSpellEvent(fx, comboId, effect) {
+  var v = effect.value;
+  if (!v || typeof v.skill !== 'string' || !(v.lv >= 1) || !(v.rate > 0)) return;
+  if (!fx.events || !Array.isArray(fx.events.onHit)) return;
+  fx.events.onHit.push({
+    source: comboId, sourceId: comboId, sourceType: 'combo', kind: 'autoSpell',
+    skill: v.skill, lv: v.lv, rate: v.rate,
+  });
+  fx.ledger.push({
+    source: comboId, sourceId: comboId, sourceType: 'combo', type: 'event', key: 'autoSpell',
+    value: { skill: v.skill, lv: v.lv, rate: v.rate }, active: true,
+  });
+}
+
 function _applyComboEffect(fx, comboId, effect) {
+  if (effect && effect.type === 'event' && effect.key === 'autoSpell' && effect.subKey == null) {
+    _applyComboAutoSpellEvent(fx, comboId, effect);
+    return;
+  }
   if (!effect || !effect.type || !fx[effect.type]) return;
   var bucket = fx[effect.type];
 

@@ -8,9 +8,9 @@
   "totalSourceEntries": 105,
   "totalVariants": 156,
   "statusCounts": {
-   "verified": 41,
+   "verified": 43,
    "source-needed": 58,
-   "unsupported": 51,
+   "unsupported": 49,
    "runtime-blocked": 6
   },
   "identityMapUsed": true,
@@ -8856,18 +8856,22 @@
    ],
    "rawScript": "bonus3 bAutoSpell,\"MG_LIGHTNINGBOLT\",5,20;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus3 bAutoSpell,\"MG_LIGHTNINGBOLT\",5,20",
-     "constant": "bAutoSpell",
-     "reason": "\"bonus3/4 bAutoSpell,sk,y,n;\" — 실코드 재확인(_triggerOnHitEvent case autoSpell: `DB.skills[evt.skill]`) 결과 onHit 트리거 자체는 존재하나, rAthena 스킬 ID(예: NJ_HUUJIN)가 TextRAG DB.skills의 어떤 키와도 대응하지 않음(전수 grep 0건) — identity-mapping-gap(P2-A.4 §12, 스킬명 추측 금지)."
+     "type": "event",
+     "key": "autoSpell",
+     "subKey": null,
+     "value": {
+      "skill": "라이트닝 볼트",
+      "lv": 5,
+      "rate": 0.02
+     },
+     "reason": "doc: \"bonus3 bAutoSpell,sk,y,n; 공격 시 n/1000 확률로 스킬 sk Lv y 자동 시전\" == P0 onHit autoSpell 이벤트(P3-A: 증거 기반 2종만)"
     }
    ],
-   "status": "unsupported",
-   "statusReasons": [
-    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
-   ],
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": [],
    "identityCollision": null
   },
   {
@@ -9056,18 +9060,22 @@
    ],
    "rawScript": "bonus3 bAutoSpell,\"MG_FROSTDIVER\",3,250;\n",
    "conditionalRaw": [],
-   "effects": [],
-   "unsupportedEffects": [
+   "effects": [
     {
-     "rawStatement": "bonus3 bAutoSpell,\"MG_FROSTDIVER\",3,250",
-     "constant": "bAutoSpell",
-     "reason": "\"bonus3/4 bAutoSpell,sk,y,n;\" — 실코드 재확인(_triggerOnHitEvent case autoSpell: `DB.skills[evt.skill]`) 결과 onHit 트리거 자체는 존재하나, rAthena 스킬 ID(예: NJ_HUUJIN)가 TextRAG DB.skills의 어떤 키와도 대응하지 않음(전수 grep 0건) — identity-mapping-gap(P2-A.4 §12, 스킬명 추측 금지)."
+     "type": "event",
+     "key": "autoSpell",
+     "subKey": null,
+     "value": {
+      "skill": "프로스트 다이버",
+      "lv": 3,
+      "rate": 0.25
+     },
+     "reason": "doc: \"bonus3 bAutoSpell,sk,y,n; 공격 시 n/1000 확률로 스킬 sk Lv y 자동 시전\" == P0 onHit autoSpell 이벤트(P3-A: 증거 기반 2종만)"
     }
    ],
-   "status": "unsupported",
-   "statusReasons": [
-    "모든 효과가 canonical 변환 불가(unsupportedEffects 참조)"
-   ],
+   "unsupportedEffects": [],
+   "status": "verified",
+   "statusReasons": [],
    "identityCollision": null
   },
   {

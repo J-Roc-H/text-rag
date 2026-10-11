@@ -3002,6 +3002,9 @@ function saveSlots(){ try{ localStorage.setItem('rmc_v3',JSON.stringify(slots));
 function saveLocal(){
   if(activeSlot < 0 || !G.player) return false;
   G.player.lastSavedAt = new Date().toISOString();
+  // [P1-16] 노점에 걸린 재고는 개설 때 인벤에서 빠져 있다 -- 같은 시점 스냅샷(제니·인벤·노점)으로 저장하고,
+  // 로드 때 normalizeSave가 잔여분을 인벤으로 환급한다(노점 자체는 이어지지 않는다).
+  G.player.stall = JSON.parse(JSON.stringify(G.vendingSlots||[]));
   // [P1-11] 자동사냥 중(필드)이면 재접속 정산 기준을 남긴다 — 브라우저가 종료돼도 loadCharacter가 이어 계산
   if(G.autoHunt && DB.maps[G.currentMap] && !DB.maps[G.currentMap].safe) G.player.offlineHunt = { map: G.currentMap, at: Date.now() };
   else delete G.player.offlineHunt;
@@ -3174,7 +3177,10 @@ $('modal-overlay').classList.add('open');
 // importGame이 구맵명·배열형 스킬·유령 아이템·statSystemV2 환급 등 마이그레이션을
 // 전부 건너뛰었다(data.name && data.job 만 보고 직행). JSON -> validateSave ->
 // migrateSave -> normalizeSave 단일 경로로 통합한다.
-const SAVE_SCHEMA_VERSION = 1;
+// v2(P1-15): 노점 데이터 모양 — p.sellerId(판매자 ID, 노점을 처음 열 때 부여) + p.salesLog(판매 기록 링버퍼).
+// 게임 동작은 v1과 같다. v1 세이브는 normalizeSave가 빈 값으로 채우고 migrateSave가 버전만 올린다.
+const SAVE_SCHEMA_VERSION = 2;
+const VEND_SALES_LOG_LIMIT = 200;
 
 // 아이템 DB 정리 후에도 기존 세이브의 인벤·장착·카드·핫바·창고를 잃지 않도록
 // 옛 키를 정식 키로 한 번만 치환한다. 무/유슬롯 원본 쌍의 '_'는 DB에서 제거됐으므로
@@ -3422,6 +3428,23 @@ function normalizeSave(p){
     }
   }
   if(!p.sellLocked) p.sellLocked = {}; // [상점 개편] 판매 보호 표시된 아이템 키
+  // [P1-15] 노점 판매 기록 링버퍼 {stallId,itemId,qty,price,soldAt} + 판매자 ID. 멱등 — 난수/시각 호출 없음.
+  if(!Array.isArray(p.salesLog)) p.salesLog = [];
+  if(p.salesLog.length>VEND_SALES_LOG_LIMIT) p.salesLog = p.salesLog.slice(-VEND_SALES_LOG_LIMIT);
+  if(typeof p.sellerId !== 'string') p.sellerId = null;
+  // [P1-16] 노점 잔여 재고 환급 -- 새로고침·종료로 노점이 사라져도 개설 때 뺀 재고를 잃지 않게 한다. 멱등(2회째는 빈 배열).
+  if(!Array.isArray(p.stall)) p.stall = [];
+  if(p.stall.length){
+    if(!p.inventory) p.inventory = {};
+    let refunded = [];
+    p.stall.forEach(s=>{
+      if(!s || typeof s.itemId !== 'string' || !(s.quantity>0)) return;
+      p.inventory[s.itemId] = (p.inventory[s.itemId]||0) + Math.floor(s.quantity);
+      refunded.push({ itemId:s.itemId, quantity:Math.floor(s.quantity) });
+    });
+    p.stall = [];
+    if(refunded.length) p._stallRefund = refunded;
+  }
   // [세계경험 개편 2단계] 지역 최초 방문 기록. 기존 세이브 마이그레이션 —
   // 이미 진행 중이던 캐릭터가 패치 후 첫 접속에서 현재 위치를 "처음 온 곳"으로
   // 오인하지 않도록, 이미 뭔가 처치한 적 있다면 저장된 위치만은 방문 완료로 둔다.
@@ -3455,6 +3478,8 @@ function loadCharacter(i){
     return;
   }
   G.player = p; G.currentMap = p.savedMap||"프론테라 남쪽 평원"; G.battles=[]; G.autoHunt=false; clearTimeout(G.huntTimer);
+  G.vendingSlots = []; G.lastVendingCheck = 0; // [P1-16] 이전 캐릭터의 노점이 새 캐릭터로 새지 않게(재고는 위 로드에서 환급됨)
+  { let _vb=document.getElementById('vending-badge'); if(_vb) _vb.style.display='none'; }
 
   $('lobby').style.display='none'; $('app').style.display='block';
   // 튜토리얼 퀘스트 초기화 (신규 캐릭터만)
@@ -3523,6 +3548,11 @@ function loadCharacter(i){
   logSep();
   enterMap(G.currentMap); // [세계경험 개편 2단계] 접속 시 현재 위치 장소 묘사
 
+  if(p._stallRefund){
+    let _n = p._stallRefund.reduce((a,s)=>a+s.quantity,0);
+    log(`🏪 노점이 닫혀 있었습니다. 걸어 둔 <b>${p._stallRefund.length}종 ${_n}개</b>를 가방으로 돌려받았습니다.`,'system');
+    delete p._stallRefund;
+  }
   if(p._ghostPurged){
     log(`🧹 아이템 DB에 없던 <b>유령 아이템 ${p._ghostPurged}종</b>을 가방에서 정리했습니다.`,'system');
     delete p._ghostPurged;
@@ -3627,7 +3657,7 @@ async function importGame(event) {
 const RMG_PREFIX = 'RMG1:';
 const RMG_FORMAT_VERSION = 1;
 const RMG_RESTORE_KEY = 'rmc_restore';   // 직전 가져오기 1건의 복구 지점 {slot, data, warehouse?, at, name}
-const RMG_STRIP_KEYS =['_ghostPurged', '_statResetNotice', 'offlineHunt'];  // offlineHunt: 두 기기가 같은 부재 구간을 이중 정산하지 않게
+const RMG_STRIP_KEYS =['_ghostPurged', '_statResetNotice', '_stallRefund', 'stall', 'offlineHunt'];  // offlineHunt: 두 기기가 같은 부재 구간을 이중 정산하지 않게
 const RMG_MSG_DAMAGED = '세이브 데이터를 읽을 수 없습니다. 코드가 일부 누락되었거나 손상되었습니다.';
 const RMG_MSG_NEWER = '더 새로운 버전의 게임에서 만든 세이브입니다. 게임을 새로고침(최신 버전)한 뒤 다시 시도하세요.';
 const RMG_MSG_UNSUPPORTED = '이 브라우저는 세이브 코드를 지원하지 않습니다. 브라우저를 최신 버전으로 업데이트하세요. (iOS 16.4 이상)';
@@ -3692,13 +3722,30 @@ function downloadText(text, filename){
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
-function readWarehouse(){
-  try{
-    let d=localStorage.getItem('rmc_warehouse'), wh=d?JSON.parse(d):{};
-    if(migrateItemLedger(wh)) localStorage.setItem('rmc_warehouse',JSON.stringify(wh));
-    return wh;
-  }catch(e){ return {}; }
-}
+// [P1-15] 창고(`rmc_warehouse`) 접근 단일 경계 — 읽기/쓰기/통째 교체가 전부 여기를 지난다.
+// 캐릭터 슬롯과 달리 계정 공유 키라, 직접 localStorage를 만지는 곳이 늘어나면 온라인화 때 흩어진다.
+// opts.report=true면 실패를 로그로 알린다(카프라 서비스 경로의 기존 동작), 아니면 조용히 폴백한다.
+const WarehouseStore = {
+  KEY: 'rmc_warehouse',
+  read(opts){
+    try{
+      let d=localStorage.getItem(this.KEY), wh=d?JSON.parse(d):{};
+      if(migrateItemLedger(wh)) localStorage.setItem(this.KEY,JSON.stringify(wh));
+      return wh;
+    }catch(e){
+      if(opts&&opts.report) log('⚠ 창고 데이터를 읽을 수 없습니다.','error');
+      return {};
+    }
+  },
+  write(wh, opts){
+    try{ localStorage.setItem(this.KEY,JSON.stringify(wh)); return true; }
+    catch(e){
+      if(opts&&opts.report) log('⚠ 창고 저장에 실패했습니다. 이동을 취소했습니다.','error');
+      return false;
+    }
+  }
+};
+function readWarehouse(){ return WarehouseStore.read(); }
 function readRestore(){ try{ let d = localStorage.getItem(RMG_RESTORE_KEY); return d ? JSON.parse(d) : null; }catch(e){ return null; } }
 function fmtSaveTime(iso){
   let d = iso ? new Date(iso) : null;
@@ -3868,7 +3915,7 @@ function rmgApplyImport(){
   catch(e){ alert('복구용 임시 저장에 실패해 가져오기를 중단했습니다. (저장 공간 부족)'); return; }
   slots[i] = r.character;
   saveSlots();
-  if(withWh) localStorage.setItem('rmc_warehouse', JSON.stringify(r.account.warehouse));
+  if(withWh) WarehouseStore.write(r.account.warehouse);
   _rmgPending = null;
   closeModal();
   if(playing){
@@ -3893,7 +3940,7 @@ function restorePreviousSave(){
     </div>`, [
       { label:'되돌리기', cls:'danger', action:()=>{
           loadSlots(); slots[r.slot] = r.data; saveSlots();
-          if(r.warehouse) localStorage.setItem('rmc_warehouse', JSON.stringify(r.warehouse));
+          if(r.warehouse) WarehouseStore.write(r.warehouse);
           localStorage.removeItem(RMG_RESTORE_KEY);
           initLobby(); notify('가져오기 전 상태로 되돌렸습니다', 'green');
         } },
@@ -7020,6 +7067,23 @@ function processTurn(){
 // ── 노점 시뮬레이션: 랜덤 구매자 이름 ──
 const VEND_BUYERS = ['핑크토끼','루나','아이리스','KrAzY','Zephyr','마뇽이','PoringStar','IcePick','별빛사냥꾼','NightOwl','포링킬러','BlackRose','GuildMaster','DarkHunter','MoonLight'];
 
+// [P1-15] 노점 슬롯 스키마 {stallId,sellerId,itemId,quantity,price,createdAt} — 온라인화 대비 데이터 모양.
+// 게임 동작(구매 확률·가격·회수)은 그대로고, 판매 1건마다 p.salesLog 링버퍼에 기록만 남긴다.
+function newVendId(prefix){
+  let r = '';
+  try{ let a = new Uint32Array(2); crypto.getRandomValues(a); r = a[0].toString(36)+a[1].toString(36); }
+  catch(e){ r = Math.floor(Math.random()*1e9).toString(36); }
+  return prefix+Date.now().toString(36)+'-'+r;
+}
+function makeStallSlot(stallId, sellerId, itemId, quantity, price, createdAt){
+  return { stallId:stallId, sellerId:sellerId, itemId:itemId, quantity:quantity, price:price, createdAt:createdAt };
+}
+function recordVendingSale(p, slot, soldAt){
+  if(!Array.isArray(p.salesLog)) p.salesLog = [];
+  p.salesLog.push({ stallId:slot.stallId, itemId:slot.itemId, qty:1, price:slot.price, soldAt:soldAt });
+  if(p.salesLog.length>VEND_SALES_LOG_LIMIT) p.salesLog.splice(0, p.salesLog.length-VEND_SALES_LOG_LIMIT);
+}
+
 function checkVending(){
   if(G.silentMode) return; // [P0-02③] 무음 모드: 노점은 실시간 30초 게이트라 오프라인 시뮬에서 제외
   if(!G.vendingSlots||!G.vendingSlots.length) return;
@@ -7029,8 +7093,8 @@ function checkVending(){
   G.lastVendingCheck=now;
   let p=G.player; let sold=false;
   G.vendingSlots.forEach(slot=>{
-    if(!slot||slot.qty<=0) return;
-    let parsed=parseItem(slot.item); let itData=parsed?parsed.base:DB.items[slot.item];
+    if(!slot||slot.quantity<=0) return;
+    let parsed=parseItem(slot.itemId); let itData=parsed?parsed.base:DB.items[slot.itemId];
     if(!itData) return;
     let basePrice=itData.buy||(itData.sell?itData.sell*2:0);
     if(!basePrice) return;
@@ -7040,14 +7104,15 @@ function checkVending(){
       let buyer=VEND_BUYERS[Math.floor(Math.random()*VEND_BUYERS.length)];
       p.zeny+=slot.price;
       if(p.records){ p.records.totalZeny=(p.records.totalZeny||0)+slot.price; p.records.totalVendingZeny=(p.records.totalVendingZeny||0)+slot.price; }
-      slot.qty--;
-      log(`🏪 <b>[${buyer}]</b>${josa(buyer,'이가')} <b>${slot.item}</b>${josa(slot.item,'을를')} <span style="color:var(--gold-light);font-weight:bold;">${slot.price.toLocaleString()}z</span>에 구매했습니다!`,'loot');
+      slot.quantity--;
+      recordVendingSale(p, slot, now);
+      log(`🏪 <b>[${buyer}]</b>${josa(buyer,'이가')} <b>${slot.itemId}</b>${josa(slot.itemId,'을를')} <span style="color:var(--gold-light);font-weight:bold;">${slot.price.toLocaleString()}z</span>에 구매했습니다!`,'loot');
       sold=true;
     }
   });
-  G.vendingSlots=G.vendingSlots.filter(s=>s&&s.qty>0);
+  G.vendingSlots=G.vendingSlots.filter(s=>s&&s.quantity>0);
   if(sold) updateUI();
-  let remaining=G.vendingSlots.reduce((a,s)=>a+(s?s.qty:0),0);
+  let remaining=G.vendingSlots.reduce((a,s)=>a+(s?s.quantity:0),0);
   let badge=document.getElementById('vending-badge');
   if(badge){
     if(G.vendingSlots.length>0){badge.style.display='inline-block';badge.textContent=`🏪 노점 중 (${remaining}개 남음)`;}
@@ -8166,7 +8231,7 @@ function warehouseDeposit(itemName){
   p.inventory[itemName]--;
   if(p.inventory[itemName]<=0) delete p.inventory[itemName];
   wh[itemName]=(wh[itemName]||0)+1;
-  try{ localStorage.setItem('rmc_warehouse',JSON.stringify(wh)); }catch(e){}
+  WarehouseStore.write(wh);
   log(`📦 <b>[창고]</b> ${itemName} 1개를 맡겼습니다.`,'system');
   updateUI();
   kafraWarehouse(); // UI 갱신
@@ -8180,7 +8245,7 @@ function warehouseWithdraw(itemName){
   wh[itemName]--;
   if(wh[itemName]<=0) delete wh[itemName];
   p.inventory[itemName]=(p.inventory[itemName]||0)+1;
-  try{ localStorage.setItem('rmc_warehouse',JSON.stringify(wh)); }catch(e){}
+  WarehouseStore.write(wh);
   log(`📦 <b>[창고]</b> ${itemName} 1개를 찾았습니다.`,'system');
   updateUI();
   kafraWarehouse(); // UI 갱신
@@ -9713,8 +9778,11 @@ function showVendingModal(lv){
       p.inventory[s.item]=(p.inventory[s.item]||0)-s.qty;
       if(p.inventory[s.item]<=0) delete p.inventory[s.item];
     });
-    G.vendingSlots=valid;
-    G.lastVendingCheck=Date.now();
+    // [P1-15] 폼 슬롯({item,price,qty}) -> 정본 노점 슬롯. 판매자 ID는 처음 열 때 한 번 부여.
+    let openedAt=Date.now(), stallId=newVendId('st-');
+    if(!p.sellerId) p.sellerId=newVendId('sl-');
+    G.vendingSlots=valid.map(s=>makeStallSlot(stallId,p.sellerId,s.item,s.qty,s.price,openedAt));
+    G.lastVendingCheck=openedAt;
     let total=valid.reduce((a,s)=>a+s.qty,0);
     log(`🏪 <b>노점 개설!</b> ${valid.length}종 ${total}개 등록.`,'system');
     let badge=document.getElementById('vending-badge');
@@ -9745,16 +9813,16 @@ function showVendingStatus(){
   }
 
   let rows=G.vendingSlots.map(s=>{
-    let base=calcBase(s.item);
+    let base=calcBase(s.itemId);
     let ratio=base?s.price/base:0;
     let chance=base?(calcChance(s.price,base)*100).toFixed(0):0;
     let chColor=chance>=50?'var(--green)':chance>=20?'var(--gold)':'var(--red-light)';
     return `<div style="display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px dashed var(--border);">
-      <div style="flex:1;"><div style="font-size:11px;font-weight:bold;">${s.item}</div>
+      <div style="flex:1;"><div style="font-size:11px;font-weight:bold;">${s.itemId}</div>
         <div style="font-size:11px;color:var(--text-dim);">기준가 ${base?base.toLocaleString()+'z':'알 수 없음'}</div></div>
       <div style="text-align:right;">
         <div style="font-size:11px;color:var(--gold-light);font-weight:bold;">${s.price.toLocaleString()}z</div>
-        <div style="font-size:11px;color:var(--text-dim);">잔여 ${s.qty}개</div>
+        <div style="font-size:11px;color:var(--text-dim);">잔여 ${s.quantity}개</div>
       </div>
       <div style="font-size:10px;font-weight:bold;color:${chColor};min-width:36px;text-align:right;">${chance}%<br><span style="font-size:11px;font-weight:normal;">/ 30초</span></div>
     </div>`;
@@ -9765,7 +9833,7 @@ function showVendingStatus(){
 
   window.__vClose=function(){
     if(G.vendingSlots) G.vendingSlots.forEach(s=>{
-      if(s.qty>0){p.inventory[s.item]=(p.inventory[s.item]||0)+s.qty;log(`📦 <b>${s.item}</b> ${s.qty}개 회수.`,'system');}
+      if(s.quantity>0){p.inventory[s.itemId]=(p.inventory[s.itemId]||0)+s.quantity;log(`📦 <b>${s.itemId}</b> ${s.quantity}개 회수.`,'system');}
     });
     G.vendingSlots=[];
     let badge=document.getElementById('vending-badge');

@@ -13,7 +13,7 @@ CORS로 막힌다(DEVREF-E 보류-01).
 장소/NPC 상호작용은 source/actor-interaction.js, 아이템/카드 효과 집계(P0-B)는
 source/item-effects.js, 콤보 매칭·적용(P2-B1)은 source/combo-engine.js로 분리 관리하되
 빌드 시 </body> 직전에 모두 인라인한다.
-최종 index.html / 룬미드가츠_v9.21.html 은 계속 단일 HTML이다.
+최종 index.html / 룬미드가츠_v9.22.html 은 계속 단일 HTML이다.
 
 item-effects.js는 template.html 본문의 <script id="block-engine"> 안 calcStats()가
 정의된 훨씬 이전 위치보다 늦게(다른 주입 스크립트와 함께 </body> 직전에) 실행되지만,
@@ -50,7 +50,7 @@ COMBO_IDENTITY_JSON_PATH = os.path.join(DATA_DIR, "combo-item-identity.json")
 # BLOCKS에 넣지 않는다(runtime 미연결). identity builder가 이 파일을 읽어 identity
 # map에 반영한다(tools/build_combo_item_identity.py).
 COMBO_IDENTITY_REVIEW_JSON_PATH = os.path.join(DATA_DIR, "combo-item-identity-reviewed.json")
-OUTPUT_PATH = os.path.join(BASE, "룬미드가츠_v9.21.html")
+OUTPUT_PATH = os.path.join(BASE, "룬미드가츠_v9.22.html")
 # GitHub Pages는 루트의 index.html을 서빙한다 — 버전 올려도 폰 북마크 URL이
 # 안 바뀌게 매 빌드마다 같은 내용을 index.html에도 복사한다 (2026-09-20)
 INDEX_PATH = os.path.join(BASE, "index.html")
@@ -486,6 +486,13 @@ COMBO_KNOWN_EFFECT_KEYS = {
     # 재현, getSkillSpCost()에 실제 연결(item-effects.js) -- 기존 spCostMul과는
     # 별개 필드로 함께 곱해진다(오재사용 없음, §3/§4 감사 근거).
     ("combat", "matkPct"), ("combat", "spCostRatePct"),
+    # P3-A(AutoSpell Skill Identity): event.autoSpell -- 3축 확인. consumer: 기존 P0
+    # fx.events.onHit 큐 + _triggerOnHitEvent autoSpell executor(combo-engine.js의 전용
+    # adapter가 큐에 append). scope: 두 combo(MG_LIGHTNINGBOLT/MG_FROSTDIVER)만, 무조건
+    # 3-인자 형태. stacking: 두 combo의 스킬이 서로 달라 rAthena의 "같은 spell rate 합산
+    # (1000 cap)" 케이스가 발생하지 않는다 -- 같은 스킬을 쓰는 combo를 추가하면 이 전제를
+    # 다시 확인해야 한다.
+    ("event", "autoSpell"),
 }
 
 # P2-A.4-정정(2026-09-27) — SAFE의 정의를 "consumer 존재"에서 "consumer + scope +
