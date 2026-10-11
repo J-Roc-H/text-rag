@@ -77,6 +77,19 @@ async function main() {
       out.wh = readWarehouse(); out.whRaw = localStorage.getItem('rmc_warehouse');
       // ⑥ 검증 게이트
       out.gate5 = (function () { const l1 = loadPlayerData(G.player), l2 = loadPlayerData(l1); return JSON.stringify(l1) === JSON.stringify(l2); })();
+      // ⑦ P1-16: 노점을 연 채 저장 -> 다시 로드하면 잔여 재고가 인벤으로 환급(재로드해도 중복 없음)
+      const pp = G.player; const before = pp.inventory[item] || 0;
+      showVendingModal(1); window.__vs[0].item = item; window.__vs[0].price = DB.items[item].buy; window.__vs[0].qty = 2; window.__vOpen();
+      out.p16Open = { inv: pp.inventory[item] || 0, slots: G.vendingSlots.length };
+      saveLocal();
+      out.p16Saved = JSON.parse(localStorage.getItem('rmc_v3'))[activeSlot].stall.map(x => [x.itemId, x.quantity]);
+      loadCharacter(activeSlot);
+      out.p16After = { inv: G.player.inventory[item] || 0, slots: G.vendingSlots.length, stall: G.player.stall.length, refund: G.player._stallRefund === undefined };
+      out.p16Log = document.getElementById('game-log').textContent.includes('노점이 닫혀 있었습니다');
+      saveLocal(); loadCharacter(activeSlot);
+      out.p16Again = G.player.inventory[item] || 0;
+      out.before = before;
+      out.strip = RMG_STRIP_KEYS.includes('stall') && RMG_STRIP_KEYS.includes('_stallRefund');
       return out;
     });
 
@@ -92,6 +105,12 @@ async function main() {
     assert.equal(r.invAfterClose, 3, '잔여 1개 회수'); assert.equal(r.slotsAfterClose, 0);
     assert.deepEqual(r.wh, { 테스트: 2 }); assert.equal(r.whRaw, '{"테스트":2}');
     assert.ok(r.gate5);
+    assert.deepEqual(r.p16Open, { inv: r.before - 2, slots: 1 }, '개설 시 재고 차감');
+    assert.deepEqual(r.p16Saved, [[r.item, 2]], '저장본에 노점 재고');
+    assert.deepEqual(r.p16After, { inv: r.before, slots: 0, stall: 0, refund: true }, '로드 시 환급 + 노점 비움');
+    assert.ok(r.p16Log, '환급 안내 로그');
+    assert.equal(r.p16Again, r.before, '재로드해도 중복 환급 없음');
+    assert.ok(r.strip, 'RMG 내보내기에서 노점 키 제외');
     assert.deepEqual(errors, []);
     console.log('OK: vending schema / salesLog ring buffer / save v2 / WarehouseStore');
   } finally {

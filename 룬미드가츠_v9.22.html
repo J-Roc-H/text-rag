@@ -47021,6 +47021,9 @@ function saveSlots(){ try{ localStorage.setItem('rmc_v3',JSON.stringify(slots));
 function saveLocal(){
   if(activeSlot < 0 || !G.player) return false;
   G.player.lastSavedAt = new Date().toISOString();
+  // [P1-16] 노점에 걸린 재고는 개설 때 인벤에서 빠져 있다 -- 같은 시점 스냅샷(제니·인벤·노점)으로 저장하고,
+  // 로드 때 normalizeSave가 잔여분을 인벤으로 환급한다(노점 자체는 이어지지 않는다).
+  G.player.stall = JSON.parse(JSON.stringify(G.vendingSlots||[]));
   // [P1-11] 자동사냥 중(필드)이면 재접속 정산 기준을 남긴다 — 브라우저가 종료돼도 loadCharacter가 이어 계산
   if(G.autoHunt && DB.maps[G.currentMap] && !DB.maps[G.currentMap].safe) G.player.offlineHunt = { map: G.currentMap, at: Date.now() };
   else delete G.player.offlineHunt;
@@ -47448,6 +47451,19 @@ function normalizeSave(p){
   if(!Array.isArray(p.salesLog)) p.salesLog = [];
   if(p.salesLog.length>VEND_SALES_LOG_LIMIT) p.salesLog = p.salesLog.slice(-VEND_SALES_LOG_LIMIT);
   if(typeof p.sellerId !== 'string') p.sellerId = null;
+  // [P1-16] 노점 잔여 재고 환급 -- 새로고침·종료로 노점이 사라져도 개설 때 뺀 재고를 잃지 않게 한다. 멱등(2회째는 빈 배열).
+  if(!Array.isArray(p.stall)) p.stall = [];
+  if(p.stall.length){
+    if(!p.inventory) p.inventory = {};
+    let refunded = [];
+    p.stall.forEach(s=>{
+      if(!s || typeof s.itemId !== 'string' || !(s.quantity>0)) return;
+      p.inventory[s.itemId] = (p.inventory[s.itemId]||0) + Math.floor(s.quantity);
+      refunded.push({ itemId:s.itemId, quantity:Math.floor(s.quantity) });
+    });
+    p.stall = [];
+    if(refunded.length) p._stallRefund = refunded;
+  }
   // [세계경험 개편 2단계] 지역 최초 방문 기록. 기존 세이브 마이그레이션 —
   // 이미 진행 중이던 캐릭터가 패치 후 첫 접속에서 현재 위치를 "처음 온 곳"으로
   // 오인하지 않도록, 이미 뭔가 처치한 적 있다면 저장된 위치만은 방문 완료로 둔다.
@@ -47481,6 +47497,8 @@ function loadCharacter(i){
     return;
   }
   G.player = p; G.currentMap = p.savedMap||"프론테라 남쪽 평원"; G.battles=[]; G.autoHunt=false; clearTimeout(G.huntTimer);
+  G.vendingSlots = []; G.lastVendingCheck = 0; // [P1-16] 이전 캐릭터의 노점이 새 캐릭터로 새지 않게(재고는 위 로드에서 환급됨)
+  { let _vb=document.getElementById('vending-badge'); if(_vb) _vb.style.display='none'; }
 
   $('lobby').style.display='none'; $('app').style.display='block';
   // 튜토리얼 퀘스트 초기화 (신규 캐릭터만)
@@ -47549,6 +47567,11 @@ function loadCharacter(i){
   logSep();
   enterMap(G.currentMap); // [세계경험 개편 2단계] 접속 시 현재 위치 장소 묘사
 
+  if(p._stallRefund){
+    let _n = p._stallRefund.reduce((a,s)=>a+s.quantity,0);
+    log(`🏪 노점이 닫혀 있었습니다. 걸어 둔 <b>${p._stallRefund.length}종 ${_n}개</b>를 가방으로 돌려받았습니다.`,'system');
+    delete p._stallRefund;
+  }
   if(p._ghostPurged){
     log(`🧹 아이템 DB에 없던 <b>유령 아이템 ${p._ghostPurged}종</b>을 가방에서 정리했습니다.`,'system');
     delete p._ghostPurged;
@@ -47653,7 +47676,7 @@ async function importGame(event) {
 const RMG_PREFIX = 'RMG1:';
 const RMG_FORMAT_VERSION = 1;
 const RMG_RESTORE_KEY = 'rmc_restore';   // 직전 가져오기 1건의 복구 지점 {slot, data, warehouse?, at, name}
-const RMG_STRIP_KEYS =['_ghostPurged', '_statResetNotice', 'offlineHunt'];  // offlineHunt: 두 기기가 같은 부재 구간을 이중 정산하지 않게
+const RMG_STRIP_KEYS =['_ghostPurged', '_statResetNotice', '_stallRefund', 'stall', 'offlineHunt'];  // offlineHunt: 두 기기가 같은 부재 구간을 이중 정산하지 않게
 const RMG_MSG_DAMAGED = '세이브 데이터를 읽을 수 없습니다. 코드가 일부 누락되었거나 손상되었습니다.';
 const RMG_MSG_NEWER = '더 새로운 버전의 게임에서 만든 세이브입니다. 게임을 새로고침(최신 버전)한 뒤 다시 시도하세요.';
 const RMG_MSG_UNSUPPORTED = '이 브라우저는 세이브 코드를 지원하지 않습니다. 브라우저를 최신 버전으로 업데이트하세요. (iOS 16.4 이상)';
