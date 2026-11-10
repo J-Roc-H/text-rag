@@ -6,7 +6,10 @@ const assert=require('assert');
 global.window=global;
 let modal=null, logs=[], notices=[], updateCount=0, saveCount=0;
 global.openModal=(title,body,actions)=>{ modal={title,body,actions}; };
-global.closeModal=()=>{};
+let closeCount=0;
+global.closeModal=()=>{ closeCount++; };
+// openModal 버튼 규칙 재현: action() 실행 뒤 close!==false 이면 closeModal() 자동 호출
+function clickBtn(b){ b.action(); if(b.close!==false) closeModal(); }
 global.log=(msg,type)=>logs.push({msg,type});
 global.notify=(msg,type)=>notices.push({msg,type});
 global.updateUI=()=>{ updateCount++; };
@@ -75,6 +78,19 @@ assert(notices.some(x=>x.msg.includes('성공')));
 assert(modal.title.includes('홀그렌'));
 assert(modal.body.includes('제련 +1 성공'));
 assert(updateCount>0 && saveCount>0);
+
+// 2-b) 결과창의 [계속 제련한다]: 제련 목록 창이 열린 채로 남아야 한다(버튼 기본 자동닫기에 닫히면 안 됨).
+const cont=modal.actions.find(a=>a.label==='계속 제련한다');
+const stop=modal.actions.find(a=>a.label==='그만둔다');
+assert(cont && stop);
+closeCount=0;
+clickBtn(cont);
+assert.strictEqual(modal.title,'REFINE_LIST');
+assert.strictEqual(closeCount,0,'계속 제련한다 뒤 창이 닫히면 안 된다');
+modal={title:'RESULT',body:'',actions:[]};
+closeCount=0;
+clickBtn(stop);
+assert(closeCount>=1,'그만둔다는 창을 닫아야 한다');
 
 // 3) 실패도 [다음] 전에는 노출되지 않으며, 이후 장비가 파괴된다.
 resetPlayer('+1 나이프');
