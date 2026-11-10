@@ -108,5 +108,87 @@ assert(notices.some(x=>x.msg.includes('실패')));
 assert(modal.body.includes('파괴'));
 assert(modal.body.includes('나를 원망하진 말아주게'));
 
+// 4) 자동 제련 — 목표 제련도까지 연속 판정, 실패 시 파괴, 자원 부족 시 중단.
+const baseRates=DB.refine['무기1'].rates.slice();
+function setRates(r){ DB.refine['무기1'].rates=r; }
+function autoModalOpenSafe(){ return modal && /자동 제련 결과/.test(modal.title); }
+function resetInv(key,qty,ore,zeny){
+  G.player={zeny,inventory:{'프라코니':ore},equip:{},_maxRefineEver:0};
+  G.player.inventory[key]=qty;
+  window.__svcRefineTargets=[{source:'inventory',key}];
+  modal=null; logs=[]; notices=[]; updateCount=0; saveCount=0;
+}
+
+// 4-a) 목표 달성: 100% 구간을 연달아 통과
+setRates([100,100,100,100,100,100,100,100,100,100]);
+resetPlayer('나이프',10,10000);
+window.serviceRefineAuto(0,3);
+assert.strictEqual(G.player.equip['무기'],'+3 나이프');
+assert.strictEqual(G.player.zeny,10000-300);
+assert.strictEqual(G.player.inventory['프라코니'],7);
+assert.strictEqual(G.player._maxRefineEver,3);
+assert(autoModalOpenSafe());
+assert(modal.body.includes('목표 +3 달성'));
+assert(logs.some(x=>x.msg.includes('자동 제련')&&x.msg.includes('+3 나이프')));
+assert(notices.some(x=>x.msg.includes('+3')));
+assert(saveCount>0 && updateCount>0);
+// 결과창 버튼: 계속 제련한다는 창을 닫지 않는다
+const autoCont=modal.actions.find(a=>a.label==='계속 제련한다');
+closeCount=0; clickBtn(autoCont);
+assert.strictEqual(modal.title,'REFINE_LIST');
+assert.strictEqual(closeCount,0);
+
+// 4-b) 중간 실패: +2→+3 단계에서 꽝 → 그 시점 장비만 파괴, 이후 단계는 진행하지 않음
+setRates([100,100,0,100,100,100,100,100,100,100]);
+resetPlayer('나이프',10,10000);
+window.serviceRefineAuto(0,6);
+assert.strictEqual(G.player.equip['무기'],null);
+assert.strictEqual(G.player.zeny,10000-300);          // 3회 시도(성공2+실패1)만 과금
+assert.strictEqual(G.player.inventory['프라코니'],7);
+assert(modal.body.includes('꽝'));
+assert(modal.body.includes('+2 나이프 파괴'));
+assert(modal.body.includes('나를 원망하진 말아주게'));
+assert(logs.some(x=>x.msg.includes('파괴')&&x.msg.includes('자동 제련')));
+assert(notices.some(x=>x.msg.includes('파괴')));
+
+// 4-c) 재료 부족: 있는 만큼만 올리고 멈춘다(파괴 없음)
+setRates([100,100,100,100,100,100,100,100,100,100]);
+resetPlayer('나이프',2,10000);
+window.serviceRefineAuto(0,5);
+assert.strictEqual(G.player.equip['무기'],'+2 나이프');
+assert.strictEqual(G.player.inventory['프라코니'],undefined);
+assert(modal.body.includes('부족으로 중단'));
+assert(!modal.body.includes('꽝'));
+
+// 4-d) 제니 부족
+resetPlayer('나이프',10,250);
+window.serviceRefineAuto(0,5);
+assert.strictEqual(G.player.equip['무기'],'+2 나이프');
+assert.strictEqual(G.player.zeny,50);
+assert(modal.body.includes('제니 부족으로 중단'));
+
+// 4-e) 가방 장비(2개 보유): 1개만 올리고 나머지 1개는 그대로
+resetInv('나이프',2,10,10000);
+window.serviceRefineAuto(0,3);
+assert.strictEqual(G.player.inventory['나이프'],1);
+assert.strictEqual(G.player.inventory['+3 나이프'],1);
+assert.strictEqual(G.player.zeny,10000-300);
+
+// 4-f) 잘못된 목표/자원 없음: 아무것도 소모하지 않고 경고 후 제련 목록으로
+resetPlayer('+2 나이프',5,1000);
+window.serviceRefineAuto(0,2);   // 목표 ≤ 현재
+window.serviceRefineAuto(0,11);  // 목표 > 10
+window.serviceRefineAuto(0,NaN); // 선택 없음
+assert.strictEqual(G.player.zeny,1000);
+assert.strictEqual(G.player.equip['무기'],'+2 나이프');
+assert.strictEqual(modal.title,'REFINE_LIST');
+assert(logs.filter(x=>x.type==='warning').length>=3);
+resetPlayer('나이프',0,1000);
+window.serviceRefineAuto(0,3);   // 재료 0
+assert.strictEqual(G.player.equip['무기'],'나이프');
+assert.strictEqual(G.player.zeny,1000);
+
+setRates(baseRates);
+
 Math.random=oldRandom;
 console.log('OK - refine reveal smoke');

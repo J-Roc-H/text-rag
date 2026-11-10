@@ -63,10 +63,26 @@ function svcRefineRow(target, label, qty){
   let state = maxed
     ? '<b style="color:var(--gold-light);">MAX +10</b>'
     : `+${m.cur} → <b>+${m.cur+1}</b> · 성공 ${m.rate}% · ${svcHtml(m.ore)} 1 (${oreHave}) · ${m.cost.toLocaleString()}z`;
+  // 자동 제련: 목표 제련도까지 연타. 안전 한계(safeLimit) 초과 목표는 ⚠ 표시.
+  let auto = '';
+  if(m.cur + 2 <= 10){
+    let rd = (DB.refine && DB.refine[m.refKey]) || {};
+    let safe = Number.isFinite(rd.safeLimit) ? rd.safeLimit : 0;
+    let defGoal = Math.min(10, Math.max(m.cur + 2, safe));
+    let opts = '';
+    for(let g = m.cur + 2; g <= 10; g++){
+      opts += `<option value="${g}"${g === defGoal ? ' selected' : ''}>+${g}${g > safe ? ' ⚠' : ''}</option>`;
+    }
+    auto = `<div style="margin-top:4px;display:flex;gap:4px;align-items:center;font-size:10px;color:var(--text-dim);">
+      목표 <select id="svc-rf-goal-${idx}" style="font-size:10px;padding:1px 2px;" title="⚠ = 안전 한계(+${safe}) 초과 — 실패 시 장비 파괴">${opts}</select>
+      <button class="m-btn" style="padding:2px 8px;font-size:10px;" onclick="serviceRefineAuto(${idx})" ${affordable?'':'disabled'}>⚡ 자동</button>
+    </div>`;
+  }
   return `<div style="padding:7px 4px;border-bottom:1px dashed var(--border);display:flex;gap:8px;align-items:center;">
     <div style="flex:1;min-width:0;">
       <div style="font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${label}${q}</div>
       <div style="font-size:10px;color:var(--text-dim);">${state}</div>
+      ${auto}
     </div>
     <button class="m-btn ${affordable?'ok':''}" style="padding:4px 9px;flex-shrink:0;" onclick="serviceRefineTarget(${idx})" ${affordable?'':'disabled'}>제련</button>
   </div>`;
@@ -93,7 +109,7 @@ window.showRefineModal = function(){
   });
 
   let body = `<div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">
-    장착 장비뿐 아니라 가방 장비도 1개씩 제련합니다. 실패 시 해당 1개가 파괴됩니다.
+    장착 장비뿐 아니라 가방 장비도 1개씩 제련합니다. 실패 시 해당 1개가 파괴됩니다.<br>⚡ 자동은 목표 제련도까지 연속으로 제련하며, 실패하거나 재료·제니가 떨어지면 멈춥니다.
   </div>
   <div style="font-size:11px;font-weight:700;color:var(--gold-light);margin:6px 0;">착용 장비</div>
   ${equipRows || '<div style="font-size:10px;color:var(--text-dim);padding:6px;">제련 가능한 착용 장비 없음</div>'}
