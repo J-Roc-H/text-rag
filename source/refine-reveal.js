@@ -88,7 +88,7 @@ function rrShowResult(refiner,success,oldName,newName,rate,newRefine){
     ${result}
   </div>`;
   openModal(`🔨 ${rrEsc(rrRefinerDisplay(refiner))} · 제련 결과`,body,[
-    {label:'계속 제련한다',cls:'ok',action:()=>{ if(typeof showRefineModal==='function') showRefineModal(); }},
+    {label:'계속 제련한다',cls:'ok',close:false,action:()=>{ if(typeof showRefineModal==='function') showRefineModal(); }},
     {label:'그만둔다',action:()=>{ if(typeof closeModal==='function') closeModal(); }}
   ]);
 }
