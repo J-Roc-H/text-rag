@@ -136,7 +136,7 @@ body{background:var(--bg-deep);color:var(--text);font-family:'Noto Sans KR',sans
 }
 
 .equip-sec{padding:5px 8px;border-top:1px solid var(--border);background:#f2f7fa;}
-.equip-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
+.equip-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px;}
 .eq-slot{background:#ffffff;border:1px solid var(--border);padding:3px 5px;font-size:11px;cursor:pointer;border-radius:2px;}
 .eq-slot-lbl{color:var(--text-dim);font-size:11px;}
 .eq-slot-item{color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;} 
@@ -263,7 +263,7 @@ button{touch-action:manipulation;}
 /* div/span → button 전환분 기본 스타일 리셋 */
 .lf-chip,.eq-slot,.modal-close,.hotbar-slot{font-family:inherit;text-align:inherit;line-height:inherit;}
 .lf-chip{background:none;min-height:28px;}
-.eq-slot{display:block;width:100%;text-align:left;min-height:36px;}
+.eq-slot{display:block;width:100%;min-width:0;text-align:left;min-height:36px;box-sizing:border-box;}
 .eq-slot-lbl,.eq-slot-item{display:block;}
 .modal-close{background:none;border:none;min-width:44px;min-height:40px;}
 .hotbar-slot{width:100%;padding:0;color:inherit;}
@@ -285,20 +285,20 @@ button{touch-action:manipulation;}
 #char-detail[data-tab="stats"] .equip-sec,#char-detail[data-tab="equip"] .stats-sec{display:none;}
 #char-detail .equip-sec{border-top:none;}
 /* [P1-13 v1.2] 장비창 사람 모양 배치 */
-#char-detail .equip-grid{grid-template-columns:1fr 96px 1fr;grid-template-areas:"hu doll hm" "hl doll ga" "wp doll sh" "ar doll bo" "a1 . a2";gap:6px;align-items:stretch;}
+#char-detail .equip-grid{grid-template-columns:minmax(0,1fr) 96px minmax(0,1fr);grid-template-areas:"hu doll hm" "hl doll ga" "wp doll sh" "ar doll bo" "a1 . a2";gap:6px;align-items:stretch;}
 #char-detail .eq-doll{grid-area:doll;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:1px dashed var(--border-gold);border-radius:48px 48px 8px 8px;background:#f2f7fa;} /* [스타일] 플랫화 — 그라데이션 금지 */
 #char-detail .eq-doll-fig{font-size:44px;line-height:1;}
 #char-detail .eq-doll-job{font-size:11px;color:var(--text-dim);text-align:center;padding:0 4px;}
 #char-detail .eq-slot{min-height:48px;padding:4px 6px;}
 #char-detail .eq-slot-lbl{font-size:11px;}
-#char-detail .eq-slot-item{font-size:12px;}
+#char-detail .eq-slot-item{font-size:12px;white-space:normal;overflow-wrap:anywhere;}
 #char-detail .eq-slot[data-slot=hm],#char-detail .eq-slot[data-slot=ga],#char-detail .eq-slot[data-slot=sh],#char-detail .eq-slot[data-slot=bo],#char-detail .eq-slot[data-slot=a2]{text-align:right;}
 #char-detail .eq-slot[data-slot=hu]{grid-area:hu;} #char-detail .eq-slot[data-slot=hm]{grid-area:hm;}
 #char-detail .eq-slot[data-slot=hl]{grid-area:hl;} #char-detail .eq-slot[data-slot=ga]{grid-area:ga;}
 #char-detail .eq-slot[data-slot=wp]{grid-area:wp;} #char-detail .eq-slot[data-slot=sh]{grid-area:sh;}
 #char-detail .eq-slot[data-slot=ar]{grid-area:ar;} #char-detail .eq-slot[data-slot=bo]{grid-area:bo;}
 #char-detail .eq-slot[data-slot=a1]{grid-area:a1;} #char-detail .eq-slot[data-slot=a2]{grid-area:a2;}
-@media(max-width:700px){ #char-detail .equip-grid{grid-template-columns:1fr 72px 1fr;} #char-detail .eq-doll-fig{font-size:34px;} }
+@media(max-width:700px){ #char-detail .equip-grid{grid-template-columns:minmax(0,1fr) 72px minmax(0,1fr);} #char-detail .eq-doll-fig{font-size:34px;} }
 /* [상점 개편] 목록/상세 2단 레이아웃 — PC 2열, 모바일 1열(상세가 목록 바로 아래로) */
 .shop-grid{display:flex;gap:10px;align-items:flex-start;}
 .shop-list-pane{flex:1;min-width:0;}
@@ -22034,6 +22034,7 @@ body.work-mode p {
     "weightSrc": "type"
   },
   "바포메트 카드": {
+    "splashRange": 1,
     "type": "카드",
     "emoji": "🃏",
     "target": "무기",
@@ -22498,11 +22499,13 @@ body.work-mode p {
     "weightSrc": "type"
   },
   "터틀 제너럴 카드": {
+    "physicalDamagePct": 20,
+    "autoSpell": {"skill": "매그넘 브레이크", "lv": 10, "rate": 0.03, "onPhysicalSkill": true},
     "type": "카드",
     "emoji": "🃏",
     "target": "무기",
     "prefix": "블래스트",
-    "desc": "공격력 20% 증가 / 물리 공격 시 오토스펠 매그넘 브레이크 10스킬",
+    "desc": "물리 피해 20% 증가 / 물리 명중 시 3% 확률로 매그넘 브레이크 10레벨 발동",
     "buy": 0,
     "sell": 10,
     "weight": 10,
@@ -22856,6 +22859,8 @@ body.work-mode p {
     "weightSrc": "type"
   },
   "타나토스의기억 카드": {
+    "defRatioAttack": 1,
+    "attackSpCost": 1,
     "type": "카드",
     "emoji": "🃏",
     "target": "무기",
@@ -45679,7 +45684,7 @@ const DB_SKILLS = {
   // ── [Rank 2] 하이위저드 전용 (Trans) ──
   "네이팜 발칸":{ rank:2, job:"JOB_SGE", type:"액티브", maxLv:5, spCost:(l)=>20+(l*5), cooldown:1000, req:{"네이팜 비트":9}, emoji:"💥", desc:"강력한 염속성 연타.", effect(p,s,t,slv){ let hits=slv; let el=t.element==='염속성'?2.0:1.0; let d=Math.max(1,Math.floor((s.matk*1.8-t.softDef)*el))*hits; t.currentHp-=d; return {msg:`💥 <b>[네이팜 발칸 Lv.${slv}]</b> 염동 폭발 ${hits}연타! <span class="hl-dmg">${d}</span> 피해!`, type:'crit'}; }},
   "소울 드레인":{ rank:2, job:"JOB_SGE", type:"패시브", maxLv:10, spCost:0, req:{"소울 스트라이크":5}, emoji:"💎", desc:"소울 스트라이크·네이팜 발칸으로 적 처치 시 SP 회복, Max SP 증가.", effect:null },
-  "매직 크래셔":{ rank:2, job:"JOB_SGE", type:"액티브", maxLv:1, spCost:15, cooldown:800, req:{"소울 드레인":1,"어드밴스드 북":1}, emoji:"🎇", desc:"마법력을 물리 타격으로 바꾼다.", effect(p,s,t,slv){ let d=Math.max(1,Math.floor(s.matk*1.5-t.def)); t.currentHp-=d; return {msg:`🎇 <b>[매직 크래셔]</b> 마법 구체가 물리적 타격을 입힙니다! <span class="hl-dmg">${d}</span> 피해!`, type:'combat'}; }},
+  "매직 크래셔":{ rank:2, job:"JOB_SGE", type:"액티브", damageType:"physical", maxLv:1, spCost:15, cooldown:800, req:{"소울 드레인":1,"어드밴스드 북":1}, emoji:"🎇", desc:"마법력을 물리 타격으로 바꾼다.", effect(p,s,t,slv){ let d=physicalCardDamage(s.matk*1.5,t,s,t.def,0,true); t.currentHp-=d; return {msg:`🎇 <b>[매직 크래셔]</b> 마법 구체가 물리적 타격을 입힙니다! <span class="hl-dmg">${d}</span> 피해!`, type:'combat'}; }},
   "마법력 증폭":{ rank:2, job:"JOB_SGE", type:"버프", maxLv:10, spCost:(l)=>15+l*2, cooldown:3000, req:{"오토 스펠":5}, emoji:"✨", desc:"다음 마법 1회 MATK 최대 50% 증폭.", effect(p,s,t,slv){ if(!p.statusEffects)p.statusEffects={}; p.statusEffects.ampMagic={count:1, matkBonus:slv*0.05}; return {msg:`✨ <b>[마법력 증폭 Lv.${slv}]</b> 다음 마법 MATK +${slv*5}% 증폭!`, type:'level-up'}; }},
   "간반테인":{ rank:3, job:"JOB_PRF", type:"액티브", maxLv:1, spCost:60, cooldown:5000, emoji:"🪄", desc:"장판 마법 무효화.", effect(p,s,t,slv){ if(p.statusEffects&&p.statusEffects.fireWall) delete p.statusEffects.fireWall; return {msg:`🪄 <b>[간반테인]</b> 지면 마법 소멸!`, type:'system'}; }},
   "그라비테이션 필드":{ rank:3, job:"JOB_PRF", type:"액티브", maxLv:5, spCost:(l)=>60+l*10, cooldown:15000, req:{"간반테인":1}, emoji:"🌌", desc:"방어력을 무시하는 중력 피해.", effect(p,s,t,slv){ let d=slv*400; G.battles.forEach(m=>{ m.currentHp-=d; }); return {msg:`🌌 <b>[그라비테이션 필드 Lv.${slv}]</b> 방어 무시 <span class="hl-dmg">${d}</span> 피해!`, type:'crit'}; }},
@@ -45693,16 +45698,16 @@ const DB_SKILLS = {
     p.statusEffects.magnificat={turns:20+slv*5, regenMul:2};
     return {msg:`🌟 <b>[마니피캇 Lv.${slv}]</b> HP/SP 자연회복 2배 (${20+slv*5}턴)`, type:'level-up'};
   }},
-"볼링 배쉬":{ rank:2, job:"JOB_KNT", type:"액티브", maxLv:10, spCost:(l)=>22+(l*2), cooldown:3500, req:{"양손검 수련":5,"배쉬":10,"투핸드 퀵큰":10,"오토 카운터":5,"매그넘 브레이크":3}, emoji:"🎳", desc:"연쇄 충돌 광역.", effect(p,s,t,slv){
-    G.battles.forEach(m=>{ let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(1.5+slv*0.15)-m.softDef)); m.currentHp-=d; });
+"볼링 배쉬":{ rank:2, job:"JOB_KNT", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>22+(l*2), cooldown:3500, req:{"양손검 수련":5,"배쉬":10,"투핸드 퀵큰":10,"오토 카운터":5,"매그넘 브레이크":3}, emoji:"🎳", desc:"연쇄 충돌 광역.", effect(p,s,t,slv){
+    G.battles.forEach(m=>{ let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(1.5+slv*0.15),m,s,m.softDef,0,true); m.currentHp-=d; });
     return {msg:`🎳 <b>[볼링 배쉬 Lv.${slv}]</b> 연쇄 충돌! 적 전체 피해!`, type:'crit'};
   }},
-"오토 카운터":{ rank:1, job:"JOB_KNT", type:"액티브", maxLv:5, spCost:(l)=>3, cooldown:2500, req:{"양손검 수련":1}, emoji:"⚔️", desc:"피격 후 확정 크리티컬 반격.", effect(p,s,t,slv){
-    let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*1.4-t.softDef));
+"오토 카운터":{ rank:1, job:"JOB_KNT", type:"액티브", damageType:"physical", maxLv:5, spCost:(l)=>3, cooldown:2500, req:{"양손검 수련":1}, emoji:"⚔️", desc:"피격 후 확정 크리티컬 반격.", effect(p,s,t,slv){
+    let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*1.4,t,s,t.softDef,0,false);
     t.currentHp-=d; return {msg:`⚔️ <b>[오토 카운터 Lv.${slv}]</b> 크리티컬 반격! <span class="hl-dmg">${d}</span>!`, type:'crit'};
   }},
-"소닉 블로우":{ rank:2, job:"JOB_ASN", type:"액티브", maxLv:10, spCost:(l)=>34+(l*2), cooldown:3500, req:{"카타르 수련":4}, emoji:"🌀", desc:"8연타 베기.", effect(p,s,t,slv){
-    let hits=8; let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(0.8+slv*0.1)-t.softDef))*hits;
+"소닉 블로우":{ rank:2, job:"JOB_ASN", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>34+(l*2), cooldown:3500, req:{"카타르 수련":4}, emoji:"🌀", desc:"8연타 베기.", effect(p,s,t,slv){
+    let hits=8; let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(0.8+slv*0.1),t,s,t.softDef,0,true)*hits;
     t.currentHp-=d;
     return {msg:`🌀 <b>[소닉 블로우 Lv.${slv}]</b> ${hits}연타! <span class="hl-dmg">${d}</span> 피해!`, type:'crit'};
   }},
@@ -45717,29 +45722,29 @@ const DB_SKILLS = {
     p.statusEffects.aspdBuff={turns:30+slv*10, rate:0.1+slv*0.05};
     return {msg:`⚡ <b>[아드레날린 러쉬 Lv.${slv}]</b> 공격속도 ${Math.floor((0.1+slv*0.05)*100)}% 상승!`, type:'level-up'};
   }},
-"육합권":{ rank:1, job:"JOB_MNK", type:"액티브", maxLv:7, spCost:(l)=>8+(l), cooldown:1500, req:{"철사장":5}, emoji:"👊", desc:"3연타 기본기.", effect(p,s,t,slv){
-    let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(0.8+slv*0.1)-t.softDef))*3;
+"육합권":{ rank:1, job:"JOB_MNK", type:"액티브", damageType:"physical", maxLv:7, spCost:(l)=>8+(l), cooldown:1500, req:{"철사장":5}, emoji:"👊", desc:"3연타 기본기.", effect(p,s,t,slv){
+    let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(0.8+slv*0.1),t,s,t.softDef,0,true)*3;
     t.currentHp-=d; return {msg:`👊 <b>[육합권 Lv.${slv}]</b> 3연타! <span class="hl-dmg">${d}</span>!`, type:'crit'};
   }},
-"아수라 패황권":{ rank:3, job:"JOB_MNK", type:"액티브", maxLv:5, spCost:(l)=>1, cooldown:8000, req:{"탄지신통":5,"폭기":5}, emoji:"☄️", desc:"SP 전소모 절명기.", effect(p,s,t,slv){
+"아수라 패황권":{ rank:3, job:"JOB_MNK", type:"액티브", damageType:"physical", maxLv:5, spCost:(l)=>1, cooldown:8000, req:{"탄지신통":5,"폭기":5}, emoji:"☄️", desc:"SP 전소모 절명기.", effect(p,s,t,slv){
     let spBonus=p.sp; p.sp=0;
-    let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*3+spBonus*2));
+    let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*3+spBonus*2,t,s,0,0,false);
     t.currentHp-=d; return {msg:`☄️ <b>[아수라 패황권 Lv.${slv}]</b> SP 전부 소모! <span class="hl-dmg">${d}</span>!!! (절명기)`, type:'crit'};
   }},
 
   // ── [Rank 1] 소드맨 기본 스킬 ──
   "한손검 수련":{ rank:1, job:"JOB_SWD", type:"패시브", maxLv:10, spCost:0, emoji:"🗡️", desc:"단검·한손검 ATK +4×Lv.", effect:null },
   "양손검 수련":{ rank:1, job:"JOB_SWD", type:"패시브", maxLv:10, spCost:0, req:{"한손검 수련":1}, emoji:"⚔️", desc:"양손검 ATK +4×Lv.", effect:null },
-  "배쉬":{ rank:1, job:"JOB_SWD", type:"액티브", maxLv:10, spCost:(l)=>l<=5?8:15, cooldown:2000, emoji:"⚔️", desc:"강력한 물리 타격. Lv6 이상+급소치기: 스턴 확률.", effect(p,s,t,slv){ let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(1.0+slv*0.3)-t.softDef)); t.currentHp-=d; if(slv>=6&&p.skills["급소치기"]&&Math.random()<0.05*(slv-5)){ if(!t.statusEffects)t.statusEffects={}; t.statusEffects.stun=2; return {msg:`⚔️ <b>[배쉬 Lv.${slv}]</b> <span class="hl-dmg">${d}</span> 피해! 스턴!`, type:'crit'}; } return {msg:`⚔️ <b>[배쉬 Lv.${slv}]</b> <span class="hl-dmg">${d}</span> 피해!`, type:'crit'}; }}
+  "배쉬":{ rank:1, job:"JOB_SWD", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>l<=5?8:15, cooldown:2000, emoji:"⚔️", desc:"강력한 물리 타격. Lv6 이상+급소치기: 스턴 확률.", effect(p,s,t,slv){ let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(1.0+slv*0.3),t,s,t.softDef,0,true); t.currentHp-=d; if(slv>=6&&p.skills["급소치기"]&&Math.random()<0.05*(slv-5)){ if(!t.statusEffects)t.statusEffects={}; t.statusEffects.stun=2; return {msg:`⚔️ <b>[배쉬 Lv.${slv}]</b> <span class="hl-dmg">${d}</span> 피해! 스턴!`, type:'crit'}; } return {msg:`⚔️ <b>[배쉬 Lv.${slv}]</b> <span class="hl-dmg">${d}</span> 피해!`, type:'crit'}; }}
 
 // ══════════════════════════════════════════════
 // ── [Rank 1] 소드맨 스킬 ──
 // ══════════════════════════════════════════════
 ,"HP 회복력 향상":{ rank:1, job:"JOB_SWD", type:"패시브", maxLv:10, spCost:0, emoji:"❤️", desc:"비전투 시 HP 자연 회복량 증가.", effect:null },
-"매그넘 브레이크":{ rank:1, job:"JOB_SWD", type:"액티브", maxLv:10, spCost:(l)=>30, cooldown:3000, req:{"배쉬":5}, emoji:"🔥", desc:"주변 적에게 화속성 광역 물리 피해.", effect(p,s,t,slv){
+"매그넘 브레이크":{ rank:1, job:"JOB_SWD", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>30, cooldown:3000, req:{"배쉬":5}, emoji:"🔥", desc:"주변 적에게 화속성 광역 물리 피해.", effect(p,s,t,slv){
   G.battles.forEach(m=>{
     let el=(DB.elementMatrix["화속성"]&&DB.elementMatrix["화속성"][m.element]||100)/100;
-    let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(0.5+slv*0.1)*el-m.softDef));
+    let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(0.5+slv*0.1)*el,m,s,m.softDef,0,true);
     m.currentHp-=d;
   });
   return {msg:`🔥 <b>[매그넘 브레이크 Lv.${slv}]</b> 화염 강타! 적 전체 피해!`, type:'crit'};
@@ -45774,15 +45779,15 @@ const DB_SKILLS = {
   p.statusEffects.autoGuard={turns:20+slv*5, rate:slv*0.06};
   return {msg:`🛡️ <b>[오토 가드 Lv.${slv}]</b> 방어 확률 ${Math.floor(slv*6)}%! (${20+slv*5}턴)`, type:'level-up'};
 }},
-"쉴드 부메랑":{ rank:2, job:"JOB_CRU", type:"액티브", maxLv:5, spCost:(l)=>12, cooldown:2000, req:{"쉴드 차지":3}, emoji:"🛡️", desc:"방패를 던져 원거리 물리 피해.", effect(p,s,t,slv){
+"쉴드 부메랑":{ rank:2, job:"JOB_CRU", type:"액티브", damageType:"physical", maxLv:5, spCost:(l)=>12, cooldown:2000, req:{"쉴드 차지":3}, emoji:"🛡️", desc:"방패를 던져 원거리 물리 피해.", effect(p,s,t,slv){
   let shieldDef=0; if(p.equip&&p.equip["방패"]){ let __pr=parseItem(p.equip["방패"]); let __it=__pr?__pr.base:DB.items[p.equip["방패"]]; shieldDef=(__it&&__it.def)||0; }
-  let d=Math.max(1,Math.floor((shieldDef*4+s.baseAtk*0.5)*slv-t.softDef));
+  let d=physicalCardDamage((shieldDef*4+s.baseAtk*0.5)*slv,t,s,t.softDef,0,false);
   t.currentHp-=d;
   return {msg:`🛡️ <b>[쉴드 부메랑 Lv.${slv}]</b> 방패 투척! <span class="hl-dmg">${d}</span> 피해!`, type:'crit'};
 }},
-"홀리 크로스":{ rank:2, job:"JOB_CRU", type:"액티브", maxLv:10, spCost:(l)=>20, cooldown:2500, req:{"믿음":7}, emoji:"✝️", desc:"성속성 2연타. 암흑 부여 확률.", effect(p,s,t,slv){
+"홀리 크로스":{ rank:2, job:"JOB_CRU", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>20, cooldown:2500, req:{"믿음":7}, emoji:"✝️", desc:"성속성 2연타. 암흑 부여 확률.", effect(p,s,t,slv){
   let el=(DB.elementMatrix["성속성"]&&DB.elementMatrix["성속성"][t.element]||100)/100;
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(0.9+slv*0.1)*el-t.softDef))*2;
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(0.9+slv*0.1)*el,t,s,t.softDef,0,true)*2;
   t.currentHp-=d;
   if(Math.random()<0.15+slv*0.02){ if(!t.statusEffects)t.statusEffects={}; t.statusEffects.blind=3; }
   return {msg:`✝️ <b>[홀리 크로스 Lv.${slv}]</b> 성십자 2연타! <span class="hl-dmg">${d}</span> 피해!`, type:'crit'};
@@ -45843,14 +45848,14 @@ const DB_SKILLS = {
 // ══════════════════════════════════════════════
 "올빼미의 눈":{ rank:1, job:"JOB_ARC", type:"패시브", maxLv:10, spCost:0, emoji:"🦉", desc:"기본 명중률(DEX) 영구 증가.", effect:null },
 "독수리의 눈":{ rank:1, job:"JOB_ARC", type:"패시브", maxLv:10, spCost:0, req:{"올빼미의 눈":3}, emoji:"🦅", desc:"활 공격 사거리·데미지 증가.", effect:null },
-"더블 스트레이핑":{ rank:1, job:"JOB_ARC", type:"액티브", maxLv:10, spCost:(l)=>12, cooldown:1200, emoji:"🏹", desc:"화살 2발 동시 발사. 2연속 피해.", effect(p,s,t,slv){
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(0.8+slv*0.1)-t.softDef))*2;
+"더블 스트레이핑":{ rank:1, job:"JOB_ARC", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>12, cooldown:1200, emoji:"🏹", desc:"화살 2발 동시 발사. 2연속 피해.", effect(p,s,t,slv){
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(0.8+slv*0.1),t,s,t.softDef,0,true)*2;
   t.currentHp-=d;
   return {msg:`🏹 <b>[더블 스트레이핑 Lv.${slv}]</b> 2연사! <span class="hl-dmg">${d}</span> 피해!`, type:'crit'};
 }},
-"애로우 샤워":{ rank:1, job:"JOB_ARC", type:"액티브", maxLv:10, spCost:(l)=>15, cooldown:3000, req:{"더블 스트레이핑":5}, emoji:"🌧️", desc:"범위 내 적 전체에 화살 광역 피해.", effect(p,s,t,slv){
+"애로우 샤워":{ rank:1, job:"JOB_ARC", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>15, cooldown:3000, req:{"더블 스트레이핑":5}, emoji:"🌧️", desc:"범위 내 적 전체에 화살 광역 피해.", effect(p,s,t,slv){
   G.battles.forEach(m=>{
-    let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(0.7+slv*0.1)-m.softDef));
+    let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(0.7+slv*0.1),m,s,m.softDef,0,true);
     m.currentHp-=d;
   });
   return {msg:`🌧️ <b>[애로우 샤워 Lv.${slv}]</b> 화살 비! 적 전체 피해!`, type:'crit'};
@@ -45873,8 +45878,8 @@ const DB_SKILLS = {
   });
   return {msg:`💣 <b>[클레이모어 트랩 Lv.${slv}]</b> 폭발! 적 전체 <span class="hl-dmg">화속성</span> 피해!`, type:'crit'};
 }},
-"애로우 리펠":{ rank:2, job:"JOB_HNT", type:"액티브", maxLv:5, spCost:(l)=>15, cooldown:4000, emoji:"💨", desc:"강력한 단발 사격으로 적을 밀어냄.", effect(p,s,t,slv){
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(1.5+slv*0.2)-t.softDef));
+"애로우 리펠":{ rank:2, job:"JOB_HNT", type:"액티브", damageType:"physical", maxLv:5, spCost:(l)=>15, cooldown:4000, emoji:"💨", desc:"강력한 단발 사격으로 적을 밀어냄.", effect(p,s,t,slv){
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(1.5+slv*0.2),t,s,t.softDef,0,true);
   t.currentHp-=d;
   return {msg:`💨 <b>[애로우 리펠 Lv.${slv}]</b> 강제 넉백! <span class="hl-dmg">${d}</span> 피해!`, type:'crit'};
 }},
@@ -45886,8 +45891,8 @@ const DB_SKILLS = {
 "앵콜":{ rank:2, job:"JOB_BRD", type:"액티브", maxLv:1, spCost:1, cooldown:1000, req:{"임기응변":1}, emoji:"🎵", desc:"직전 연주 스킬을 SP 절반으로 재시전.", effect(p,s,t,slv){
   return {msg:`🎵 <b>[앵콜]</b> 이전 연주를 다시 시작합니다!`, type:'system'};
 }},
-"화살 감아 던지기":{ rank:2, job:"JOB_BRD", type:"액티브", maxLv:10, spCost:(l)=>12, cooldown:2000, req:{"악기 수련":3}, emoji:"🎯", desc:"악기로 화살을 강하게 튕겨 단일 극딜.", effect(p,s,t,slv){
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(1.5+slv*0.2)-t.softDef));
+"화살 감아 던지기":{ rank:2, job:"JOB_BRD", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>12, cooldown:2000, req:{"악기 수련":3}, emoji:"🎯", desc:"악기로 화살을 강하게 튕겨 단일 극딜.", effect(p,s,t,slv){
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(1.5+slv*0.2),t,s,t.softDef,0,true);
   t.currentHp-=d;
   return {msg:`🎯 <b>[화살 감아 던지기 Lv.${slv}]</b> <span class="hl-dmg">${d}</span> 피해!`, type:'crit'};
 }},
@@ -46004,14 +46009,14 @@ const DB_SKILLS = {
   if(p.statusEffects)p.statusEffects.spiritSphere=0;
   return {msg:`💙 <b>[흡기 Lv.${slv}]</b> 기 구체 ${orbs}개 흡수! SP +${recover}!`, type:'heal'};
 }},
-"연환전신장":{ rank:2, job:"JOB_MNK", type:"액티브", maxLv:10, spCost:(l)=>15, cooldown:2000, req:{"육합권":5}, emoji:"👊", desc:"육합권 발동 후 사용. 4연타 추가 피해.", effect(p,s,t,slv){
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(1.0+slv*0.15)-t.softDef))*4;
+"연환전신장":{ rank:2, job:"JOB_MNK", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>15, cooldown:2000, req:{"육합권":5}, emoji:"👊", desc:"육합권 발동 후 사용. 4연타 추가 피해.", effect(p,s,t,slv){
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(1.0+slv*0.15),t,s,t.softDef,0,true)*4;
   t.currentHp-=d;
   return {msg:`👊 <b>[연환전신장 Lv.${slv}]</b> 4연타! <span class="hl-dmg">${d}</span>!`, type:'crit'};
 }},
-"맹룡과강":{ rank:2, job:"JOB_MNK", type:"액티브", maxLv:10, spCost:(l)=>15, cooldown:3000, req:{"연환전신장":5}, emoji:"🐉", desc:"연환전신장 후 사용. 기 구체 소모 강타.", effect(p,s,t,slv){
+"맹룡과강":{ rank:2, job:"JOB_MNK", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>15, cooldown:3000, req:{"연환전신장":5}, emoji:"🐉", desc:"연환전신장 후 사용. 기 구체 소모 강타.", effect(p,s,t,slv){
   let orbs=p.statusEffects&&p.statusEffects.spiritSphere||0;
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(2.0+slv*0.3+orbs*0.5)-t.softDef));
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(2.0+slv*0.3+orbs*0.5),t,s,t.softDef,0,true);
   t.currentHp-=d;
   if(p.statusEffects)p.statusEffects.spiritSphere=0;
   return {msg:`🐉 <b>[맹룡과강 Lv.${slv}]</b> 기 구체 ${orbs}개 소모! <span class="hl-dmg">${d}</span>!`, type:'crit'};
@@ -46042,8 +46047,8 @@ const DB_SKILLS = {
   if(typeof renderMonsters==='function') renderMonsters();
   return {msg:`🌑 <b>[하이딩 Lv.${slv}]</b> 은신! 전투 이탈.`, type:'system'};
 }},
-"인베넘":{ rank:1, job:"JOB_THF", type:"액티브", maxLv:10, spCost:(l)=>12, cooldown:2000, emoji:"☠️", desc:"무속성 물리 피해 및 독 부여.", effect(p,s,t,slv){
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(0.8+slv*0.1)-t.softDef));
+"인베넘":{ rank:1, job:"JOB_THF", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>12, cooldown:2000, emoji:"☠️", desc:"무속성 물리 피해 및 독 부여.", effect(p,s,t,slv){
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(0.8+slv*0.1),t,s,t.softDef,0,true);
   t.currentHp-=d;
   if(Math.random()<0.2+slv*0.05){ if(!t.statusEffects)t.statusEffects={}; t.statusEffects.poison=8; }
   return {msg:`☠️ <b>[인베넘 Lv.${slv}]</b> <span class="hl-dmg">${d}</span> 피해! 독 부여 시도.`, type:'crit'};
@@ -46058,10 +46063,10 @@ const DB_SKILLS = {
 // ══════════════════════════════════════════════
 "카타르 수련":{ rank:2, job:"JOB_ASN", type:"패시브", maxLv:10, spCost:0, emoji:"🗡️", desc:"카타르 장착 시 데미지 증가.", effect:null },
 "양손 수련":{ rank:2, job:"JOB_ASN", type:"패시브", maxLv:5, spCost:0, emoji:"🗡️", desc:"쌍수 장착 시 양손 데미지 페널티 복구.", effect:null },
-"그림투스":{ rank:2, job:"JOB_ASN", type:"액티브", maxLv:10, spCost:(l)=>3, cooldown:2000, req:{"소닉 블로우":5,"클로킹":2}, emoji:"🌑", desc:"하이딩 상태에서만 사용. 암살 원거리 공격.", effect(p,s,t,slv){
+"그림투스":{ rank:2, job:"JOB_ASN", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>3, cooldown:2000, req:{"소닉 블로우":5,"클로킹":2}, emoji:"🌑", desc:"하이딩 상태에서만 사용. 암살 원거리 공격.", effect(p,s,t,slv){
   let isHiding=p.statusEffects&&p.statusEffects.hiding;
   let mult=isHiding?3.0:1.0;
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*mult*(0.8+slv*0.15)-t.softDef));
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*mult*(0.8+slv*0.15),t,s,t.softDef,0,true);
   t.currentHp-=d;
   if(p.statusEffects&&p.statusEffects.hiding) delete p.statusEffects.hiding;
   return {msg:`🌑 <b>[그림투스 Lv.${slv}]</b>${isHiding?' 암살!':''} <span class="hl-dmg">${d}</span> 피해!`, type:'crit'};
@@ -46080,14 +46085,14 @@ const DB_SKILLS = {
   p.zeny=(p.zeny||0)+amount;
   return {msg:`💰 <b>[스틸 코인 Lv.${slv}]</b> ${amount} 제니 획득!`, type:'level-up'};
 }},
-"백 스탭":{ rank:2, job:"JOB_ROG", type:"액티브", maxLv:10, spCost:(l)=>16, cooldown:3000, req:{"스틸 코인":4}, emoji:"🗡️", desc:"적 후방 100% 명중. 막대한 피해.", effect(p,s,t,slv){
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(2.0+slv*0.2)-t.softDef));
+"백 스탭":{ rank:2, job:"JOB_ROG", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>16, cooldown:3000, req:{"스틸 코인":4}, emoji:"🗡️", desc:"적 후방 100% 명중. 막대한 피해.", effect(p,s,t,slv){
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(2.0+slv*0.2),t,s,t.softDef,0,true);
   t.currentHp-=d;
   return {msg:`🗡️ <b>[백 스탭 Lv.${slv}]</b> 등 찌르기! <span class="hl-dmg">${d}</span> 피해!`, type:'crit'};
 }},
-"기습":{ rank:2, job:"JOB_ROG", type:"액티브", maxLv:10, spCost:(l)=>20, cooldown:4000, req:{"터널 드라이브":2,"백 스탭":2}, emoji:"💥", desc:"은신 상태에서만 사용. 스턴·암흑 부여.", effect(p,s,t,slv){
+"기습":{ rank:2, job:"JOB_ROG", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>20, cooldown:4000, req:{"터널 드라이브":2,"백 스탭":2}, emoji:"💥", desc:"은신 상태에서만 사용. 스턴·암흑 부여.", effect(p,s,t,slv){
   G.battles.forEach(m=>{
-    let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(1.5+slv*0.1)-m.softDef));
+    let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(1.5+slv*0.1),m,s,m.softDef,0,true);
     m.currentHp-=d;
     if(!m.statusEffects)m.statusEffects={};
     m.statusEffects.stun=2; m.statusEffects.blind=3;
@@ -46095,8 +46100,8 @@ const DB_SKILLS = {
   if(p.statusEffects&&p.statusEffects.hiding) delete p.statusEffects.hiding;
   return {msg:`💥 <b>[기습 Lv.${slv}]</b> 은신 기습! 스턴·암흑!`, type:'crit'};
 }},
-"인티미데이트":{ rank:2, job:"JOB_ROG", type:"액티브", maxLv:5, spCost:(l)=>15, cooldown:5000, req:{"백 스탭":4}, emoji:"🌀", desc:"자신과 타격 대상을 맵 무작위 위치로 강제 텔레포트.", effect(p,s,t,slv){
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(1.0+slv*0.1)-t.softDef));
+"인티미데이트":{ rank:2, job:"JOB_ROG", type:"액티브", damageType:"physical", maxLv:5, spCost:(l)=>15, cooldown:5000, req:{"백 스탭":4}, emoji:"🌀", desc:"자신과 타격 대상을 맵 무작위 위치로 강제 텔레포트.", effect(p,s,t,slv){
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(1.0+slv*0.1),t,s,t.softDef,0,true);
   t.currentHp-=d;
   G.battles=G.battles.filter(m=>m!==t);
   if(typeof renderMonsters==='function') renderMonsters();
@@ -46115,12 +46120,12 @@ const DB_SKILLS = {
   showVendingModal(slv);
   return {msg:`🏪 <b>[노점 개설 Lv.${slv}]</b> 노점 설정 창을 열었습니다.`, type:'system'};
 }},
-"매머나이트":{ rank:1, job:"JOB_MER", type:"액티브", maxLv:10, spCost:(l)=>5, cooldown:1500, emoji:"💰", desc:"제니를 소모해 방어 무시 강력 물리 피해.", effect(p,s,t,slv){
+"매머나이트":{ rank:1, job:"JOB_MER", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>5, cooldown:1500, emoji:"💰", desc:"제니를 소모해 방어 무시 강력 물리 피해.", effect(p,s,t,slv){
   // [P1-06] 원작(RO_스킬_레벨별_수치_테이블 「매머나이트」): 제니 100z×Lv 고정, ATK 100%+50%×Lv(Lv1 150%~Lv10 600%)
   let cost=100*slv;
   if((p.zeny||0)<cost) return {msg:`💰 <b>[매머나이트]</b> 제니 부족! (필요: ${cost}z)`, type:'miss'};
   p.zeny-=cost;
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(1+0.5*slv)));
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(1+0.5*slv),t,s,0,0,true);
   t.currentHp-=d;
   return {msg:`💰 <b>[매머나이트 Lv.${slv}]</b> ${cost}z 소모! 방어 무시 <span class="hl-dmg">${d}</span>!`, type:'crit'};
 }},
@@ -46206,32 +46211,32 @@ const DB_SKILLS = {
 // ── [Rank 2] 기사 추가 스킬 ──
 // ══════════════════════════════════════════════
 ,"창 수련":{ rank:2, job:"JOB_KNT", type:"패시브", maxLv:10, spCost:0, emoji:"🔱", desc:"창 ATK +4×Lv. 페코 탑승 시 +1×Lv 추가.", effect:null }
-,"피어스":{ rank:2, job:"JOB_KNT", type:"액티브", maxLv:10, spCost:(l)=>9+(l), cooldown:1500, req:{"창 수련":1}, emoji:"🔱", desc:"창 전용. 크기에 따라 히트수 변동(소형1·중형2·대형3).", effect(p,s,t,slv){
+,"피어스":{ rank:2, job:"JOB_KNT", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>9+(l), cooldown:1500, req:{"창 수련":1}, emoji:"🔱", desc:"창 전용. 크기에 따라 히트수 변동(소형1·중형2·대형3).", effect(p,s,t,slv){
   let sizeHits={"소형":1,"중형":2,"대형":3}[t.size||"중형"]||1;
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(0.9+slv*0.1)-t.softDef))*sizeHits;
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(0.9+slv*0.1),t,s,t.softDef,0,true)*sizeHits;
   t.currentHp-=d;
   return {msg:`🔱 <b>[피어스 Lv.${slv}]</b> ${sizeHits}연타! <span class="hl-dmg">${d}</span> 피해!`, type:'crit'};
 }}
-,"스피어 스텝":{ rank:2, job:"JOB_KNT", type:"액티브", maxLv:10, spCost:(l)=>10+(l), cooldown:2000, req:{"피어스":5}, emoji:"🔱", desc:"일직선 관통 공격, 적 6셀 넉백.", effect(p,s,t,slv){
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(1.0+slv*0.15)-t.softDef));
+,"스피어 스텝":{ rank:2, job:"JOB_KNT", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>10+(l), cooldown:2000, req:{"피어스":5}, emoji:"🔱", desc:"일직선 관통 공격, 적 6셀 넉백.", effect(p,s,t,slv){
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(1.0+slv*0.15),t,s,t.softDef,0,true);
   t.currentHp-=d;
   return {msg:`🔱 <b>[스피어 스텝 Lv.${slv}]</b> 창 일직선 관통! <span class="hl-dmg">${d}</span> 피해! 넉백!`, type:'crit'};
 }}
-,"창 부메랑":{ rank:2, job:"JOB_KNT", type:"액티브", maxLv:5, spCost:(l)=>9, cooldown:2500, req:{"피어스":3}, emoji:"🔱", desc:"원거리 단일 창 투척.", effect(p,s,t,slv){
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(1.2+slv*0.2)-t.softDef));
+,"창 부메랑":{ rank:2, job:"JOB_KNT", type:"액티브", damageType:"physical", maxLv:5, spCost:(l)=>9, cooldown:2500, req:{"피어스":3}, emoji:"🔱", desc:"원거리 단일 창 투척.", effect(p,s,t,slv){
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(1.2+slv*0.2),t,s,t.softDef,0,true);
   t.currentHp-=d;
   return {msg:`🔱 <b>[창 부메랑 Lv.${slv}]</b> 창 투척! <span class="hl-dmg">${d}</span> 피해!`, type:'crit'};
 }}
-,"브랜디쉬 스피어":{ rank:2, job:"JOB_KNT", type:"액티브", maxLv:10, spCost:(l)=>12+(l*2), cooldown:3000, req:{"스피어 스텝":3,"페코페코 기수":1}, emoji:"🔱", desc:"탑승 상태에서 창 휘두르기. 범위 공격.", effect(p,s,t,slv){
+,"브랜디쉬 스피어":{ rank:2, job:"JOB_KNT", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>12+(l*2), cooldown:3000, req:{"스피어 스텝":3,"페코페코 기수":1}, emoji:"🔱", desc:"탑승 상태에서 창 휘두르기. 범위 공격.", effect(p,s,t,slv){
   G.battles.forEach(m=>{
-    let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(1.3+slv*0.15)-m.softDef));
+    let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(1.3+slv*0.15),m,s,m.softDef,0,true);
     m.currentHp-=d;
   });
   return {msg:`🔱 <b>[브랜디쉬 스피어 Lv.${slv}]</b> 탑승 범위 공격! 적 전체 피해!`, type:'crit'};
 }}
 ,"기병 수련":{ rank:2, job:"JOB_KNT", type:"패시브", maxLv:5, spCost:0, req:{"페코페코 기수":1}, emoji:"🦤", desc:"탑승 ASPD 패널티 감소 (Lv5: 패널티 없음).", effect:null }
-,"차지 어택":{ rank:2, job:"JOB_KNT", type:"액티브", maxLv:1, spCost:9, cooldown:5000, emoji:"⚡", desc:"원거리 돌진. 거리에 따라 피해 변동. ATK 700%.", effect(p,s,t,slv){
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*7-t.softDef));
+,"차지 어택":{ rank:2, job:"JOB_KNT", type:"액티브", damageType:"physical", maxLv:1, spCost:9, cooldown:5000, emoji:"⚡", desc:"원거리 돌진. 거리에 따라 피해 변동. ATK 700%.", effect(p,s,t,slv){
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*7,t,s,t.softDef,0,true);
   t.currentHp-=d;
   return {msg:`⚡ <b>[차지 어택]</b> 돌진 강타! <span class="hl-dmg">${d}</span> 피해!`, type:'crit'};
 }}
@@ -46245,9 +46250,9 @@ const DB_SKILLS = {
   return {msg:`🔱 <b>[스피어 퀴큰 Lv.${slv}]</b> 창 공속 ${Math.floor((0.1+slv*0.03)*100)}% 상승! (${20+slv*10}턴)`, type:'level-up'};
 }}
 ,"리플렉트 쉴드":{ rank:2, job:"JOB_CRU", type:"패시브", maxLv:10, spCost:0, req:{"쉴드 부메랑":3}, emoji:"🔄", desc:"피격 피해 일부 반사. Lv1: 5% ~ Lv10: 30%.", effect:null }
-,"쉴드 차지":{ rank:2, job:"JOB_CRU", type:"액티브", maxLv:5, spCost:(l)=>12, cooldown:2000, req:{"오토 가드":5}, emoji:"🛡️", desc:"방패로 타격, 넉백.", effect(p,s,t,slv){
+,"쉴드 차지":{ rank:2, job:"JOB_CRU", type:"액티브", damageType:"physical", maxLv:5, spCost:(l)=>12, cooldown:2000, req:{"오토 가드":5}, emoji:"🛡️", desc:"방패로 타격, 넉백.", effect(p,s,t,slv){
   let shieldDef=0; if(p.equip&&p.equip["방패"]){ let __pr=parseItem(p.equip["방패"]); let __it=__pr?__pr.base:DB.items[p.equip["방패"]]; shieldDef=(__it&&__it.def)||0; }
-  let d=Math.max(1,Math.floor((shieldDef*3+s.baseAtk*0.5)*slv-t.softDef));
+  let d=physicalCardDamage((shieldDef*3+s.baseAtk*0.5)*slv,t,s,t.softDef,0,true);
   t.currentHp-=d;
   return {msg:`🛡️ <b>[쉴드 차지 Lv.${slv}]</b> 방패 강타! <span class="hl-dmg">${d}</span> 피해! 넉백!`, type:'crit'};
 }}
@@ -46472,24 +46477,24 @@ const DB_SKILLS = {
   return {msg:`🔥 <b>[폭기 Lv.${slv}]</b> 기 폭발! ATK ${Math.floor((0.1+slv*0.05)*100)}% 상승! (${5+slv*3}턴)`, type:'level-up'};
 }}
 ,"이화접목":{ rank:2, job:"JOB_MNK", type:"패시브", maxLv:10, spCost:0, req:{"철사장":5,"축기":5}, emoji:"🌿", desc:"정신구가 있을 때 HP 자연회복 및 SP 소모 감소.", effect:null }
-,"침투경":{ rank:2, job:"JOB_MNK", type:"액티브", maxLv:5, spCost:(l)=>8, cooldown:1500, req:{"축기":5}, emoji:"💠", desc:"방어 무시 단타. 정신구 소모.", effect(p,s,t,slv){
+,"침투경":{ rank:2, job:"JOB_MNK", type:"액티브", damageType:"physical", maxLv:5, spCost:(l)=>8, cooldown:1500, req:{"축기":5}, emoji:"💠", desc:"방어 무시 단타. 정신구 소모.", effect(p,s,t,slv){
   let orbs=p.statusEffects&&p.statusEffects.spiritSphere||0;
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(1.5+slv*0.2+orbs*0.1)-t.def));
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(1.5+slv*0.2+orbs*0.1),t,s,t.def,0,false);
   t.currentHp-=d;
   return {msg:`💠 <b>[침투경 Lv.${slv}]</b> 방어 무시 타격! <span class="hl-dmg">${d}</span>!`, type:'crit'};
 }}
-,"탄지신통":{ rank:2, job:"JOB_MNK", type:"액티브", maxLv:5, spCost:(l)=>8, cooldown:2000, req:{"침투경":3}, emoji:"⚡", desc:"정신구를 탄환처럼 발사. 원거리 피해.", effect(p,s,t,slv){
+,"탄지신통":{ rank:2, job:"JOB_MNK", type:"액티브", damageType:"physical", maxLv:5, spCost:(l)=>8, cooldown:2000, req:{"침투경":3}, emoji:"⚡", desc:"정신구를 탄환처럼 발사. 원거리 피해.", effect(p,s,t,slv){
   let orbs=p.statusEffects&&p.statusEffects.spiritSphere||0;
   if(orbs<=0)return {msg:`⚡ <b>[탄지신통]</b> 정신구가 없습니다!`, type:'miss'};
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(2.0+slv*0.3)*orbs-t.softDef));
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(2.0+slv*0.3)*orbs,t,s,t.softDef,0,true);
   t.currentHp-=d;
   p.statusEffects.spiritSphere=0;
   return {msg:`⚡ <b>[탄지신통 Lv.${slv}]</b> 정신구 ${orbs}개 발사! <span class="hl-dmg">${d}</span>!`, type:'crit'};
 }}
-,"진검백파도":{ rank:2, job:"JOB_MNK", type:"액티브", maxLv:5, spCost:(l)=>10, cooldown:2500, req:{"이화접목":5}, emoji:"🌊", desc:"연속 파장 공격. 광역 물리 피해.", effect(p,s,t,slv){
+,"진검백파도":{ rank:2, job:"JOB_MNK", type:"액티브", damageType:"physical", maxLv:5, spCost:(l)=>10, cooldown:2500, req:{"이화접목":5}, emoji:"🌊", desc:"연속 파장 공격. 광역 물리 피해.", effect(p,s,t,slv){
   let hits=2+slv;
   G.battles.forEach(m=>{
-    let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(0.8+slv*0.1)-m.softDef))*hits;
+    let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(0.8+slv*0.1),m,s,m.softDef,0,true)*hits;
     m.currentHp-=d;
   });
   return {msg:`🌊 <b>[진검백파도 Lv.${slv}]</b> ${hits}파 광역 공격! 적 전체 피해!`, type:'crit'};
@@ -46513,9 +46518,9 @@ const DB_SKILLS = {
   p.hp=Math.min(p.maxHp,p.hp+hpHeal); p.sp=Math.min(p.maxSp,p.sp+spHeal);
   return {msg:`🔵 <b>[진기주입 Lv.${slv}]</b> 정신구 ${orbs}개 소모! HP +${hpHeal}, SP +${spHeal}!`, type:'heal'};
 }}
-,"발경":{ rank:2, job:"JOB_MNK", type:"액티브", maxLv:1, spCost:10, cooldown:3000, emoji:"👊", desc:"기를 모아 적을 가격. 주변 적 넉백.", effect(p,s,t,slv){
+,"발경":{ rank:2, job:"JOB_MNK", type:"액티브", damageType:"physical", maxLv:1, spCost:10, cooldown:3000, emoji:"👊", desc:"기를 모아 적을 가격. 주변 적 넉백.", effect(p,s,t,slv){
   G.battles.forEach(m=>{
-    let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*2-m.softDef));
+    let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*2,m,s,m.softDef,0,true);
     m.currentHp-=d;
   });
   return {msg:`👊 <b>[발경]</b> 기 충격파! 적 전체 넉백! 피해!`, type:'crit'};
@@ -46537,8 +46542,8 @@ const DB_SKILLS = {
     return{msg:`🏹 <b>[화살 제조]</b> 화살 100개 제조 성공! (성공률 ${Math.round(sr)}%)`,type:'level-up'};
   }
 }
-,"차지 애로우":{ rank:1, job:"JOB_ARC", type:"액티브", maxLv:1, spCost:15, cooldown:4000, emoji:"🏹", desc:"단일 ATK 150% + 4셀 넉백.", effect(p,s,t,slv){
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*1.5-t.softDef));
+,"차지 애로우":{ rank:1, job:"JOB_ARC", type:"액티브", damageType:"physical", maxLv:1, spCost:15, cooldown:4000, emoji:"🏹", desc:"단일 ATK 150% + 4셀 넉백.", effect(p,s,t,slv){
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*1.5,t,s,t.softDef,0,true);
   t.currentHp-=d;
   return {msg:`🏹 <b>[차지 애로우]</b> <span class="hl-dmg">${d}</span> 피해! 넉백!`, type:'crit'};
 }}
@@ -46608,8 +46613,8 @@ const DB_SKILLS = {
   return {msg:`🦅 <b>[스프링 트랩 Lv.${slv}]</b> 팔콘이 함정을 제거했습니다!`, type:'system'};
 }}
 ,"스틸 크로우":{ rank:2, job:"JOB_HNT", type:"패시브", maxLv:10, spCost:0, req:{"블리츠 비트":5}, emoji:"🦅", desc:"팔콘 피해 증가 (+6%×Lv).", effect:null }
-,"팬타즈믹 애로우":{ rank:2, job:"JOB_HNT", type:"액티브", maxLv:1, spCost:25, cooldown:4000, emoji:"✨", desc:"화살 소모 없는 마법 화살. 3셀 넉백.", effect(p,s,t,slv){
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*1.5-t.softDef));
+,"팬타즈믹 애로우":{ rank:2, job:"JOB_HNT", type:"액티브", damageType:"physical", maxLv:1, spCost:25, cooldown:4000, emoji:"✨", desc:"화살 소모 없는 마법 화살. 3셀 넉백.", effect(p,s,t,slv){
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*1.5,t,s,t.softDef,0,true);
   t.currentHp-=d;
   return {msg:`✨ <b>[팬타즈믹 애로우]</b> 마법 화살! <span class="hl-dmg">${d}</span> 피해! 넉백!`, type:'crit'};
 }}
@@ -46625,8 +46630,8 @@ const DB_SKILLS = {
   });
   return {msg:`🎵 <b>[불협화음 Lv.${slv}]</b> 불협음으로 적 DEF ${slv*3} 감소!`, type:'system'};
 }}
-,"뮤지컬 스트라이크":{ rank:2, job:"JOB_BRD", type:"액티브", maxLv:5, spCost:(l)=>10, cooldown:2000, req:{"악기 수련":3}, emoji:"🎸", desc:"악기 장착 상태에서 물리 공격.", effect(p,s,t,slv){
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(1.2+slv*0.2)-t.softDef));
+,"뮤지컬 스트라이크":{ rank:2, job:"JOB_BRD", type:"액티브", damageType:"physical", maxLv:5, spCost:(l)=>10, cooldown:2000, req:{"악기 수련":3}, emoji:"🎸", desc:"악기 장착 상태에서 물리 공격.", effect(p,s,t,slv){
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(1.2+slv*0.2),t,s,t.softDef,0,true);
   t.currentHp-=d;
   return {msg:`🎸 <b>[뮤지컬 스트라이크 Lv.${slv}]</b> 악기 타격! <span class="hl-dmg">${d}</span>!`, type:'crit'};
 }}
@@ -46735,9 +46740,9 @@ const DB_SKILLS = {
   if(typeof renderMonsters==='function')renderMonsters();
   return {msg:`💨 <b>[백 슬라이딩]</b> 뒤로 순간이동! 전투 이탈.`, type:'system'};
 }}
-,"모래 뿌리기":{ rank:1, job:"JOB_THF", type:"액티브", maxLv:1, spCost:15, cooldown:3000, emoji:"🏜️", desc:"지속성 125% 피해 + 실명 15%.", effect(p,s,t,slv){
+,"모래 뿌리기":{ rank:1, job:"JOB_THF", type:"액티브", damageType:"physical", maxLv:1, spCost:15, cooldown:3000, emoji:"🏜️", desc:"지속성 125% 피해 + 실명 15%.", effect(p,s,t,slv){
   let el=(DB.elementMatrix&&DB.elementMatrix["지속성"]&&DB.elementMatrix["지속성"][t.element]||100)/100;
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*1.25*el-t.softDef));
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*1.25*el,t,s,t.softDef,0,true);
   t.currentHp-=d;
   if(Math.random()<0.15){ if(!t.statusEffects)t.statusEffects={}; t.statusEffects.blind=3; }
   return {msg:`🏜️ <b>[모래 뿌리기]</b> <span class="hl-dmg">${d}</span> 피해! 실명 확률!`, type:'crit'};
@@ -46782,15 +46787,15 @@ const DB_SKILLS = {
   G.battles.forEach(m=>{ if(!m.statusEffects)m.statusEffects={}; m.statusEffects.poison=5+slv*2; });
   return {msg:`☠️ <b>[베넘 더스트 Lv.${slv}]</b> 독 장판 생성! 적 전체 독!`, type:'system'};
 }}
-,"베넘 스플래셔":{ rank:2, job:"JOB_ASN", type:"액티브", maxLv:10, spCost:(l)=>40+(l*3), cooldown:8000, req:{"베넘 더스트":5,"포이즌 리액트":5}, emoji:"💀", desc:"독 폭탄 설치 후 지연 폭발 ATK 최대 1400%.", effect(p,s,t,slv){
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(8.0+slv*0.6)-t.softDef));
+,"베넘 스플래셔":{ rank:2, job:"JOB_ASN", type:"액티브", damageType:"physical", maxLv:10, spCost:(l)=>40+(l*3), cooldown:8000, req:{"베넘 더스트":5,"포이즌 리액트":5}, emoji:"💀", desc:"독 폭탄 설치 후 지연 폭발 ATK 최대 1400%.", effect(p,s,t,slv){
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(8.0+slv*0.6),t,s,t.softDef,0,true);
   t.currentHp-=d;
   if(!t.statusEffects)t.statusEffects={}; t.statusEffects.poison=8;
   return {msg:`💀 <b>[베넘 스플래셔 Lv.${slv}]</b> 독 폭발! <span class="hl-dmg">${d}</span>! 독 부여!`, type:'crit'};
 }}
 ,"소닉 가속":{ rank:2, job:"JOB_ASN", type:"패시브", maxLv:1, spCost:0, emoji:"⚡", desc:"소닉 블로우 명중 +90%, 피해 +90%.", effect:null }
-,"베넘 나이프":{ rank:2, job:"JOB_ASN", type:"액티브", maxLv:1, spCost:35, cooldown:4000, emoji:"🗡️", desc:"장착한 베넘 나이프 투척. ATK 500%+ 독 부여.", effect(p,s,t,slv){
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*5-t.softDef));
+,"베넘 나이프":{ rank:2, job:"JOB_ASN", type:"액티브", damageType:"physical", maxLv:1, spCost:35, cooldown:4000, emoji:"🗡️", desc:"장착한 베넘 나이프 투척. ATK 500%+ 독 부여.", effect(p,s,t,slv){
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*5,t,s,t.softDef,0,true);
   t.currentHp-=d;
   if(!t.statusEffects)t.statusEffects={}; t.statusEffects.poison=8;
   return {msg:`🗡️ <b>[베넘 나이프]</b> 나이프 투척! <span class="hl-dmg">${d}</span>! 독!`, type:'crit'};
@@ -46829,8 +46834,8 @@ const DB_SKILLS = {
 ,"아이템 감정":{ rank:1, job:"JOB_MER", type:"액티브", maxLv:1, spCost:5, cooldown:1000, emoji:"🔍", desc:"미확인 아이템 감정.", effect(p,s,t,slv){
   return {msg:`🔍 <b>[아이템 감정]</b> 아이템 감정 완료!`, type:'system'};
 }}
-,"카트 레볼루션":{ rank:1, job:"JOB_MER", type:"액티브", maxLv:1, spCost:12, cooldown:3000, emoji:"💥", desc:"카트로 적을 타격. ATK 150% + 카트 중량 보정.", effect(p,s,t,slv){
-  let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*1.5-t.softDef));
+,"카트 레볼루션":{ rank:1, job:"JOB_MER", type:"액티브", damageType:"physical", maxLv:1, spCost:12, cooldown:3000, emoji:"💥", desc:"카트로 적을 타격. ATK 150% + 카트 중량 보정.", effect(p,s,t,slv){
+  let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*1.5,t,s,t.softDef,0,true);
   G.battles.forEach(m=>{m.currentHp-=d;});
   return {msg:`💥 <b>[카트 레볼루션]</b> 카트 돌진! 적 전체 <span class="hl-dmg">${d}</span>!`, type:'crit'};
 }}
@@ -46994,9 +46999,9 @@ const DB_SKILLS = {
 ,"무기 수리":{ rank:2, job:"JOB_BSM", type:"액티브", maxLv:1, spCost:30, cooldown:5000, req:{"무기 연구":1}, emoji:"🔧", desc:"파손 무기 수리.", effect(p,s,t,slv){
   return {msg:`🔧 <b>[무기 수리]</b> 무기 수리 완료!`, type:'system'};
 }}
-,"해머폴":{ rank:2, job:"JOB_BSM", type:"액티브", maxLv:5, spCost:(l)=>10, cooldown:4000, emoji:"🔨", desc:"주변 3×3 스턴 50~70%.", effect(p,s,t,slv){
+,"해머폴":{ rank:2, job:"JOB_BSM", type:"액티브", damageType:"physical", maxLv:5, spCost:(l)=>10, cooldown:4000, emoji:"🔨", desc:"주변 3×3 스턴 50~70%.", effect(p,s,t,slv){
   G.battles.forEach(m=>{
-    let d=Math.max(1,Math.floor((s.baseAtk+s.weaponAtk)*(1.0+slv*0.1)-m.softDef));
+    let d=physicalCardDamage((s.baseAtk+s.weaponAtk)*(1.0+slv*0.1),m,s,m.softDef,0,true);
     m.currentHp-=d;
     if(Math.random()<0.5+slv*0.04){ if(!m.statusEffects)m.statusEffects={}; m.statusEffects.stun=2; }
   });
@@ -49199,6 +49204,10 @@ var EFFECT_LEDGER_FORMATTERS = {
     if(v.random_debuff) parts.push('무작위 이상상태 '+Math.round(v.random_debuff*100)+'%');
     return ['공격 시 상태이상 부여'+(parts.length?' ('+parts.join(', ')+')':'')];
   } },
+  physicalDamagePct: { group:'공격', fmt:v=>['물리 피해 +'+v+'%'] },
+  attackSpCost: { group:'발동', fmt:v=>['물리 명중 시 SP '+v+' 소모'] },
+  defRatioAttack: { group:'공격', fmt:()=>['침투경: 적 방어력에 비례한 물리 피해'] },
+  splashRange: { group:'공격', fmt:v=>['평타 스플래시: 대상과 거리 차 '+v+' 이내'] },
   autoSpell:     { group:'발동', fmt:function(v){ return ['공격 시 '+v.skill+' 자동 시전 '+Math.round((v.rate||0)*100)+'%']; } },
   soulgain:      { group:'발동', fmt:function(v){ return [v.race+' 처치 시 SP +'+(v.sp||0)]; } },
   grantSkill:    { group:'기능', fmt:function(v){ return Object.keys(v).map(function(k){ return k+' Lv.'+v[k]+' 사용 가능'; }); } },
@@ -50977,6 +50986,7 @@ function processTurn(){
         commitSkillItemCost(p, skObj); // [제조·파머시 통합 v0.2]
         let _battleHpBefore=G.battles.map(_m=>[_m,_m.currentHp]);
         let res = skObj.effect(p, s, t, slv);
+        if(skObj.damageType==='physical' && _battleHpBefore.some(e=>e[0].currentHp<e[1])) triggerWeaponCardHit(p,s,t,DB,log,true);
         _battleHpBefore.forEach(_entry=>{let _m=_entry[0],_before=_entry[1];if(_before>_m.currentHp)recordCombatEvent('damage_dealt',{target:_m.name,amount:_before-_m.currentHp,action:'skill',skill:pick});});
         if(res){
           let spStr = cost > 0 ? ` <span style="font-size:10px;color:#3498db;opacity:0.85;">[-${cost} SP]</span>` : '';
@@ -51037,51 +51047,26 @@ function processTurn(){
         let hr=Math.max(5,Math.min(95,80+(s.hit-(t.flee||0)))); if(se.blind)hr=Math.floor(hr*0.75);
         if(Math.random()*100<=hr){
           let isC=Math.random()*100 < Math.max(0,s.crit-Math.floor(t.lv/5));
-          let wElem = p.weaponElement || '무속성';
-          // 크기 페널티: 무기 종류 × 몬스터 크기
-          // 페코페코 기수: 창 크기패널티 무시
-          let effWeaponType = (s.pecoRider && p.weaponType==='창') ? '창(페코)' : (p.weaponType||'맨손');
-          let szTable = DB.sizeMatrix[p.weaponType||'맨손'] || DB.sizeMatrix['맨손'];
-          // 페코페코 기수이면 크기페널티 100%로 고정
-          if(s.pecoRider && p.weaponType==='창') szTable = {'소형':100,'중형':100,'대형':100};
-          let szP = ((szTable[t.size] ?? 100)) / 100;
-          // 웨폰 퍼펙션: 크기 패널티 무시
-          let wpNegated = false;
-          if(p.statusEffects?.weaponPerfect && szP !== 1){ szP = 1; wpNegated = true; }
-          let elRow = DB.elementMatrix[wElem] || DB.elementMatrix['무속성'];
-          let elM = ((elRow[t.element] ?? 100)) / 100;
-          // 원작 피해 공식
-          // 앞뎀(STR 기반) + 뒷뎀(무기ATK) → 크기패널티 → 속성배율 → 저주디버프
-          // → softDef 감산 → (1 - hardDef/100) 곱산 → 크리 1.4배
-          let curseMul = se.curse ? 0.75 : 1;
-          // C. 종족 특화 데미지: 데몬 베인(암/불사), 비스트 베인(지속/화속)
-          let raceMul=1;
-          { let dbLv=(p.skills&&p.skills["데몬 베인"])||0;
-            let bbLv=(p.skills&&p.skills["비스트 베인"])||0;
-            if(dbLv>0&&(t.element==='암속성'||t.element==='불사속성')) raceMul+=dbLv*0.05;
-            if(bbLv>0&&(t.element==='지속성'||t.element==='화속성'||t.element==='풍속성')) raceMul+=bbLv*0.04;
-          }
-          // 드래고놀로지: 용속성 몬스터 추가 피해
-          { let dgLv=(p.skills&&p.skills["드래고놀로지"])||0;
-            if(dgLv>0&&t.element==='용속성') raceMul+=dgLv*0.1;
-          }
-          // 카드 종족/속성/크기/보스 배율 (P0-C5: item-effects.js로 이동, 계산 순서/반올림
-          // 위치는 그대로 -- rawAtk 계산 직전, DEF 감산 이전에서만 호출)
-          raceMul = applyOutgoingRaceElemSizeBossAtk(raceMul, t, s);
-          let cardAtkMul = getOutgoingAtkPctMul(s);
-          // 방어 무시 (원령무사 카드)
-          let _defIgnore = getOutgoingDefIgnore(t, s);
-          let effSoftDef = _defIgnore.softDef;
-          let effHardDef = _defIgnore.hardDef;
-          let rawAtk = Math.floor((s.baseAtk + s.weaponAtk) * szP * elM * curseMul * raceMul * cardAtkMul);
-          let tot = Math.max(1, Math.floor((rawAtk - effSoftDef) * (1 - effHardDef/100)));
-          if(isC) tot = Math.floor(tot * 1.4);
+          let {tot,rawAtk,effSoftDef,effHardDef,szP,elM,wpNegated}=normalWeaponDamage(p,s,t,se,DB,isC);
           let _targetHpBefore=t.currentHp;
           let dmg = tot; t.currentHp -= dmg;
           // 카드 프록: HP흡수 / SP흡수 / 상태이상 / 오토스펠 (P0-C1: s.itemEffects.events 소비로 통합 -- 카드 DB 직접 재파싱 없음)
           { let _p=G.player;
             let _legacyEvents=(s.itemEffects&&s.itemEffects.events.onHit||[]).filter(e=>e.kind==='hpDrain'||e.kind==='spDrain'||e.kind==='inflict'||e.kind==='autoSpell');
             triggerItemEffects('onHit', { player:_p, target:t, stats:s, DB:DB, damage:dmg, isCrit:isC, log:log }, _legacyEvents);
+          }
+          triggerWeaponCardHit(p,s,t,DB,log,false);
+          // There are no tile coordinates: distance is the existing combat position.
+          // A radius of one hits enemies within one distance unit of the main target.
+          let splash=(s.itemEffects&&s.itemEffects.combat.splashRange)||0;
+          if(splash>0){
+            G.battles.forEach(other=>{
+              if(other===t||other.currentHp<=0||Math.abs((other.distance||0)-(t.distance||0))>splash) return;
+              let hit=normalWeaponDamage(p,s,other,se,DB,isC).tot;
+              other.currentHp-=hit;
+              recordCombatEvent('damage_dealt',{target:other.name,amount:hit,action:'splash'});
+              log(`💥 <b>[스플래시]</b> ${other.name}에게 <span class="hl-dmg">${hit}</span> 피해!`,'dmg-dealt');
+            });
           }
           // D. 스내쳐: 기본 공격 명중 시 자동 스틸
           { let snatchLv=(p.skills&&p.skills["스내쳐"])||0;
@@ -51166,6 +51151,13 @@ function processTurn(){
 	// 드랍 처리 루프 끝난 직후
 	checkQuestGather();
 	checkJobQuestGather();
+  for(let dead of G.battles.slice()){
+    if(dead.currentHp>0) continue;
+    G.battles.splice(G.battles.indexOf(dead),1);
+    log(`✅ ${dead.emoji||''}${dead.name} 처치! (광역)`,'combat');
+    awardKillReward(p,dead,set,s);
+  }
+  if(_endTurnIfBattlesEmpty()) return;
   // ── 몬스터 턴 (runMonsterTurn — 슬라이스2 추출, 동작 불변) ──
   let dd = runMonsterTurn(p, s);
 
@@ -51757,7 +51749,22 @@ function checkQuestGather() {
     }
   }
 }
-function showInvModal(tab = 'all'){
+function rememberBagView(){
+  let list=document.getElementById('bag-list');
+  if(list){
+    if(!G.bagScroll) G.bagScroll={};
+    G.bagScroll[list.dataset.tab]=list.scrollTop;
+  }
+}
+function filterBagItems(query){
+  G.bagQuery=query;
+  document.querySelectorAll('#bag-list .bag-row').forEach(row=>{
+    row.hidden=!row.dataset.search.includes(query.trim().toLocaleLowerCase());
+    row.style.display=row.hidden?'none':'flex';
+  });
+}
+function showInvModal(tab = G.invTab || 'all'){
+  rememberBagView();
   G.invTab = tab; let p = G.player;
   // 1. 상단 탭 UI (전체/소모품/장비/카드/기타)
   // [P1-13] 가방 헤더 = 소지 무게 (좌측 능력치 목록에서 이동). 탭은 button
@@ -51766,7 +51773,8 @@ function showInvModal(tab = 'all'){
     ${[['all','전체'],['cons','소모품'],['equip','장비'],['card','카드'],['etc','기타']].map(([v, n]) =>
       `<button class="bag-tab${G.invTab===v?' active':''}" onclick="showInvModal('${v}')">${n}</button>`
     ).join('')}
-  </div><div style="display:flex; flex-direction:column; gap:6px; max-height:50vh; overflow-y:auto; padding:5px;">`;
+  </div><input id="bag-search" type="search" aria-label="소지품 검색" placeholder="이름으로 검색" oninput="filterBagItems(this.value)" style="box-sizing:border-box;width:100%;margin:6px 0;padding:8px;">
+  <div id="bag-list" data-tab="${tab}" style="display:flex; flex-direction:column; gap:6px; max-height:50vh; overflow-y:auto; overflow-x:hidden; overflow-anchor:none; padding:5px;">`;
 
   // 2. displayItems: 인벤토리 + 장착 중인 아이템 합산
   let displayItems = {};
@@ -51780,7 +51788,7 @@ function showInvModal(tab = 'all'){
   });
 
   // 3. 아이템 리스트 생성 및 필터링
-  Object.keys(displayItems).forEach(k => {
+  Object.keys(displayItems).sort((a,b)=>a.localeCompare(b,'ko',{numeric:true})).forEach(k => {
     let data = displayItems[k];
     let count = data.count;
     let parsed = parseItem(k); let i = parsed ? parsed.base : DB.items[k]; if(!i) return;
@@ -51802,7 +51810,7 @@ function showInvModal(tab = 'all'){
     if(i.type === '퀘스트아이템') {
       btn = `<span style="font-size:10px; color:var(--text-dim); padding:4px 6px;">📜 퀘스트</span>`;
     } else if(i.type === '소모품') {
-      btn = `<button onclick="event.stopPropagation();useItem('${safeK}')" class="m-btn ok">사용</button>`;
+      btn = `<button onclick="event.stopPropagation();useItem('${safeK}');showInvModal()" class="m-btn ok">사용</button>`;
     } else if(['무기','갑옷','방패','투구_상단','투구_중단','투구_하단','걸칠것','신발','Accessory'].includes(i.type)) {
       let slotType = data.equippedSlot || (i.type === 'Accessory' ? '악세1' : i.type);
       btn = `<button onclick="event.stopPropagation();${isEq ? `unequipItem('${slotType}')` : `equipItem('${safeK}')`}" class="m-btn" style="background:${isEq?'var(--red-light)':'var(--green)'}; color:#fff; border:none; padding:4px 8px; border-radius:3px;">${isEq?'해제':'장착'}</button>`;
@@ -51813,13 +51821,16 @@ function showInvModal(tab = 'all'){
 
     // 행 전체 클릭 시 아이템 상세(능력치·설명) 표시 — 카드 등 액션 버튼이 없는
     // 아이템도 이걸로 정보를 볼 수 있어야 한다(버튼 클릭은 stopPropagation으로 분리)
-    h += `<div onclick="showItemDetail('${safeK}')" style="cursor:pointer;border:1px solid ${isEq?'var(--border-gold)':'var(--border)'}; padding:8px; border-radius:4px; display:flex; justify-content:space-between; align-items:center; background:${isEq?'#fdfaf0':'#fff'};">
+    h += `<div class="bag-row" data-search="${safeK.toLocaleLowerCase().replace(/"/g,'&quot;')}" onclick="showItemDetail('${safeK}')" style="cursor:pointer;border:1px solid ${isEq?'var(--border-gold)':'var(--border)'}; padding:8px; border-radius:4px; display:flex; justify-content:space-between; align-items:center; background:${isEq?'#fdfaf0':'#fff'};">
       <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:20px;">${i.emoji||'📦'}</span>
       <div style="line-height:1.2;"><b style="font-size:12px;">${parsed?getItemDisplayName(parsed):k}</b>${equipLabel}<br><span style="font-size:10px; color:var(--text-dim);">${countLabel}</span></div></div>
       <div>${btn}</div></div>`;
   });
 
   openModal('🎒 가방', h + '</div>', [{label:'닫기', action:()=>{}}]);
+  document.getElementById('bag-search').value=G.bagQuery||'';
+  filterBagItems(G.bagQuery||'');
+  document.getElementById('bag-list').scrollTop=(G.bagScroll||{})[tab]||0;
 }
 // ── [ 카드 장착 모달 및 합성 로직 ] ──
 function openCardSlotModal(equipName) {
@@ -53376,8 +53387,8 @@ function showItemDetail(n){
   }
 
   let s=`<div style="font-size:30px;margin-bottom:10px">${it.emoji||'📦'}</div><div style="color:var(--gold-light);font-size:14px">${displayName}</div><div style="font-size:10px;color:var(--text-dim)">보유: ${q}</div><div style="margin-top:10px">${it.desc||''}</div>${targetLine}${cmpHtml}${slotHtml}`;
-  let a=[{label:'닫기',action:()=>{}}];
-  if(it.type==='소모품'&&q>0)a.unshift({label:'사용',cls:'ok',action:()=>{useItem(n);}});
+  let a=[{label:'가방으로',close:false,action:()=>showInvModal()},{label:'닫기',action:()=>{}}];
+  if(it.type==='소모품'&&q>0)a.unshift({label:'사용',cls:'ok',close:false,action:()=>{useItem(n);showInvModal();}});
   if(['무기','갑옷','방패','투구_상단','투구_중단','투구_하단','걸칠것','신발','Accessory'].includes(it.type)){
     if(isEq){ let sl=Object.keys(p.equip).find(k=>p.equip[k]===n); a.unshift({label:'해제',cls:'danger',action:()=>{unequipItem(sl);}}); }
     else if(q>0) a.unshift({label:'장착',cls:'ok',action:()=>{equipItem(n);}});
@@ -53655,7 +53666,9 @@ function useSkill(name){
     }
   }
   commitSkillItemCost(p, sk);
+  let cardHpBefore=G.battles.map(m=>[m,m.currentHp]);
   let result = sk.effect(p, s, t, slv);
+  if(sk.damageType==='physical' && cardHpBefore.some(e=>e[0].currentHp<e[1])) triggerWeaponCardHit(p,s,t,DB,log,true);
 
   if(result){ log(result.msg, result.type || 'combat'); spawnDmg(name, 'enemy'); }
 
@@ -53680,6 +53693,12 @@ function useSkill(name){
     let z=t.zeny[0]+Math.floor(Math.random()*(t.zeny[1]-t.zeny[0])); p.zeny+=z; p.records.totalZeny+=z; log(`💰 +${z}z`,'system'); idleTrack(getExp,z); // [UI-①]
     rollDrops(p, t, null, s);
     checkQuestKill(t.name); checkJobQuestKill(t.name);
+  }
+  for(let dead of G.battles.slice()){
+    if(dead.currentHp>0) continue;
+    G.battles.splice(G.battles.indexOf(dead),1);
+    log(`✅ ${dead.emoji||''}${dead.name} 처치! (광역)`,'combat');
+    awardKillReward(p,dead,p.settings||{expRate:1,dropRate:1,cardRate:1},s);
   }
   updateUI(); if(!sk.opensModal) closeModal();
 }
@@ -54450,7 +54469,7 @@ function openEquipModal(sl){
       }
       h+=`<div onclick="showItemDetail('${safeK}')" style="padding:8px;border-bottom:1px solid #3d3020;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;">
         <span style="color:var(--gold)">${dispName}${statHint?` <span style="color:var(--text-dim);font-size:11px;">(${statHint})</span>`:''}</span>
-        <button onclick="event.stopPropagation();equipItem('${safeK}');closeModal()" class="m-btn ok" style="padding:3px 10px;font-size:11px;flex-shrink:0;">장착</button>
+        <button onclick="event.stopPropagation();equipItem('${safeK}')" class="m-btn ok" style="padding:3px 10px;font-size:11px;flex-shrink:0;">장착</button>
       </div>`;
     }
   });
@@ -61307,7 +61326,10 @@ document.addEventListener('keydown',e=>{
   if(k.length===1&&'qwerasdfzxcv'.includes(k)) executeHotbar(k);
 });
 
+let modalRevision=0;
 function openModal(t,b,a){
+  rememberBagView();
+  const revision=++modalRevision;
   $('modal-title').textContent=t;
   $('modal-body').innerHTML=b;
   let act=$('modal-actions');
@@ -61319,12 +61341,12 @@ function openModal(t,b,a){
     let btn=document.createElement('button');
     btn.className='m-btn '+(bn.cls||'');
     btn.textContent=bn.label;
-    btn.onclick=()=>{ bn.action(); if(bn.close!==false)closeModal(); };
+    btn.onclick=()=>{ bn.action(); if(bn.close!==false && revision===modalRevision)closeModal(); };
     act.appendChild(btn);
   });
   $('modal-overlay').classList.add('open');
 }
-function closeModal(){ $('modal-overlay').classList.remove('open'); }
+function closeModal(){ rememberBagView(); $('modal-overlay').classList.remove('open'); }
 
 // ── [ v9.10: 능력치 상세 분석 Tooltip ] ──
 let currentTooltip = null;
@@ -61728,7 +61750,7 @@ function makeEmptyItemEffects() {
       // 둘 다 100 기준 additive accumulator) 대응 신규 필드. "10 = 10%"(형제
       // %필드와 같은 관례) additive 누적, 기존 spCostMul(곱연산 배율, 기본값 1)과는
       // 별개 필드다 -- 재사용하지 않는다(COMBO_ENGINE_EXTENSION_P2A5.md §6 근거).
-      matkPct: 0, spCostRatePct: 0,
+      matkPct: 0, spCostRatePct: 0, physicalDamagePct: 0, attackSpCost: 0, defRatioAttack: 0, splashRange: 0,
     },
     status: {},
     skill: { skillDmg: null, grantSkill: null },
@@ -61768,7 +61790,7 @@ var _ITEM_EFF_SIMPLE_COMBAT_KEYS = [
   // P2-A.5: matkPct/spCostRatePct 둘 다 rAthena additive accumulator(matk_rate/
   // dsprate)와 정확히 같은 방식으로 이 제네릭 루프에 태워 추가 코드 없이 additive
   // 누적 + ledger 기록 + mergeItemEffectsIntoBonus 병합까지 재사용한다.
-  'matkPct', 'spCostRatePct',
+  'matkPct', 'spCostRatePct', 'physicalDamagePct', 'attackSpCost',
 ];
 var _ITEM_EFF_COUNTER_KEYS = ['raceAtk', 'elemAtk', 'sizeAtk', 'magicRaceAtk', 'raceDmgReduce', 'elemReduce'];
 
@@ -61787,6 +61809,11 @@ function collectItemEffects(p, DB, parseItem) {
   function ledger(entry) { fx.ledger.push(entry); }
 
   function collectSimpleFields(it, source, sourceType) {
+    ['defRatioAttack','splashRange'].forEach(function(key){
+      if(!it[key]) return;
+      fx.combat[key]=Math.max(fx.combat[key],Number(it[key]));
+      ledger({source:source,sourceType:sourceType,type:'combat',key:key,value:it[key],active:true});
+    });
     _ITEM_EFF_SIMPLE_STAT_KEYS.forEach(function (key) {
       var v = it[key];
       if (!v) return;
@@ -62406,6 +62433,70 @@ function _triggerOnHitEvent(context, evt, log, random) {
       break;
     default:
       break;
+  }
+}
+
+
+// rAthena pre-RE e985006: bAddClass applies to weapon damage; penetration replaces
+// ordinary DEF reduction with (hard DEF + soft DEF)/100. Critical hits do not pierce.
+function physicalCardDamage(raw,target,stats,softDef,hardDef,allowRatio){
+  var c=stats&&stats.itemEffects&&stats.itemEffects.combat||{};
+  var boosted=raw*(1+(c.physicalDamagePct||0)/100);
+  if(c.defRatioAttack && allowRatio!==false && !stats.cardDefIgnore){
+    return Math.max(1,Math.floor(boosted*(Math.min(100,target.def||0)+(target.softDef||0))/100));
+  }
+  return Math.max(1,Math.floor((boosted-softDef)*(1-(hardDef||0)/100)));
+}
+function normalWeaponDamage(p,s,t,se,DB,isC){
+  let wElem = p.weaponElement || '무속성';
+  // 크기 페널티: 무기 종류 × 몬스터 크기
+  // 페코페코 기수: 창 크기패널티 무시
+  let effWeaponType = (s.pecoRider && p.weaponType==='창') ? '창(페코)' : (p.weaponType||'맨손');
+  let szTable = DB.sizeMatrix[p.weaponType||'맨손'] || DB.sizeMatrix['맨손'];
+  // 페코페코 기수이면 크기페널티 100%로 고정
+  if(s.pecoRider && p.weaponType==='창') szTable = {'소형':100,'중형':100,'대형':100};
+  let szP = ((szTable[t.size] ?? 100)) / 100;
+  // 웨폰 퍼펙션: 크기 패널티 무시
+  let wpNegated = false;
+  if(p.statusEffects?.weaponPerfect && szP !== 1){ szP = 1; wpNegated = true; }
+  let elRow = DB.elementMatrix[wElem] || DB.elementMatrix['무속성'];
+  let elM = ((elRow[t.element] ?? 100)) / 100;
+  // 원작 피해 공식
+  // 앞뎀(STR 기반) + 뒷뎀(무기ATK) → 크기패널티 → 속성배율 → 저주디버프
+  // → softDef 감산 → (1 - hardDef/100) 곱산 → 크리 1.4배
+  let curseMul = se.curse ? 0.75 : 1;
+  // C. 종족 특화 데미지: 데몬 베인(암/불사), 비스트 베인(지속/화속)
+  let raceMul=1;
+  { let dbLv=(p.skills&&p.skills["데몬 베인"])||0;
+    let bbLv=(p.skills&&p.skills["비스트 베인"])||0;
+    if(dbLv>0&&(t.element==='암속성'||t.element==='불사속성')) raceMul+=dbLv*0.05;
+    if(bbLv>0&&(t.element==='지속성'||t.element==='화속성'||t.element==='풍속성')) raceMul+=bbLv*0.04;
+  }
+  // 드래고놀로지: 용속성 몬스터 추가 피해
+  { let dgLv=(p.skills&&p.skills["드래고놀로지"])||0;
+    if(dgLv>0&&t.element==='용속성') raceMul+=dgLv*0.1;
+  }
+  // 카드 종족/속성/크기/보스 배율 (P0-C5: item-effects.js로 이동, 계산 순서/반올림
+  // 위치는 그대로 -- rawAtk 계산 직전, DEF 감산 이전에서만 호출)
+  raceMul = applyOutgoingRaceElemSizeBossAtk(raceMul, t, s);
+  let cardAtkMul = getOutgoingAtkPctMul(s);
+  // 방어 무시 (원령무사 카드)
+  let _defIgnore = getOutgoingDefIgnore(t, s);
+  let effSoftDef = _defIgnore.softDef;
+  let effHardDef = _defIgnore.hardDef;
+  let rawAtk = Math.floor((s.baseAtk + s.weaponAtk) * szP * elM * curseMul * raceMul * cardAtkMul);
+  let tot = physicalCardDamage(rawAtk,t,s,effSoftDef,effHardDef,!isC);
+  if(isC) tot = Math.floor(tot * 1.4);
+
+  return {tot,rawAtk,effSoftDef,effHardDef,szP,elM,wpNegated};
+}
+// Trigger once per successful physical attack, never recursively from an auto-spell.
+function triggerWeaponCardHit(p,s,t,DB,log,includeAutoSpell){
+  var c=s.itemEffects&&s.itemEffects.combat||{};
+  if(c.attackSpCost) p.sp=Math.max(0,p.sp-c.attackSpCost);
+  if(includeAutoSpell){
+    var events=(s.itemEffects&&s.itemEffects.events.onHit||[]).filter(e=>e.kind==='autoSpell' && e.onPhysicalSkill);
+    triggerItemEffects('onHit',{player:p,target:t,stats:s,DB:DB,log:log},events);
   }
 }
 </script>
@@ -63135,6 +63226,23 @@ function svcRefineMeta(itemKey){
   let rate = rates[cur] == null ? 20 : rates[cur];
   return {key:itemKey, parsed, def:parsed.base, cur, refKey, ore, cost, rate};
 }
+function svcRefineGuide(m){
+  if(m.cur>=10) return '<div>최대 제련도입니다.</div>';
+  let rd=(DB.refine&&DB.refine[m.refKey])||{};
+  let rates=rd.rates||[100,100,100,100,60,60,50,40,20,10];
+  let rows='', cumulative=1;
+  for(let step=m.cur;step<10;step++){
+    let rate=rates[step]==null?20:rates[step];
+    cumulative*=rate/100;
+    rows+=`<tr><td>+${step} → +${step+1}</td><td>${rate}%</td><td>${Number((cumulative*100).toFixed(2))}%</td></tr>`;
+  }
+  return `<details style="font-size:11px;margin-top:6px;line-height:1.7;"><summary>단계별 확률·실패 안내</summary>
+    <div>한 번 시도할 때 ${svcHtml(m.ore)} 1개 + ${m.cost.toLocaleString()}z를 사용합니다.<br>
+    성공하면 제련도 +1, 실패하면 해당 장비 1개와 장착된 카드가 함께 사라집니다. 사용한 재료와 제니는 반환되지 않습니다.<br>
+    단계 성공률은 각 시도 기준이며, 연속 성공률은 현재 +${m.cur}부터 한 번도 실패하지 않고 도달할 확률입니다.</div>
+    <table style="width:100%;text-align:left;"><thead><tr><th>단계</th><th>성공률</th><th>연속 성공률</th></tr></thead><tbody>${rows}</tbody></table>
+    <div>자동 제련도 같은 확률로 한 단계씩 시도하며, 실패·재료 부족·제니 부족 시 멈춥니다.</div></details>`;
+}
 function svcRefineRow(target, label, qty){
   let p = G.player, m = svcRefineMeta(target.key);
   if(!m) return '';
@@ -63166,6 +63274,7 @@ function svcRefineRow(target, label, qty){
       <div style="font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${label}${q}</div>
       <div style="font-size:10px;color:var(--text-dim);">${state}</div>
       ${auto}
+      ${svcRefineGuide(m)}
     </div>
     <button class="m-btn ${affordable?'ok':''}" style="padding:4px 9px;flex-shrink:0;" onclick="serviceRefineTarget(${idx})" ${affordable?'':'disabled'}>제련</button>
   </div>`;
@@ -64967,6 +65076,7 @@ function rrSuspense(target,idx){
   let itemName=typeof getItemDisplayName==='function' ? getItemDisplayName(m.parsed) : live.key;
   let body=`<div style="text-align:center;padding:20px 8px 14px;line-height:1.8;">
     <div style="font-size:11px;color:var(--text-dim);margin-bottom:12px;">${rrEsc(itemName)}</div>
+    <div style="font-size:12px;margin-bottom:12px;">+${m.cur} → +${m.cur+1} · 성공률 ${m.rate}%<br>${rrEsc(m.ore)} 1개 + ${m.cost.toLocaleString()}z<br>${m.rate<100?'⚠ 실패 시 장비와 장착 카드가 파괴됩니다.':'이번 단계는 성공률 100%입니다.'}</div>
     <div style="font-size:20px;font-weight:900;letter-spacing:.04em;">으허허헉!!!!</div>
   </div>`;
   openModal(`🔨 ${rrEsc(rrRefinerDisplay(refiner))}`,body,[

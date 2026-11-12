@@ -43,7 +43,7 @@ function makeEmptyItemEffects() {
       // 둘 다 100 기준 additive accumulator) 대응 신규 필드. "10 = 10%"(형제
       // %필드와 같은 관례) additive 누적, 기존 spCostMul(곱연산 배율, 기본값 1)과는
       // 별개 필드다 -- 재사용하지 않는다(COMBO_ENGINE_EXTENSION_P2A5.md §6 근거).
-      matkPct: 0, spCostRatePct: 0,
+      matkPct: 0, spCostRatePct: 0, physicalDamagePct: 0, attackSpCost: 0, defRatioAttack: 0, splashRange: 0,
     },
     status: {},
     skill: { skillDmg: null, grantSkill: null },
@@ -83,7 +83,7 @@ var _ITEM_EFF_SIMPLE_COMBAT_KEYS = [
   // P2-A.5: matkPct/spCostRatePct 둘 다 rAthena additive accumulator(matk_rate/
   // dsprate)와 정확히 같은 방식으로 이 제네릭 루프에 태워 추가 코드 없이 additive
   // 누적 + ledger 기록 + mergeItemEffectsIntoBonus 병합까지 재사용한다.
-  'matkPct', 'spCostRatePct',
+  'matkPct', 'spCostRatePct', 'physicalDamagePct', 'attackSpCost',
 ];
 var _ITEM_EFF_COUNTER_KEYS = ['raceAtk', 'elemAtk', 'sizeAtk', 'magicRaceAtk', 'raceDmgReduce', 'elemReduce'];
 
@@ -102,6 +102,11 @@ function collectItemEffects(p, DB, parseItem) {
   function ledger(entry) { fx.ledger.push(entry); }
 
   function collectSimpleFields(it, source, sourceType) {
+    ['defRatioAttack','splashRange'].forEach(function(key){
+      if(!it[key]) return;
+      fx.combat[key]=Math.max(fx.combat[key],Number(it[key]));
+      ledger({source:source,sourceType:sourceType,type:'combat',key:key,value:it[key],active:true});
+    });
     _ITEM_EFF_SIMPLE_STAT_KEYS.forEach(function (key) {
       var v = it[key];
       if (!v) return;
@@ -721,5 +726,69 @@ function _triggerOnHitEvent(context, evt, log, random) {
       break;
     default:
       break;
+  }
+}
+
+
+// rAthena pre-RE e985006: bAddClass applies to weapon damage; penetration replaces
+// ordinary DEF reduction with (hard DEF + soft DEF)/100. Critical hits do not pierce.
+function physicalCardDamage(raw,target,stats,softDef,hardDef,allowRatio){
+  var c=stats&&stats.itemEffects&&stats.itemEffects.combat||{};
+  var boosted=raw*(1+(c.physicalDamagePct||0)/100);
+  if(c.defRatioAttack && allowRatio!==false && !stats.cardDefIgnore){
+    return Math.max(1,Math.floor(boosted*(Math.min(100,target.def||0)+(target.softDef||0))/100));
+  }
+  return Math.max(1,Math.floor((boosted-softDef)*(1-(hardDef||0)/100)));
+}
+function normalWeaponDamage(p,s,t,se,DB,isC){
+  let wElem = p.weaponElement || '무속성';
+  // 크기 페널티: 무기 종류 × 몬스터 크기
+  // 페코페코 기수: 창 크기패널티 무시
+  let effWeaponType = (s.pecoRider && p.weaponType==='창') ? '창(페코)' : (p.weaponType||'맨손');
+  let szTable = DB.sizeMatrix[p.weaponType||'맨손'] || DB.sizeMatrix['맨손'];
+  // 페코페코 기수이면 크기페널티 100%로 고정
+  if(s.pecoRider && p.weaponType==='창') szTable = {'소형':100,'중형':100,'대형':100};
+  let szP = ((szTable[t.size] ?? 100)) / 100;
+  // 웨폰 퍼펙션: 크기 패널티 무시
+  let wpNegated = false;
+  if(p.statusEffects?.weaponPerfect && szP !== 1){ szP = 1; wpNegated = true; }
+  let elRow = DB.elementMatrix[wElem] || DB.elementMatrix['무속성'];
+  let elM = ((elRow[t.element] ?? 100)) / 100;
+  // 원작 피해 공식
+  // 앞뎀(STR 기반) + 뒷뎀(무기ATK) → 크기패널티 → 속성배율 → 저주디버프
+  // → softDef 감산 → (1 - hardDef/100) 곱산 → 크리 1.4배
+  let curseMul = se.curse ? 0.75 : 1;
+  // C. 종족 특화 데미지: 데몬 베인(암/불사), 비스트 베인(지속/화속)
+  let raceMul=1;
+  { let dbLv=(p.skills&&p.skills["데몬 베인"])||0;
+    let bbLv=(p.skills&&p.skills["비스트 베인"])||0;
+    if(dbLv>0&&(t.element==='암속성'||t.element==='불사속성')) raceMul+=dbLv*0.05;
+    if(bbLv>0&&(t.element==='지속성'||t.element==='화속성'||t.element==='풍속성')) raceMul+=bbLv*0.04;
+  }
+  // 드래고놀로지: 용속성 몬스터 추가 피해
+  { let dgLv=(p.skills&&p.skills["드래고놀로지"])||0;
+    if(dgLv>0&&t.element==='용속성') raceMul+=dgLv*0.1;
+  }
+  // 카드 종족/속성/크기/보스 배율 (P0-C5: item-effects.js로 이동, 계산 순서/반올림
+  // 위치는 그대로 -- rawAtk 계산 직전, DEF 감산 이전에서만 호출)
+  raceMul = applyOutgoingRaceElemSizeBossAtk(raceMul, t, s);
+  let cardAtkMul = getOutgoingAtkPctMul(s);
+  // 방어 무시 (원령무사 카드)
+  let _defIgnore = getOutgoingDefIgnore(t, s);
+  let effSoftDef = _defIgnore.softDef;
+  let effHardDef = _defIgnore.hardDef;
+  let rawAtk = Math.floor((s.baseAtk + s.weaponAtk) * szP * elM * curseMul * raceMul * cardAtkMul);
+  let tot = physicalCardDamage(rawAtk,t,s,effSoftDef,effHardDef,!isC);
+  if(isC) tot = Math.floor(tot * 1.4);
+
+  return {tot,rawAtk,effSoftDef,effHardDef,szP,elM,wpNegated};
+}
+// Trigger once per successful physical attack, never recursively from an auto-spell.
+function triggerWeaponCardHit(p,s,t,DB,log,includeAutoSpell){
+  var c=s.itemEffects&&s.itemEffects.combat||{};
+  if(c.attackSpCost) p.sp=Math.max(0,p.sp-c.attackSpCost);
+  if(includeAutoSpell){
+    var events=(s.itemEffects&&s.itemEffects.events.onHit||[]).filter(e=>e.kind==='autoSpell' && e.onPhysicalSkill);
+    triggerItemEffects('onHit',{player:p,target:t,stats:s,DB:DB,log:log},events);
   }
 }

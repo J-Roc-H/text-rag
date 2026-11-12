@@ -36,3 +36,6 @@ jobs:
 
       - name: Pharmacy UI click path
         run: node tests/pharmacy-ui-e2e.js
+
+      - name: Priority inventory and weapon card regressions
+        run: node tests/priority-fixes-e2e.js

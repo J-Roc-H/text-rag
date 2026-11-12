@@ -20235,6 +20235,7 @@
     "weightSrc": "type"
   },
   "바포메트 카드": {
+    "splashRange": 1,
     "type": "카드",
     "emoji": "🃏",
     "target": "무기",
@@ -20699,11 +20700,13 @@
     "weightSrc": "type"
   },
   "터틀 제너럴 카드": {
+    "physicalDamagePct": 20,
+    "autoSpell": {"skill": "매그넘 브레이크", "lv": 10, "rate": 0.03, "onPhysicalSkill": true},
     "type": "카드",
     "emoji": "🃏",
     "target": "무기",
     "prefix": "블래스트",
-    "desc": "공격력 20% 증가 / 물리 공격 시 오토스펠 매그넘 브레이크 10스킬",
+    "desc": "물리 피해 20% 증가 / 물리 명중 시 3% 확률로 매그넘 브레이크 10레벨 발동",
     "buy": 0,
     "sell": 10,
     "weight": 10,
@@ -21057,6 +21060,8 @@
     "weightSrc": "type"
   },
   "타나토스의기억 카드": {
+    "defRatioAttack": 1,
+    "attackSpCost": 1,
     "type": "카드",
     "emoji": "🃏",
     "target": "무기",

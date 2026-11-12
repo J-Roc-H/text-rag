@@ -62,6 +62,7 @@ function rrSuspense(target,idx){
   let itemName=typeof getItemDisplayName==='function' ? getItemDisplayName(m.parsed) : live.key;
   let body=`<div style="text-align:center;padding:20px 8px 14px;line-height:1.8;">
     <div style="font-size:11px;color:var(--text-dim);margin-bottom:12px;">${rrEsc(itemName)}</div>
+    <div style="font-size:12px;margin-bottom:12px;">+${m.cur} → +${m.cur+1} · 성공률 ${m.rate}%<br>${rrEsc(m.ore)} 1개 + ${m.cost.toLocaleString()}z<br>${m.rate<100?'⚠ 실패 시 장비와 장착 카드가 파괴됩니다.':'이번 단계는 성공률 100%입니다.'}</div>
     <div style="font-size:20px;font-weight:900;letter-spacing:.04em;">으허허헉!!!!</div>
   </div>`;
   openModal(`🔨 ${rrEsc(rrRefinerDisplay(refiner))}`,body,[

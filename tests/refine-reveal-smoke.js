@@ -51,15 +51,16 @@ function resetPlayer(key,ore=3,zeny=1000){
   modal=null; logs=[]; notices=[]; updateCount=0; saveCount=0;
 }
 
-// 1) 첫 클릭: 공통 비명만 보이고 어떤 상태도 변하지 않는다.
+// 1) 첫 클릭: 확률 안내와 공통 비명이 보이고 어떤 상태도 변하지 않는다.
 resetPlayer('나이프');
 assert.strictEqual(window.__refineRevealV1.currentRefiner(),'대장장이 홀그렌');
 const oldRandom=Math.random;
 Math.random=()=>0;
 window.serviceRefineTarget(0);
 assert(modal && modal.body.includes('으허허헉!!!!'));
-assert(!modal.body.includes('성공'));
-assert(!modal.body.includes('실패'));
+assert(modal.body.includes('성공률 100%'));
+assert(!modal.body.includes('제련 +1 성공'));
+assert(!modal.body.includes('제련 실패'));
 assert.strictEqual(G.player.zeny,1000);
 assert.strictEqual(G.player.inventory['프라코니'],3);
 assert.strictEqual(G.player.equip['무기'],'나이프');

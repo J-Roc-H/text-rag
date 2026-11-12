@@ -5,8 +5,9 @@
 // 영향 0)되어 있는지 검증한다. source/template.html의 실제 평타 공식(processTurn()에서
 // 텍스트 그대로 추출)과 실제 collectItemEffects()/calcStats()를 그대로 실행한다(재구현 아님).
 const assert = require('assert');
+const fs = require('fs');
 const {
-  html, runCalcStats, runNormalAttackFormula, makePlayer, makeDB,
+  html, extractFunction, runCalcStats, runNormalAttackFormula, makePlayer, makeDB,
 } = require('./_item-effect-harness');
 
 // 명중/크리 굴림을 고정해 매 호출 항상 '명중, 크리 아님'이 되게 한다.
@@ -221,9 +222,10 @@ function statsWithCard(cardFields) {
 
 // ── 정적 검사: 새 공격 코드가 DB.items를 직접 재파싱하지 않음 ──
 {
-  const offenseHelperCallSites = (html.match(/applyOutgoingRaceElemSizeBossAtk\(|getOutgoingAtkPctMul\(|getOutgoingDefIgnore\(/g) || []);
-  assert.strictEqual(offenseHelperCallSites.length, 3, '정적검사: 3개 헬퍼가 정확히 1곳씩(평타 블록)에서만 호출됨');
-  console.log('OK - OFF 정적검사: 오펜스 헬퍼 호출부 정확히 3곳(평타 블록 1세트)');
+  const normalDamage = extractFunction(fs.readFileSync('source/item-effects.js','utf8'), 'function normalWeaponDamage(');
+  const offenseHelperCallSites = (normalDamage.match(/applyOutgoingRaceElemSizeBossAtk\(|getOutgoingAtkPctMul\(|getOutgoingDefIgnore\(/g) || []);
+  assert.strictEqual(offenseHelperCallSites.length, 3, '정적검사: 3개 헬퍼가 공유 평타 계산에서 정확히 1곳씩 호출됨');
+  console.log('OK - OFF 정적검사: 오펜스 헬퍼 호출부 정확히 3곳(공유 평타 계산)');
 }
 
 console.log('ALL TESTS PASS - item-effect-offense-smoke');

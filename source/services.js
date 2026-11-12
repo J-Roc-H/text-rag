@@ -52,6 +52,23 @@ function svcRefineMeta(itemKey){
   let rate = rates[cur] == null ? 20 : rates[cur];
   return {key:itemKey, parsed, def:parsed.base, cur, refKey, ore, cost, rate};
 }
+function svcRefineGuide(m){
+  if(m.cur>=10) return '<div>최대 제련도입니다.</div>';
+  let rd=(DB.refine&&DB.refine[m.refKey])||{};
+  let rates=rd.rates||[100,100,100,100,60,60,50,40,20,10];
+  let rows='', cumulative=1;
+  for(let step=m.cur;step<10;step++){
+    let rate=rates[step]==null?20:rates[step];
+    cumulative*=rate/100;
+    rows+=`<tr><td>+${step} → +${step+1}</td><td>${rate}%</td><td>${Number((cumulative*100).toFixed(2))}%</td></tr>`;
+  }
+  return `<details style="font-size:11px;margin-top:6px;line-height:1.7;"><summary>단계별 확률·실패 안내</summary>
+    <div>한 번 시도할 때 ${svcHtml(m.ore)} 1개 + ${m.cost.toLocaleString()}z를 사용합니다.<br>
+    성공하면 제련도 +1, 실패하면 해당 장비 1개와 장착된 카드가 함께 사라집니다. 사용한 재료와 제니는 반환되지 않습니다.<br>
+    단계 성공률은 각 시도 기준이며, 연속 성공률은 현재 +${m.cur}부터 한 번도 실패하지 않고 도달할 확률입니다.</div>
+    <table style="width:100%;text-align:left;"><thead><tr><th>단계</th><th>성공률</th><th>연속 성공률</th></tr></thead><tbody>${rows}</tbody></table>
+    <div>자동 제련도 같은 확률로 한 단계씩 시도하며, 실패·재료 부족·제니 부족 시 멈춥니다.</div></details>`;
+}
 function svcRefineRow(target, label, qty){
   let p = G.player, m = svcRefineMeta(target.key);
   if(!m) return '';
@@ -83,6 +100,7 @@ function svcRefineRow(target, label, qty){
       <div style="font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${label}${q}</div>
       <div style="font-size:10px;color:var(--text-dim);">${state}</div>
       ${auto}
+      ${svcRefineGuide(m)}
     </div>
     <button class="m-btn ${affordable?'ok':''}" style="padding:4px 9px;flex-shrink:0;" onclick="serviceRefineTarget(${idx})" ${affordable?'':'disabled'}>제련</button>
   </div>`;
