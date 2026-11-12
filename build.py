@@ -32,6 +32,7 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_PATH = os.path.join(BASE, "source", "template.html")
 DATA_DIR = os.path.join(BASE, "source", "data")
 WORLD_MAP_SCRIPT_PATH = os.path.join(BASE, "source", "world-map.js")
+AIRSHIP_SCRIPT_PATH = os.path.join(BASE, "source", "airship.js")
 SERVICE_SCRIPT_PATH = os.path.join(BASE, "source", "services.js")
 UI_HOTFIX_SCRIPT_PATH = os.path.join(BASE, "source", "ui-hotfix.js")
 QUEST_GUIDE_SCRIPT_PATH = os.path.join(BASE, "source", "quest-guide.js")
@@ -60,6 +61,7 @@ BLOCKS = {
     "DB_MONSTERS": "db-monsters.json",
     "DB_MONSTER_AI_PROFILES": "db-monster-ai-profiles.json",
     "DB_MAPS": "db-maps.json",
+    "DB_AIRSHIPS": "db-airships.json",
     "DB_MAP_GROUPS": "db-map-groups.json",
     "DB_MAP_SPAWNS": "db-map-spawns.json",
     "DB_MAP_CONNECTIONS": "db-map-connections.json",
@@ -74,7 +76,7 @@ BLOCKS = {
 
 NPC_SERVICES = {
     "", "kafra", "shop", "refine", "job_change", "dungeon_access",
-    "exchange", "exchange_gem", "exchange_smile", "ymir_donate", "ymir_book",
+    "exchange", "exchange_gem", "exchange_smile", "ymir_donate", "ymir_book", "airship",
 }
 
 
@@ -711,9 +713,48 @@ def load_data_files():
     return raw, parsed
 
 
+def audit_airships(spec, maps, npcs):
+    errors = []
+    routes = spec.get("routes", {})
+    if set(routes) != {"domestic", "international"}:
+        errors.append("국내선/국제선 노선 데이터가 필요함")
+    places = {spec.get("terminal")}
+    ports = set()
+    for line, route in routes.items():
+        places.add(route.get("cabin"))
+        stops = route.get("stops", [])
+        if len(stops) < 2 or len(set(stops)) < 2:
+            errors.append(f"{line}: 정박지가 부족함")
+        for port in stops:
+            ports.add(port)
+            if port not in maps:
+                errors.append(f"{line}: 정박지 미등록 -> {port}")
+        for field in ("fare", "flightMs", "dockMs"):
+            value = route.get(field)
+            if not isinstance(value, int) or isinstance(value, bool) or value <= 0:
+                errors.append(f"{line}: {field}는 양의 정수여야 함")
+    for place in places:
+        record = maps.get(place, {})
+        if not (record.get("safe") and record.get("noSavePoint") and record.get("transport")):
+            errors.append(f"{place}: 안전 운송 맵/귀환지점 금지 표식 누락")
+        if record.get("connected") or record.get("monsters"):
+            errors.append(f"{place}: 도보 연결/몬스터 금지")
+    for name, record in maps.items():
+        if any(dest in places for dest in record.get("connected", [])):
+            errors.append(f"{name}: 운송 맵으로 도보 진입 불가")
+    for place in ports | places:
+        if not any(n.get("service") == "airship" and n.get("map") == place for n in npcs.values()):
+            errors.append(f"{place}: 비공정 안내원 누락")
+    return errors
+
+
 def main():
     template = open(TEMPLATE_PATH, encoding="utf-8-sig", newline=None).read()
     raw, parsed = load_data_files()
+    airship_errors = audit_airships(parsed["DB_AIRSHIPS"], parsed["DB_MAPS"], parsed["DB_NPCS"])
+    if airship_errors:
+        raise ValueError("비공정 데이터 오류:\n  - " + "\n  - ".join(airship_errors))
+    print("OK - airship route/map/NPC audit")
     audit_quest_item_sources(template, parsed)
     drop_errors = audit_monster_drops(parsed["DB_MONSTERS"], parsed["DB_ITEMS"])
     if drop_errors:
@@ -843,6 +884,7 @@ def main():
     quest_guide_script = open(QUEST_GUIDE_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     actor_interaction_script = open(ACTOR_INTERACTION_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     refine_reveal_script = open(REFINE_REVEAL_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
+    airship_script = open(AIRSHIP_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     body_close = "</body>"
     count = template.count(body_close)
     assert count == 1, f"{body_close} matched {count} times (expected 1)"
@@ -861,6 +903,7 @@ def main():
         f'<script id="quest-guide-v1">\n{quest_guide_script}\n</script>\n'
         f'<script id="actor-interaction-v1">\n{actor_interaction_script}\n</script>\n'
         f'<script id="refine-reveal-v1">\n{refine_reveal_script}\n</script>\n'
+        f'<script id="airship-v1">\n{airship_script}\n</script>\n'
         f'{body_close}'
     )
     template = template.replace(body_close, injected, 1)

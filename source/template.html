@@ -873,6 +873,7 @@ body.work-mode p {
 <!-- ════ BLOCK 2: DATA (JSON) — CSV 변환 스크립트로 교체 ════ -->
 <script id="db-monsters"   type="application/json">{{__DATA_DB_MONSTERS__}}</script>
 <script id="db-monster-ai-profiles" type="application/json">{{__DATA_DB_MONSTER_AI_PROFILES__}}</script>
+<script id="db-airships" type="application/json">{{__DATA_DB_AIRSHIPS__}}</script>
 <script id="db-maps"       type="application/json">{{__DATA_DB_MAPS__}}</script>
 <script id="db-map-groups" type="application/json">{{__DATA_DB_MAP_GROUPS__}}</script>
 <script id="db-map-spawns" type="application/json">{{__DATA_DB_MAP_SPAWNS__}}</script>
@@ -1018,6 +1019,7 @@ body.work-mode p {
 <div id="right-panel"><div id="hotbar-panel"><div class="panel-hdr" title="슬롯 클릭으로 등록 / 키보드 QWERASDFZXCV">HOTBAR <span class="hb-hint" style="font-size:11px;font-weight:normal;color:var(--text-dim)">⌨ QWER…</span></div><div class="hotbar-grid" id="hotbar-grid"></div></div><div id="situation"></div><div class="panel-hdr" id="enc-hdr">ENCOUNTER</div><div id="mon-list"><div class="no-target">현재 전투 없음</div></div></div>
 <div id="bottom-menu">
 <!-- [P1-13 2차] 상황별 보조행동: NPC는 그 맵에 있을 때만, 귀환은 던전+날개 보유 시. 도감은 ⋯ 메뉴 -->
+<button class="menu-btn" id="ctx-airship" style="display:none" onclick="showAirshipModal()">🛫 비공정</button>
 <button class="menu-btn" id="ctx-return" style="display:none" onclick="useItem('나비의 날개')">🦋 귀환</button>
 <button class="menu-btn" id="ctx-boss" style="display:none" onclick="challengeBoss()">👣 흔적</button>
 <button class="menu-btn" onclick="showMapModal()">🗺 이동</button>
@@ -1433,6 +1435,7 @@ function loadDB(){
   DB.production   = j('db-production');
   DB.shops        = j('db-shops');
   DB.mvpRespawn   = j('db-mvp-respawn');
+  DB.airships     = j('db-airships');
   DB.maps         = j('db-maps');
   DB.mapGroups    = j('db-map-groups');
   DB.mapSpawns    = j('db-map-spawns');
@@ -3175,7 +3178,7 @@ function saveLocal(){
   else delete G.player.offlineHunt;
   loadSlots();
   slots[activeSlot] = JSON.parse(JSON.stringify(G.player));
-  slots[activeSlot].savedMap = isSafeMap(G.currentMap) ? mapKey(G.currentMap) : (G.player.savedMap||'프론테라');
+  slots[activeSlot].savedMap = isSafeMap(G.currentMap) && !(getMap(G.currentMap)||{}).noSavePoint ? mapKey(G.currentMap) : (G.player.savedMap||'프론테라');
   setSaveState(saveSlots() ? 'saved' : 'fail'); // [P1-13] 반환값(true)은 기존 호출부 계약대로 유지
   return true;
 }
@@ -3668,6 +3671,7 @@ function normalizeSave(p){
     p.visitedMaps = {};
     if((p.totalKills||0)>0 && p.savedMap) p.visitedMaps[p.savedMap]=true;
   }
+  if(typeof airshipNormalize==='function') airshipNormalize(p);
   return p;
 }
 
@@ -3692,6 +3696,7 @@ function loadCharacter(i){
     return;
   }
   G.player = p; G.currentMap = p.savedMap||"프론테라 남쪽 평원"; G.battles=[]; G.autoHunt=false; clearTimeout(G.huntTimer);
+  const airshipRestored=typeof airshipRestore==='function' && airshipRestore();
   G.vendingSlots = []; G.lastVendingCheck = 0; // [P1-16] 이전 캐릭터의 노점이 새 캐릭터로 새지 않게(재고는 위 로드에서 환급됨)
   { let _vb=document.getElementById('vending-badge'); if(_vb) _vb.style.display='none'; }
 
@@ -3818,7 +3823,7 @@ function loadCharacter(i){
       updateUI(); saveLocal();
     }
   }
-  if(_gifted) saveLocal();   // lastSavedAt 갱신 — 저장 전에 새로고침해도 선물이 또 나오지 않게
+  if(_gifted || airshipRestored) saveLocal();   // lastSavedAt 갱신 — 저장 전에 새로고침해도 선물이 또 나오지 않게
 }
 
 let _saveFileHandle = null;
@@ -5196,6 +5201,7 @@ function applyMapTint(){
 }
 
 function updateUI(){
+  if(typeof airshipSync==='function' && airshipSync(Date.now(),{render:false})) renderMonsters();
   let p=G.player; if(!p)return; let s=calcStats(); p.maxHp=s.maxHp; p.maxSp=s.maxSp; p.hp=Math.min(p.hp,p.maxHp); p.sp=Math.min(p.sp,p.maxSp);
   if(G.silentMode) return; // [P0-02③] 무음 모드: 위 클램프는 계산 부작용이라 유지, DOM 갱신만 생략
   
@@ -5403,6 +5409,7 @@ function isUnlocked(k){ let u=G.player&&G.player.uiUnlock; return !!(u&&u[k]); }
 function getUiState(){
   let p=G.player; if(!p) return 'idle';
   if(p.hp<=0) return 'dead';
+  if(p.airshipTrip || (typeof airshipAtTerminal==='function' && airshipAtTerminal())) return 'airship';
   let md=getMap(G.currentMap)||{};
   if(G.autoHunt){
     if(G.battles.length) return 'hunt';
@@ -5422,6 +5429,7 @@ function updateActionStatus(){
   else if(st==='hunt') parts.push(`<b>${G.battles.some(m=>m.isMvp)?'MVP 교전 중':'자동사냥 중'}</b>${tgt?` · ${tgt}`:''} · 처치 ${kills}`);
   else if(st==='regen') parts.push(`<b>자동사냥 중</b> · 다음 출현 ${Math.ceil(((G.nextSpawnAt||0)-Date.now())/1000)}초 · 처치 ${kills}`);
   else if(st==='residual') parts.push(`<b>사냥 정지 · 교전 중</b> · ${tgt}`);
+  else if(st==='airship') parts.push(`<b>🛫 ${airshipEsc(airshipSummary())}</b>`);
   else if(st==='town') parts.push('마을 · 대기 중');
   else parts.push('대기 중');
   let inv=p.inventory||{};
@@ -5437,6 +5445,7 @@ function updateActionStatus(){
   if(st==='dead'){ lab='💤 휴식 중…'; dis=true; }
   else if(st==='hunt'||st==='regen'){ lab='⏹ 사냥 중지'; on=true; }
   else if(st==='residual'){ lab='▶ 사냥 재개'; }
+  else if(st==='airship'){ lab='🛫 비공정 안내'; }
   else if(st==='town'){ lab='🗺 사냥터로 이동'; }
   else lab='▶ 사냥 시작';
   if(btn.textContent!==lab) btn.textContent=lab;
@@ -5446,6 +5455,7 @@ function updateActionStatus(){
 function primaryAction(){
   let st=getUiState();
   if(st==='dead') return;
+  if(st==='airship'){ showAirshipModal(); return; }
   if(st==='town'){ showMapModal(); return; }
   toggleHunt();
 }
@@ -5468,6 +5478,7 @@ function updateContextActions(){
   let hasNpc=!!(DB.npcs&&Object.keys(DB.npcs).some(k=>mapKey(DB.npcs[k].map)===mapKey(G.currentMap)));
   let wing=(p.inventory&&p.inventory['나비의 날개'])||0;
   const show=(id,v)=>{ let e=document.getElementById(id); if(e) e.style.display=v?'':'none'; };
+  show('ctx-airship',typeof airshipIsPlace==='function' && airshipIsPlace());
   show('ctx-npc',hasNpc);
   show('ctx-return',md.type==='던전'&&wing>0);
   let rb=document.getElementById('ctx-return'); if(rb) rb.title=`나비의 날개 (${wing}개) — 귀환 지점으로`;
@@ -5502,7 +5513,9 @@ function renderSituation(){
   if(ml) ml.style.display=(fighting||!inRight)?'':'none';
   if(fighting) return;
   let st=getUiState(), h='';
-  if(st==='regen'){
+  if(st==='airship'){
+    h=`<div class="panel-hdr">비공정</div><div class="sit-body"><div class="sit-big">${airshipEsc(airshipSummary())}</div><button class="m-btn" onclick="showAirshipModal()">운항·하차 안내</button></div>`;
+  } else if(st==='regen'){
     let sec=Math.ceil(((G.nextSpawnAt||0)-Date.now())/1000), lw=G.lastWave;
     h=`<div class="panel-hdr">리젠 대기</div><div class="sit-body"><div class="sit-big">💤 다음 출현 ${sec}초</div>`+
       (lw?`<div class="sit-sub">직전 전투 · 처치 ${lw.kills} · EXP +${lw.exp.toLocaleString()} · ${lw.zeny.toLocaleString()}z</div>`:'')+
@@ -5994,6 +6007,7 @@ function autoPotion(){
 }
 
 function toggleHunt(){
+  if((getMap(G.currentMap)||{}).transport){ showAirshipModal(); return; }
   G.autoHunt=!G.autoHunt; let b=$('hunt-btn');
   if(G.autoHunt){ if(b){b.classList.add('hunt-on'); b.textContent='⏹ 사냥중지';} G.idleSum={t0:Date.now(),kills:0,exp:0,zeny:0}; G.huntSess={kills:0,exp:0,zeny:0}; log('🔁 <b>자동 사냥</b> 시작','system'); scheduleTickAspd(100); schedulePasserby(); } // [UI-①] 요약 카운터 리셋
   else { if(b){b.classList.remove('hunt-on'); b.textContent='▶ 자동사냥';} clearTimeout(G.huntTimer); clearTimeout(G.passerbyTimer); log('⏹ 자동 사냥 중지','system'); }
@@ -8335,6 +8349,7 @@ const KAFRA_WARP = {
 
 /** 귀환 지점 설정 */
 function kafraSetSave(){
+  if((getMap(G.currentMap)||{}).noSavePoint){ log('비공정과 환승구역은 귀환 지점으로 지정할 수 없습니다.','warning'); return; }
   G.player.savedMap = G.currentMap;
   saveLocal(); // 비안전 맵이어도 방금 넣은 G.player.savedMap(=현재 맵)이 그대로 기록된다
   notify('귀환 지점 설정 완료','gold');
@@ -11560,6 +11575,7 @@ function addZoneKill(){
 
 // [UI-②] 구역 킬 게이지 + 리젠 카운트다운 HUD (맵 헤더)
 function updateZoneHud(){
+  if(!G.silentMode && typeof airshipTick==='function') airshipTick();
   let el=$('zone-hud'); if(!el) return;
   let p=G.player; if(!p){ el.innerHTML=''; return; }
   ensureZoneState();

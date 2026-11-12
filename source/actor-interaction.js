@@ -393,6 +393,7 @@ function aiRenderActor(name,extraNotice){
       aiAddAction('🌀 저장 지점으로 이동 · 1,200z','service',()=>{ if(typeof kafraTeleport==='function') kafraTeleport(); },{disabled:p.zeny<1200,hint:p.zeny<1200?`제니 부족 · 보유 ${aiNum(p.zeny)}z`:''});
     }
     if(n.service==='shop') aiAddAction('🛒 물건을 본다','service',()=>{ if(typeof showShopModal==='function') showShopModal(name,n); });
+    if(n.service==='airship') aiAddAction('🛫 비공정 노선·탑승 안내','service',()=>showAirshipModal());
     if(n.service==='refine') aiAddAction('🔨 장비를 제련한다','service',()=>{ if(typeof showRefineModal==='function') showRefineModal(); });
     if(n.service==='dungeon_access'){
       let st=aiDungeonState(n,p); special+=aiDungeonHtml(st);

@@ -340,7 +340,9 @@
       <div class="wm-badges">${safe}${mvp}</div>
       <p class="wm-desc">${esc(m.desc||'')}</p>
       ${dungeonDetailList(name)}
-      <div class="wm-route-label">현재 위치에서</div>
+      ${typeof airshipRouteInfoHtml==='function'?airshipRouteInfoHtml(name):''}
+      ${cur===name && typeof airshipAvailableLines==='function' && airshipAvailableLines(name).length?'<button class="wm-action" onclick="showAirshipModal()">🛫 공항 안내</button>':''}
+      <div class="wm-route-label">현재 위치에서 · 도보 경로</div>
       <div class="wm-route">${esc(routeText(path))}</div>
       ${action}`;
   }
@@ -377,6 +379,23 @@
       });
     });
 
+    // Flight links are presentation only: never insert them in the walking graph.
+    const flights=[];
+    const routes=(typeof DB!=='undefined' && DB.airships && DB.airships.routes)||{};
+    const selectedPort=(mapData(selected)||{}).transport
+      ? ((typeof G!=='undefined' && G.player && G.player.airshipTrip && G.player.airshipTrip.origin)||'유노')
+      : displayNameFor(selected);
+    Object.entries(routes).forEach(([id,r])=>{
+      if(!r.stops.includes(selectedPort)) return;
+      const seenFlights=new Set();
+      r.stops.forEach((a,i)=>{
+        const b=r.stops[(i+1)%r.stops.length],key=edgeKey(a,b);
+        if(!layout[a]||!layout[b]||seenFlights.has(key)) return;
+        seenFlights.add(key);
+        const [x1,y1]=layout[a],[x2,y2]=layout[b];
+        flights.push(`<line class="wm-flight ${id}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"><title>${esc(r.name)} · ${esc(a)} — ${esc(b)}</title></line>`);
+      });
+    });
     const labels=WM_REGION_LABELS.map(r=>`<text class="wm-region-label" x="${r.x}" y="${r.y}">${esc(r.text)}</text>`).join('');
     const nodes=names.map(name=>{
       const m=mapData(name), [x,y]=layout[name];
@@ -396,7 +415,7 @@
     }).join('');
 
     return `<svg class="wm-svg" viewBox="100 20 1500 860" role="img" aria-label="룬 미드가츠 세계지도">
-      ${labels}<g class="wm-edges">${edges.join('')}</g><g class="wm-nodes">${nodes}</g>
+      ${labels}<g class="wm-edges">${edges.join('')}</g><g class="wm-flights">${flights.join('')}</g><g class="wm-nodes">${nodes}</g>
     </svg>`;
   }
 
@@ -418,6 +437,7 @@
       .wm-svg{display:block;width:100%;min-width:1200px;height:auto;min-height:620px}
       .wm-region-label{font-size:22px;fill:var(--text-dim);opacity:.22;font-weight:700;letter-spacing:2px}
       .wm-edge{stroke:#9fb2bf;stroke-width:2;opacity:.55}.wm-edge.one-way{stroke-dasharray:5 4}.wm-edge.route{stroke:#d39a35;stroke-width:4;opacity:.95}
+      .wm-flight{stroke:#368bc1;stroke-width:3;stroke-dasharray:12 7;opacity:.8;pointer-events:none}.wm-flight.international{stroke:#9564bd}
       .wm-node{cursor:pointer}.wm-node .wm-ring{fill:transparent;stroke:transparent;stroke-width:4}.wm-node .wm-core{stroke-width:2}.wm-node.town .wm-core{fill:#e9f4ef;stroke:#4f8c77}.wm-node.field .wm-core{fill:#eaf2f7;stroke:#5d87a4}.wm-node.dungeon .wm-core{fill:#f6eaea;stroke:#9a6060}
       html[data-theme="dark"] .wm-node.town .wm-core{fill:#183027} html[data-theme="dark"] .wm-node.field .wm-core{fill:#172c39} html[data-theme="dark"] .wm-node.dungeon .wm-core{fill:#352020}
       .wm-node.current .wm-ring{stroke:#d39a35}.wm-node.selected .wm-ring{stroke:#3979a8;stroke-dasharray:3 2}.wm-node.current.selected .wm-ring{stroke:#d39a35;stroke-dasharray:none}
@@ -427,7 +447,7 @@
       @media(max-width:760px){.wm-toolbar{align-items:flex-start}.wm-view-controls{margin-left:0;width:100%}.wm-control{flex:1}.wm-shell{grid-template-columns:1fr;min-height:0}.wm-side{min-height:180px}.wm-canvas{min-height:430px}.wm-svg{min-width:1200px;min-height:680px}.wm-note{grid-column:1}}
     </style>
     <div class="wm-toolbar">
-      <div class="wm-legend"><span><i class="wm-dot town"></i>마을</span><span><i class="wm-dot field"></i>필드</span><span><i class="wm-dot dungeon"></i>던전</span><span>◎ 현재 위치</span><span>━ 선택 경로</span><span>┄ 단방향 연결</span></div>
+      <div class="wm-legend"><span><i class="wm-dot town"></i>마을</span><span><i class="wm-dot field"></i>필드</span><span><i class="wm-dot dungeon"></i>던전</span><span>◎ 현재 위치</span><span>━ 도보 선택 경로</span><span>┄ 단방향 연결</span><span>🛫 공항 선택 시 점선: 국내선(파랑) · 국제선(보라)</span></div>
       <div class="wm-view-controls"><button class="wm-control ${WM_STATE.showDungeonEntrances?'active':''}" onclick="worldMapToggleEntrances()">${entranceLabel}</button><button class="wm-control" onclick="worldMapFocus('current')">현재 위치 보기</button><button class="wm-control" onclick="worldMapFocus('selected')">선택 위치 보기</button></div>
     </div>
     <div class="wm-shell"><div class="wm-canvas">${renderSvg()}</div><aside class="wm-side"><h4>선택 지역</h4><div id="wm-detail">${detailHtml(WM_STATE.selected)}</div></aside><div class="wm-note">던전 입구 ${entranceCount}곳은 실제 입구 노드입니다. 지형 우선 보기는 노드만 잠시 접고, 선택한 던전의 원작 층별 실맵·출현군·이동 경로는 그대로 유지합니다. 이전 압축 그룹명은 지도에 표시하지 않습니다.</div></div>`;

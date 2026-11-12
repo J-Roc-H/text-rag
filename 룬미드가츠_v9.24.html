@@ -1409,6 +1409,28 @@ body.work-mode p {
     "wiringState": "enabled"
   }
 }</script>
+<script id="db-airships" type="application/json">{
+  "source": "rathena/rathena@e985006171d2eb320ee512a653f4c83aea3d81b6:npc/airports",
+  "terminal": "유노 공항 환승구역",
+  "routes": {
+    "domestic": {
+      "name": "슈발츠발드 국내선",
+      "cabin": "비공정 국내선",
+      "fare": 1200,
+      "flightMs": 60000,
+      "dockMs": 20000,
+      "stops": ["유노", "아인브로크", "리히타르젠", "아인브로크", "유노", "휘겔"]
+    },
+    "international": {
+      "name": "대륙 국제선",
+      "cabin": "비공정 국제선",
+      "fare": 1200,
+      "flightMs": 60000,
+      "dockMs": 20000,
+      "stops": ["이즈루드", "유노", "라헬 필드"]
+    }
+  }
+}</script>
 <script id="db-maps"       type="application/json">{
   "프론테라": {"level": "0", "type": "마을", "emoji": "🏰", "desc": "룬 미드가츠의 심장.", "entryDesc": "성문을 지나자 낯익은 석조 거리가 펼쳐진다. 광장 주변으로 상인들의 외침과 기사들의 발소리가 뒤섞인다.", "firstVisitDesc": "왕국의 심장부에 처음 발을 들였다. 여기서부터 모든 것이 시작된다.", "connected": ["프론테라 왕궁", "프론테라 성당", "프론테라 북쪽 평원", "프론테라 남쪽 평원", "프론테라 서쪽 평원", "프론테라 동쪽 평원", "프론테라 지하수로 1층"], "dirs": {"north": "프론테라 북쪽 평원", "south": "프론테라 남쪽 평원", "east": "프론테라 동쪽 평원", "west": "프론테라 서쪽 평원"}, "monsters": [], "safe": true},
   "프론테라 왕궁": {"level": "0", "type": "마을", "emoji": "👑", "desc": "프론테라의 서쪽 왕궁. 기사단의 본부.", "entryDesc": "광장의 소음이 멀어지고 정돈된 석조 공간이 이어진다. 갑옷을 갖춘 기사들이 오가고, 말소리보다 발굽과 군화 소리가 더 자주 들린다.", "firstVisitDesc": "프론테라의 거리와는 분위기가 확연히 다르다. 이곳에서는 모험가보다 왕국 기사단의 질서가 먼저 눈에 들어온다.", "connected": ["프론테라"], "dirs": {"east": "프론테라"}, "monsters": [], "safe": true},
@@ -1509,7 +1531,10 @@ body.work-mode p {
   "말랑도 심해": {"level": "90~100", "type": "던전", "emoji": "🐟", "desc": "깊고 푸른 별빛 바다.", "connected": ["마누크 필드"], "monsters": [381, 382], "safe": false},
   "엘 디카스테스": {"level": "95~100", "type": "던전", "emoji": "🪲", "desc": "스카라바 홀.", "connected": ["이세계 캠프(아쉬바쿰)"], "monsters": [372, 373, 374, 375], "safe": false},
   "끝없는 탑(엔드레스타워)": {"level": "100~110", "type": "던전", "emoji": "🗼", "desc": "모든 보스가 출몰하는 시련의 탑.", "connected": ["알베르타"], "monsters": [396, 397], "safe": false, "hasMvp": 399},
-  "게페니아": {"level": "90~99", "type": "던전", "emoji": "💜", "desc": "악마들이 지배하는 어둠의 지하 세계. 더 사인 완료 후 입장 가능.", "connected": ["게펜 필드"], "monsters": [168, 175, 176, 402, 403], "safe": false}
+  "게페니아": {"level": "90~99", "type": "던전", "emoji": "💜", "desc": "악마들이 지배하는 어둠의 지하 세계. 더 사인 완료 후 입장 가능.", "connected": ["게펜 필드"], "monsters": [168, 175, 176, 402, 403], "safe": false},
+  "비공정 국내선": {"level": "0", "type": "비공정", "emoji": "🛫", "desc": "슈발츠발드의 도시들을 순환하는 비공정. 안내에서 다음 정박지와 하차 시간을 확인할 수 있다.", "connected": [], "monsters": [], "safe": true, "noSavePoint": true, "transport": true},
+  "비공정 국제선": {"level": "0", "type": "비공정", "emoji": "🛫", "desc": "이즈루드·유노·라헬을 잇는 비공정. 창밖으로 대륙의 풍경이 흐른다.", "connected": [], "monsters": [], "safe": true, "noSavePoint": true, "transport": true},
+  "유노 공항 환승구역": {"level": "0", "type": "공항", "emoji": "🛬", "desc": "국내선과 국제선이 만나는 공항 내부. 시내로 나가지 않으면 추가 입장료 없이 환승할 수 있다.", "connected": [], "monsters": [], "safe": true, "noSavePoint": true, "transport": true}
 }</script>
 <script id="db-map-groups" type="application/json">{
   "groups": [
@@ -1794,7 +1819,16 @@ body.work-mode p {
   "바이오랩 트리거": {"map": "생체연구소 1층", "emoji": "⚗️", "actorType": "object", "dialog": "...어두운 공간에서 이상한 기계음이 들린다. 수갑을 소지하고 있다면 무언가를 할 수 있을 것 같다.", "service": ""},
   "루트 제이": {"map": "유노", "emoji": "🤖", "dialog": "유페로스 3층은 특별 허가가 필요합니다. 베스퍼의 기억 결정체를 가져오시면 입장권을 드리겠습니다.", "service": ""},
   "앨런 슈웰": {"map": "휘겔", "emoji": "🏠", "dialog": "아버지가 많이 아프셔서... 화이트 포션이 필요한데 구하기가 어렵습니다. 혹시 도와주실 수 있나요?", "service": ""},
-  "마나인": {"map": "휘겔", "emoji": "🌳", "dialog": "오래된 기억의 나무 앞에 서 있습니다. 무언가 알 수 없는 기운이 느껴집니다...", "service": ""}
+  "마나인": {"map": "휘겔", "emoji": "🌳", "dialog": "오래된 기억의 나무 앞에 서 있습니다. 무언가 알 수 없는 기운이 느껴집니다...", "service": ""},
+  "비공정 안내원(이즈루드)": {"map": "이즈루드", "emoji": "🛫", "dialog": "노선과 다음 정박 시간을 안내해 드립니다. 유노 공항 안에서는 국내선과 국제선 사이를 환승할 수 있습니다.", "service": "airship"},
+  "비공정 안내원(유노)": {"map": "유노", "emoji": "🛫", "dialog": "노선과 다음 정박 시간을 안내해 드립니다. 유노 공항 안에서는 국내선과 국제선 사이를 환승할 수 있습니다.", "service": "airship"},
+  "비공정 안내원(라헬 필드)": {"map": "라헬 필드", "emoji": "🛫", "dialog": "노선과 다음 정박 시간을 안내해 드립니다. 유노 공항 안에서는 국내선과 국제선 사이를 환승할 수 있습니다.", "service": "airship"},
+  "비공정 안내원(아인브로크)": {"map": "아인브로크", "emoji": "🛫", "dialog": "노선과 다음 정박 시간을 안내해 드립니다. 유노 공항 안에서는 국내선과 국제선 사이를 환승할 수 있습니다.", "service": "airship"},
+  "비공정 안내원(리히타르젠)": {"map": "리히타르젠", "emoji": "🛫", "dialog": "노선과 다음 정박 시간을 안내해 드립니다. 유노 공항 안에서는 국내선과 국제선 사이를 환승할 수 있습니다.", "service": "airship"},
+  "비공정 안내원(휘겔)": {"map": "휘겔", "emoji": "🛫", "dialog": "노선과 다음 정박 시간을 안내해 드립니다. 유노 공항 안에서는 국내선과 국제선 사이를 환승할 수 있습니다.", "service": "airship"},
+  "비공정 안내원(유노 공항 환승구역)": {"map": "유노 공항 환승구역", "emoji": "🛫", "dialog": "노선과 다음 정박 시간을 안내해 드립니다. 유노 공항 안에서는 국내선과 국제선 사이를 환승할 수 있습니다.", "service": "airship"},
+  "비공정 안내원(비공정 국내선)": {"map": "비공정 국내선", "emoji": "🛫", "dialog": "노선과 다음 정박 시간을 안내해 드립니다. 유노 공항 안에서는 국내선과 국제선 사이를 환승할 수 있습니다.", "service": "airship"},
+  "비공정 안내원(비공정 국제선)": {"map": "비공정 국제선", "emoji": "🛫", "dialog": "노선과 다음 정박 시간을 안내해 드립니다. 유노 공항 안에서는 국내선과 국제선 사이를 환승할 수 있습니다.", "service": "airship"}
 }</script>
 <!-- items: 아직 CSV 미확충, 원본 JS DB 유지 (나중에 JSON 블록으로 전환) -->
 <script id="db-items" type="application/json">{
@@ -45124,6 +45158,7 @@ body.work-mode p {
 <div id="right-panel"><div id="hotbar-panel"><div class="panel-hdr" title="슬롯 클릭으로 등록 / 키보드 QWERASDFZXCV">HOTBAR <span class="hb-hint" style="font-size:11px;font-weight:normal;color:var(--text-dim)">⌨ QWER…</span></div><div class="hotbar-grid" id="hotbar-grid"></div></div><div id="situation"></div><div class="panel-hdr" id="enc-hdr">ENCOUNTER</div><div id="mon-list"><div class="no-target">현재 전투 없음</div></div></div>
 <div id="bottom-menu">
 <!-- [P1-13 2차] 상황별 보조행동: NPC는 그 맵에 있을 때만, 귀환은 던전+날개 보유 시. 도감은 ⋯ 메뉴 -->
+<button class="menu-btn" id="ctx-airship" style="display:none" onclick="showAirshipModal()">🛫 비공정</button>
 <button class="menu-btn" id="ctx-return" style="display:none" onclick="useItem('나비의 날개')">🦋 귀환</button>
 <button class="menu-btn" id="ctx-boss" style="display:none" onclick="challengeBoss()">👣 흔적</button>
 <button class="menu-btn" onclick="showMapModal()">🗺 이동</button>
@@ -45539,6 +45574,7 @@ function loadDB(){
   DB.production   = j('db-production');
   DB.shops        = j('db-shops');
   DB.mvpRespawn   = j('db-mvp-respawn');
+  DB.airships     = j('db-airships');
   DB.maps         = j('db-maps');
   DB.mapGroups    = j('db-map-groups');
   DB.mapSpawns    = j('db-map-spawns');
@@ -47281,7 +47317,7 @@ function saveLocal(){
   else delete G.player.offlineHunt;
   loadSlots();
   slots[activeSlot] = JSON.parse(JSON.stringify(G.player));
-  slots[activeSlot].savedMap = isSafeMap(G.currentMap) ? mapKey(G.currentMap) : (G.player.savedMap||'프론테라');
+  slots[activeSlot].savedMap = isSafeMap(G.currentMap) && !(getMap(G.currentMap)||{}).noSavePoint ? mapKey(G.currentMap) : (G.player.savedMap||'프론테라');
   setSaveState(saveSlots() ? 'saved' : 'fail'); // [P1-13] 반환값(true)은 기존 호출부 계약대로 유지
   return true;
 }
@@ -47774,6 +47810,7 @@ function normalizeSave(p){
     p.visitedMaps = {};
     if((p.totalKills||0)>0 && p.savedMap) p.visitedMaps[p.savedMap]=true;
   }
+  if(typeof airshipNormalize==='function') airshipNormalize(p);
   return p;
 }
 
@@ -47798,6 +47835,7 @@ function loadCharacter(i){
     return;
   }
   G.player = p; G.currentMap = p.savedMap||"프론테라 남쪽 평원"; G.battles=[]; G.autoHunt=false; clearTimeout(G.huntTimer);
+  const airshipRestored=typeof airshipRestore==='function' && airshipRestore();
   G.vendingSlots = []; G.lastVendingCheck = 0; // [P1-16] 이전 캐릭터의 노점이 새 캐릭터로 새지 않게(재고는 위 로드에서 환급됨)
   { let _vb=document.getElementById('vending-badge'); if(_vb) _vb.style.display='none'; }
 
@@ -47924,7 +47962,7 @@ function loadCharacter(i){
       updateUI(); saveLocal();
     }
   }
-  if(_gifted) saveLocal();   // lastSavedAt 갱신 — 저장 전에 새로고침해도 선물이 또 나오지 않게
+  if(_gifted || airshipRestored) saveLocal();   // lastSavedAt 갱신 — 저장 전에 새로고침해도 선물이 또 나오지 않게
 }
 
 let _saveFileHandle = null;
@@ -49302,6 +49340,7 @@ function applyMapTint(){
 }
 
 function updateUI(){
+  if(typeof airshipSync==='function' && airshipSync(Date.now(),{render:false})) renderMonsters();
   let p=G.player; if(!p)return; let s=calcStats(); p.maxHp=s.maxHp; p.maxSp=s.maxSp; p.hp=Math.min(p.hp,p.maxHp); p.sp=Math.min(p.sp,p.maxSp);
   if(G.silentMode) return; // [P0-02③] 무음 모드: 위 클램프는 계산 부작용이라 유지, DOM 갱신만 생략
   
@@ -49509,6 +49548,7 @@ function isUnlocked(k){ let u=G.player&&G.player.uiUnlock; return !!(u&&u[k]); }
 function getUiState(){
   let p=G.player; if(!p) return 'idle';
   if(p.hp<=0) return 'dead';
+  if(p.airshipTrip || (typeof airshipAtTerminal==='function' && airshipAtTerminal())) return 'airship';
   let md=getMap(G.currentMap)||{};
   if(G.autoHunt){
     if(G.battles.length) return 'hunt';
@@ -49528,6 +49568,7 @@ function updateActionStatus(){
   else if(st==='hunt') parts.push(`<b>${G.battles.some(m=>m.isMvp)?'MVP 교전 중':'자동사냥 중'}</b>${tgt?` · ${tgt}`:''} · 처치 ${kills}`);
   else if(st==='regen') parts.push(`<b>자동사냥 중</b> · 다음 출현 ${Math.ceil(((G.nextSpawnAt||0)-Date.now())/1000)}초 · 처치 ${kills}`);
   else if(st==='residual') parts.push(`<b>사냥 정지 · 교전 중</b> · ${tgt}`);
+  else if(st==='airship') parts.push(`<b>🛫 ${airshipEsc(airshipSummary())}</b>`);
   else if(st==='town') parts.push('마을 · 대기 중');
   else parts.push('대기 중');
   let inv=p.inventory||{};
@@ -49543,6 +49584,7 @@ function updateActionStatus(){
   if(st==='dead'){ lab='💤 휴식 중…'; dis=true; }
   else if(st==='hunt'||st==='regen'){ lab='⏹ 사냥 중지'; on=true; }
   else if(st==='residual'){ lab='▶ 사냥 재개'; }
+  else if(st==='airship'){ lab='🛫 비공정 안내'; }
   else if(st==='town'){ lab='🗺 사냥터로 이동'; }
   else lab='▶ 사냥 시작';
   if(btn.textContent!==lab) btn.textContent=lab;
@@ -49552,6 +49594,7 @@ function updateActionStatus(){
 function primaryAction(){
   let st=getUiState();
   if(st==='dead') return;
+  if(st==='airship'){ showAirshipModal(); return; }
   if(st==='town'){ showMapModal(); return; }
   toggleHunt();
 }
@@ -49574,6 +49617,7 @@ function updateContextActions(){
   let hasNpc=!!(DB.npcs&&Object.keys(DB.npcs).some(k=>mapKey(DB.npcs[k].map)===mapKey(G.currentMap)));
   let wing=(p.inventory&&p.inventory['나비의 날개'])||0;
   const show=(id,v)=>{ let e=document.getElementById(id); if(e) e.style.display=v?'':'none'; };
+  show('ctx-airship',typeof airshipIsPlace==='function' && airshipIsPlace());
   show('ctx-npc',hasNpc);
   show('ctx-return',md.type==='던전'&&wing>0);
   let rb=document.getElementById('ctx-return'); if(rb) rb.title=`나비의 날개 (${wing}개) — 귀환 지점으로`;
@@ -49608,7 +49652,9 @@ function renderSituation(){
   if(ml) ml.style.display=(fighting||!inRight)?'':'none';
   if(fighting) return;
   let st=getUiState(), h='';
-  if(st==='regen'){
+  if(st==='airship'){
+    h=`<div class="panel-hdr">비공정</div><div class="sit-body"><div class="sit-big">${airshipEsc(airshipSummary())}</div><button class="m-btn" onclick="showAirshipModal()">운항·하차 안내</button></div>`;
+  } else if(st==='regen'){
     let sec=Math.ceil(((G.nextSpawnAt||0)-Date.now())/1000), lw=G.lastWave;
     h=`<div class="panel-hdr">리젠 대기</div><div class="sit-body"><div class="sit-big">💤 다음 출현 ${sec}초</div>`+
       (lw?`<div class="sit-sub">직전 전투 · 처치 ${lw.kills} · EXP +${lw.exp.toLocaleString()} · ${lw.zeny.toLocaleString()}z</div>`:'')+
@@ -50100,6 +50146,7 @@ function autoPotion(){
 }
 
 function toggleHunt(){
+  if((getMap(G.currentMap)||{}).transport){ showAirshipModal(); return; }
   G.autoHunt=!G.autoHunt; let b=$('hunt-btn');
   if(G.autoHunt){ if(b){b.classList.add('hunt-on'); b.textContent='⏹ 사냥중지';} G.idleSum={t0:Date.now(),kills:0,exp:0,zeny:0}; G.huntSess={kills:0,exp:0,zeny:0}; log('🔁 <b>자동 사냥</b> 시작','system'); scheduleTickAspd(100); schedulePasserby(); } // [UI-①] 요약 카운터 리셋
   else { if(b){b.classList.remove('hunt-on'); b.textContent='▶ 자동사냥';} clearTimeout(G.huntTimer); clearTimeout(G.passerbyTimer); log('⏹ 자동 사냥 중지','system'); }
@@ -52441,6 +52488,7 @@ const KAFRA_WARP = {
 
 /** 귀환 지점 설정 */
 function kafraSetSave(){
+  if((getMap(G.currentMap)||{}).noSavePoint){ log('비공정과 환승구역은 귀환 지점으로 지정할 수 없습니다.','warning'); return; }
   G.player.savedMap = G.currentMap;
   saveLocal(); // 비안전 맵이어도 방금 넣은 G.player.savedMap(=현재 맵)이 그대로 기록된다
   notify('귀환 지점 설정 완료','gold');
@@ -55666,6 +55714,7 @@ function addZoneKill(){
 
 // [UI-②] 구역 킬 게이지 + 리젠 카운트다운 HUD (맵 헤더)
 function updateZoneHud(){
+  if(!G.silentMode && typeof airshipTick==='function') airshipTick();
   let el=$('zone-hud'); if(!el) return;
   let p=G.player; if(!p){ el.innerHTML=''; return; }
   ensureZoneState();
@@ -63023,7 +63072,9 @@ function applyComboEffects(p, DB, fx, parseItem) {
       <div class="wm-badges">${safe}${mvp}</div>
       <p class="wm-desc">${esc(m.desc||'')}</p>
       ${dungeonDetailList(name)}
-      <div class="wm-route-label">현재 위치에서</div>
+      ${typeof airshipRouteInfoHtml==='function'?airshipRouteInfoHtml(name):''}
+      ${cur===name && typeof airshipAvailableLines==='function' && airshipAvailableLines(name).length?'<button class="wm-action" onclick="showAirshipModal()">🛫 공항 안내</button>':''}
+      <div class="wm-route-label">현재 위치에서 · 도보 경로</div>
       <div class="wm-route">${esc(routeText(path))}</div>
       ${action}`;
   }
@@ -63060,6 +63111,23 @@ function applyComboEffects(p, DB, fx, parseItem) {
       });
     });
 
+    // Flight links are presentation only: never insert them in the walking graph.
+    const flights=[];
+    const routes=(typeof DB!=='undefined' && DB.airships && DB.airships.routes)||{};
+    const selectedPort=(mapData(selected)||{}).transport
+      ? ((typeof G!=='undefined' && G.player && G.player.airshipTrip && G.player.airshipTrip.origin)||'유노')
+      : displayNameFor(selected);
+    Object.entries(routes).forEach(([id,r])=>{
+      if(!r.stops.includes(selectedPort)) return;
+      const seenFlights=new Set();
+      r.stops.forEach((a,i)=>{
+        const b=r.stops[(i+1)%r.stops.length],key=edgeKey(a,b);
+        if(!layout[a]||!layout[b]||seenFlights.has(key)) return;
+        seenFlights.add(key);
+        const [x1,y1]=layout[a],[x2,y2]=layout[b];
+        flights.push(`<line class="wm-flight ${id}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"><title>${esc(r.name)} · ${esc(a)} — ${esc(b)}</title></line>`);
+      });
+    });
     const labels=WM_REGION_LABELS.map(r=>`<text class="wm-region-label" x="${r.x}" y="${r.y}">${esc(r.text)}</text>`).join('');
     const nodes=names.map(name=>{
       const m=mapData(name), [x,y]=layout[name];
@@ -63079,7 +63147,7 @@ function applyComboEffects(p, DB, fx, parseItem) {
     }).join('');
 
     return `<svg class="wm-svg" viewBox="100 20 1500 860" role="img" aria-label="룬 미드가츠 세계지도">
-      ${labels}<g class="wm-edges">${edges.join('')}</g><g class="wm-nodes">${nodes}</g>
+      ${labels}<g class="wm-edges">${edges.join('')}</g><g class="wm-flights">${flights.join('')}</g><g class="wm-nodes">${nodes}</g>
     </svg>`;
   }
 
@@ -63101,6 +63169,7 @@ function applyComboEffects(p, DB, fx, parseItem) {
       .wm-svg{display:block;width:100%;min-width:1200px;height:auto;min-height:620px}
       .wm-region-label{font-size:22px;fill:var(--text-dim);opacity:.22;font-weight:700;letter-spacing:2px}
       .wm-edge{stroke:#9fb2bf;stroke-width:2;opacity:.55}.wm-edge.one-way{stroke-dasharray:5 4}.wm-edge.route{stroke:#d39a35;stroke-width:4;opacity:.95}
+      .wm-flight{stroke:#368bc1;stroke-width:3;stroke-dasharray:12 7;opacity:.8;pointer-events:none}.wm-flight.international{stroke:#9564bd}
       .wm-node{cursor:pointer}.wm-node .wm-ring{fill:transparent;stroke:transparent;stroke-width:4}.wm-node .wm-core{stroke-width:2}.wm-node.town .wm-core{fill:#e9f4ef;stroke:#4f8c77}.wm-node.field .wm-core{fill:#eaf2f7;stroke:#5d87a4}.wm-node.dungeon .wm-core{fill:#f6eaea;stroke:#9a6060}
       html[data-theme="dark"] .wm-node.town .wm-core{fill:#183027} html[data-theme="dark"] .wm-node.field .wm-core{fill:#172c39} html[data-theme="dark"] .wm-node.dungeon .wm-core{fill:#352020}
       .wm-node.current .wm-ring{stroke:#d39a35}.wm-node.selected .wm-ring{stroke:#3979a8;stroke-dasharray:3 2}.wm-node.current.selected .wm-ring{stroke:#d39a35;stroke-dasharray:none}
@@ -63110,7 +63179,7 @@ function applyComboEffects(p, DB, fx, parseItem) {
       @media(max-width:760px){.wm-toolbar{align-items:flex-start}.wm-view-controls{margin-left:0;width:100%}.wm-control{flex:1}.wm-shell{grid-template-columns:1fr;min-height:0}.wm-side{min-height:180px}.wm-canvas{min-height:430px}.wm-svg{min-width:1200px;min-height:680px}.wm-note{grid-column:1}}
     </style>
     <div class="wm-toolbar">
-      <div class="wm-legend"><span><i class="wm-dot town"></i>마을</span><span><i class="wm-dot field"></i>필드</span><span><i class="wm-dot dungeon"></i>던전</span><span>◎ 현재 위치</span><span>━ 선택 경로</span><span>┄ 단방향 연결</span></div>
+      <div class="wm-legend"><span><i class="wm-dot town"></i>마을</span><span><i class="wm-dot field"></i>필드</span><span><i class="wm-dot dungeon"></i>던전</span><span>◎ 현재 위치</span><span>━ 도보 선택 경로</span><span>┄ 단방향 연결</span><span>🛫 공항 선택 시 점선: 국내선(파랑) · 국제선(보라)</span></div>
       <div class="wm-view-controls"><button class="wm-control ${WM_STATE.showDungeonEntrances?'active':''}" onclick="worldMapToggleEntrances()">${entranceLabel}</button><button class="wm-control" onclick="worldMapFocus('current')">현재 위치 보기</button><button class="wm-control" onclick="worldMapFocus('selected')">선택 위치 보기</button></div>
     </div>
     <div class="wm-shell"><div class="wm-canvas">${renderSvg()}</div><aside class="wm-side"><h4>선택 지역</h4><div id="wm-detail">${detailHtml(WM_STATE.selected)}</div></aside><div class="wm-note">던전 입구 ${entranceCount}곳은 실제 입구 노드입니다. 지형 우선 보기는 노드만 잠시 접고, 선택한 던전의 원작 층별 실맵·출현군·이동 경로는 그대로 유지합니다. 이전 압축 그룹명은 지도에 표시하지 않습니다.</div></div>`;
@@ -64958,6 +65027,7 @@ function aiRenderActor(name,extraNotice){
       aiAddAction('🌀 저장 지점으로 이동 · 1,200z','service',()=>{ if(typeof kafraTeleport==='function') kafraTeleport(); },{disabled:p.zeny<1200,hint:p.zeny<1200?`제니 부족 · 보유 ${aiNum(p.zeny)}z`:''});
     }
     if(n.service==='shop') aiAddAction('🛒 물건을 본다','service',()=>{ if(typeof showShopModal==='function') showShopModal(name,n); });
+    if(n.service==='airship') aiAddAction('🛫 비공정 노선·탑승 안내','service',()=>showAirshipModal());
     if(n.service==='refine') aiAddAction('🔨 장비를 제련한다','service',()=>{ if(typeof showRefineModal==='function') showRefineModal(); });
     if(n.service==='dungeon_access'){
       let st=aiDungeonState(n,p); special+=aiDungeonHtml(st);
@@ -65330,6 +65400,268 @@ window.refine=function(sl){
 };
 window.__refineRevealV1={version:'1.1',currentRefiner:rrRefiner,resolve:rrResolvePending,autoRun:rrAutoRun};
 })();
+</script>
+<script id="airship-v1">
+// Airship phase 1. Route order, fares and timing: DB.airships (pinned pre-RE source).
+// The clock is absolute, shared by tabs, and has no per-frame state to replay on load.
+function airshipRoutes(){ return (typeof DB!=='undefined' && DB.airships && DB.airships.routes)||{}; }
+function airshipTerminal(){ return DB.airships.terminal; }
+function airshipMap(ref){ return typeof getMap==='function' ? getMap(ref) : null; }
+function airshipSame(a,b){ return !!a && !!b && mapKey(a)===mapKey(b); }
+function airshipEsc(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function airshipPorts(route){ return Array.from(new Set(route.stops)); }
+function airshipPlaying(){
+  if(typeof document==='undefined') return true;
+  const app=document.getElementById('app');
+  return !!(app && app.style.display==='block');
+}
+function airshipAtTerminal(){ return !!(G.player && G.player.airshipTerminal===true && airshipSame(G.currentMap,airshipTerminal())); }
+function airshipPort(){ return airshipAtTerminal() ? '유노' : mapLabel(G.currentMap); }
+function airshipAvailableLines(port){ return Object.keys(airshipRoutes()).filter(id=>airshipPorts(airshipRoutes()[id]).some(p=>airshipSame(p,port))); }
+function airshipIsPlace(){
+  return !!(G.player && (G.player.airshipTrip || airshipAtTerminal() || airshipAvailableLines(airshipPort()).length));
+}
+
+// A slot starts with docking, then flight to the next entry. Repeated stops are
+// intentional: domestic flights visit Einbroch and Juno twice per six-stop loop.
+function airshipPhase(route,now){
+  const slot=route.dockMs+route.flightMs;
+  const block=Math.floor(now/slot), start=block*slot;
+  const index=((block%route.stops.length)+route.stops.length)%route.stops.length;
+  const docked=now-start<route.dockMs;
+  return {index,docked,port:route.stops[index],next:route.stops[(index+1)%route.stops.length],
+    endAt:docked?start+route.dockMs:start+slot,startAt:start};
+}
+function airshipNextDock(route,port,at){
+  const slot=route.dockMs+route.flightMs;
+  const block=Math.floor(at/slot);
+  for(let offset=0;offset<=route.stops.length;offset++){
+    const start=(block+offset)*slot;
+    const index=(((block+offset)%route.stops.length)+route.stops.length)%route.stops.length;
+    if(route.stops[index]===port && (offset>0 || at<start+route.dockMs)) return start;
+  }
+  return null;
+}
+function airshipValidTrip(trip){
+  if(!trip || typeof trip!=='object' || Array.isArray(trip)) return false;
+  if(!Object.prototype.hasOwnProperty.call(airshipRoutes(),trip.line)) return false;
+  const route=airshipRoutes()[trip.line];
+  if(!route || !airshipPorts(route).includes(trip.origin) || !airshipPorts(route).includes(trip.goal)) return false;
+  if(!Number.isFinite(trip.boardedAt) || trip.boardedAt<0 || trip.boardedAt>8640000000000000) return false;
+  if(!Number.isFinite(trip.goalSetAt) || trip.goalSetAt<trip.boardedAt || trip.goalSetAt>8640000000000000) return false;
+  if(typeof trip.autoDisembark!=='boolean') return false;
+  const phase=airshipPhase(route,trip.boardedAt);
+  return phase.docked && phase.port===trip.origin;
+}
+function airshipNormalize(p){
+  if(p.airshipTrip && !airshipValidTrip(p.airshipTrip)) delete p.airshipTrip;
+  if(p.airshipTerminal!==true || p.airshipTrip) delete p.airshipTerminal;
+  if((airshipMap(p.savedMap)||{}).noSavePoint) p.savedMap='프론테라';
+}
+function airshipStopCombat(){
+  G.autoHunt=false; G.battles=[]; clearTimeout(G.huntTimer);
+  G.pendingManualOverride=null; G.nextSpawnAt=0;
+  delete G.player.offlineHunt;
+}
+function airshipMoveTo(port){
+  const p=G.player;
+  delete p.airshipTrip;
+  if(port==='유노'){
+    p.airshipTerminal=true;
+    G.currentMap=mapKey(airshipTerminal());
+  }else{
+    delete p.airshipTerminal;
+    G.currentMap=mapKey(port);
+    if(isSafeMap(G.currentMap)) p.savedMap=G.currentMap;
+  }
+  airshipStopCombat();
+  enterMap(G.currentMap);
+  log(`🛬 <b>[비공정]</b> ${airshipEsc(port)}에 도착해 하차했습니다.${port==='유노'?' 공항 내부에서 추가 요금 없이 환승할 수 있습니다.':''}`,'location');
+}
+let airshipSyncing=false;
+function airshipSync(now=Date.now(),options={}){
+  if(airshipSyncing || !G.player) return false;
+  // The lobby retains G.player. Its old HUD timer must not write a deleted slot.
+  if(options.persist!==false && !airshipPlaying()) return false;
+  const p=G.player, trip=p.airshipTrip;
+  if(!trip){
+    if(p.airshipTerminal && !airshipSame(G.currentMap,airshipTerminal())) delete p.airshipTerminal;
+    return false;
+  }
+  const route=airshipRoutes()[trip.line];
+  if(!airshipValidTrip(trip) || !airshipSame(G.currentMap,route&&route.cabin)){
+    delete p.airshipTrip;
+    return false;
+  }
+  const arrival=airshipNextDock(route,trip.goal,trip.goalSetAt);
+  if(!trip.autoDisembark || now<arrival) return false;
+  airshipSyncing=true;
+  try{
+    airshipMoveTo(trip.goal);
+    if(options.render!==false){ renderMonsters(); updateUI(); }
+    if(options.persist!==false) saveLocal();
+  }finally{ airshipSyncing=false; }
+  return true;
+}
+function airshipRestore(){
+  const p=G.player;
+  airshipNormalize(p);
+  if(p.airshipTrip){
+    G.currentMap=mapKey(airshipRoutes()[p.airshipTrip.line].cabin);
+    airshipStopCombat();
+    airshipSync(Date.now(),{render:false,persist:false});
+    return true;
+  }
+  if(p.airshipTerminal){
+    G.currentMap=mapKey(airshipTerminal());
+    airshipStopCombat();
+    return true;
+  }
+  return false;
+}
+function airshipSummary(now=Date.now()){
+  const trip=G.player&&G.player.airshipTrip;
+  if(!trip) return airshipAtTerminal()?'유노 공항 · 환승 대기':'';
+  const route=airshipRoutes()[trip.line], phase=airshipPhase(route,Math.max(now,trip.boardedAt));
+  const seconds=Math.max(0,Math.ceil((phase.endAt-now)/1000));
+  return phase.docked?`${phase.port} 정박 · ${seconds}초 뒤 출항`:`${phase.port} → ${phase.next} · 도착까지 ${seconds}초`;
+}
+function airshipFail(message){ notify(message,'warning'); return false; }
+function airshipCanBoard(line,origin,now=Date.now()){
+  if(!airshipPlaying()) return false;
+  if(!Object.prototype.hasOwnProperty.call(airshipRoutes(),line)) return false;
+  const p=G.player, route=airshipRoutes()[line];
+  if(!p || !route || p.airshipTrip || p.hp<=0 || G.autoHunt || G.battles.length) return false;
+  if(!airshipSame(airshipPort(),origin)) return false;
+  const phase=airshipPhase(route,now);
+  return phase.docked && airshipSame(phase.port,origin);
+}
+function airshipCommitBoard(line,origin,goal,autoDisembark,expectedFare){
+  const route=airshipRoutes()[line], now=Date.now();
+  if(!airshipCanBoard(line,origin,now)) return airshipFail('현재 위치와 정박 시간을 확인하세요. 전투·자동사냥 중에는 탑승할 수 없습니다.');
+  if(!airshipPorts(route).includes(goal) || goal===origin) return airshipFail('다른 목적지를 선택하세요.');
+  const p=G.player, fare=airshipAtTerminal()?0:route.fare;
+  if(expectedFare!==undefined && expectedFare!==fare) return airshipFail('공항 이용 상태가 바뀌었습니다. 요금을 다시 확인하세요.');
+  if(p.zeny<fare) return airshipFail('탑승료가 부족합니다.');
+  // Check all preconditions before changing money; a second click cannot charge twice.
+  p.zeny-=fare;
+  p.airshipTrip={line,origin,goal,boardedAt:now,goalSetAt:now,autoDisembark:!!autoDisembark};
+  delete p.airshipTerminal;
+  airshipStopCombat();
+  G.currentMap=mapKey(route.cabin);
+  enterMap(G.currentMap);
+  log(`🛫 <b>[비공정]</b> ${airshipEsc(route.name)} 탑승 · ${fare?'-'+fare.toLocaleString()+'z':'공항 내부 무료 환승'} · 목적지 ${airshipEsc(goal)}`,'location');
+  renderMonsters(); updateUI(); saveLocal(); showAirshipModal();
+  return true;
+}
+function airshipConfirmBoard(line){
+  const route=airshipRoutes()[line]; if(!route) return;
+  const origin=airshipPort(), goal=document.getElementById('airship-goal').value;
+  const auto=document.getElementById('airship-auto').checked;
+  const fare=airshipAtTerminal()?0:route.fare;
+  openModal('🛫 비공정 탑승 확인',`<div style="font-size:12px;line-height:1.8;">
+    <b>${airshipEsc(route.name)}</b><br>${airshipEsc(origin)} → ${airshipEsc(goal)}<br>
+    ${fare?'탑승료 '+fare.toLocaleString()+'z':'공항 내부 환승 · 추가 요금 없음'}<br>
+    ${auto?'목적지에서 자동 하차합니다.':'정박 중 직접 하차해야 합니다. 정박을 놓치면 계속 순환합니다.'}<br>
+    탑승 후에는 운항 일정에 따라 이동하며, 유노에서 시내로 나가면 다음 탑승 시 요금을 다시 냅니다.</div>`,[
+      {label:'탑승 확정',cls:'ok',close:false,action:()=>airshipCommitBoard(line,origin,goal,auto,fare)},
+      {label:'취소',close:false,action:()=>showAirshipModal(line)}
+    ]);
+}
+function airshipDisembark(){
+  if(!airshipPlaying()) return false;
+  if(airshipSync()) { showAirshipModal(); return true; }
+  const trip=G.player&&G.player.airshipTrip;
+  if(!airshipValidTrip(trip)) return false;
+  const phase=airshipPhase(airshipRoutes()[trip.line],Math.max(Date.now(),trip.boardedAt));
+  if(!phase.docked) return airshipFail('비행 중에는 하차할 수 없습니다.');
+  airshipMoveTo(phase.port);
+  renderMonsters(); updateUI(); saveLocal();
+  if(airshipAtTerminal()) showAirshipModal(); else closeModal();
+  return true;
+}
+function airshipSetDestination(){
+  if(!airshipPlaying()) return;
+  const trip=G.player&&G.player.airshipTrip;
+  if(!airshipValidTrip(trip)) return;
+  const goal=document.getElementById('airship-goal').value;
+  if(!airshipPorts(airshipRoutes()[trip.line]).includes(goal)) return;
+  trip.goal=goal;trip.autoDisembark=document.getElementById('airship-auto').checked;
+  trip.goalSetAt=Math.max(Date.now(),trip.boardedAt);
+  saveLocal(); airshipSync(); showAirshipModal();
+}
+function airshipExitTerminal(){
+  if(!airshipPlaying() || !airshipAtTerminal()) return;
+  openModal('유노 시내로 나가기','공항 밖으로 나가면 다음 탑승 때 입장료 1,200z를 다시 냅니다.',[
+    {label:'시내로 나간다',close:false,action:()=>{
+      if(!airshipAtTerminal()) return;
+      delete G.player.airshipTerminal;G.currentMap=mapKey('유노');
+      G.player.savedMap=G.currentMap;enterMap(G.currentMap);updateUI();saveLocal();closeModal();
+    }},
+    {label:'환승구역에 머문다',close:false,action:()=>showAirshipModal()}
+  ]);
+}
+function airshipRouteInfoHtml(port){
+  const lines=airshipAvailableLines(port);
+  if(!lines.length) return '';
+  return '<div style="font-size:12px;line-height:1.7;margin:10px 0;padding:8px;border:1px solid var(--border);"><b>🛫 비공정 노선</b>'+lines.map(id=>{
+    const r=airshipRoutes()[id];return `<div>${airshipEsc(r.name)} · ${r.fare.toLocaleString()}z<br>${r.stops.map(airshipEsc).join(' → ')} → …</div>`;
+  }).join('')+'<div>유노 공항 내부에서 노선 간 환승 가능 · 구간 비행 60초 / 정박 20초</div></div>';
+}
+function showAirshipModal(line){
+  if(!airshipPlaying()) return;
+  airshipSync();
+  const p=G.player;if(!p) return;
+  const trip=p.airshipTrip;
+  const port=airshipPort();
+  const lines=trip?[trip.line]:airshipAvailableLines(port);
+  if(!lines.length) return airshipFail('비공정 공항에서 이용할 수 있습니다.');
+  if(!lines.includes(line)) line=lines[0];
+  const route=airshipRoutes()[line],terminal=airshipAtTerminal();
+  const mode=trip?'cabin':terminal?'terminal':'port';
+  const goals=airshipPorts(route).filter(x=>trip||x!==port);
+  const selected=trip?trip.goal:goals[0];
+  const body=`<div class="airship-panel" data-mode="${mode}" data-port="${airshipEsc(port)}" data-line="${line}" style="font-size:12px;line-height:1.8;overflow-wrap:anywhere;">
+    ${!trip&&lines.length>1?lines.map(id=>`<button class="m-btn ${id===line?'ok':''}" onclick="showAirshipModal('${id}')">${airshipEsc(airshipRoutes()[id].name)}</button>`).join(' '):''}
+    <b>${airshipEsc(route.name)}</b><div>${route.stops.map(airshipEsc).join(' → ')} → …</div>
+    <div id="airship-live" role="status" style="padding:10px 0;font-weight:700;"></div>
+    <div>비행 60초 · 정박 20초 · 창을 닫아도 운항은 계속됩니다.</div>
+    ${trip?'':`<div>${terminal?'공항 내부 환승 · 추가 요금 없음':`탑승료 ${route.fare.toLocaleString()}z · 보유 ${p.zeny.toLocaleString()}z`}</div>`}
+    <label>목적지 <select id="airship-goal">${goals.map(x=>`<option value="${airshipEsc(x)}"${x===selected?' selected':''}>${airshipEsc(x)}</option>`).join('')}</select></label>
+    <label style="display:block;margin:8px 0;"><input id="airship-auto" type="checkbox"${!trip||trip.autoDisembark?' checked':''}> 선택한 목적지에서 자동 하차</label>
+    ${trip?'<div id="airship-goal-status"></div><button class="m-btn" onclick="airshipSetDestination()">목적지·자동 하차 설정 저장</button><button id="airship-disembark" class="m-btn ok" onclick="airshipDisembark()">하차</button>':`<button id="airship-board" class="m-btn ok" onclick="airshipConfirmBoard('${line}')">${terminal?'환승':'탑승'}</button>`}
+    ${terminal?'<div style="margin-top:12px;">유노가 목적지라면 공항을 나가세요. 시내로 나갔다 재입장하면 요금을 다시 냅니다.</div><button class="m-btn" onclick="airshipExitTerminal()">유노 시내로</button>':''}
+    ${!trip?'<div style="margin-top:8px;color:var(--text-dim);">비공정이 현재 공항에 정박했을 때 탑승할 수 있습니다. 전투·자동사냥 중에는 이용할 수 없습니다.</div>':''}
+  </div>`;
+  openModal(trip?'🛫 비공정 기내':terminal?'🛬 유노 공항 환승구역':'🛫 비공정 공항',body,[{label:'닫기',action:()=>{}}]);
+  airshipUpdatePanel();
+}
+function airshipUpdatePanel(){
+  const panel=document.querySelector('.airship-panel');if(!panel||!G.player) return;
+  const trip=G.player.airshipTrip, mode=trip?'cabin':airshipAtTerminal()?'terminal':'port';
+  if(mode!==panel.dataset.mode || (!trip && panel.dataset.port!==airshipPort())){
+    if(airshipIsPlace()) showAirshipModal();else closeModal();return;
+  }
+  const route=airshipRoutes()[panel.dataset.line],now=Date.now();
+  const live=document.getElementById('airship-live');
+  if(trip){
+    live.textContent=airshipSummary(now);
+    const phase=airshipPhase(route,Math.max(now,trip.boardedAt));
+    document.getElementById('airship-disembark').disabled=!phase.docked;
+    const goal=document.getElementById('airship-goal-status');
+    const arrive=airshipNextDock(route,trip.goal,trip.goalSetAt);
+    goal.textContent=trip.autoDisembark?`${trip.goal}에서 자동 하차 · 약 ${Math.max(0,Math.ceil((arrive-now)/1000))}초 뒤`:'직접 하차 · 정박지를 확인하세요.';
+  }else{
+    const port=airshipPort(),phase=airshipPhase(route,now),dock=airshipNextDock(route,port,now);
+    const here=phase.docked&&phase.port===port;
+    live.textContent=here?`${port} 정박 중 · ${Math.ceil((phase.endAt-now)/1000)}초 뒤 출항`:`${port} 도착까지 ${Math.max(0,Math.ceil((dock-now)/1000))}초 · ${airshipSummaryForRoute(route,now)}`;
+    document.getElementById('airship-board').disabled=!airshipCanBoard(panel.dataset.line,port,now)||G.player.zeny<(airshipAtTerminal()?0:route.fare);
+  }
+}
+function airshipSummaryForRoute(route,now){
+  const phase=airshipPhase(route,now);return phase.docked?`${phase.port} 정박 중`:`${phase.port} → ${phase.next} 운항 중`;
+}
+function airshipTick(){ if(airshipPlaying()){ airshipSync(); airshipUpdatePanel(); } }
 </script>
 </body>
 </html>

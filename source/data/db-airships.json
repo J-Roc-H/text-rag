@@ -1,0 +1,22 @@
+{
+  "source": "rathena/rathena@e985006171d2eb320ee512a653f4c83aea3d81b6:npc/airports",
+  "terminal": "유노 공항 환승구역",
+  "routes": {
+    "domestic": {
+      "name": "슈발츠발드 국내선",
+      "cabin": "비공정 국내선",
+      "fare": 1200,
+      "flightMs": 60000,
+      "dockMs": 20000,
+      "stops": ["유노", "아인브로크", "리히타르젠", "아인브로크", "유노", "휘겔"]
+    },
+    "international": {
+      "name": "대륙 국제선",
+      "cabin": "비공정 국제선",
+      "fare": 1200,
+      "flightMs": 60000,
+      "dockMs": 20000,
+      "stops": ["이즈루드", "유노", "라헬 필드"]
+    }
+  }
+}

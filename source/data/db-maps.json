@@ -98,5 +98,8 @@
   "말랑도 심해": {"level": "90~100", "type": "던전", "emoji": "🐟", "desc": "깊고 푸른 별빛 바다.", "connected": ["마누크 필드"], "monsters": [381, 382], "safe": false},
   "엘 디카스테스": {"level": "95~100", "type": "던전", "emoji": "🪲", "desc": "스카라바 홀.", "connected": ["이세계 캠프(아쉬바쿰)"], "monsters": [372, 373, 374, 375], "safe": false},
   "끝없는 탑(엔드레스타워)": {"level": "100~110", "type": "던전", "emoji": "🗼", "desc": "모든 보스가 출몰하는 시련의 탑.", "connected": ["알베르타"], "monsters": [396, 397], "safe": false, "hasMvp": 399},
-  "게페니아": {"level": "90~99", "type": "던전", "emoji": "💜", "desc": "악마들이 지배하는 어둠의 지하 세계. 더 사인 완료 후 입장 가능.", "connected": ["게펜 필드"], "monsters": [168, 175, 176, 402, 403], "safe": false}
+  "게페니아": {"level": "90~99", "type": "던전", "emoji": "💜", "desc": "악마들이 지배하는 어둠의 지하 세계. 더 사인 완료 후 입장 가능.", "connected": ["게펜 필드"], "monsters": [168, 175, 176, 402, 403], "safe": false},
+  "비공정 국내선": {"level": "0", "type": "비공정", "emoji": "🛫", "desc": "슈발츠발드의 도시들을 순환하는 비공정. 안내에서 다음 정박지와 하차 시간을 확인할 수 있다.", "connected": [], "monsters": [], "safe": true, "noSavePoint": true, "transport": true},
+  "비공정 국제선": {"level": "0", "type": "비공정", "emoji": "🛫", "desc": "이즈루드·유노·라헬을 잇는 비공정. 창밖으로 대륙의 풍경이 흐른다.", "connected": [], "monsters": [], "safe": true, "noSavePoint": true, "transport": true},
+  "유노 공항 환승구역": {"level": "0", "type": "공항", "emoji": "🛬", "desc": "국내선과 국제선이 만나는 공항 내부. 시내로 나가지 않으면 추가 입장료 없이 환승할 수 있다.", "connected": [], "monsters": [], "safe": true, "noSavePoint": true, "transport": true}
 }
