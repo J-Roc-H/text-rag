@@ -47784,6 +47784,8 @@ function normalizeSave(p){
     }
   }
   if(!p.sellLocked) p.sellLocked = {}; // [상점 개편] 판매 보호 표시된 아이템 키
+  if(!p.bagPolicy || typeof p.bagPolicy !== 'object' || Array.isArray(p.bagPolicy)) p.bagPolicy = {}; // [가방 정리] 아이템별 방침 {키: sell|store|keep}
+  migrateItemLedger(p.bagPolicy, false);
   // [P1-15] 노점 판매 기록 링버퍼 {stallId,itemId,qty,price,soldAt} + 판매자 ID. 멱등 — 난수/시각 호출 없음.
   if(!Array.isArray(p.salesLog)) p.salesLog = [];
   if(p.salesLog.length>VEND_SALES_LOG_LIMIT) p.salesLog = p.salesLog.slice(-VEND_SALES_LOG_LIMIT);
@@ -53044,7 +53046,7 @@ function renderShopSellList(){
   [['all','전체'],['junk','잡동사니'],['equip','장비'],['consume','소모품'],['card','카드']].forEach(([key,label])=>{
     h+=`<button onclick="shopSetSellFilter('${key}')" style="padding:3px 8px;font-size:10px;border-radius:10px;border:1px solid ${filter===key?'var(--gold)':'var(--border)'};background:${filter===key?'var(--gold)':'#fff'};color:${filter===key?'#fff':'var(--text-dim)'};cursor:pointer;">${label}</button>`;
   });
-  h+=`<button onclick="shopSelectJunk()" style="margin-left:auto;padding:3px 8px;font-size:10px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--text-dim);cursor:pointer;white-space:nowrap;">잡동사니 모두 선택</button></div>`;
+  h+=`<button onclick="shopSelectJunk()" style="margin-left:auto;padding:3px 8px;font-size:10px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--text-dim);cursor:pointer;white-space:nowrap;">잡동사니 모두 선택</button><button onclick="shopSelectByPolicy()" title="카프라 창고의 🧹 가방 정리에서 「판매」로 정한 아이템을 한 번에 선택합니다" style="padding:3px 8px;font-size:10px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--text-dim);cursor:pointer;white-space:nowrap;">📋 방침대로 선택</button></div>`;
 
   if(!sellable.length){
     h+=`<div style="color:var(--text-dim);text-align:center;padding:20px;font-size:11px;">판매 가능한 아이템이 없습니다.</div>`;
@@ -53119,6 +53121,16 @@ function shopSelectJunk(){
     let pr=parseItem(k); let it=pr?pr.base:DB.items[k];
     if(it && isJunkType(it.type) && !(p.sellLocked&&p.sellLocked[k])) shopState.sel[k]=true;
   });
+  showShopModal(shopState.npc, DB.npcs[shopState.npc]);
+}
+
+/** 가방 정리 방침이 「판매」인 아이템 전부 선택 — 판매 보호 아이템은 제외. 방침 편집은 카프라 창고의 🧹 가방 정리(services.js) */
+function shopSelectByPolicy(){
+  let p=G.player, n=0;
+  getSellableItems(p).forEach(k=>{
+    if(typeof svcBagPolicyOf==='function' && svcBagPolicyOf(p,k)==='sell' && !(p.sellLocked&&p.sellLocked[k])){ shopState.sel[k]=true; n++; }
+  });
+  if(!n) notify('방침이 「판매」인 아이템이 없습니다. 카프라 창고의 🧹 가방 정리에서 정할 수 있습니다.','red');
   showShopModal(shopState.npc, DB.npcs[shopState.npc]);
 }
 
@@ -63460,6 +63472,153 @@ window.kafraWarpTo = function(dest, cost){
 // [P1-15] 창고 접근은 template.html의 WarehouseStore 단일 경계를 지난다(실패는 로그로 알림).
 function svcReadWarehouse(){ return WarehouseStore.read({ report:true }); }
 function svcWriteWarehouse(wh){ return WarehouseStore.write(wh, { report:true }); }
+// ──────────────────────────────────────────────
+// 가방 정리 — 창고 분류 보기·일괄 이동·전승 준비 + 아이템별 정리 방침(판매/창고/유지)
+//  · 방침은 p.bagPolicy {아이템키: 'sell'|'store'|'keep'}에 저장한다. 값이 없으면 종류 기준 기본값.
+//  · 'keep'(유지)으로 직접 지정한 항목은 어떤 일괄 이동·전승 준비에서도 건드리지 않는다.
+//  · 상점 판매 보호(p.sellLocked)는 그대로 유효하다 — 잠긴 항목은 '판매' 방침이어도 팔리지 않는다.
+// ──────────────────────────────────────────────
+const SVC_BAG_RARE_PCT = 1;   // 가장 흔한 드롭 출처의 확률(%)이 이 값 이하면 '희귀'
+const SVC_BAG_EQUIP_TYPES = ['무기','갑옷','방패','투구_상단','투구_중단','투구_하단','걸칠것','신발','Accessory'];
+const SVC_BAG_POLICIES = [['sell','판매'],['store','창고'],['keep','유지']];
+let svcBagFilter = 'all';
+let __svcDropMax = null;
+
+function svcItemOf(k){
+  let pr = parseItem(k);
+  return pr ? pr.base : (DB.items[k] || null);
+}
+function svcBaseName(k){
+  let pr = parseItem(k);
+  return pr ? pr.baseName : k;
+}
+function svcR(x){ return Math.round((Number(x)||0)*10)/10; }
+function svcIsQuestItem(k){ let it = svcItemOf(k); return !!it && it.type === '퀘스트아이템'; }
+function svcUnitWeight(k){ let it = svcItemOf(k); return it ? (Number(it.weight)||0) : 0; }
+function svcCarried(){ return svcR((calcStats().carriedWeight)||0); }
+function svcRebirthLimit(){ return (typeof REBIRTH_MAX_WEIGHT === 'number') ? REBIRTH_MAX_WEIGHT : 500; }
+
+// 아이템별 '가장 흔한 드롭 출처 확률' — 몬스터 드롭표에서 한 번만 만든다
+function svcDropMaxMap(){
+  if(__svcDropMax) return __svcDropMax;
+  let m = {};
+  Object.values(DB.monsters || {}).forEach(mon=>{
+    let d = mon && mon.drops; if(!d) return;
+    Object.keys(d).forEach(n=>{ let r = Number(d[n])||0; if(r > (m[n]||0)) m[n] = r; });
+  });
+  __svcDropMax = m;
+  return m;
+}
+function svcIsRare(k){
+  let it = svcItemOf(k); if(!it) return false;
+  if(it.type === '카드') return true;
+  let mx = svcDropMaxMap()[svcBaseName(k)];
+  return mx > 0 && mx <= SVC_BAG_RARE_PCT;
+}
+function svcBagMatch(f, k){
+  let it = svcItemOf(k);
+  if(f === 'all') return true;
+  if(!it) return false;
+  if(f === 'junk') return it.type === '잡템' || it.type === '재료';
+  if(f === 'consume') return it.type === '소모품';
+  if(f === 'card') return it.type === '카드';
+  if(f === 'equip') return SVC_BAG_EQUIP_TYPES.includes(it.type);
+  if(f === 'rare') return svcIsRare(k);
+  return true;
+}
+
+// 기본 방침: 잡템=판매, 재료·카드·희귀 잡템=창고, 소모품·장비·기타=유지
+function svcBagDefaultPolicy(k){
+  let it = svcItemOf(k); if(!it) return 'keep';
+  if(it.type === '퀘스트아이템') return 'keep';
+  if(it.type === '카드' || it.type === '재료') return 'store';
+  if(it.type === '잡템'){
+    if(svcIsRare(k)) return 'store';
+    return (Number(it.sell)||0) > 0 ? 'sell' : 'store';
+  }
+  return 'keep';
+}
+function svcBagPinned(p, k){ return !!(p.bagPolicy && p.bagPolicy[k] === 'keep'); }
+function svcBagPolicyOf(p, k){
+  let it = svcItemOf(k);
+  if(!it || it.type === '퀘스트아이템') return 'keep';
+  let ex = p.bagPolicy && p.bagPolicy[k];
+  if(p.sellLocked && p.sellLocked[k]) return ex === 'store' ? 'store' : 'keep';
+  if(ex === 'sell' && !((Number(it.sell)||0) > 0)) return 'keep';
+  return ex || svcBagDefaultPolicy(k);
+}
+window.svcBagPolicyOf = svcBagPolicyOf;
+
+function svcBagKeys(p){
+  return Object.keys(p.inventory || {}).filter(k=>(p.inventory[k]||0) > 0);
+}
+function svcBagSort(p){
+  return (a, b)=>{
+    let wa = svcUnitWeight(a)*(p.inventory[a]||0), wb = svcUnitWeight(b)*(p.inventory[b]||0);
+    return (wb - wa) || (a < b ? -1 : a > b ? 1 : 0);
+  };
+}
+function svcKeepScroll(ids, render){
+  let keep = {};
+  ids.forEach(id=>{ let e = document.getElementById(id); if(e) keep[id] = e.scrollTop; });
+  render();
+  ids.forEach(id=>{ let e = document.getElementById(id); if(e && keep[id]) e.scrollTop = keep[id]; });
+}
+function svcFilterChips(handler){
+  return [['all','전체'],['junk','잡템·재료'],['consume','소모품'],['card','카드'],['equip','장비'],['rare','희귀']]
+    .map(([v, n])=>`<button class="m-btn${svcBagFilter===v?' ok':''}" style="padding:2px 8px;font-size:10px;" onclick="${handler}('${v}')">${n}</button>`).join('');
+}
+function svcWeightLine(){
+  let s = calcStats(), c = svcR(s.carriedWeight), m = s.maxWeight || 0, lim = svcRebirthLimit(), ok = c < lim;
+  return `<div style="font-size:11px;margin-bottom:6px;">🎒 무게 <b>${c}</b> / ${m} · 전승 기준 ${lim} 미만 <span style="color:${ok?'var(--green)':'var(--red)'};">${ok?'충족':'초과 '+svcR(c-lim)}</span></div>`;
+}
+
+// ── 창고 이동 핵심: 여러 종류를 한 번에 옮기고 쓰기는 한 번만 한다 ──
+// moves: [{k, qty}]  qty = 숫자 | 'all'.  실패하면 null, 성공하면 {kinds, count, done}
+// 창고 쓰기가 실패하면 인벤토리를 원상 복구한다(창고 먼저 성공해야 인벤토리를 바꾼 것으로 본다).
+function svcWarehouseMove(direction, moves){
+  let p = G.player; if(!p.inventory) p.inventory = {};
+  try{
+    let raw = localStorage.getItem(WarehouseStore.KEY);
+    if(raw) JSON.parse(raw);
+  }catch(e){
+    log('⚠ 창고 데이터가 손상되어 이동을 중단했습니다.','error');
+    return null;
+  }
+  let wh = svcReadWarehouse();
+  let src = direction === 'deposit' ? p.inventory : wh;
+  let dst = direction === 'deposit' ? wh : p.inventory;
+  let done = [];
+  moves.forEach(m=>{
+    let have = src[m.k]||0;
+    let n = m.qty === 'all' ? have : Math.min(have, Math.max(1, Math.floor(Number(m.qty))||1));
+    if(n <= 0) return;
+    src[m.k] = have - n; if(src[m.k] <= 0) delete src[m.k];
+    dst[m.k] = (dst[m.k]||0) + n;
+    done.push({ k:m.k, n:n });
+  });
+  if(!done.length) return { kinds:0, count:0, done:done };
+  if(!svcWriteWarehouse(wh)){
+    done.forEach(d=>{
+      src[d.k] = (src[d.k]||0) + d.n;
+      dst[d.k] = (dst[d.k]||0) - d.n; if(dst[d.k] <= 0) delete dst[d.k];
+    });
+    return null;
+  }
+  return { kinds:done.length, count:done.reduce((s, d)=>s + d.n, 0), done:done };
+}
+function svcWarehouseBulk(moves, label){
+  if(!moves.length){ notify('옮길 아이템이 없습니다.','red'); return null; }
+  let before = svcCarried();
+  let r = svcWarehouseMove('deposit', moves);
+  if(!r) return null;
+  if(!r.count){ notify('옮길 아이템이 없습니다.','red'); return null; }
+  svcSave(); updateUI();
+  log(`📦 <b>[창고]</b> ${r.kinds}종 ${r.count}개 ${label} (무게 ${before} → ${svcCarried()})`,'system');
+  notify(`✓ ${r.kinds}종 ${r.count}개 ${label}`,'gold');
+  return r;
+}
+
 function svcWarehouseButtons(idx, direction, qty){
   let n10 = Math.min(10, qty);
   return `<span style="display:flex;gap:2px;flex-shrink:0;">
@@ -63470,23 +63629,25 @@ function svcWarehouseButtons(idx, direction, qty){
 }
 window.kafraWarehouse = function(){
   let p = G.player, wh = svcReadWarehouse();
-  let invKeys = Object.keys(p.inventory||{}).filter(k=>(p.inventory[k]||0)>0);
-  let whKeys = Object.keys(wh).filter(k=>(wh[k]||0)>0);
+  let invKeys = svcBagKeys(p).filter(k=>svcBagMatch(svcBagFilter, k)).sort(svcBagSort(p));
+  let whKeys = Object.keys(wh).filter(k=>(wh[k]||0) > 0 && svcBagMatch(svcBagFilter, k)).sort();
   window.__svcWarehouseTargets = [];
+  const polTag = {sell:'판', store:'창', keep:'유'};
 
   let invRows = invKeys.map(k=>{
     let idx = window.__svcWarehouseTargets.push(k)-1;
-    let pr = parseItem(k), it = pr ? pr.base : DB.items[k], qty=p.inventory[k];
+    let pr = parseItem(k), it = pr ? pr.base : DB.items[k], qty = p.inventory[k];
     let nm = pr ? getItemDisplayName(pr) : k;
+    let pol = svcBagPolicyOf(p, k), tw = svcR(svcUnitWeight(k)*qty);
     return `<div style="display:flex;justify-content:space-between;gap:5px;align-items:center;padding:4px 3px;border-bottom:1px dashed var(--border);font-size:10px;">
-      <span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${it?it.emoji:'📦'} ${svcHtml(nm)} <span style="color:var(--text-dim);">x${qty}</span></span>
+      <span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="정리 방침: ${polTag[pol]}">${it?it.emoji:'📦'} ${svcHtml(nm)} <span style="color:var(--text-dim);">x${qty} · ${tw}</span> <span style="color:var(--text-dim);border:1px solid var(--border);border-radius:6px;padding:0 3px;">${polTag[pol]}</span></span>
       ${svcWarehouseButtons(idx,'deposit',qty)}
     </div>`;
   }).join('');
 
   let whRows = whKeys.map(k=>{
     let idx = window.__svcWarehouseTargets.push(k)-1;
-    let pr = parseItem(k), it = pr ? pr.base : DB.items[k], qty=wh[k];
+    let pr = parseItem(k), it = pr ? pr.base : DB.items[k], qty = wh[k];
     let nm = pr ? getItemDisplayName(pr) : k;
     return `<div style="display:flex;justify-content:space-between;gap:5px;align-items:center;padding:4px 3px;border-bottom:1px dashed var(--border);font-size:10px;">
       <span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${it?it.emoji:'📦'} ${svcHtml(nm)} <span style="color:var(--text-dim);">x${qty}</span></span>
@@ -63494,55 +63655,181 @@ window.kafraWarehouse = function(){
     </div>`;
   }).join('');
 
-  let body = `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;height:55vh;">
+  let body = `${svcWeightLine()}
+  <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;margin-bottom:6px;">${svcFilterChips('svcWarehouseSetFilter')}</div>
+  <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">
+    <button class="m-btn ok" style="padding:3px 9px;font-size:10px;" onclick="svcWarehouseDepositVisible()">보이는 것 모두 맡기기</button>
+    <button class="m-btn" style="padding:3px 9px;font-size:10px;" onclick="svcRebirthPrep()">🎓 전승 준비</button>
+    <button class="m-btn" style="padding:3px 9px;font-size:10px;" onclick="svcBagOrganize()">🧹 가방 정리</button>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;height:46vh;">
     <div style="display:flex;flex-direction:column;overflow:hidden;">
-      <div style="font-weight:700;font-size:11px;color:var(--blue-light);padding:5px;">🎒 내 인벤토리</div>
-      <div style="flex:1;overflow:auto;border:1px solid var(--border);padding:3px;">${invRows||'<div style="padding:10px;color:var(--text-dim);font-size:10px;">아이템 없음</div>'}</div>
+      <div style="font-weight:700;font-size:11px;color:var(--blue-light);padding:5px;">🎒 내 인벤토리 (${invKeys.length}종)</div>
+      <div id="svc-wh-inv" style="flex:1;overflow:auto;border:1px solid var(--border);padding:3px;">${invRows||'<div style="padding:10px;color:var(--text-dim);font-size:10px;">아이템 없음</div>'}</div>
     </div>
     <div style="display:flex;flex-direction:column;overflow:hidden;">
-      <div style="font-weight:700;font-size:11px;color:var(--gold-light);padding:5px;">📦 공유 창고</div>
-      <div style="flex:1;overflow:auto;border:1px solid var(--border-gold);padding:3px;">${whRows||'<div style="padding:10px;color:var(--text-dim);font-size:10px;">창고 비어있음</div>'}</div>
+      <div style="font-weight:700;font-size:11px;color:var(--gold-light);padding:5px;">📦 공유 창고 (${whKeys.length}종)</div>
+      <div id="svc-wh-box" style="flex:1;overflow:auto;border:1px solid var(--border-gold);padding:3px;">${whRows||'<div style="padding:10px;color:var(--text-dim);font-size:10px;">창고 비어있음</div>'}</div>
     </div>
   </div>
-  <div style="font-size:10px;color:var(--text-dim);margin-top:6px;">각 아이템을 1개 · 10개 · 전부 단위로 이동합니다. 창고는 전 캐릭터 공용입니다.</div>`;
+  <div style="font-size:10px;color:var(--text-dim);margin-top:6px;">각 아이템을 1개 · 10개 · 전부 단위로 옮깁니다. 「유지」로 정한 항목과 퀘스트 아이템은 일괄 이동에서 빠집니다. 창고는 전 캐릭터 공용이며 이 기기의 브라우저에 저장됩니다.</div>`;
   openModal('📦 카프라 창고', body, [{label:'닫기',action:()=>{}}]);
 };
-window.serviceWarehouseTransfer = function(idx, direction, requested){
-  let p = G.player, item = (window.__svcWarehouseTargets||[])[idx];
-  if(!item) return;
-  let wh = svcReadWarehouse();
-  let sourceQty = direction === 'deposit' ? (p.inventory[item]||0) : (wh[item]||0);
-  let qty = requested === 'all' ? sourceQty : Math.min(sourceQty, Math.max(1, Number(requested)||1));
-  if(qty <= 0){ log('이동할 아이템이 없습니다.','warning'); return; }
-
-  let nextWh = Object.assign({}, wh);
-  if(direction === 'deposit') nextWh[item] = (nextWh[item]||0) + qty;
-  else {
-    nextWh[item] = (nextWh[item]||0) - qty;
-    if(nextWh[item] <= 0) delete nextWh[item];
-  }
-  // 창고 쓰기가 실패하면 캐릭터 인벤토리는 건드리지 않는다.
-  if(!svcWriteWarehouse(nextWh)) return;
-
-  if(direction === 'deposit'){
-    p.inventory[item] -= qty;
-    if(p.inventory[item] <= 0) delete p.inventory[item];
-    log(`📦 <b>[창고]</b> ${item} x${qty} 맡김`,'system');
-  }else{
-    p.inventory[item] = (p.inventory[item]||0) + qty;
-    log(`📦 <b>[창고]</b> ${item} x${qty} 찾음`,'system');
-  }
-  svcSave();
-  updateUI();
+window.svcWarehouseSetFilter = function(f){
+  svcBagFilter = f;
   kafraWarehouse();
 };
-window.warehouseDeposit = function(itemName, qty){ 
+window.svcWarehouseDepositVisible = function(){
+  let p = G.player;
+  let moves = svcBagKeys(p)
+    .filter(k=>svcBagMatch(svcBagFilter, k) && !svcBagPinned(p, k) && !svcIsQuestItem(k))
+    .map(k=>({ k:k, qty:'all' }));
+  if(svcWarehouseBulk(moves, '맡김')) svcKeepScroll(['svc-wh-inv','svc-wh-box'], kafraWarehouse);
+};
+window.serviceWarehouseTransfer = function(idx, direction, requested){
+  let item = (window.__svcWarehouseTargets||[])[idx];
+  if(!item) return;
+  let r = svcWarehouseMove(direction, [{ k:item, qty:requested }]);
+  if(!r) return;
+  if(!r.count){ log('이동할 아이템이 없습니다.','warning'); return; }
+  log(`📦 <b>[창고]</b> ${item} x${r.count} ${direction==='deposit'?'맡김':'찾음'}`,'system');
+  svcSave();
+  updateUI();
+  svcKeepScroll(['svc-wh-inv','svc-wh-box'], kafraWarehouse);
+};
+window.warehouseDeposit = function(itemName, qty){
   window.__svcWarehouseTargets=[itemName];
   serviceWarehouseTransfer(0,'deposit',qty||1);
 };
 window.warehouseWithdraw = function(itemName, qty){
   window.__svcWarehouseTargets=[itemName];
   serviceWarehouseTransfer(0,'withdraw',qty||1);
+};
+
+// ── 전승 준비: 무게를 전승 기준 미만으로 낮추는 데 필요한 만큼만, 방침이 판매·창고인 무거운 것부터 맡긴다 ──
+function svcRebirthPlan(){
+  let p = G.player, lim = svcRebirthLimit(), cur = svcCarried();
+  let need = cur - lim + 0.0001, picks = [];
+  if(need <= 0) return { cur:cur, lim:lim, picks:picks, after:cur, need:0, enough:true, already:true };
+  let cands = svcBagKeys(p)
+    .filter(k=>!svcIsQuestItem(k) && !svcBagPinned(p, k))
+    .map(k=>{ let q = p.inventory[k], u = svcUnitWeight(k); return { k:k, q:q, u:u, tw:u*q, tier:svcBagPolicyOf(p, k)==='keep' ? 1 : 0 }; })
+    .filter(c=>c.u > 0)
+    .sort((a, b)=>(a.tier - b.tier) || (b.tw - a.tw));
+  for(let i = 0; i < cands.length && need > 0; i++){
+    let c = cands[i], n = Math.min(c.q, Math.ceil(need / c.u));
+    picks.push({ k:c.k, n:n, w:n*c.u, tier:c.tier });
+    need -= n*c.u;
+  }
+  let after = svcR(cur - picks.reduce((s, x)=>s + x.w, 0));
+  return { cur:cur, lim:lim, picks:picks, after:after, need:Math.max(0, need), enough:need <= 0, already:false };
+}
+window.svcRebirthPrep = function(){
+  let plan = svcRebirthPlan();
+  let body;
+  if(plan.already){
+    body = `<div style="font-size:12px;line-height:1.7;">무게 <b>${plan.cur}</b> — 전승 기준(${plan.lim} 미만)을 충족합니다.<br>더 맡길 것이 없습니다.</div>`;
+    openModal('🎓 전승 준비', body, [{label:'창고로 돌아가기',action:()=>kafraWarehouse(),close:false}]);
+    return;
+  }
+  let shown = plan.picks.slice(0, 12).map(x=>{
+    let it = svcItemOf(x.k), pr = parseItem(x.k);
+    return `<div style="display:flex;justify-content:space-between;gap:6px;font-size:11px;padding:2px 0;border-bottom:1px dashed var(--border);"><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${it?it.emoji:'📦'} ${svcHtml(pr?getItemDisplayName(pr):x.k)} ×${x.n}${x.tier?' <span style="color:var(--red);">(기본 유지 항목)</span>':''}</span><span style="color:var(--text-dim);flex-shrink:0;">-${svcR(x.w)}</span></div>`;
+  }).join('');
+  let more = plan.picks.length > 12 ? `<div style="font-size:10px;color:var(--text-dim);margin-top:3px;">… 외 ${plan.picks.length-12}종</div>` : '';
+  let warnKeep = plan.picks.some(x=>x.tier) ? `<div style="font-size:11px;color:var(--red);margin-top:6px;">기본값이 「유지」인 소모품·장비도 일부 포함됩니다. 맡기고 싶지 않은 것은 🧹 가방 정리에서 「유지」로 지정하면 빠집니다.</div>` : '';
+  let status = plan.enough
+    ? `무게 <b>${plan.cur}</b> → <b style="color:var(--green);">${plan.after}</b> (기준 ${plan.lim} 미만 충족)`
+    : `무게 <b>${plan.cur}</b> → <b style="color:var(--red);">${plan.after}</b> — 옮길 수 있는 것을 모두 맡겨도 기준(${plan.lim} 미만)에 <b>${svcR(plan.need)}</b> 모자랍니다. 「유지」 지정이나 퀘스트 아이템의 무게가 남아 있습니다.`;
+  body = `<div style="font-size:12px;line-height:1.6;margin-bottom:8px;">${status}</div>
+    <div style="max-height:34vh;overflow:auto;border:1px solid var(--border);padding:4px 6px;">${shown}${more}</div>${warnKeep}
+    <div style="font-size:10px;color:var(--text-dim);margin-top:8px;line-height:1.6;">방침이 판매·창고인 것을 무게 큰 순서로, 필요한 만큼만 맡깁니다. 창고는 이 기기의 브라우저에 저장되므로 브라우저 데이터를 지우면 사라집니다 — 휴대형 세이브에는 창고도 함께 담깁니다.</div>`;
+  openModal('🎓 전승 준비', body, [
+    plan.picks.length ? { label:'맡기기 실행', cls:'ok', close:false, action:()=>svcRebirthRun() } : null,
+    { label:'창고로 돌아가기', close:false, action:()=>kafraWarehouse() }
+  ].filter(Boolean));
+};
+window.svcRebirthRun = function(){
+  let plan = svcRebirthPlan();
+  if(!plan.picks.length){ kafraWarehouse(); return; }
+  svcWarehouseBulk(plan.picks.map(x=>({ k:x.k, qty:x.n })), '맡김');
+  svcRebirthPrep();
+};
+
+// ── 🧹 가방 정리: 아이템별 방침 지정 + 창고 방침 일괄 실행 (판매 방침은 상점 [방침대로 선택]) ──
+function svcBagSummary(p){
+  let s = { sell:{kinds:0, zeny:0, w:0}, store:{kinds:0, w:0}, keep:{kinds:0, w:0} };
+  svcBagKeys(p).forEach(k=>{
+    if(svcIsQuestItem(k)) return;
+    let it = svcItemOf(k), q = p.inventory[k], pol = svcBagPolicyOf(p, k), w = svcUnitWeight(k)*q;
+    s[pol].kinds++; s[pol].w += w;
+    if(pol === 'sell'){
+      let unit = (typeof shopSellPriceOf === 'function') ? shopSellPriceOf(svcBaseName(k), it) : (Number(it.sell)||0);
+      s.sell.zeny += unit*q;
+    }
+  });
+  return s;
+}
+window.svcBagOrganize = function(){
+  let p = G.player;
+  if(!p.bagPolicy || typeof p.bagPolicy !== 'object' || Array.isArray(p.bagPolicy)) p.bagPolicy = {};
+  window.__svcBagTargets = [];
+  let order = { sell:0, store:1, keep:2 };
+  let keys = svcBagKeys(p).filter(k=>!svcIsQuestItem(k) && svcBagMatch(svcBagFilter, k))
+    .sort((a, b)=>(order[svcBagPolicyOf(p, a)] - order[svcBagPolicyOf(p, b)]) || svcBagSort(p)(a, b));
+  let sm = svcBagSummary(p);
+  let rows = keys.map(k=>{
+    let idx = window.__svcBagTargets.push(k)-1;
+    let pr = parseItem(k), it = pr ? pr.base : DB.items[k], qty = p.inventory[k];
+    let nm = pr ? getItemDisplayName(pr) : k;
+    let pol = svcBagPolicyOf(p, k), explicit = !!(p.bagPolicy && p.bagPolicy[k]);
+    let canSell = !!it && (Number(it.sell)||0) > 0;
+    let seg = SVC_BAG_POLICIES.map(([v, n])=>{
+      let off = v === 'sell' && !canSell;
+      return `<button class="m-btn${pol===v?' ok':''}" ${off?'disabled':''} style="padding:2px 6px;font-size:9px;${off?'opacity:.35;':''}" onclick="svcBagSetPolicy(${idx},'${v}')">${n}</button>`;
+    }).join('');
+    let reset = explicit ? `<button class="m-btn" style="padding:2px 4px;font-size:9px;" title="기본값으로" onclick="svcBagSetPolicy(${idx},'')">↺</button>` : '';
+    let lock = (p.sellLocked && p.sellLocked[k]) ? ' 🔒' : '';
+    return `<div style="display:flex;justify-content:space-between;gap:5px;align-items:center;padding:4px 3px;border-bottom:1px dashed var(--border);font-size:10px;">
+      <span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${it?it.emoji:'📦'} ${svcHtml(nm)}${lock} <span style="color:var(--text-dim);">x${qty} · ${svcR(svcUnitWeight(k)*qty)}</span></span>
+      <span style="display:flex;gap:2px;flex-shrink:0;">${seg}${reset}</span>
+    </div>`;
+  }).join('');
+  let body = `${svcWeightLine()}
+  <div style="font-size:11px;line-height:1.7;margin-bottom:6px;">
+    💰 판매 <b>${sm.sell.kinds}</b>종 (+${Math.floor(sm.sell.zeny).toLocaleString()}z · 무게 ${svcR(sm.sell.w)}) · 📦 창고 <b>${sm.store.kinds}</b>종 (무게 ${svcR(sm.store.w)}) · 🔒 유지 <b>${sm.keep.kinds}</b>종 (무게 ${svcR(sm.keep.w)})
+  </div>
+  <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;margin-bottom:6px;">${svcFilterChips('svcBagSetFilter')}</div>
+  <div id="svc-bag-list" style="height:44vh;overflow:auto;border:1px solid var(--border);padding:3px;">${rows||'<div style="padding:10px;color:var(--text-dim);font-size:10px;">해당 분류의 아이템이 없습니다.</div>'}</div>
+  <div style="font-size:10px;color:var(--text-dim);margin-top:6px;line-height:1.6;">종류별 기본값: 잡템=판매 · 재료·카드·희귀 잡템=창고 · 소모품·장비=유지. 「유지」로 직접 지정한 항목은 일괄 이동에서 빠집니다. 「판매」 방침은 상점 판매 탭의 <b>📋 방침대로 선택</b>으로 팔고, 「창고」 방침은 아래 버튼으로 맡깁니다.</div>`;
+  openModal('🧹 가방 정리', body, [
+    { label:'📦 창고 방침 항목 맡기기', cls:'ok', close:false, action:()=>svcBagStoreByPolicy() },
+    { label:'창고 보기', close:false, action:()=>kafraWarehouse() },
+    { label:'닫기', action:()=>{} }
+  ]);
+};
+window.svcBagSetFilter = function(f){
+  svcBagFilter = f;
+  svcBagOrganize();
+};
+window.svcBagSetPolicy = function(idx, pol){
+  let p = G.player, k = (window.__svcBagTargets||[])[idx];
+  if(!k) return;
+  if(!p.bagPolicy || typeof p.bagPolicy !== 'object') p.bagPolicy = {};
+  if(!pol) delete p.bagPolicy[k];
+  else {
+    p.bagPolicy[k] = pol;
+    if(pol === 'sell' && p.sellLocked) delete p.sellLocked[k];   // 판매로 정하면 상점 판매 보호는 풀린다
+  }
+  svcSave();
+  svcKeepScroll(['svc-bag-list'], svcBagOrganize);
+};
+window.svcBagStoreByPolicy = function(){
+  let p = G.player;
+  let moves = svcBagKeys(p)
+    .filter(k=>!svcIsQuestItem(k) && !svcBagPinned(p, k) && svcBagPolicyOf(p, k) === 'store')
+    .map(k=>({ k:k, qty:'all' }));
+  if(svcWarehouseBulk(moves, '맡김')) svcKeepScroll(['svc-bag-list'], svcBagOrganize);
 };
 
 // ══════════════════════════════════════════════

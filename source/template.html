@@ -3645,6 +3645,8 @@ function normalizeSave(p){
     }
   }
   if(!p.sellLocked) p.sellLocked = {}; // [상점 개편] 판매 보호 표시된 아이템 키
+  if(!p.bagPolicy || typeof p.bagPolicy !== 'object' || Array.isArray(p.bagPolicy)) p.bagPolicy = {}; // [가방 정리] 아이템별 방침 {키: sell|store|keep}
+  migrateItemLedger(p.bagPolicy, false);
   // [P1-15] 노점 판매 기록 링버퍼 {stallId,itemId,qty,price,soldAt} + 판매자 ID. 멱등 — 난수/시각 호출 없음.
   if(!Array.isArray(p.salesLog)) p.salesLog = [];
   if(p.salesLog.length>VEND_SALES_LOG_LIMIT) p.salesLog = p.salesLog.slice(-VEND_SALES_LOG_LIMIT);
@@ -8905,7 +8907,7 @@ function renderShopSellList(){
   [['all','전체'],['junk','잡동사니'],['equip','장비'],['consume','소모품'],['card','카드']].forEach(([key,label])=>{
     h+=`<button onclick="shopSetSellFilter('${key}')" style="padding:3px 8px;font-size:10px;border-radius:10px;border:1px solid ${filter===key?'var(--gold)':'var(--border)'};background:${filter===key?'var(--gold)':'#fff'};color:${filter===key?'#fff':'var(--text-dim)'};cursor:pointer;">${label}</button>`;
   });
-  h+=`<button onclick="shopSelectJunk()" style="margin-left:auto;padding:3px 8px;font-size:10px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--text-dim);cursor:pointer;white-space:nowrap;">잡동사니 모두 선택</button></div>`;
+  h+=`<button onclick="shopSelectJunk()" style="margin-left:auto;padding:3px 8px;font-size:10px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--text-dim);cursor:pointer;white-space:nowrap;">잡동사니 모두 선택</button><button onclick="shopSelectByPolicy()" title="카프라 창고의 🧹 가방 정리에서 「판매」로 정한 아이템을 한 번에 선택합니다" style="padding:3px 8px;font-size:10px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--text-dim);cursor:pointer;white-space:nowrap;">📋 방침대로 선택</button></div>`;
 
   if(!sellable.length){
     h+=`<div style="color:var(--text-dim);text-align:center;padding:20px;font-size:11px;">판매 가능한 아이템이 없습니다.</div>`;
@@ -8980,6 +8982,16 @@ function shopSelectJunk(){
     let pr=parseItem(k); let it=pr?pr.base:DB.items[k];
     if(it && isJunkType(it.type) && !(p.sellLocked&&p.sellLocked[k])) shopState.sel[k]=true;
   });
+  showShopModal(shopState.npc, DB.npcs[shopState.npc]);
+}
+
+/** 가방 정리 방침이 「판매」인 아이템 전부 선택 — 판매 보호 아이템은 제외. 방침 편집은 카프라 창고의 🧹 가방 정리(services.js) */
+function shopSelectByPolicy(){
+  let p=G.player, n=0;
+  getSellableItems(p).forEach(k=>{
+    if(typeof svcBagPolicyOf==='function' && svcBagPolicyOf(p,k)==='sell' && !(p.sellLocked&&p.sellLocked[k])){ shopState.sel[k]=true; n++; }
+  });
+  if(!n) notify('방침이 「판매」인 아이템이 없습니다. 카프라 창고의 🧹 가방 정리에서 정할 수 있습니다.','red');
   showShopModal(shopState.npc, DB.npcs[shopState.npc]);
 }
 
