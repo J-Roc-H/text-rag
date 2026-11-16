@@ -254,6 +254,14 @@ function aiJobContext(name,p){
   if(!q) return {ok:false,reason:'전직 정보를 찾을 수 없습니다.',questId,jq:null,q:null};
   let jq=p.jobQuests&&p.jobQuests[questId];
 
+  // 비전승 1차 완료 기록은 노비스 하이가 같은 계열의 하이 1차로 갈 때
+  // 다시 쓰인다. 실제 상태 재설정은 startJobChangeDialog 경로가 맡는다.
+  let highEntry=typeof getHighJob1QuestEntry==='function'
+    ? getHighJob1QuestEntry(q,p) : null;
+  if(highEntry&&highEntry.isHigh&&!highEntry.allowed){
+    return {ok:false,reason:`전승 전 계열인 ${highEntry.expectedJob||'직업'}의 길만 선택할 수 있습니다.`,questId,q,jq};
+  }
+
   if(q.reqRebirth&&!p.rebirth) return {ok:false,reason:'전승을 마친 뒤 받을 수 있는 시험입니다.',questId,q,jq};
   let needJob=q.reqJob;
   if(needJob&&q.reqRebirth&&typeof TRANS2ND_ENTRY_JOB!=='undefined'&&TRANS2ND_ENTRY_JOB[needJob]) needJob=TRANS2ND_ENTRY_JOB[needJob];
@@ -263,7 +271,7 @@ function aiJobContext(name,p){
   if(q.reqRebirthEligible&&typeof checkRebirthEligibility==='function'){
     let reason=checkRebirthEligibility(p); if(reason) return {ok:false,reason,questId,q,jq};
   }
-  if(jq&&jq.state==='done') return {ok:false,reason:`이미 ${q.targetJob||'이 전직'}의 절차를 마쳤습니다.`,questId,q,jq};
+  if(jq&&jq.state==='done'&&!(highEntry&&highEntry.isHigh&&highEntry.allowed)) return {ok:false,reason:`이미 ${q.targetJob||'이 전직'}의 절차를 마쳤습니다.`,questId,q,jq};
   if(jq&&jq.state==='failed') return {ok:false,reason:'이미 다른 전직의 길을 선택했습니다.',questId,q,jq};
 
   if(typeof JOB2_EXCLUSIVE_GROUPS!=='undefined'&&p.jobQuests){

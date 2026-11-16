@@ -60337,6 +60337,11 @@ function getNpcJobBadge(npcName) {
   let questId = getJobQuestId(npcName, p.job);
   if (!questId) return '';
   let jq = p.jobQuests && p.jobQuests[questId];
+  let q = getJobQuest(questId);
+  let highEntry = getHighJob1QuestEntry(q, p);
+  // 같은 job1 퀘스트를 전승 1차에도 다시 쓴다. 비전승 때의 done은
+  // 노비스 하이의 새 전직을 막는 완료 기록이 아니라, 다시 시작할 표식이다.
+  if (highEntry.isHigh && highEntry.allowed && jq && jq.state === 'done') return ' ❗';
   if (!jq) return ' ❗';  // 아직 시작 안함 = 수락 가능
   if (jq.state === 'available') return ' ❗';
   if (jq.state === 'active') return ' 📋';
@@ -60396,6 +60401,16 @@ function handleJobQuestNpc(npcName, questId, q) {
     if (_reason) { expelFromValhalla(npcName, _reason); return; }
   }
 
+  // 전승 후에는 전승 전 1차 계열에 대응하는 하이 1차만 선택할 수 있다.
+  // job1_* 퀘스트를 공유하므로, 이 검사가 없으면 노비스 하이가 어느 길드에서나
+  // 다른 계열의 하이 1차로 갈 수 있다.
+  let highEntry = getHighJob1QuestEntry(q, p);
+  if (highEntry.isHigh && !highEntry.allowed) {
+    let expected = highEntry.expectedJob || '전승 전 계열';
+    log(`⚠ ${npcName}: "그대는 ${expected}의 길을 이어야 한다."`, 'warning');
+    return;
+  }
+
   // 배타 그룹 체크: 같은 그룹의 다른 퀘스트가 이미 진행/완료됐으면 차단
   let _excGroup = JOB2_EXCLUSIVE_GROUPS[questId];
   if (_excGroup && p.jobQuests) {
@@ -60411,6 +60426,13 @@ function handleJobQuestNpc(npcName, questId, q) {
   // 퀘스트 상태 초기화 또는 불러오기
   initJobQuest(p, questId);
   let jq = p.jobQuests[questId];
+
+  // 비전승 1차 완료 기록을 노비스 하이에서 재사용한다. 이때만 새 절차로
+  // 되돌린다. 하이 1차를 이미 마친 뒤에는 p.job이 노비스 하이가 아니므로
+  // 다시 열리지 않는다.
+  if (highEntry.isHigh && highEntry.allowed && jq.state === 'done') {
+    jq = restartHighJob1Quest(p, questId, q);
+  }
 
   if (jq.state === 'done') {
     log(`${npcName}: "그대는 이미 ${q.targetJob}의 길을 걷고 있다. 자랑스럽구나."`, 'npc');
@@ -60762,6 +60784,40 @@ function resolveJobQuestTarget(q, p){
   return p.rebirth ? q.highTargetJob : q.targetJob;
 }
 
+// job1_* 퀘스트는 비전승 1차와 전승 1차가 공유한다. 전승 때에는 이전
+// 2차 직업에서 저장한 prevJobCode로 유일한 하이 1차를 정한다.
+function getHighJob1QuestEntry(q, p){
+  let normal = { isHigh:false, allowed:true, targetJob:q && q.targetJob, expectedJob:null };
+  if (!q || !q.highTargetJob || !p || !p.rebirth) return normal;
+
+  let highNovice = DB && DB.jobCode && DB.jobCode['JOB_HNOV'];
+  if (!highNovice || p.job !== highNovice) return normal;
+
+  let targetJob = normalizeJob(q.highTargetJob);
+  let targetCode = JOB_NAME2CODE[targetJob];
+  let expectedCode = BASE1ST_TO_HIGH[p.prevJobCode];
+  let expectedJob = expectedCode && DB.jobCode[expectedCode];
+  return {
+    isHigh:true,
+    allowed:!!(targetCode && expectedCode && targetCode === expectedCode),
+    targetJob,
+    expectedJob:expectedJob || null
+  };
+}
+
+function restartHighJob1Quest(p, questId, q){
+  let entry = getHighJob1QuestEntry(q, p);
+  if (!entry.isHigh || !entry.allowed) return p.jobQuests && p.jobQuests[questId];
+
+  // 일반 1차 완료 상태만 다시 쓴다. active/available은 진행 중 상태라 보존한다.
+  let jq = p.jobQuests && p.jobQuests[questId];
+  if (jq && jq.state === 'done') {
+    jq = { state:'available', step:0, stepData:{} };
+    p.jobQuests[questId] = jq;
+  }
+  return jq;
+}
+
 // ══════════════════════════════════════════════════
 // 전직 트리 — 어떤 조건에서 어디의 누구에게 가야 하는지 한 화면에
 // ══════════════════════════════════════════════════
@@ -60821,9 +60877,15 @@ function jobTreeStatus(code, ent, p){
   if(!ent) return {st:'locked', why:['전직 경로 정보 없음']};
 
   let jq = p.jobQuests && p.jobQuests[ent.questId];
+  let highEntry = ent.viaHigh ? getHighJob1QuestEntry(ent.q, p) : null;
+  if(highEntry && highEntry.isHigh && !highEntry.allowed){
+    return {st:'closed', why:[`${highEntry.expectedJob || '전승 전 계열'}의 길만 선택할 수 있습니다`]};
+  }
   if(jq && jq.state === 'done'){
     // 같은 퀘스트가 1차/하이1차 둘 다를 담당하므로 실제 도달 직업과 대조한다
-    if(resolveJobQuestTarget(ent.q, p) === name) return {st:'done'};
+    // 노비스 하이에서는 비전승 때의 done을 새 하이 1차 절차로 되돌리므로
+    // high 노드를 완료로 표시하지 않는다.
+    if(!(highEntry && highEntry.isHigh && highEntry.allowed) && resolveJobQuestTarget(ent.q, p) === name) return {st:'done'};
   }
   if(jq && jq.state === 'failed') return {st:'closed', why:['다른 길을 선택했습니다']};
 
@@ -65175,6 +65237,14 @@ function aiJobContext(name,p){
   if(!q) return {ok:false,reason:'전직 정보를 찾을 수 없습니다.',questId,jq:null,q:null};
   let jq=p.jobQuests&&p.jobQuests[questId];
 
+  // 비전승 1차 완료 기록은 노비스 하이가 같은 계열의 하이 1차로 갈 때
+  // 다시 쓰인다. 실제 상태 재설정은 startJobChangeDialog 경로가 맡는다.
+  let highEntry=typeof getHighJob1QuestEntry==='function'
+    ? getHighJob1QuestEntry(q,p) : null;
+  if(highEntry&&highEntry.isHigh&&!highEntry.allowed){
+    return {ok:false,reason:`전승 전 계열인 ${highEntry.expectedJob||'직업'}의 길만 선택할 수 있습니다.`,questId,q,jq};
+  }
+
   if(q.reqRebirth&&!p.rebirth) return {ok:false,reason:'전승을 마친 뒤 받을 수 있는 시험입니다.',questId,q,jq};
   let needJob=q.reqJob;
   if(needJob&&q.reqRebirth&&typeof TRANS2ND_ENTRY_JOB!=='undefined'&&TRANS2ND_ENTRY_JOB[needJob]) needJob=TRANS2ND_ENTRY_JOB[needJob];
@@ -65184,7 +65254,7 @@ function aiJobContext(name,p){
   if(q.reqRebirthEligible&&typeof checkRebirthEligibility==='function'){
     let reason=checkRebirthEligibility(p); if(reason) return {ok:false,reason,questId,q,jq};
   }
-  if(jq&&jq.state==='done') return {ok:false,reason:`이미 ${q.targetJob||'이 전직'}의 절차를 마쳤습니다.`,questId,q,jq};
+  if(jq&&jq.state==='done'&&!(highEntry&&highEntry.isHigh&&highEntry.allowed)) return {ok:false,reason:`이미 ${q.targetJob||'이 전직'}의 절차를 마쳤습니다.`,questId,q,jq};
   if(jq&&jq.state==='failed') return {ok:false,reason:'이미 다른 전직의 길을 선택했습니다.',questId,q,jq};
 
   if(typeof JOB2_EXCLUSIVE_GROUPS!=='undefined'&&p.jobQuests){
