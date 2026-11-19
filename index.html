@@ -60521,6 +60521,16 @@ function advanceJobQuestStep(questId, q, jq, step) {
   goToNextJobQuestStep(questId, q, jq);
 }
 
+// 전승 1차는 같은 시험을 치르지만, 길드는 다시 돌아온 경험을 알아본다.
+const HIGH_JOB1_GREETING = {
+  job1_swordman: '검을 쥔 자세가 낯설지 않군. 그대가 걸어온 길이 몸에 남아 있는 모양이야. 다시 검의 길을 걷겠는가?',
+  job1_mage: '처음 온 이의 눈빛이 아니로군. 오래 탐구한 흔적이 보여. 다시 마법의 길을 걷겠는가?',
+  job1_archer: '호흡을 고르는 모습이 익숙하군. 숲에서 보낸 시간이 사라진 것은 아닌가 보네. 다시 활을 잡겠는가?',
+  job1_acolyte: '기도하는 손길이 익숙하구나. 그동안 베풀어 온 마음이 아직 그대와 함께하는군. 다시 이 길을 걷겠는가?',
+  job1_thief: '발소리부터 다르군. 돌아온 몸은 가벼워졌어도, 살아남은 감각은 그대로인가 봐. 다시 함께하겠어?',
+  job1_merchant: '허허, 거래를 살피는 눈이 여전하군. 쌓아 온 경험은 쉽게 사라지지 않는 법이지. 다시 장사를 시작하겠는가?'
+};
+
 // ── 전직 퀘스트 대화 모달
 let _jobDialogState = {};
 
@@ -60531,6 +60541,9 @@ function showJobQuestDialog(questId, q, jq, step, branch) {
   else nodes = step['dialog_' + branch];
   if (!nodes || !nodes.length) return;
 
+  if (branch === 'main' && step.id === 'intro' && getHighJob1QuestEntry(q, G.player).isHigh && HIGH_JOB1_GREETING[questId]) {
+    nodes = [{ ...nodes[0], text: HIGH_JOB1_GREETING[questId] }, ...nodes.slice(1)];
+  }
   _jobDialogState = { questId, stepId: step.id, branch, nodeIndex: 0, nodes };
   renderJobDialogNode();
 }
@@ -60719,8 +60732,12 @@ function completeJobQuest(questId, q, jq, step) {
   if (step && step.dialog && step.dialog.length) {
     _jobDialogState = { questId, stepId: step.id, branch:'reward', nodeIndex:0, nodes: step.dialog };
     // 마지막 노드 확인 버튼에서 실제 전직 처리
+    let rewardNode = step.dialog[0];
+    if (getHighJob1QuestEntry(q, p).isHigh) {
+      rewardNode = { ...rewardNode, text: `돌아온 것을 환영하네. 그대가 걸어온 길을 잊지 않겠네. 이제 그대는 ${q.highTargetJob}이다.` };
+    }
     openModal(`💬 ${q.npc}`,
-      buildJobDialogHtml(step.dialog[0], p),
+      buildJobDialogHtml(rewardNode, p),
       [{ label:'전직 완료!', cls:'ok', action:()=>{
         doJobQuestFinish(questId, q, jq);
       }}]
