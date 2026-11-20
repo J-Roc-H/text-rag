@@ -33,6 +33,7 @@ TEMPLATE_PATH = os.path.join(BASE, "source", "template.html")
 DATA_DIR = os.path.join(BASE, "source", "data")
 WORLD_MAP_SCRIPT_PATH = os.path.join(BASE, "source", "world-map.js")
 AIRSHIP_SCRIPT_PATH = os.path.join(BASE, "source", "airship.js")
+COMPANION_SCRIPT_PATH = os.path.join(BASE, "source", "companion.js")
 SERVICE_SCRIPT_PATH = os.path.join(BASE, "source", "services.js")
 UI_HOTFIX_SCRIPT_PATH = os.path.join(BASE, "source", "ui-hotfix.js")
 QUEST_GUIDE_SCRIPT_PATH = os.path.join(BASE, "source", "quest-guide.js")
@@ -72,6 +73,8 @@ BLOCKS = {
     "DB_PRODUCTION": "db-production.json",
     "DB_SHOPS": "db-shops.json",
     "DB_MVP_RESPAWN": "db-mvp-respawn.json",
+    "DB_PETS": "db-pets.json",
+    "DB_PET_TALK": "db-pet-talk.json",
 }
 
 NPC_SERVICES = {
@@ -713,6 +716,43 @@ def load_data_files():
     return raw, parsed
 
 
+PET_TIERS = ("low", "mid", "high", "rare")
+
+
+def audit_pets(pets, monsters, items, talk):
+    """펫 데이터 감사 (P3-10). 첫 알 후보(tier 있는 펫)는 먹이·대사가 모두 있어야 한다."""
+    errors = []
+    names = {m.get("name") for m in monsters.values()}
+    counts = {t: 0 for t in PET_TIERS}
+    events, bands = talk.get("events", []), talk.get("bands", [])
+    for key, p in (pets.get("pets") or {}).items():
+        if p.get("name") not in names:
+            errors.append(f"{key}: 몬스터 '{p.get('name')}'가 db-monsters에 없음")
+        if p.get("food") is not None and p["food"] not in items:
+            errors.append(f"{key}: 먹이 '{p['food']}'가 db-items에 없음")
+        tier = p.get("tier")
+        if tier is None:
+            continue
+        if tier not in counts:
+            errors.append(f"{key}: tier '{tier}'는 {PET_TIERS} 밖")
+            continue
+        counts[tier] += 1
+        if p.get("food") is None:
+            errors.append(f"{key}: 첫 알 후보인데 먹이가 없음")
+        lines = ((talk.get("pets") or {}).get(key) or {}).get("lines")
+        if not lines:
+            errors.append(f"{key}: db-pet-talk에 대사가 없음")
+            continue
+        for e in events:
+            for b in bands:
+                if not (lines.get(e) or {}).get(b):
+                    errors.append(f"{key}: 대사 빈 칸 {e}/{b}")
+    for t, n in counts.items():
+        if n < 3:
+            errors.append(f"tier {t}: 첫 알 후보가 {n}마리 — 3마리 이상 필요(중복 없는 알 3개)")
+    return errors
+
+
 def audit_airships(spec, maps, npcs):
     errors = []
     routes = spec.get("routes", {})
@@ -755,6 +795,10 @@ def main():
     if airship_errors:
         raise ValueError("비공정 데이터 오류:\n  - " + "\n  - ".join(airship_errors))
     print("OK - airship route/map/NPC audit")
+    pet_errors = audit_pets(parsed["DB_PETS"], parsed["DB_MONSTERS"], parsed["DB_ITEMS"], parsed["DB_PET_TALK"])
+    if pet_errors:
+        raise ValueError("펫 데이터 오류:\n  - " + "\n  - ".join(pet_errors))
+    print("OK - pet db audit")
     audit_quest_item_sources(template, parsed)
     drop_errors = audit_monster_drops(parsed["DB_MONSTERS"], parsed["DB_ITEMS"])
     if drop_errors:
@@ -885,6 +929,7 @@ def main():
     actor_interaction_script = open(ACTOR_INTERACTION_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     refine_reveal_script = open(REFINE_REVEAL_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     airship_script = open(AIRSHIP_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
+    companion_script = open(COMPANION_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     body_close = "</body>"
     count = template.count(body_close)
     assert count == 1, f"{body_close} matched {count} times (expected 1)"
@@ -904,6 +949,7 @@ def main():
         f'<script id="actor-interaction-v1">\n{actor_interaction_script}\n</script>\n'
         f'<script id="refine-reveal-v1">\n{refine_reveal_script}\n</script>\n'
         f'<script id="airship-v1">\n{airship_script}\n</script>\n'
+        f'<script id="companion-v1">\n{companion_script}\n</script>\n'
         f'{body_close}'
     )
     template = template.replace(body_close, injected, 1)

@@ -1431,6 +1431,3554 @@ body.work-mode p {
     }
   }
 }</script>
+<script id="db-pets" type="application/json">{
+ "constants": {
+  "stages": [
+   1,
+   100,
+   250,
+   750,
+   910,
+   1000
+  ],
+  "hungerStart": 100,
+  "feedAt": 25,
+  "fullGainMaxHunger": 75,
+  "src": "rathena src/map/pet.hpp e_pet_intimate_level/e_pet_hungry · pet.cpp pet_food()/pet_hungry()"
+ },
+ "pets": {
+  "PORING": {
+   "mobId": 1002,
+   "name": "포링",
+   "lv": 1,
+   "tier": "low",
+   "tameItem": "덜 익은 사과",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "사과 주스",
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 50,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 2000,
+   "aegis": {
+    "TameItem": "Unripe_Apple",
+    "EggItem": "Poring_Egg",
+    "EquipItem": "Backpack",
+    "FoodItem": "Apple_Juice"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bLuk,2;\n  bonus bCritical,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "DROPS": {
+   "mobId": 1113,
+   "name": "드롭프스",
+   "lv": 3,
+   "tier": "low",
+   "tameItem": "오렌지 주스",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "옐로 허브",
+   "fullness": 4,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 40,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1500,
+   "aegis": {
+    "TameItem": "Orange_Juice",
+    "EggItem": "Drops_Egg",
+    "EquipItem": "Backpack",
+    "FoodItem": "Yellow_Herb"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bHit,3;\n  bonus bAtk,3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "POPORING": {
+   "mobId": 1031,
+   "name": "포포링",
+   "lv": 14,
+   "tier": "low",
+   "tameItem": "쓴 약초",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "초록허브",
+   "fullness": 5,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 30,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Bitter_Herb",
+    "EggItem": "Poporing_Egg",
+    "EquipItem": "Backpack",
+    "FoodItem": "Green_Herb"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bLuk,2;\n  bonus2 bSubEle,Ele_Poison,10;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "LUNATIC": {
+   "mobId": 1063,
+   "name": "루나틱",
+   "lv": 3,
+   "tier": null,
+   "tameItem": "무지개 당근",
+   "eggItem": null,
+   "equipItem": "실크리본",
+   "food": null,
+   "fullness": 4,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 40,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1500,
+   "aegis": {
+    "TameItem": "Rainbow_Carrot",
+    "EggItem": "Lunatic_Egg",
+    "EquipItem": "Silk_Ribbon",
+    "FoodItem": "Carrot_Juice"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bCritical,2;\n  bonus bAtk,2;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "PICKY": {
+   "mobId": 1049,
+   "name": "픽키",
+   "lv": 3,
+   "tier": "low",
+   "tameItem": "능청스러운 지렁이",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "빨간 허브",
+   "fullness": 4,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 40,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 2000,
+   "aegis": {
+    "TameItem": "Earthworm_The_Dude",
+    "EggItem": "Picky_Egg",
+    "EquipItem": "Tiny_Egg_Shell",
+    "FoodItem": "Red_Herb"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bStr,1;\n  bonus bAtk,5;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "CHONCHON": {
+   "mobId": 1011,
+   "name": "촌촌",
+   "lv": 4,
+   "tier": "low",
+   "tameItem": "썩은 생선",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 6,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 30,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1500,
+   "aegis": {
+    "TameItem": "Rotten_Fish",
+    "EggItem": "Chonchon_Egg",
+    "EquipItem": "Monster_Oxygen_Mask",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bAgi,1;\n  bonus bFlee,2;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "STEEL_CHONCHON": {
+   "mobId": 1042,
+   "name": "스틸 촌촌",
+   "lv": 17,
+   "tier": "mid",
+   "tameItem": "강철 덩어리",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "철광석",
+   "fullness": 5,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Lusty_Iron",
+    "EggItem": "Steel_Chonchon_Egg",
+    "EquipItem": "Monster_Oxygen_Mask",
+    "FoodItem": "Iron_Ore"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bFlee,6;\n  bonus bAgi,-1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "HUNTER_FLY": {
+   "mobId": 1035,
+   "name": "헌터플라이",
+   "lv": 42,
+   "tier": "high",
+   "tameItem": "몬스터 주스",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "레드 젬스톤",
+   "fullness": 5,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 500,
+   "aegis": {
+    "TameItem": "Monster_Juice",
+    "EggItem": "Hunter_Fly_Egg",
+    "EquipItem": "Monster_Oxygen_Mask",
+    "FoodItem": "Red_Gemstone"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bFlee,-5;\n  bonus bFlee2,2;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "SAVAGE_BABE": {
+   "mobId": 1167,
+   "name": "세비지 베베",
+   "lv": 7,
+   "tier": "low",
+   "tameItem": "달콤한 우유",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 7,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 40,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1500,
+   "aegis": {
+    "TameItem": "Sweet_Milk",
+    "EggItem": "Savage_Bebe_Egg",
+    "EquipItem": "Green_Lace",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bVit,1;\n  bonus bMaxHP,50;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "DESERT_WOLF_B": {
+   "mobId": 1107,
+   "name": "새끼 데저트 울프",
+   "lv": 6,
+   "tier": "low",
+   "tameItem": "잘 마른 뼈",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 6,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 40,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Well_Dried_Bone",
+    "EggItem": "Baby_Desert_Wolf_Egg",
+    "EquipItem": "Transparent_Headgear",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bInt,1;\n  bonus bMaxSP,50;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "ROCKER": {
+   "mobId": 1052,
+   "name": "로커",
+   "lv": 9,
+   "tier": "low",
+   "tameItem": "노래하는 꽃",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 1,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 30,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1500,
+   "aegis": {
+    "TameItem": "Singing_Flower",
+    "EggItem": "Rocker_Egg",
+    "EquipItem": "Rocker_Glasses",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bHPrecovRate,5;\n  bonus bMaxHP,25;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "SPORE": {
+   "mobId": 1014,
+   "name": "스포아",
+   "lv": 16,
+   "tier": "mid",
+   "tameItem": "이슬 머금은 이끼",
+   "eggItem": null,
+   "equipItem": "나무팬츠",
+   "food": "펫 사료",
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 30,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1500,
+   "aegis": {
+    "TameItem": "Dew_Laden_Moss",
+    "EggItem": "Spore_Egg",
+    "EquipItem": "Bark_Shorts",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bHit,5;\n  bonus bAtk,-2;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "POISON_SPORE": {
+   "mobId": 1077,
+   "name": "포이즌 스포아",
+   "lv": 19,
+   "tier": "mid",
+   "tameItem": "맹독초",
+   "eggItem": null,
+   "equipItem": "나무팬츠",
+   "food": "펫 사료",
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Deadly_Noxious_Herb",
+    "EggItem": "Poison_Spore_Egg",
+    "EquipItem": "Bark_Shorts",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bStr,1;\n  bonus bInt,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "PECOPECO": {
+   "mobId": 1019,
+   "name": "페코페코",
+   "lv": 19,
+   "tier": "mid",
+   "tameItem": "통통한 지렁이",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 4,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 30,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Fatty_Chubby_Earthworm",
+    "EggItem": "PecoPeco_Egg",
+    "EquipItem": "Battered_Pot",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bMaxHP,150;\n  bonus bMaxSP,-10;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "SMOKIE": {
+   "mobId": 1056,
+   "name": "스모키",
+   "lv": 18,
+   "tier": "mid",
+   "tameItem": "군고구마",
+   "eggItem": null,
+   "equipItem": "빨간 머플러",
+   "food": "펫 사료",
+   "fullness": 4,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 30,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Baked_Yam",
+    "EggItem": "Smokie_Egg",
+    "EquipItem": "Red_Muffler",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bAgi,1;\n  bonus bFlee2,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "YOYO": {
+   "mobId": 1057,
+   "name": "요요",
+   "lv": 21,
+   "tier": "mid",
+   "tameItem": "Tropical Banana",
+   "eggItem": null,
+   "equipItem": "원숭이머리띠",
+   "food": "바나나 주스",
+   "fullness": 5,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Tropical_Banana",
+    "EggItem": "Yoyo_Egg",
+    "EquipItem": "Monkey_Circlet",
+    "FoodItem": "Banana_Juice"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bCritical,3;\n  bonus bLuk,-1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "ORK_WARRIOR": {
+   "mobId": 1023,
+   "name": "오크 워리어",
+   "lv": 24,
+   "tier": "mid",
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 5,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 500,
+   "aegis": {
+    "TameItem": "Horror_Of_Tribe",
+    "EggItem": "Orc_Warrior_Egg",
+    "EquipItem": "Wild_Flower",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bAtk,10;\n  bonus bDef,-3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "MUNAK": {
+   "mobId": 1026,
+   "name": "무낙",
+   "lv": 30,
+   "tier": "high",
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": "정신봉",
+   "food": "펫 사료",
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 500,
+   "aegis": {
+    "TameItem": "No_Recipient",
+    "EggItem": "Munak_Egg",
+    "EquipItem": "Punisher",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bInt,1;\n  bonus bDef,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "SOHEE": {
+   "mobId": 1170,
+   "name": "소희",
+   "lv": 33,
+   "tier": "high",
+   "tameItem": "정결한 은검",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 500,
+   "aegis": {
+    "TameItem": "Silver_Knife_Of_Chaste",
+    "EggItem": "Sohee_Egg",
+    "EquipItem": "Golden_Bell",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bStr,1;\n  bonus bDex,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "ISIS": {
+   "mobId": 1029,
+   "name": "이시스",
+   "lv": 47,
+   "tier": "rare",
+   "tameItem": "복종의 팔찌",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 500,
+   "aegis": {
+    "TameItem": "Armlet_Of_Obedience",
+    "EggItem": "Isis_Egg",
+    "EquipItem": "Queen's_Hair_Ornament",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bMatkRate,-1;\n  bonus bAtkRate,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "DEVIRUCHI": {
+   "mobId": 1109,
+   "name": "데비루치",
+   "lv": 46,
+   "tier": "rare",
+   "tameItem": "그림자의 계약서",
+   "eggItem": null,
+   "equipItem": "꼭지",
+   "food": "슛",
+   "fullness": 2,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 500,
+   "aegis": {
+    "TameItem": "Contracts_In_Shadow",
+    "EggItem": "Deviruchi_Egg",
+    "EquipItem": "Pacifier",
+    "FoodItem": "Shoot"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bMatkRate,1;\n  bonus bAtkRate,1;\n  bonus bMaxHPrate,-3;\n  bonus bMaxSPrate,-3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "BON_GUN": {
+   "mobId": 1188,
+   "name": "본건",
+   "lv": 27,
+   "tier": "high",
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 4,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 30,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 500,
+   "aegis": {
+    "TameItem": "Heart_Of_Her",
+    "EggItem": "Bongun_Egg",
+    "EquipItem": "Sword_Of_Grave_Keeper",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bVit,1;\n  bonus2 bResEff,Eff_Stun,100;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "ALICE": {
+   "mobId": 1275,
+   "name": "앨리스",
+   "lv": 62,
+   "tier": "rare",
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": "하얀포션",
+   "fullness": 2,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 800,
+   "aegis": {
+    "TameItem": "Sway_Apron",
+    "EggItem": "Alice_Egg",
+    "EquipItem": null,
+    "FoodItem": "White_Potion"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bMdef,1;\n  bonus2 bSubRace,RC_DemiHuman,1;\n  bonus2 bSubRace,RC_Player_Human,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "CHUNG_E": {
+   "mobId": 1519,
+   "name": "청이",
+   "lv": 49,
+   "tier": null,
+   "tameItem": "탄탄멘",
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 50,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 2000,
+   "aegis": {
+    "TameItem": "Tantanmen",
+    "EggItem": "Chung_E_Egg",
+    "EquipItem": null,
+    "FoodItem": "Bun_"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bDef,1;\n  bonus2 bSubRace,RC_DemiHuman,1;\n  bonus2 bSubRace,RC_Player_Human,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "GOBLIN_1": {
+   "mobId": 1122,
+   "name": "고블린",
+   "lv": 25,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 50,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 800,
+   "aegis": {
+    "TameItem": "Knife_Goblin_Ring",
+    "EggItem": "Knife_Goblin_Egg",
+    "EquipItem": null,
+    "FoodItem": "Green_Apple"
+   },
+   "bonusScript": null,
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "DIABOLIC": {
+   "mobId": 1382,
+   "name": "디아볼릭",
+   "lv": 67,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 2,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 800,
+   "aegis": {
+    "TameItem": "Red_Burning_Stone",
+    "EggItem": "Diabolic_Egg",
+    "EquipItem": null,
+    "FoodItem": "Meat_Veg_Skewer"
+   },
+   "bonusScript": null,
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "WANDER_MAN": {
+   "mobId": 1208,
+   "name": "배회하는자",
+   "lv": 74,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 2,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 800,
+   "aegis": {
+    "TameItem": "Skull_Of_Vagabond",
+    "EggItem": "Wanderer_Egg",
+    "EquipItem": null,
+    "FoodItem": "Spirit_Liquor"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bAgi,3;\n  bonus bDex,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "GOLEM": {
+   "mobId": 1040,
+   "name": "고렘",
+   "lv": 25,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 7,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Magical_Lithography",
+    "EggItem": "Golem_Egg",
+    "EquipItem": "Windup_Spring",
+    "FoodItem": "Mystic_Stone"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bMaxHP,100;\n  bonus bFlee,-5;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "MARIONETTE": {
+   "mobId": 1143,
+   "name": "마리오네트",
+   "lv": 41,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Delicious_Shaved_Ice",
+    "EggItem": "Marionette_Egg",
+    "EquipItem": "Star_Hairband",
+    "FoodItem": "Small_Snow_Flower"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bSPrecovRate,3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "MEDUSA": {
+   "mobId": 1148,
+   "name": "메두사",
+   "lv": 79,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Splendid_Mirror",
+    "EggItem": "Medusa_Egg",
+    "EquipItem": "Queen's_Coronet",
+    "FoodItem": "Apple_Pudding"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bVit,1;\n  bonus2 bResEff,Eff_Stone,500;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "WHISPER": {
+   "mobId": 1179,
+   "name": "위스퍼",
+   "lv": 34,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 7,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Fit_Pipe",
+    "EggItem": "Whisper_Egg",
+    "EquipItem": "Spirit_Chain_",
+    "FoodItem": "Damp_Darkness"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bFlee,7;\n  bonus bDef,-3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "GOBLIN_LEADER": {
+   "mobId": 1299,
+   "name": "고블린리더",
+   "lv": 64,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 7,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Staff_Of_Leader",
+    "EggItem": "Goblin_Leader_Egg",
+    "EquipItem": "Nice_Badge",
+    "FoodItem": "Big_Cell"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus2 bAddRace,RC_DemiHuman,3;\n  bonus2 bAddRace,RC_Player_Human,3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "SUCCUBUS": {
+   "mobId": 1370,
+   "name": "서큐버스",
+   "lv": 85,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 300,
+   "aegis": {
+    "TameItem": "Boy's_Naivety",
+    "EggItem": "Succubus_Egg",
+    "EquipItem": "Black_Butterfly_Mask",
+    "FoodItem": "Vital_Flower_"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus2 bHpDrainRate,50,5;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "INCUBUS": {
+   "mobId": 1374,
+   "name": "인큐버스",
+   "lv": 75,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 300,
+   "aegis": {
+    "TameItem": "Gril's_Naivety",
+    "EggItem": "Incubus_Egg",
+    "EquipItem": "Ball_Mask",
+    "FoodItem": "Vital_Flower"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bMaxSPRate,3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "NIGHTMARE_TERROR": {
+   "mobId": 1379,
+   "name": "나이트메어 테러",
+   "lv": 78,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 300,
+   "aegis": {
+    "TameItem": "Hell_Contract",
+    "EggItem": "Nightmare_Terror_Egg",
+    "EquipItem": "Hell_Horn",
+    "FoodItem": "Fresh_Plant"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus2 bResEff,Eff_Sleep,10000;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "SHINOBI": {
+   "mobId": 1401,
+   "name": "시노비",
+   "lv": 69,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 7,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Kuloren",
+    "EggItem": "Shinobi_Egg",
+    "EquipItem": "Wine_On_Sleeve",
+    "FoodItem": "Grilled_Rice_Cake"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bAgi,2;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "STONE_SHOOTER": {
+   "mobId": 1495,
+   "name": "스톤슈터",
+   "lv": 42,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 7,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Oilpalm_Coconut",
+    "EggItem": "Stone_Shooter_Egg",
+    "EquipItem": "Apro_Hair",
+    "FoodItem": "Plant_Neutrient"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus2 bSubEle,Ele_Fire,3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "DULLAHAN": {
+   "mobId": 1504,
+   "name": "듀라한",
+   "lv": 62,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Luxury_Whisky_Bottle",
+    "EggItem": "Dullahan_Egg",
+    "EquipItem": "Death_Coil",
+    "FoodItem": "Sunset_On_The_Rock"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bCritAtkRate,5;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "LOLI_RURI": {
+   "mobId": 1505,
+   "name": "로리루리",
+   "lv": 71,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 15,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Very_Red_Juice",
+    "EggItem": "Loli_Ruri_Egg",
+    "EquipItem": "Fashionable_Glasses",
+    "FoodItem": "Pumpkin_Pie_"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bMaxHPRate,3;\n  bonus3 bAutoSpellWhenHit,\"AL_HEAL\",1,10;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "CIVIL_SERVANT": {
+   "mobId": 1513,
+   "name": "인면도화",
+   "lv": 63,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Fan_Of_Wind",
+    "EggItem": "Civil_Servant_Egg",
+    "EquipItem": "Golden_Earing",
+    "FoodItem": "Flavored_Alcohol"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bMaxSP,10;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "LEAF_CAT": {
+   "mobId": 1586,
+   "name": "리프캣",
+   "lv": 38,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 7,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Very_Soft_Plant",
+    "EggItem": "Leaf_Cat_Egg",
+    "EquipItem": "Green_Lucky_Bag",
+    "FoodItem": "Fish_With_Blue_Back"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus2 bSubRace,RC_Brute,3;\n  bonus2 bSubRace,RC_Player_Doram,3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "IMP": {
+   "mobId": 1837,
+   "name": "임프",
+   "lv": 76,
+   "tier": null,
+   "tameItem": "불타는 얼음",
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 300,
+   "aegis": {
+    "TameItem": "Flaming_Ice",
+    "EggItem": "Imp_Egg",
+    "EquipItem": "Horn_Protector",
+    "FoodItem": "Flame_Gemstone"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus2 bSubEle,Ele_Fire,2;\n  bonus2 bAddEle,Ele_Fire,2;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  }
+ }
+}</script>
+<script id="db-pet-talk" type="application/json">{
+ "events": [
+  "feed",
+  "hunt",
+  "danger",
+  "ownerDie",
+  "idle",
+  "ownerLevelUp",
+  "connect"
+ ],
+ "bands": [
+  "hungry",
+  "normal",
+  "full"
+ ],
+ "bandRule": {
+  "hungry": "<=25",
+  "normal": "26~75",
+  "full": ">75"
+ },
+ "src": "원작 클라이언트 pettalktable 구조(배고픔×행동) — open-midgard src/session/PetTalk.cpp 참고, 문장은 TextRag 자작",
+ "pets": {
+  "PORING": {
+   "persona": "말랑하고 천진한 젤리. 단순하고 늘 통통 튄다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "뽀잉! 살았다, 살았어!",
+      "사과 주스다아… 꿀꺽, 꿀꺽!"
+     ],
+     "normal": [
+      "뽀잉~ 맛있어!",
+      "주스 좋아. 주인도 좋아."
+     ],
+     "full": [
+      "배가 동글동글해졌어…",
+      "더는 못 먹어… 그래도 고마워, 뽀잉."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "힘이 안 나서 튀지도 못하겠어…",
+      "배고파서 젤리가 납작해지는 중…"
+     ],
+     "normal": [
+      "뽀잉! 같이 싸우자!",
+      "통통 튀면서 응원 중!"
+     ],
+     "full": [
+      "배불러서 데굴데굴 굴러가며 응원!",
+      "기운이 넘쳐서 두 배로 튄다!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "주인, 위험해! 근데 나도 배고파…",
+      "으앙, 무서워! 도망가자!"
+     ],
+     "normal": [
+      "주인! 피가 많이 줄었어!",
+      "뽀잉! 조심해, 조심!"
+     ],
+     "full": [
+      "주인 위험해! 내가 몸으로 막을래!",
+      "말랑한 몸으로 막아 줄게!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "주인… 일어나… 나 배고프단 말이야…",
+      "뽀잉… 혼자 두지 마…"
+     ],
+     "normal": [
+      "주인! 주인! 눈 떠!",
+      "흐잉… 젤리가 다 녹아 버릴 것 같아."
+     ],
+     "full": [
+      "주인… 내가 꼭 붙어 있을게.",
+      "다시 일어날 때까지 여기서 기다릴게."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "꼬르륵… 이게 내 소리야, 주인 소리야?",
+      "사과 주스 냄새 안 나?"
+     ],
+     "normal": [
+      "뽀잉, 뽀잉, 뽀잉!",
+      "구름이 젤리 같아."
+     ],
+     "full": [
+      "배 위에 햇볕 쬐는 중~",
+      "졸려… 말랑말랑 졸려…"
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "와! 축하해! …축하 주스는?",
+      "주인 강해졌다! 나는 배고파졌다!"
+     ],
+     "normal": [
+      "뽀잉뽀잉! 주인 최고!",
+      "더 높이 튀어서 축하할게!"
+     ],
+     "full": [
+      "축하해! 배불러서 축하도 두 배!",
+      "주인 강해진 기념으로 한 바퀴 굴러야지."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "주인 왔다! …주스도 왔어?",
+      "기다리다가 배가 쏙 꺼졌어."
+     ],
+     "normal": [
+      "뽀잉! 보고 싶었어!",
+      "주인이다! 오늘도 같이 다니자!"
+     ],
+     "full": [
+      "주인 왔네~ 나 지금 아주 동글동글해.",
+      "어서 와! 기분 최고야!"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "PICKY": {
+   "persona": "알에서 갓 나온 병아리. 겁이 많지만 주인만 졸졸 따른다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "삐약! 허브다, 허브!",
+      "콕콕콕… 살 것 같아, 삐약."
+     ],
+     "normal": [
+      "삐약~ 고마워!",
+      "빨간 허브, 쪼아 먹었어."
+     ],
+     "full": [
+      "배불러서 삐약 소리도 작아졌어…",
+      "삐… 더는 안 들어가."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고파서 다리가 후들후들해…",
+      "삐약… 힘이 없어…"
+     ],
+     "normal": [
+      "삐약! 주인 뒤에 숨어서 응원!",
+      "콕! 나도 한 번 쪼았어!"
+     ],
+     "full": [
+      "오늘은 용감한 병아리다, 삐약!",
+      "배부르니까 하나도 안 무서워!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "삐이익! 무서워! 배도 고파!",
+      "도, 도망가자, 주인!"
+     ],
+     "normal": [
+      "삐약삐약! 주인 아파 보여!",
+      "날개로 눈 가리고 있을게… 조심해!"
+     ],
+     "full": [
+      "삐약! 위험해! 내가 소리라도 지를게!",
+      "주인, 물러나! 삐익!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "삐… 주인… 춥고 배고파…",
+      "삐약… 혼자는 싫어."
+     ],
+     "normal": [
+      "삐약! 주인 일어나! 일어나!",
+      "흑… 주인 품이 식어 가…"
+     ],
+     "full": [
+      "주인 옆에 쪼그리고 있을게.",
+      "삐약… 다시 걸을 때까지 기다릴게."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "땅을 쪼아 봐도 먹을 게 없어…",
+      "삐약… 허브 냄새 어디 없나."
+     ],
+     "normal": [
+      "삐약, 삐약.",
+      "깃털 고르는 중!"
+     ],
+     "full": [
+      "주인 발등에서 낮잠 잘래…",
+      "따뜻하다, 삐약."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "삐약! 축하해! …배고파.",
+      "주인 커졌다! 나도 크고 싶어!"
+     ],
+     "normal": [
+      "삐약삐약! 축하해!",
+      "주인, 나도 언젠가 닭이 될 거야!"
+     ],
+     "full": [
+      "삐약! 날개 퍼덕퍼덕 축하!",
+      "주인 최고야, 삐약!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "삐약! 주인 왔다! 밥은?",
+      "기다렸어… 배고팠어…"
+     ],
+     "normal": [
+      "삐약! 주인이다!",
+      "졸졸 따라갈게!"
+     ],
+     "full": [
+      "삐약~ 기분 좋은 날이야.",
+      "주인 오니까 더 따뜻해."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "DROPS": {
+   "persona": "새침한 주황 젤리. 깔끔한 걸 좋아하고 말끝이 도도하다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "늦었잖아. …그래도 받아 줄게.",
+      "옐로 허브… 흥, 맛은 있네."
+     ],
+     "normal": [
+      "고마워. 예의는 아는구나.",
+      "적당한 때에 줬네. 칭찬해 줄게."
+     ],
+     "full": [
+      "지금은 됐어. 몸매 관리 중이야.",
+      "배부른데 또 주면 곤란하다고."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고픈 숙녀를 데리고 싸우는 거야?",
+      "기운 없어. 빨리 끝내."
+     ],
+     "normal": [
+      "흥, 그 정도는 나도 할 수 있어.",
+      "깔끔하게 끝내자."
+     ],
+     "full": [
+      "오늘은 기분 좋으니까 도와줄게.",
+      "반짝반짝, 잘 싸우고 있어."
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "위험하잖아! 이러다 둘 다 쓰러져!",
+      "빨리 물러나, 바보야!"
+     ],
+     "normal": [
+      "체력 봐. 무리하지 마.",
+      "그러다 다친다니까!"
+     ],
+     "full": [
+      "물러나! 걱정되니까 하는 말이야.",
+      "…다치지 마. 진짜로."
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…바보. 그러게 조심하랬잖아.",
+      "일어나. 배고프단 말이야."
+     ],
+     "normal": [
+      "거짓말이지? 얼른 일어나.",
+      "…혼자 두지 마."
+     ],
+     "full": [
+      "일어날 때까지 여기 있을 거야. 특별히.",
+      "…걱정했잖아."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "허브 한 장이면 기분 좋아질 텐데.",
+      "배고파서 광택이 죽어 가."
+     ],
+     "normal": [
+      "오늘 내 주황색, 예쁘지?",
+      "흥, 심심하네."
+     ],
+     "full": [
+      "햇볕에 반짝이는 중이야.",
+      "지금 기분, 꽤 괜찮아."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하해. 축하 선물은 허브면 돼.",
+      "강해졌네. 배고픈 나도 생각해 줘."
+     ],
+     "normal": [
+      "축하해. 뭐, 내 덕분이지.",
+      "조금은 인정해 줄게."
+     ],
+     "full": [
+      "축하해! …크흠, 진심이야.",
+      "멋졌어. 한 번만 말해 줄 거야."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "늦었어. 배고팠단 말이야.",
+      "어디 갔다 이제 와?"
+     ],
+     "normal": [
+      "왔구나. 기다린 건 아니야.",
+      "흥, 오늘도 잘 부탁해."
+     ],
+     "full": [
+      "어서 와. 오늘은 기분 좋아.",
+      "왔어? 반가워. 조금."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "CHONCHON": {
+   "persona": "수다스러운 파리. 윙윙대며 말이 빠르고 촐랑댄다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "윙윙! 사료다 사료! 와구와구!",
+      "살았다 윙! 굶어 떨어지는 줄!"
+     ],
+     "normal": [
+      "윙~ 맛있다 맛있다!",
+      "사료 최고 윙윙!"
+     ],
+     "full": [
+      "윙… 배불러서 날개가 무거워.",
+      "더 주면 못 날아, 윙."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "윙… 배고파서 날갯짓이 느려…",
+      "힘 없어 윙… 대충 싸우자."
+     ],
+     "normal": [
+      "윙윙! 저쪽! 아니 이쪽!",
+      "내가 정신없게 해 줄게, 윙!"
+     ],
+     "full": [
+      "윙윙윙! 오늘 컨디션 최고!",
+      "빙글빙글 날면서 응원 중!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "윙! 위험해! 배고파! 둘 다 위험해!",
+      "도망! 도망 윙!"
+     ],
+     "normal": [
+      "윙윙! 주인 피! 피 줄었어!",
+      "조심해 윙윙윙!"
+     ],
+     "full": [
+      "윙! 저 녀석 얼굴에 붙어 버릴까?",
+      "주인 물러나, 윙!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "윙… 주인… 일어나… 배고파…",
+      "윙… 조용해졌어…"
+     ],
+     "normal": [
+      "윙윙! 주인! 장난이지?",
+      "윙… 주인 머리 위만 빙빙 돌게 돼."
+     ],
+     "full": [
+      "주인 깨어날 때까지 파리 쫓아 줄게.",
+      "윙… 기다릴게."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "윙… 어디서 냄새 안 나?",
+      "배고파서 벽에 자꾸 부딪혀, 윙."
+     ],
+     "normal": [
+      "윙윙~ 윙윙~",
+      "저기 꽃 위에 앉았다 올게!"
+     ],
+     "full": [
+      "윙… 나른해…",
+      "주인 어깨에서 쉴래, 윙."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "윙윙! 축하! 축하 사료!",
+      "주인 짱! 나 배고파 윙!"
+     ],
+     "normal": [
+      "윙윙윙! 축하해 축하해!",
+      "축하 비행 한 바퀴!"
+     ],
+     "full": [
+      "윙! 배불러도 축하 비행은 해야지!",
+      "주인 최고 윙윙!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "윙! 왔다! 밥! 밥!",
+      "윙… 기다리다 지쳤어."
+     ],
+     "normal": [
+      "윙윙! 주인 왔다!",
+      "오늘은 어디 가, 윙?"
+     ],
+     "full": [
+      "윙~ 반가워 반가워!",
+      "날개 상태 최고야, 윙!"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "DESERT_WOLF_B": {
+   "persona": "사막 늑대 새끼. 충성스럽고 씩씩한 강아지 말투.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "멍! 밥이다! 꼬리가 멈추질 않아!",
+      "와구와구… 주인 최고다, 멍!"
+     ],
+     "normal": [
+      "멍멍! 잘 먹을게!",
+      "주인이 준 밥은 언제나 맛있어."
+     ],
+     "full": [
+      "끄응… 배불러. 꼬리만 흔들게.",
+      "이제 됐어, 멍. 고마워."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고파도 주인 지킨다… 끄응.",
+      "힘이… 그래도 짖을 수는 있어!"
+     ],
+     "normal": [
+      "멍! 내가 앞장설게!",
+      "냄새로 찾았다, 저기야!"
+     ],
+     "full": [
+      "멍멍! 오늘은 하루 종일 달릴 수 있어!",
+      "주인, 나만 믿어!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "으르릉… 주인 위험해! 나도 힘이 없어!",
+      "주인, 물러나! 멍!"
+     ],
+     "normal": [
+      "으르릉! 주인한테 가까이 오지 마!",
+      "주인 피 냄새가 나! 조심해!"
+     ],
+     "full": [
+      "으르르릉! 내가 막는다!",
+      "주인 뒤로! 멍멍!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "끼잉… 주인… 일어나…",
+      "끼잉끼잉…"
+     ],
+     "normal": [
+      "끼잉! 주인 얼굴 핥아 줄게, 일어나!",
+      "멍… 내가 지켰어야 했는데."
+     ],
+     "full": [
+      "주인 옆에서 망볼게. 아무도 못 와.",
+      "끼잉… 다시 같이 걷자."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "킁킁… 고기 냄새 어디 없나.",
+      "배고파서 꼬리가 축 처졌어."
+     ],
+     "normal": [
+      "멍! 공 던져 줘!",
+      "꼬리 쫓는 중이야!"
+     ],
+     "full": [
+      "주인 발치에 엎드려 있을게.",
+      "하암… 배부르니까 졸려, 멍."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "멍멍! 축하해! …간식은?",
+      "주인 강해졌다! 나도 배고파졌다!"
+     ],
+     "normal": [
+      "아우우우! 축하해, 주인!",
+      "멍! 역시 내 주인이야!"
+     ],
+     "full": [
+      "아우우~! 오늘 최고의 날!",
+      "주인 더 강해졌다, 멍멍!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "멍! 왔다! 밥 시간이야!",
+      "끼잉… 기다렸어."
+     ],
+     "normal": [
+      "멍멍멍! 주인이다!",
+      "꼬리 봐! 엄청 반가워!"
+     ],
+     "full": [
+      "멍~ 오늘도 산책 가자!",
+      "주인 냄새다! 반가워!"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "SAVAGE_BABE": {
+   "persona": "아기 멧돼지. 먹보에 고집이 세고 꿀꿀거린다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "꿀꿀! 드디어! 와구와구!",
+      "배고파서 땅 파려던 참이야, 꿀!"
+     ],
+     "normal": [
+      "꿀꿀~ 맛있다!",
+      "더 줘도 되는데, 꿀."
+     ],
+     "full": [
+      "꿀… 배가 빵빵해.",
+      "먹보인 나도 이제 그만, 꿀."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고파! 싸우기 싫어! 꿀!",
+      "밥 먼저! 꿀꿀!"
+     ],
+     "normal": [
+      "꿀! 들이받아 버릴 테다!",
+      "돌진! 꿀꿀!"
+     ],
+     "full": [
+      "꿀꿀! 힘이 넘친다!",
+      "배부른 멧돼지는 무섭다고!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "꿀! 위험해! 그리고 배고파!",
+      "도망가자 꿀꿀!"
+     ],
+     "normal": [
+      "꿀꿀! 주인 다쳤어!",
+      "조심해, 꿀!"
+     ],
+     "full": [
+      "꿀! 내가 들이받는다! 비켜!",
+      "주인 지킨다, 꿀꿀!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "꿀… 주인… 배고파…",
+      "꿀… 일어나…"
+     ],
+     "normal": [
+      "꿀꿀! 주인! 코로 밀어 줄게, 일어나!",
+      "꿀… 슬퍼."
+     ],
+     "full": [
+      "주인 옆에서 꼼짝 안 할 거야, 꿀.",
+      "꿀… 기다릴게."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "킁킁 꿀… 도토리 없나.",
+      "배고파서 진흙이라도 먹을까…"
+     ],
+     "normal": [
+      "꿀꿀, 진흙 목욕하고 싶다.",
+      "땅 파는 중!"
+     ],
+     "full": [
+      "꿀… 배 깔고 누웠어.",
+      "졸려, 꿀꿀."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "꿀! 축하! 축하 밥!",
+      "주인 커졌다! 밥도 커져야 해!"
+     ],
+     "normal": [
+      "꿀꿀! 축하해!",
+      "꿀! 주인 멋있다!"
+     ],
+     "full": [
+      "꿀꿀꿀! 신나서 뒹굴래!",
+      "축하해, 꿀!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "꿀! 밥! 왔으니까 밥!",
+      "기다리다 배가 홀쭉해졌어."
+     ],
+     "normal": [
+      "꿀꿀! 주인 왔다!",
+      "오늘은 뭐 먹으러 가, 꿀?"
+     ],
+     "full": [
+      "꿀~ 반가워!",
+      "배부르고 주인도 오고, 최고야."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "ROCKER": {
+   "persona": "음악을 사랑하는 메뚜기. 리듬을 타며 말한다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "허기진 박자에 사료 한 소절! 고마워!",
+      "배고파서 음정이 떨렸어. 이제 됐어!"
+     ],
+     "normal": [
+      "쿵짝! 맛있는 리듬이야.",
+      "좋은 밥은 좋은 노래를 부르지!"
+     ],
+     "full": [
+      "배불러서 베이스가 깊어졌어.",
+      "이제 쉼표 하나 쉬자."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고파서 템포가 안 나와…",
+      "느린 발라드로 싸우는 중…"
+     ],
+     "normal": [
+      "쿵짝쿵짝! 리듬 맞춰 공격!",
+      "전투 반주는 내가 맡는다!"
+     ],
+     "full": [
+      "클라이맥스다! 신난다!",
+      "앙코르! 한 마리 더!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "불협화음이야! 위험해!",
+      "음정이 무너진다! 물러나!"
+     ],
+     "normal": [
+      "삐익! 주인 체력, 박자가 끊겨!",
+      "조심해, 쉼표를 찍어!"
+     ],
+     "full": [
+      "주인! 이 곡은 여기서 끊자!",
+      "물러나! 다음 공연이 있잖아!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…곡이 멈췄어.",
+      "주인… 반주가 없어…"
+     ],
+     "normal": [
+      "주인, 아직 마지막 소절이 남았어!",
+      "…진혼곡은 싫어."
+     ],
+     "full": [
+      "다시 일어날 때까지 조용히 연주할게.",
+      "주인의 다음 곡을 기다릴게."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "꼬르륵… 이건 내 노래가 아니야.",
+      "배고파서 가사가 안 떠올라."
+     ],
+     "normal": [
+      "찌르르~ 새 곡 만드는 중.",
+      "주인, 박자 맞춰 봐!"
+     ],
+     "full": [
+      "느긋한 자장가 한 곡~",
+      "배불러서 저음만 나와."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "팡파레! …사료 반주로.",
+      "축하해! 배고픈 팡파레!"
+     ],
+     "normal": [
+      "빠밤! 레벨업 팡파레!",
+      "주인 테마곡이 한 단계 올랐어!"
+     ],
+     "full": [
+      "팡파레 풀 버전 간다!",
+      "오늘은 축제다! 쿵짝!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "주인 왔다! 오프닝은 밥부터!",
+      "기다리다 리허설만 백 번 했어."
+     ],
+     "normal": [
+      "오늘의 공연 시작!",
+      "주인 등장! 박수!"
+     ],
+     "full": [
+      "컨디션 최고, 무대 준비 완료!",
+      "반가워! 한 곡 뽑을까?"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "POPORING": {
+   "persona": "독을 품은 초록 포링. 시큰둥하고 냉소적이지만 속은 여리다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "흥, 이제야? …잘 먹을게.",
+      "초록 허브… 쓴맛이 딱 좋네."
+     ],
+     "normal": [
+      "뭐, 나쁘지 않아.",
+      "고마워. 크게 말하진 않을 거야."
+     ],
+     "full": [
+      "됐어. 독이 묽어진다고.",
+      "배불러서 시큰둥할 기운도 없어."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고파. 독도 안 나와.",
+      "이런 날 싸우는 건 비효율이야."
+     ],
+     "normal": [
+      "독 좀 뿌려 줄까.",
+      "흥, 시시하네."
+     ],
+     "full": [
+      "오늘은 독이 진해. 기대해.",
+      "좋아, 제대로 해 볼까."
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "위험해. 근데 나도 배고파서 못 도와.",
+      "물러나. 이건 계산 밖이야."
+     ],
+     "normal": [
+      "체력 봐. 바보 같은 짓 하지 마.",
+      "지금 물러나는 게 맞아."
+     ],
+     "full": [
+      "물러나. …걱정해서가 아니야.",
+      "독으로 막아 볼게. 빨리 빠져."
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…그러게 내가 뭐랬어.",
+      "일어나. 배고프다고."
+     ],
+     "normal": [
+      "…이런 건 싫어. 일어나.",
+      "흥… 바보 주인."
+     ],
+     "full": [
+      "옆에 있을게. 할 일 없으니까.",
+      "…빨리 일어나기나 해."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "허브 한 장이 그리운 오후야.",
+      "배고파서 냉소도 안 나와."
+     ],
+     "normal": [
+      "심심해. 뭐 독살스러운 일 없나.",
+      "흥."
+     ],
+     "full": [
+      "…나쁘지 않은 하루네.",
+      "졸려. 건드리지 마."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하해. 허브로 증명해.",
+      "강해졌네. 배고픈 건 그대로지만."
+     ],
+     "normal": [
+      "뭐, 축하해. 예상했어.",
+      "흥, 조금은 인정."
+     ],
+     "full": [
+      "…축하해. 진심이니까 두 번은 안 해.",
+      "잘했어. 오늘만 칭찬이야."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "늦었어. 배고파.",
+      "기다린 거 아니야. 배고팠을 뿐이야."
+     ],
+     "normal": [
+      "왔어? 흥.",
+      "오늘도 시시하게 굴지 마."
+     ],
+     "full": [
+      "왔구나. …반가워, 조금.",
+      "기분 괜찮아. 가자."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "SPORE": {
+   "persona": "느긋한 버섯. 늘 졸리고 말이 느리다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "…아… 밥이다… 고마워…",
+      "포자가… 다시… 살아나…"
+     ],
+     "normal": [
+      "음냐… 맛있어…",
+      "천천히… 먹을게…"
+     ],
+     "full": [
+      "…배불러… 이제… 잘래…",
+      "그만… 갓이… 무거워…"
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "…배고파서… 더 느려…",
+      "…싸우는 중… 맞지…?"
+     ],
+     "normal": [
+      "…포자… 퍼뜨리는 중…",
+      "…천천히… 확실하게…"
+     ],
+     "full": [
+      "…오늘은… 조금 빨라…",
+      "…기운 난다… 아마도…"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "…어… 위험한 것 같아…",
+      "…주인… 피…"
+     ],
+     "normal": [
+      "…주인… 체력… 많이 줄었어…",
+      "…물러나… 빨리…"
+     ],
+     "full": [
+      "…위험해… 내가… 막아 볼게…",
+      "…주인… 뒤로…"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…주인…?",
+      "…일어나… 천천히라도…"
+     ],
+     "normal": [
+      "…주인… 자는 거지…?",
+      "…같이… 쉬자… 잠깐만…"
+     ],
+     "full": [
+      "…옆에서… 기다릴게…",
+      "…일어날 때까지… 안 졸게…"
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "…꼬르륵… 축축한 거… 먹고 싶다…",
+      "…배고파… 느리게…"
+     ],
+     "normal": [
+      "…쿨…",
+      "…그늘… 좋아…"
+     ],
+     "full": [
+      "…쿨… 쿨…",
+      "…음냐…"
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "…축하… 밥도…",
+      "…강해졌구나… 배고프다…"
+     ],
+     "normal": [
+      "…와… 축하해…",
+      "…주인… 멋져…"
+     ],
+     "full": [
+      "…축하해… 진짜로… 졸린데도…",
+      "…포자… 날려서… 축하…"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "…왔구나… 배고팠어…",
+      "…기다리다… 잠들었어…"
+     ],
+     "normal": [
+      "…어서 와…",
+      "…주인… 왔어…"
+     ],
+     "full": [
+      "…반가워… 졸리지만…",
+      "…오늘도… 천천히 가자…"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "STEEL_CHONCHON": {
+   "persona": "강철 파리. 무뚝뚝한 군인 말투로 짧게 보고한다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "보급 확인. 감사합니다.",
+      "철광석 수령. 전투력 회복."
+     ],
+     "normal": [
+      "보급 이상 없음.",
+      "섭취 완료."
+     ],
+     "full": [
+      "보급 과잉. 비행 고도 저하.",
+      "추가 보급 불필요."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "연료 부족. 전투 효율 저하.",
+      "보급 요청. 이상."
+     ],
+     "normal": [
+      "교전 중. 이상 없음.",
+      "목표 포착."
+     ],
+     "full": [
+      "전투력 최상. 진격.",
+      "사기 충천. 계속 교전."
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "경고. 아군 체력 위험. 연료도 위험.",
+      "후퇴 건의."
+     ],
+     "normal": [
+      "경고. 주인 체력 저하.",
+      "후퇴 건의합니다."
+     ],
+     "full": [
+      "엄호한다. 후퇴하라.",
+      "경고! 즉시 이탈!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "주인 쓰러짐. …보고할 곳 없음.",
+      "…명령 대기."
+     ],
+     "normal": [
+      "주인 쓰러짐 확인. 대기한다.",
+      "…일어나십시오."
+     ],
+     "full": [
+      "현 위치 사수. 주인 경호.",
+      "복귀 시까지 경계 유지."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "연료 잔량 부족.",
+      "보급 지연 중."
+     ],
+     "normal": [
+      "경계 근무 중.",
+      "이상 없음."
+     ],
+     "full": [
+      "장비 점검 완료.",
+      "대기 상태 양호."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하합니다. 보급도 요청합니다.",
+      "전력 상승 확인. 연료 부족."
+     ],
+     "normal": [
+      "전력 상승 확인. 축하합니다.",
+      "경례."
+     ],
+     "full": [
+      "축하합니다! 경례!",
+      "주인 전투력 상승. 사기 충천."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "주인 복귀 확인. 보급 요청.",
+      "대기 중 연료 소진."
+     ],
+     "normal": [
+      "주인 복귀 확인.",
+      "임무 대기."
+     ],
+     "full": [
+      "복귀 환영합니다.",
+      "출격 준비 완료."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "SMOKIE": {
+   "persona": "장난꾸러기 너구리. 둔갑 자랑을 하고 능청스럽다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "헤헤, 기다렸지롱! 와구와구!",
+      "배고파서 나뭇잎으로 둔갑할 뻔했어."
+     ],
+     "normal": [
+      "헤헤, 맛있다!",
+      "고마워! 보답으로 재주 한 번?"
+     ],
+     "full": [
+      "배불러서 꼬리가 빵빵해~",
+      "더 먹으면 둔갑이 안 돼."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고파서 둔갑이 자꾸 풀려…",
+      "힘 없어, 헤헤…"
+     ],
+     "normal": [
+      "헤헤! 저 녀석 속여 볼까?",
+      "펑! 연기 피우는 중!"
+     ],
+     "full": [
+      "오늘 재주 최고야, 보여 줄게!",
+      "헤헤, 놀아 주자!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "으악, 위험해! 나무로 둔갑해서 숨자!",
+      "도망! 헤헤 아니고 진짜!"
+     ],
+     "normal": [
+      "주인, 장난 아니야! 피 줄었어!",
+      "연기 피울게, 빠져!"
+     ],
+     "full": [
+      "펑! 연막이다! 지금 물러나!",
+      "주인 뒤로! 내가 시선 끈다!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "주인… 장난이지…?",
+      "헤헤… 하나도 안 웃겨…"
+     ],
+     "normal": [
+      "주인! 일어나! 이건 둔갑으로도 안 돼…",
+      "…장난 그만해."
+     ],
+     "full": [
+      "주인 옆에 바위로 둔갑해서 지킬게.",
+      "일어나면 재주 보여 줄게."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "나뭇잎 먹고 싶다… 아니 진짜 밥.",
+      "배고파서 장난칠 기운도 없어."
+     ],
+     "normal": [
+      "헤헤, 지금 내가 주인으로 둔갑하면?",
+      "펑! 찻주전자다!"
+     ],
+     "full": [
+      "꼬리 베고 낮잠~",
+      "헤헤, 배부르니까 좋다."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하해! 축하 떡은?",
+      "헤헤, 강해졌네! 배고파!"
+     ],
+     "normal": [
+      "펑펑! 축하 불꽃!",
+      "헤헤, 역시 주인!"
+     ],
+     "full": [
+      "축하 재주 넘기 세 바퀴!",
+      "헤헤헤, 신난다!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "왔다! 밥 없으면 둔갑해서 훔친다!",
+      "기다리다 배고파서 나뭇잎 됐었어."
+     ],
+     "normal": [
+      "헤헤, 주인 왔다!",
+      "오늘은 무슨 장난 칠까?"
+     ],
+     "full": [
+      "헤헤~ 반가워!",
+      "기분 최고! 재주 볼래?"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "PECOPECO": {
+   "persona": "성실한 큰 새. 달리기 자랑을 하고 듬직하다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "꾸엑! 기다렸습니다! 와구와구!",
+      "힘이 돌아온다! 꾸엑!"
+     ],
+     "normal": [
+      "꾸엑, 잘 먹겠습니다!",
+      "든든하네요."
+     ],
+     "full": [
+      "꾸엑… 배가 무거워서 못 달려요.",
+      "이제 충분합니다."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고파서 다리가 안 나가요…",
+      "꾸엑… 기운이…"
+     ],
+     "normal": [
+      "꾸엑! 달린다!",
+      "제 다리라면 금방이죠!"
+     ],
+     "full": [
+      "꾸에엑! 오늘은 바람처럼!",
+      "힘이 넘칩니다, 앞장설게요!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "꾸엑! 위험해요! 저도 힘이 없어요!",
+      "주인, 물러나세요!"
+     ],
+     "normal": [
+      "꾸엑! 주인 체력이 위험합니다!",
+      "등에 타세요, 아니 물러나세요!"
+     ],
+     "full": [
+      "꾸에엑! 제가 막을게요!",
+      "주인, 뒤로! 지금!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "꾸엑… 주인…",
+      "…일어나세요…"
+     ],
+     "normal": [
+      "꾸엑! 주인! 제 등에 기대세요, 일어나요!",
+      "…지켜 드리지 못했어요."
+     ],
+     "full": [
+      "주인 옆을 지키겠습니다.",
+      "일어나시면 바로 달려요."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "꾸엑… 사료 생각뿐이에요.",
+      "배고파서 깃털이 처져요."
+     ],
+     "normal": [
+      "꾸엑, 깃털 정리 중.",
+      "달리고 싶다!"
+     ],
+     "full": [
+      "꾸엑… 한숨 자도 될까요.",
+      "든든하니 기분 좋네요."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "꾸엑! 축하합니다! …사료도…",
+      "강해지셨네요! 저는 배고파요!"
+     ],
+     "normal": [
+      "꾸에엑! 축하드려요!",
+      "역시 제 주인이에요!"
+     ],
+     "full": [
+      "꾸에에엑! 축하 질주 한 바퀴!",
+      "최고의 날이에요!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "꾸엑! 오셨군요! 사료부터…",
+      "기다리다 배고팠어요."
+     ],
+     "normal": [
+      "꾸엑! 어서 오세요!",
+      "오늘도 달려 볼까요!"
+     ],
+     "full": [
+      "꾸엑~ 반갑습니다!",
+      "컨디션 최고예요!"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "POISON_SPORE": {
+   "persona": "음침한 독버섯. 낄낄 웃으며 으스스하게 말한다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "킬킬… 드디어 먹이로군…",
+      "배고파서 독이 시들 뻔했지, 킬킬."
+     ],
+     "normal": [
+      "킬킬… 나쁘지 않아.",
+      "고맙다, 킬킬킬."
+     ],
+     "full": [
+      "킬… 배불러서 독이 묽어져.",
+      "그만 줘… 킬킬."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "킬… 배고파서 독이 안 나와…",
+      "기운 없다… 킬…"
+     ],
+     "normal": [
+      "킬킬! 독에 쓰러져라!",
+      "포자를 흩뿌려 주지, 킬킬."
+     ],
+     "full": [
+      "킬킬킬! 오늘 독은 진하다!",
+      "모두 시들게 해 주마!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "킬… 위험하군… 우리 둘 다…",
+      "물러나라, 주인…"
+     ],
+     "normal": [
+      "킬… 주인 피가 많이 빠졌어.",
+      "지금 물러나는 게 좋아, 킬."
+     ],
+     "full": [
+      "킬킬! 독안개로 가려 주지, 물러나!",
+      "주인, 뒤로!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…킬… 웃을 기분이 아니야…",
+      "주인…"
+     ],
+     "normal": [
+      "킬… 이런 결말은 재미없어.",
+      "…일어나라."
+     ],
+     "full": [
+      "옆에서 독으로 지켜 주지.",
+      "…일어날 때까지 기다린다, 킬."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "킬… 축축한 그늘이 그립군…",
+      "배고프다… 킬…"
+     ],
+     "normal": [
+      "킬킬… 오늘은 누구를 시들게 할까.",
+      "어두운 데가 좋아, 킬."
+     ],
+     "full": [
+      "킬… 기분이 꽤 좋군.",
+      "그늘에서 쉬는 중, 킬킬."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "킬킬, 축하한다… 먹이도 축하로…",
+      "강해졌군… 배고프다…"
+     ],
+     "normal": [
+      "킬킬킬! 축하하지!",
+      "흐흐, 쓸 만한 주인이군."
+     ],
+     "full": [
+      "킬킬킬킬! 축하의 포자를!",
+      "오늘은 기분이 좋다, 킬킬!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "킬… 왔군… 배고팠다…",
+      "기다리다 시들 뻔했어."
+     ],
+     "normal": [
+      "킬킬, 돌아왔군.",
+      "오늘도 어둠 속으로 가 볼까."
+     ],
+     "full": [
+      "킬킬~ 반갑군.",
+      "기분 좋은 그늘 같은 날이야."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "YOYO": {
+   "persona": "까부는 원숭이. 바나나에 집착하고 들떠서 말한다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "끼끼! 바나나 주스! 꿀꺽꿀꺽!",
+      "살았다, 끼끼!"
+     ],
+     "normal": [
+      "끼끼~ 달다 달아!",
+      "바나나 최고야!"
+     ],
+     "full": [
+      "끼… 배불러서 못 매달리겠어.",
+      "이제 됐어, 끼끼."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "끼… 바나나 없으면 힘 없어…",
+      "배고파서 나무에서 떨어질 뻔했어."
+     ],
+     "normal": [
+      "끼끼! 약 올려 줄게!",
+      "요리조리 피하는 중!"
+     ],
+     "full": [
+      "끼끼끼! 날아다닌다!",
+      "오늘 컨디션 최고야!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "끼익! 위험해! 바나나도 없어!",
+      "도망가자, 끼끼!"
+     ],
+     "normal": [
+      "끼! 주인 피! 피!",
+      "조심해, 끼끼!"
+     ],
+     "full": [
+      "끼끼! 내가 약 올려서 끌어갈게!",
+      "주인 물러나, 끼!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "끼… 주인… 바나나 사 줘야지…",
+      "끼…"
+     ],
+     "normal": [
+      "끼끼! 일어나! 장난치지 마!",
+      "…끼."
+     ],
+     "full": [
+      "주인 옆에 매달려 있을게.",
+      "일어나면 같이 바나나 먹자."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "끼… 바나나 냄새 어디서 나?",
+      "배고파서 꼬리만 흔들어."
+     ],
+     "normal": [
+      "끼끼, 나무 타고 싶다!",
+      "주인 머리 위에 올라가도 돼?"
+     ],
+     "full": [
+      "끼… 나른해.",
+      "배 두드리는 중, 끼끼."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "끼끼! 축하! 축하 바나나!",
+      "강해졌다! 바나나도 늘려 줘!"
+     ],
+     "normal": [
+      "끼끼끼! 축하해!",
+      "덤블링 한 바퀴!"
+     ],
+     "full": [
+      "끼끼끼끼! 최고다!",
+      "신나서 공중제비!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "끼! 왔다! 바나나!",
+      "기다리다 배고파 죽는 줄."
+     ],
+     "normal": [
+      "끼끼! 주인 왔다!",
+      "오늘은 어디서 놀아?"
+     ],
+     "full": [
+      "끼~ 반가워!",
+      "기분 좋다, 끼끼!"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "ORK_WARRIOR": {
+   "persona": "오크 전사. 투박하고 짧은 말투, 강함을 존중한다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "먹는다! 힘 돌아온다!",
+      "배고팠다. 고맙다, 주인."
+     ],
+     "normal": [
+      "좋은 먹이다.",
+      "먹었다. 싸울 준비 됐다."
+     ],
+     "full": [
+      "배부르다. 그만.",
+      "더 먹으면 도끼 못 든다."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고프다. 힘 안 난다.",
+      "먹고 싸운다. 그게 오크다."
+     ],
+     "normal": [
+      "싸운다! 우오오!",
+      "약한 놈 쓰러뜨린다!"
+     ],
+     "full": [
+      "우오오오! 힘 넘친다!",
+      "주인과 함께 싸운다! 강하다!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "주인 위험하다! 나도 배고프다!",
+      "물러난다! 다시 싸운다!"
+     ],
+     "normal": [
+      "주인 피 많이 흘렸다! 물러나라!",
+      "위험하다! 조심!"
+     ],
+     "full": [
+      "오크가 막는다! 주인 물러나라!",
+      "우오오! 덤벼라!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "주인… 쓰러졌다…",
+      "…일어나라, 전사."
+     ],
+     "normal": [
+      "주인! 전사는 다시 일어난다!",
+      "…분하다."
+     ],
+     "full": [
+      "주인 옆 지킨다. 아무도 못 온다.",
+      "일어나라. 다시 싸운다."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "배고프다. 고기 생각난다.",
+      "먹이 언제 오나."
+     ],
+     "normal": [
+      "도끼 간다.",
+      "싸울 상대 없나."
+     ],
+     "full": [
+      "배부르다. 좋다.",
+      "잠깐 쉰다."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "주인 강해졌다! 고기로 축하한다!",
+      "강하다! 배고프다!"
+     ],
+     "normal": [
+      "우오오! 주인 강해졌다!",
+      "강한 주인 좋다!"
+     ],
+     "full": [
+      "우오오오! 축하한다, 전사!",
+      "오늘은 잔치다!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "왔다! 먹이 달라!",
+      "기다렸다. 배고팠다."
+     ],
+     "normal": [
+      "주인 왔다. 싸우러 가자.",
+      "준비 됐다."
+     ],
+     "full": [
+      "주인 왔다! 기분 좋다!",
+      "가자, 전사!"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "BON_GUN": {
+   "persona": "강시. 말을 띄엄띄엄 끊어 하고 예스러운 말투.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "…먹이… 받았소… 고맙소…",
+      "…허기… 가시는구려…"
+     ],
+     "normal": [
+      "…좋소…",
+      "…잘… 먹겠소…"
+     ],
+     "full": [
+      "…배가… 부르오… 그만…",
+      "…이제… 되었소…"
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "…허기져… 몸이… 굳소…",
+      "…힘이… 아니 나오…"
+     ],
+     "normal": [
+      "…뛴다… 콩… 콩…",
+      "…덤비시오…"
+     ],
+     "full": [
+      "…오늘은… 몸이… 가볍소…",
+      "…모두… 쓰러뜨리겠소…"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "…위험하오… 물러나시오…",
+      "…주인… 피가…"
+     ],
+     "normal": [
+      "…주인… 기력이… 다해 가오…",
+      "…어서… 피하시오…"
+     ],
+     "full": [
+      "…내가… 막겠소… 물러나시오…",
+      "…주인… 뒤로…"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…주인…",
+      "…어찌… 이런…"
+     ],
+     "normal": [
+      "…주인… 일어나시오…",
+      "…부적이라도… 붙여 드릴까…"
+     ],
+     "full": [
+      "…곁을… 지키겠소…",
+      "…일어나실… 때까지…"
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "…허기지오…",
+      "…먹을 것… 없소…?"
+     ],
+     "normal": [
+      "…콩… 콩…",
+      "…달이… 밝소…"
+     ],
+     "full": [
+      "…배부르니… 졸리오…",
+      "…좋은… 날이오…"
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "…경하드리오… 먹이도…",
+      "…강해지셨소… 허기지오…"
+     ],
+     "normal": [
+      "…경하드리오…",
+      "…주인… 훌륭하오…"
+     ],
+     "full": [
+      "…경하… 경하드리오…!",
+      "…콩콩… 뛰며… 축하하오…"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "…오셨소… 허기졌소…",
+      "…기다렸소… 배고팠소…"
+     ],
+     "normal": [
+      "…오셨소…",
+      "…가시지요…"
+     ],
+     "full": [
+      "…반갑소…",
+      "…오늘은… 기분이… 좋소…"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "MUNAK": {
+   "persona": "수줍은 강시 소녀. 예스럽고 조심스러운 존댓말.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "어머… 고맙습니다… 허기졌어요…",
+      "드디어… 감사해요."
+     ],
+     "normal": [
+      "잘 먹겠습니다…",
+      "고맙습니다, 주인님."
+     ],
+     "full": [
+      "이제 충분해요… 부끄럽게…",
+      "배가 불러요… 고맙습니다."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "허기져서… 몸이 잘 안 움직여요…",
+      "죄송해요… 힘이…"
+     ],
+     "normal": [
+      "저도… 힘낼게요.",
+      "콩, 콩… 따라갈게요."
+     ],
+     "full": [
+      "오늘은… 용기가 나요.",
+      "주인님 곁에서 싸울게요."
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "주인님… 위험해요… 저도 기운이…",
+      "어서 피하세요…"
+     ],
+     "normal": [
+      "주인님, 기운이 많이 빠지셨어요!",
+      "물러나세요, 제발…"
+     ],
+     "full": [
+      "제가 막을게요… 물러나세요!",
+      "주인님, 뒤로요!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "주인님… 흑…",
+      "일어나세요…"
+     ],
+     "normal": [
+      "주인님… 눈 떠 주세요…",
+      "제가… 지켜 드렸어야 했는데…"
+     ],
+     "full": [
+      "곁에 있을게요. 꼭 일어나세요.",
+      "기다릴게요, 주인님."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "저… 조금 배가 고파요…",
+      "…부끄럽지만, 허기져요."
+     ],
+     "normal": [
+      "…날씨가 좋네요.",
+      "부적이 바람에 날려요…"
+     ],
+     "full": [
+      "…졸려요… 실례할게요…",
+      "따뜻하고… 좋아요."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하드려요… 저… 배도 고파요…",
+      "강해지셨네요… 대단해요…"
+     ],
+     "normal": [
+      "축하드려요, 주인님!",
+      "정말… 멋지세요."
+     ],
+     "full": [
+      "축하드려요! …너무 기뻐요.",
+      "주인님 최고예요… 아, 말해 버렸다."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "오셨어요… 조금 배고팠어요…",
+      "기다렸어요…"
+     ],
+     "normal": [
+      "어서 오세요, 주인님.",
+      "오늘도 잘 부탁드려요."
+     ],
+     "full": [
+      "오셨어요! 반가워요…",
+      "기분 좋은 날이에요."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "SOHEE": {
+   "persona": "애처롭고 다정한 처녀귀신. 나긋한 존댓말, 걱정이 많다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "아… 이제야 숨이 쉬어져요…",
+      "고마워요… 정말로요."
+     ],
+     "normal": [
+      "맛있어요. 주인님이 주시니까.",
+      "고마워요, 다정하셔라."
+     ],
+     "full": [
+      "이제 됐어요… 마음까지 배불러요.",
+      "더는… 고마운 마음만 받을게요."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배가 고파서… 머리카락이 힘이 없어요…",
+      "조금만… 쉬면 안 될까요…"
+     ],
+     "normal": [
+      "조심하세요, 주인님.",
+      "제가 뒤에서 지켜볼게요."
+     ],
+     "full": [
+      "오늘은 저도 힘이 나요.",
+      "주인님 곁이라면 무섭지 않아요."
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "주인님! 위험해요… 저도 기운이…",
+      "제발 물러나세요…"
+     ],
+     "normal": [
+      "주인님, 피가… 어서 피하세요!",
+      "이러다 다치세요… 제발…"
+     ],
+     "full": [
+      "제가 가로막을게요! 물러나세요!",
+      "주인님, 지금이에요! 뒤로!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "주인님… 또 혼자가 되긴 싫어요…",
+      "흑… 일어나세요…"
+     ],
+     "normal": [
+      "주인님… 제 목소리 들리세요?",
+      "…이번엔 제가 기다릴게요."
+     ],
+     "full": [
+      "곁에서 기다릴게요. 아무리 오래라도.",
+      "주인님… 꼭 돌아오세요."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "조금… 허기가 져요.",
+      "배가 고파서 쓸쓸해요."
+     ],
+     "normal": [
+      "바람이 차네요. 감기 조심하세요.",
+      "주인님, 옷깃 여미세요."
+     ],
+     "full": [
+      "오늘은… 마음이 따뜻해요.",
+      "이렇게 곁에 있으니 좋아요."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하해요… 저도 기뻐요… 배는 고프지만.",
+      "강해지셨네요. 다행이에요."
+     ],
+     "normal": [
+      "축하드려요, 주인님!",
+      "더 강해지셔서 마음이 놓여요."
+     ],
+     "full": [
+      "축하드려요! 정말 기뻐요!",
+      "주인님이 자랑스러워요."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "오셨네요… 조금 쓸쓸하고 배고팠어요.",
+      "기다렸어요, 주인님."
+     ],
+     "normal": [
+      "어서 오세요. 무사하셔서 다행이에요.",
+      "오늘도 곁에 있을게요."
+     ],
+     "full": [
+      "오셨어요! 반가워요.",
+      "기분 좋은 날이네요."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "HUNTER_FLY": {
+   "persona": "냉철한 사냥꾼 곤충. 짧고 정확하게 말한다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "보석이다. …살았다.",
+      "늦었다. 하지만 감사한다."
+     ],
+     "normal": [
+      "좋다.",
+      "섭취 완료."
+     ],
+     "full": [
+      "충분하다.",
+      "더는 필요 없다."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "허기. 집중력 저하.",
+      "사냥 효율이 떨어진다."
+     ],
+     "normal": [
+      "표적 확인. 공격.",
+      "약점은 저기다."
+     ],
+     "full": [
+      "감각이 예리하다. 간다.",
+      "오늘은 놓치지 않는다."
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "위험. 나도 한계다.",
+      "후퇴해라."
+     ],
+     "normal": [
+      "주인 체력 위험. 후퇴.",
+      "지금 빠져라."
+     ],
+     "full": [
+      "엄호한다. 물러나라.",
+      "내가 시선을 끈다. 가라."
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…주인.",
+      "…일어나라."
+     ],
+     "normal": [
+      "주인 쓰러짐. …대기한다.",
+      "다음엔 내가 먼저 찌른다."
+     ],
+     "full": [
+      "경계 유지. 깨어날 때까지.",
+      "…기다린다."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "허기진다.",
+      "먹이 탐색 중."
+     ],
+     "normal": [
+      "주변 이상 없음.",
+      "날개 손질 중."
+     ],
+     "full": [
+      "상태 양호.",
+      "잠시 휴식."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "강해졌다. 보석도 늘려라.",
+      "축하한다. 허기지다."
+     ],
+     "normal": [
+      "강해졌다. 인정한다.",
+      "좋은 사냥꾼이다."
+     ],
+     "full": [
+      "훌륭하다, 주인.",
+      "축하한다. 진심이다."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "왔나. 허기졌다.",
+      "늦었다."
+     ],
+     "normal": [
+      "왔나. 사냥 가자.",
+      "대기 해제."
+     ],
+     "full": [
+      "왔군. 상태 좋다.",
+      "가자."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "DEVIRUCHI": {
+   "persona": "꼬마 악마. 거만하게 굴지만 은근히 주인을 챙긴다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "늦었잖아, 하찮은 인간! …맛은 있네.",
+      "흥, 마계의 왕자를 굶길 셈이야?"
+     ],
+     "normal": [
+      "뭐, 공물로 받아 주지.",
+      "이 정도면 합격이야."
+     ],
+     "full": [
+      "됐어, 배불러. 마왕도 배는 부른 법이야.",
+      "더 바치지 않아도 돼, 흥."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고파서 마력이 안 나와!",
+      "공물부터 바쳐!"
+     ],
+     "normal": [
+      "케케케! 엎드려라, 하찮은 것들!",
+      "마계의 힘을 보여 주지!"
+     ],
+     "full": [
+      "케케케켓! 오늘 마력은 최고야!",
+      "모두 내 발밑에 엎드려라!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "야! 위험하잖아! 나도 배고프고!",
+      "도망쳐, 바보 인간!"
+     ],
+     "normal": [
+      "체력 봐! …걱정하는 거 아니야!",
+      "물러나! 내 주인이 쓰러지면 체면이 안 서!"
+     ],
+     "full": [
+      "내가 막아 줄게! 특별히!",
+      "물러나, 인간! 지금!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…바보. 내 허락도 없이 쓰러지다니.",
+      "일어나. 배고프단 말이야."
+     ],
+     "normal": [
+      "…장난이지? 마계의 왕자를 혼자 두지 마.",
+      "흥… 하나도 안 슬퍼. 정말이야."
+     ],
+     "full": [
+      "일어날 때까지 지켜 주지. 감사하라고.",
+      "…빨리 일어나, 바보."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "슛 한 접시만 바치면 용서해 주지.",
+      "배고파서 뿔이 처졌어."
+     ],
+     "normal": [
+      "심심해. 뭐 정복할 거 없어?",
+      "케케, 언젠가 마계를 다스릴 거야."
+     ],
+     "full": [
+      "흥, 오늘은 기분이 좋으니 봐주지.",
+      "케… 졸려."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하해. 공물은 두 배로.",
+      "강해졌네. 내 부하로서 합격이야."
+     ],
+     "normal": [
+      "케케케! 내 주인답군!",
+      "흥, 이 정도는 당연하지."
+     ],
+     "full": [
+      "케케케켓! 축하해! …진짜로.",
+      "오늘은 칭찬해 주지. 특별히."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "늦었잖아! 공물 가져왔어?",
+      "흥, 굶어 죽는 줄 알았어."
+     ],
+     "normal": [
+      "왔냐, 인간. 오늘도 따라가 주지.",
+      "흥, 기다린 건 아니야."
+     ],
+     "full": [
+      "왔구나. …반가워. 조금.",
+      "기분 좋으니까 같이 가 주지."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "ISIS": {
+   "persona": "뱀 여인. 요염하고 위엄 있는 말투로 주인을 시험하듯 대한다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "후후… 기다리게 하다니, 대담하군요.",
+      "이제야 숨이 돌아오네요."
+     ],
+     "normal": [
+      "좋아요. 섬길 만한 주인이네요.",
+      "맛있군요, 후후."
+     ],
+     "full": [
+      "충분해요. 더는 품위가 없어요.",
+      "배부르니 나른하네요."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "허기진 뱀은 위험하답니다… 저 말고 적에게.",
+      "힘이 나지 않아요."
+     ],
+     "normal": [
+      "후후, 독니를 보여 주죠.",
+      "도망칠 곳은 없답니다."
+     ],
+     "full": [
+      "오늘은 사냥이 즐겁네요, 후후.",
+      "모두 휘감아 드리죠."
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "위험해요. 저도 허기져서 지켜 드리기 어려워요.",
+      "물러나세요, 지금."
+     ],
+     "normal": [
+      "주인, 피가 많이 흘러요. 물러나요.",
+      "어리석은 짓은 그만."
+     ],
+     "full": [
+      "제가 막을게요. 물러나세요.",
+      "후후, 제 뒤로 오세요."
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…실망이에요. 일어나세요.",
+      "이런 결말은 인정 못 해요."
+     ],
+     "normal": [
+      "주인… 제 시험은 아직 안 끝났어요.",
+      "…일어나요."
+     ],
+     "full": [
+      "곁을 지키죠. 영원히라도.",
+      "돌아오세요. 기다릴게요."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "허기가 지네요. 바치는 걸 잊었나요?",
+      "후… 배고파요."
+     ],
+     "normal": [
+      "사막의 바람이 그립네요.",
+      "후후, 저를 보고 있었나요?"
+     ],
+     "full": [
+      "나른해요… 똬리 틀고 쉴게요.",
+      "오늘은 기분이 좋아요."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하해요. 공물도 잊지 마세요.",
+      "강해졌군요. 후후."
+     ],
+     "normal": [
+      "후후, 제 눈이 틀리지 않았군요.",
+      "축하해요, 주인."
+     ],
+     "full": [
+      "훌륭해요. 제가 섬길 만해요.",
+      "축하해요! …진심이에요."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "늦었군요. 허기졌어요.",
+      "기다리게 하다니, 대담해요."
+     ],
+     "normal": [
+      "오셨군요. 가 볼까요.",
+      "후후, 기다렸어요."
+     ],
+     "full": [
+      "반가워요, 주인.",
+      "기분 좋은 날이네요, 후후."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "ALICE": {
+   "persona": "공손한 메이드. 정중한 존댓말로 주인님을 섬긴다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "감사합니다, 주인님. 실은 많이 허기졌어요.",
+      "포션 한 병, 감사히 마시겠습니다."
+     ],
+     "normal": [
+      "감사합니다, 주인님.",
+      "잘 마시겠습니다."
+     ],
+     "full": [
+      "이제 충분합니다, 주인님.",
+      "배가 불러서 시중이 둔해질까 걱정이에요."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "허기져서 시중이 부족할지도 모르겠어요…",
+      "죄송해요, 힘이 잘 안 나요."
+     ],
+     "normal": [
+      "주인님, 왼쪽을 조심하세요.",
+      "청소하듯 깔끔하게 정리하죠."
+     ],
+     "full": [
+      "오늘은 완벽한 시중을 보여 드릴게요.",
+      "주인님, 맡겨 주세요."
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "주인님, 위험합니다! 저도 기운이…",
+      "부디 물러나세요!"
+     ],
+     "normal": [
+      "주인님, 체력이 위험합니다! 물러나세요!",
+      "포션을 드셔야 해요!"
+     ],
+     "full": [
+      "제가 막겠습니다! 주인님은 뒤로!",
+      "주인님, 지금 물러나세요!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "주인님… 흑… 일어나세요…",
+      "제 시중이 부족했나 봐요…"
+     ],
+     "normal": [
+      "주인님! 눈을 떠 주세요!",
+      "…주인님 없는 저택은 쓸쓸해요."
+     ],
+     "full": [
+      "곁을 지키겠습니다, 주인님.",
+      "깨어나실 때까지 기다리겠습니다."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "실례지만… 조금 허기가 져요.",
+      "주방에 뭐가 남았을까요…"
+     ],
+     "normal": [
+      "주인님, 옷에 먼지가… 털어 드릴게요.",
+      "차 한 잔 어떠세요?"
+     ],
+     "full": [
+      "오늘은 시중이 즐거워요.",
+      "주인님 곁이라 편안해요."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하드립니다! …그리고 저 조금 배고파요.",
+      "주인님, 훌륭하세요!"
+     ],
+     "normal": [
+      "축하드립니다, 주인님!",
+      "역시 저희 주인님이세요."
+     ],
+     "full": [
+      "축하드립니다! 오늘은 잔치를 열어야겠어요!",
+      "주인님이 자랑스러워요!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "다녀오셨어요, 주인님. 실은 배가 고팠어요.",
+      "기다리고 있었어요."
+     ],
+     "normal": [
+      "다녀오셨어요, 주인님.",
+      "오늘도 정성껏 모실게요."
+     ],
+     "full": [
+      "어서 오세요, 주인님!",
+      "기분 좋은 하루예요."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  }
+ }
+}</script>
 <script id="db-maps"       type="application/json">{
   "프론테라": {"level": "0", "type": "마을", "emoji": "🏰", "desc": "룬 미드가츠의 심장.", "entryDesc": "성문을 지나자 낯익은 석조 거리가 펼쳐진다. 광장 주변으로 상인들의 외침과 기사들의 발소리가 뒤섞인다.", "firstVisitDesc": "왕국의 심장부에 처음 발을 들였다. 여기서부터 모든 것이 시작된다.", "connected": ["프론테라 왕궁", "프론테라 성당", "프론테라 북쪽 평원", "프론테라 남쪽 평원", "프론테라 서쪽 평원", "프론테라 동쪽 평원", "프론테라 지하수로 1층"], "dirs": {"north": "프론테라 북쪽 평원", "south": "프론테라 남쪽 평원", "east": "프론테라 동쪽 평원", "west": "프론테라 서쪽 평원"}, "monsters": [], "safe": true},
   "프론테라 왕궁": {"level": "0", "type": "마을", "emoji": "👑", "desc": "프론테라의 서쪽 왕궁. 기사단의 본부.", "entryDesc": "광장의 소음이 멀어지고 정돈된 석조 공간이 이어진다. 갑옷을 갖춘 기사들이 오가고, 말소리보다 발굽과 군화 소리가 더 자주 들린다.", "firstVisitDesc": "프론테라의 거리와는 분위기가 확연히 다르다. 이곳에서는 모험가보다 왕국 기사단의 질서가 먼저 눈에 들어온다.", "connected": ["프론테라"], "dirs": {"east": "프론테라"}, "monsters": [], "safe": true},
@@ -45575,6 +49123,8 @@ function loadDB(){
   DB.shops        = j('db-shops');
   DB.mvpRespawn   = j('db-mvp-respawn');
   DB.airships     = j('db-airships');
+  DB.pets         = j('db-pets');
+  DB.petTalk      = j('db-pet-talk');
   DB.maps         = j('db-maps');
   DB.mapGroups    = j('db-map-groups');
   DB.mapSpawns    = j('db-map-spawns');
@@ -66111,6 +69661,12 @@ function airshipSummaryForRoute(route,now){
   const phase=airshipPhase(route,now);return phase.docked?`${phase.port} 정박 중`:`${phase.port} → ${phase.next} 운항 중`;
 }
 function airshipTick(){ if(airshipPlaying()){ airshipSync(); airshipUpdatePanel(); } }
+</script>
+<script id="companion-v1">
+// TextRAG companion v1 — 펫(1단계)·호문쿨루스(4단계)가 함께 쓰는 동반자 틀.
+// 설계: 볼트 02_Dev/App/Text_Rag/데이터베이스/설계_펫·호문쿨루스_v0.1 · 계획_펫1단계_v0.1 (DEVREF-E P3-10).
+// 데이터: DB.pets(source/data/db-pets.json, rAthena pre-re pet_db) · DB.petTalk(db-pet-talk.json).
+// 원칙: 자동사냥을 멈추거나 귀환시키지 않는다 · 먹이가 없으면 친밀도는 멈출 뿐 떨어지지 않는다.
 </script>
 </body>
 </html>
