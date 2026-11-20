@@ -3634,6 +3634,8 @@ function normalizeSave(p){
   // [보스 기척] 보스 옵션 값 이관(normal→기척기록, 보스만사냥→보스우선탐사) + 발견 기록 보강
   if(p.options && 'bossMode' in p.options) p.options.bossMode = normalizeBossMode(p.options.bossMode);
   if(!p.discoveries || typeof p.discoveries !== 'object' || Array.isArray(p.discoveries)) p.discoveries = {};
+  // [동반자] 펫·호문쿨루스 상태 보강 (source/companion.js, P3-10)
+  if(typeof companionNormalize==='function') companionNormalize(p);
 
   // [데이터 마이그레이션] 인벤의 유령 키 제거.
   // 드롭명이 아이템DB에 없던 시절에 쌓인 것들이라 팔 수도 쓸 수도 없는 죽은 데이터다.
