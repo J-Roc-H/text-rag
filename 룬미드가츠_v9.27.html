@@ -49453,7 +49453,7 @@ body.work-mode p {
 <div id="app"><div class="app-inner">
 <div id="titlebar">
   <span class="title-logo">⚔ 룬 미드가츠</span>
-  <span class="title-map" id="title-map">프론테라 남쪽 평원</span>
+  <span class="title-map" id="title-map">프론테라 필드 08</span>
   <span class="title-spacer"></span>
   <span class="save-state" id="save-state" title="자동저장 — 60초마다, 화면을 떠날 때"></span>
   <button class="sys-btn icon-btn" onclick="showSettingsMenu()" title="설정" aria-label="설정">⚙</button>
@@ -51493,7 +51493,7 @@ const DB_SKILLS = {
 <script id="block-engine-logic">
 let slots=Array(6).fill(null);
 let activeSlot=-1; let regenTimer=null;
-let G={player:null,currentMap:"프론테라 남쪽 평원",battles:[],autoHunt:false,huntTimer:null,invTab:'all',cooldowns:{},itemCooldowns:{},skillTiers:null,tierIdx:null,skillTierSig:'',lastSkill:'',buffTick:0,passerbyTimer:null};
+let G={player:null,currentMap:"prt_fild08",battles:[],autoHunt:false,huntTimer:null,invTab:'all',cooldowns:{},itemCooldowns:{},skillTiers:null,tierIdx:null,skillTierSig:'',lastSkill:'',buffTick:0,passerbyTimer:null};
 
 // 공용 encounter 기록: processTurn과 runHeadlessTicks가 같은 기록 객체를 사용한다.
 const COMBAT_RECORD_LIMIT=30, COMBAT_EVENT_LIMIT=240;
@@ -52219,7 +52219,7 @@ function loadCharacter(i){
     activeSlot = -1;
     return;
   }
-  G.player = p; G.currentMap = p.savedMap||"프론테라 남쪽 평원"; G.battles=[]; G.autoHunt=false; clearTimeout(G.huntTimer);
+  G.player = p; G.currentMap = p.savedMap||"prt_fild08"; G.battles=[]; G.autoHunt=false; clearTimeout(G.huntTimer);
   const airshipRestored=typeof airshipRestore==='function' && airshipRestore();
   G.vendingSlots = []; G.lastVendingCheck = 0; // [P1-16] 이전 캐릭터의 노점이 새 캐릭터로 새지 않게(재고는 위 로드에서 환급됨)
   { let _vb=document.getElementById('vending-badge'); if(_vb) _vb.style.display='none'; }
@@ -56326,7 +56326,7 @@ function compoundCard(equipName, cardName) {
 }
 // ── 던전 접근 잠금 설정 ─────────────────────────────────────────────
 const DUNGEON_LOCKS = {
-  "프론테라 지하수로 1층":   { msg:"⚠️ 지하수로 입구에 몬스터들이 우글거립니다. 기사단 징병관에게 토벌대 입단 허가를 먼저 받으세요." },
+  "prt_sewb1":              { msg:"⚠️ 지하수로 입구에 몬스터들이 우글거립니다. 기사단 징병관에게 토벌대 입단 허가를 먼저 받으세요." },
   "거북섬":                 { msg:"⚠️ 거칠게 울부짖는 거대 바다거북들이 뱃길을 막고 있습니다. 부두의 거북 할아버지에게 입장료를 내야 합니다." },
   "침몰선":                 { msg:"⚠️ 침몰선 주변에 차갑고 음산한 기운이 가득합니다. 피스크에게 입장료를 내야 합니다." },
   "바이알란 섬":             { msg:"⚠️ 거센 해류와 함께 알 수 없는 힘이 앞을 막습니다. 이즈루드 부두 선원에게 승선료를 내야 합니다." },
@@ -61831,7 +61831,7 @@ const TUTORIAL_QUESTS = {
     reward: { zeny: 200, items: { "빨간포션": 3 } },
     next: "tut_03",
     dialog: [
-      { speaker:"친절한 노인", text:"다시 오셨군요! 이번엔 실전 연습을 해볼까요? 프론테라 남쪽 평원의 포링 3마리를 처치해주세요. 하단의 [▶ 자동사냥] 버튼을 누르면 자동으로 싸워줍니다." },
+      { speaker:"친절한 노인", text:"다시 오셨군요! 이번엔 실전 연습을 해볼까요? 프론테라 남문 밖 들판(프론테라 필드 08)의 포링 3마리를 처치해주세요. 하단의 [▶ 자동사냥] 버튼을 누르면 자동으로 싸워줍니다." },
       { speaker:"player",
         choices:[
           { label:"알겠습니다, 해보죠!", next:"accept" },
@@ -62459,9 +62459,12 @@ function giveQuestReward(q) {
   }
   if (q.unlock) {
     if (!p.unlockedMaps) p.unlockedMaps = {};
-    p.unlockedMaps[q.unlock] = true;
-    log(`🗺️ <b>[${q.unlock}]</b> 입장이 해금되었습니다!`, 'quest');
-    notify(`던전 해금: ${q.unlock}`, 'gold');
+    // 원작 맵 키로 연다 — 퀘스트 데이터의 한국어 지명이 별칭이어도(P9 시범) 잠금 검사(mapKey)와 같은 키가 된다
+    let unlockKey = (typeof mapKey==='function' && mapKey(q.unlock)) || q.unlock;
+    let unlockName = (typeof mapLabel==='function') ? mapLabel(q.unlock) : q.unlock;
+    p.unlockedMaps[unlockKey] = true;
+    log(`🗺️ <b>[${unlockName}]</b> 입장이 해금되었습니다!`, 'quest');
+    notify(`던전 해금: ${unlockName}`, 'gold');
   }
 }
 

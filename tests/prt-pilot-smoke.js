@@ -84,4 +84,39 @@ while (q.length) { const c = q.shift(); api.mapConnections(c).forEach((n) => { i
   assert((html.match(/pickSpawnMonster\(/g) || []).length >= 3, '공격적 추가 출현도');
 }
 
+// ── Task 4: 옛 지명 이관 ─────────────────────────────────────────────────────────
+{
+  const c3 = install();
+  vm.runInContext([
+    "var STAT_KEYS=['str','agi','vit','int','dex','luk']; function totalStatPointsAt(){ return 0; } var SAVE_SCHEMA_VERSION=2;",  // 스탯 이관부는 이 시험 밖
+    constBlock('COMPRESSED_MAP_GROUPS'), extractFunction(html, 'function resolveLegacyMapRef(ref){'),
+    extractFunction(html, 'function migrateSave(p){'), extractFunction(html, 'function giveQuestReward(q) {'),
+    'this.mig={migrateSave,giveQuestReward};',
+  ].join('\n'), c3);
+  // legacy_keys_migrate: 옛 지명 세이브 -> 원작 맵 키, 두 번 돌려도 같다
+  const old = { savedMap: '프론테라 남쪽 평원', unlockedMaps: { '프론테라 지하수로 1층': true, '게펜': true },
+    visitedMaps: { '프론테라 북쪽 평원': true, '프론테라': true }, records: { mapTime: { '미궁 숲': 50, '프론테라 서쪽 평원': 7 } } };
+  c3.mig.migrateSave(old);
+  const once = JSON.stringify(old);
+  c3.mig.migrateSave(old);
+  assert.strictEqual(JSON.stringify(old), once, '멱등');
+  assert.strictEqual(old.savedMap, 'prt_fild08');
+  assert(old.unlockedMaps.prt_sewb1 && old.unlockedMaps['게펜'], JSON.stringify(old.unlockedMaps));
+  assert(old.visitedMaps.prt_fild01 && old.visitedMaps['프론테라']);
+  assert.strictEqual(old.records.mapTime.prt_maze01, 50);
+  assert.strictEqual(old.records.mapTime.prt_fild05, 7);
+
+  // sewer_lock: 토벌대 퀘스트 보상은 지하수로 1층을 원작 맵 키(prt_sewb1)로 연다
+  c3.G = { player: { zeny: 0, inventory: {}, unlockedMaps: {} } };
+  c3.log = () => {}; c3.notify = () => {}; c3.gainBaseExp = () => {};
+  vm.runInContext('this.G=G;', c3);
+  c3.mig.giveQuestReward({ reward: {}, unlock: '프론테라 지하수로 1층' });
+  assert(c3.G.player.unlockedMaps.prt_sewb1, JSON.stringify(c3.G.player.unlockedMaps));
+  const lock = html.slice(html.indexOf('const DUNGEON_LOCKS = {'), html.indexOf('const DUNGEON_LOCKS = {') + 400);
+  assert(lock.includes('"prt_sewb1"'), '잠금 표도 원작 맵 키');
+  // 시작 맵 기본값과 튜토리얼 대사
+  assert(!/currentMap:"프론테라 남쪽 평원"|savedMap\|\|"프론테라 남쪽 평원"/.test(html), '기본 시작 맵이 옛 지명');
+  assert(!html.includes('프론테라 남쪽 평원의 포링'), '튜토리얼 대사가 옛 지명');
+}
+
 console.log('prt-pilot-smoke: OK');
