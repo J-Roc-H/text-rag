@@ -73,6 +73,7 @@ BLOCKS = {
     "DB_PRODUCTION": "db-production.json",
     "DB_SHOPS": "db-shops.json",
     "DB_MVP_RESPAWN": "db-mvp-respawn.json",
+    "DB_PRT_PILOT": "db-prt-pilot.json",
     "DB_PETS": "db-pets.json",
     "DB_PET_TALK": "db-pet-talk.json",
 }
@@ -716,6 +717,33 @@ def load_data_files():
     return raw, parsed
 
 
+def audit_prt_pilot(pilot, maps, monsters, mvp):
+    """원작 맵 1:1 프론테라 시범 데이터 감사. 이 데이터는 tools/build_prt_pilot.py만 만든다(손으로 고치지 않음)."""
+    errors = []
+    pm = pilot.get("maps") or {}
+    if len(pm) != 19:
+        errors.append(f"시범 맵 수 {len(pm)} (19여야 함)")
+    for mid, m in pm.items():
+        if mid in maps:
+            errors.append(f"{mid}: db-maps.json에 같은 키가 손으로 들어가 있음 — 시범 맵은 db-prt-pilot만 소유")
+        if not m.get("spawns") and not m.get("mvp"):
+            errors.append(f"{mid}: 출현 없음")
+        for tid, cnt in m.get("spawns") or []:
+            if str(tid) not in monsters:
+                errors.append(f"{mid}: 몬스터 {tid}가 db-monsters에 없음")
+            if not (isinstance(cnt, int) and cnt > 0):
+                errors.append(f"{mid}: 마릿수 {cnt}")
+        if m.get("mvp") and str(m["mvp"]) not in mvp:
+            errors.append(f"{mid}: MVP {m['mvp']}가 db-mvp-respawn에 없음")
+        for t in m.get("warps") or []:
+            if t not in pm and t not in (pilot.get("bridges") or {}) and not t.startswith(("prt_monk", "prt_gld")):
+                errors.append(f"{mid}: 워프 목적지 {t}가 시범 맵도 다리도 아님")
+    for o, legacy in (pilot.get("bridges") or {}).items():
+        if legacy not in maps:
+            errors.append(f"다리 {o} -> '{legacy}'가 db-maps에 없음")
+    return errors
+
+
 PET_TIERS = ("low", "mid", "high", "rare")
 
 
@@ -801,6 +829,10 @@ def main():
     if pet_errors:
         raise ValueError("펫 데이터 오류:\n  - " + "\n  - ".join(pet_errors))
     print("OK - pet db audit")
+    pilot_errors = audit_prt_pilot(parsed["DB_PRT_PILOT"], parsed["DB_MAPS"], parsed["DB_MONSTERS"], parsed["DB_MVP_RESPAWN"])
+    if pilot_errors:
+        raise ValueError("프론테라 시범 맵 데이터 오류:\n  - " + "\n  - ".join(pilot_errors))
+    print("OK - prontera pilot map audit")
     audit_quest_item_sources(template, parsed)
     drop_errors = audit_monster_drops(parsed["DB_MONSTERS"], parsed["DB_ITEMS"])
     if drop_errors:

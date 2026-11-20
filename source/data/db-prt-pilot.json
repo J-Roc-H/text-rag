@@ -1,0 +1,758 @@
+{
+ "src": "rathena dd073ca npc/pre-re/mobs (prontera·prt_sew·prt_maze) + npc/**/warps — 사실값만 추출",
+ "maps": {
+  "prt_fild00": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 00",
+   "spawns": [
+    [
+     38,
+     70
+    ],
+    [
+     1,
+     40
+    ],
+    [
+     4,
+     30
+    ],
+    [
+     2,
+     30
+    ],
+    [
+     3,
+     20
+    ],
+    [
+     18,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "gef_fild00",
+    "mjolnir_07",
+    "mjolnir_09",
+    "prt_fild04"
+   ]
+  },
+  "prt_fild01": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 01",
+   "spawns": [
+    [
+     2,
+     80
+    ],
+    [
+     17,
+     30
+    ],
+    [
+     1,
+     30
+    ],
+    [
+     3,
+     20
+    ],
+    [
+     4,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "mjolnir_09",
+    "mjolnir_10",
+    "prt_fild02",
+    "prt_gld",
+    "prt_maze01"
+   ]
+  },
+  "prt_fild02": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 02",
+   "spawns": [
+    [
+     15,
+     70
+    ],
+    [
+     3,
+     50
+    ],
+    [
+     1,
+     30
+    ],
+    [
+     4,
+     20
+    ],
+    [
+     2,
+     10
+    ],
+    [
+     102,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "mjolnir_11",
+    "prt_fild01",
+    "prt_fild03",
+    "prt_fild06"
+   ]
+  },
+  "prt_fild03": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 03",
+   "spawns": [
+    [
+     23,
+     80
+    ],
+    [
+     13,
+     40
+    ],
+    [
+     20,
+     10
+    ],
+    [
+     105,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "prt_fild02",
+    "prt_monk"
+   ]
+  },
+  "prt_fild04": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 04",
+   "spawns": [
+    [
+     14,
+     70
+    ],
+    [
+     18,
+     40
+    ],
+    [
+     1,
+     30
+    ],
+    [
+     4,
+     10
+    ],
+    [
+     103,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "gef_fild01",
+    "prt_fild00",
+    "prt_fild05"
+   ]
+  },
+  "prt_fild05": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 05",
+   "spawns": [
+    [
+     1,
+     70
+    ],
+    [
+     2,
+     30
+    ],
+    [
+     4,
+     30
+    ],
+    [
+     17,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "mjolnir_09",
+    "prontera",
+    "prt_fild04",
+    "prt_fild07"
+   ]
+  },
+  "prt_fild06": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 06",
+   "spawns": [
+    [
+     2,
+     60
+    ],
+    [
+     1,
+     60
+    ],
+    [
+     4,
+     20
+    ],
+    [
+     17,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "prontera",
+    "prt_fild02"
+   ]
+  },
+  "prt_fild07": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 07",
+   "spawns": [
+    [
+     14,
+     80
+    ],
+    [
+     20,
+     30
+    ],
+    [
+     103,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "gef_fild02",
+    "prt_fild05",
+    "prt_fild08",
+    "prt_fild09"
+   ]
+  },
+  "prt_fild08": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 08",
+   "spawns": [
+    [
+     1,
+     70
+    ],
+    [
+     2,
+     40
+    ],
+    [
+     4,
+     20
+    ],
+    [
+     5,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "izlude",
+    "moc_fild01",
+    "prontera",
+    "prt_fild07"
+   ]
+  },
+  "prt_fild09": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 09",
+   "spawns": [
+    [
+     481,
+     70
+    ],
+    [
+     9,
+     20
+    ],
+    [
+     480,
+     20
+    ],
+    [
+     12,
+     20
+    ],
+    [
+     8,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "moc_fild01",
+    "moc_fild20",
+    "prt_fild07",
+    "prt_fild10"
+   ]
+  },
+  "prt_fild10": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 10",
+   "spawns": [
+    [
+     483,
+     70
+    ],
+    [
+     481,
+     40
+    ],
+    [
+     20,
+     20
+    ],
+    [
+     17,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "gef_fild02",
+    "moc_fild20",
+    "prt_fild09",
+    "prt_fild11"
+   ]
+  },
+  "prt_fild11": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 11",
+   "spawns": [
+    [
+     27,
+     10
+    ],
+    [
+     352,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "gef_fild03",
+    "gef_fild11",
+    "prt_fild10"
+   ]
+  },
+  "prt_maze01": {
+   "group": "미궁 숲",
+   "displayName": "미궁 숲 1",
+   "spawns": [
+    [
+     483,
+     8
+    ],
+    [
+     1,
+     5
+    ],
+    [
+     2,
+     5
+    ],
+    [
+     3,
+     5
+    ],
+    [
+     4,
+     5
+    ],
+    [
+     20,
+     5
+    ],
+    [
+     14,
+     5
+    ],
+    [
+     36,
+     5
+    ],
+    [
+     13,
+     5
+    ],
+    [
+     25,
+     5
+    ],
+    [
+     24,
+     5
+    ],
+    [
+     6,
+     5
+    ],
+    [
+     113,
+     5
+    ],
+    [
+     110,
+     5
+    ],
+    [
+     37,
+     5
+    ],
+    [
+     111,
+     5
+    ],
+    [
+     30,
+     5
+    ],
+    [
+     79,
+     4
+    ],
+    [
+     23,
+     4
+    ],
+    [
+     467,
+     3
+    ],
+    [
+     46,
+     3
+    ],
+    [
+     39,
+     3
+    ],
+    [
+     105,
+     2
+    ],
+    [
+     18,
+     1
+    ],
+    [
+     107,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "mjolnir_12",
+    "prt_fild01",
+    "prt_maze02"
+   ]
+  },
+  "prt_maze02": {
+   "group": "미궁 숲",
+   "displayName": "미궁 숲 2",
+   "spawns": [
+    [
+     20,
+     25
+    ],
+    [
+     36,
+     5
+    ],
+    [
+     455,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "prt_maze01",
+    "prt_maze03"
+   ]
+  },
+  "prt_maze03": {
+   "group": "미궁 숲",
+   "displayName": "미궁 숲 3",
+   "spawns": [
+    [
+     20,
+     45
+    ],
+    [
+     79,
+     30
+    ],
+    [
+     39,
+     30
+    ],
+    [
+     478,
+     20
+    ],
+    [
+     91,
+     1
+    ],
+    [
+     461,
+     1
+    ],
+    [
+     103,
+     1
+    ],
+    [
+     107,
+     1
+    ],
+    [
+     102,
+     1
+    ],
+    [
+     101,
+     1
+    ]
+   ],
+   "mvp": 137,
+   "warps": [
+    "prt_maze02"
+   ]
+  },
+  "prt_sewb1": {
+   "group": "프론테라 지하수로",
+   "displayName": "프론테라 지하수로 1층",
+   "spawns": [
+    [
+     17,
+     30
+    ],
+    [
+     19,
+     10
+    ],
+    [
+     16,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "prt_fild05",
+    "prt_sewb2"
+   ]
+  },
+  "prt_sewb2": {
+   "group": "프론테라 지하수로",
+   "displayName": "프론테라 지하수로 2층",
+   "spawns": [
+    [
+     17,
+     70
+    ],
+    [
+     16,
+     60
+    ],
+    [
+     114,
+     30
+    ],
+    [
+     11,
+     20
+    ],
+    [
+     19,
+     10
+    ],
+    [
+     109,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "prt_sewb1",
+    "prt_sewb3"
+   ]
+  },
+  "prt_sewb3": {
+   "group": "프론테라 지하수로",
+   "displayName": "프론테라 지하수로 3층",
+   "spawns": [
+    [
+     109,
+     65
+    ],
+    [
+     108,
+     65
+    ],
+    [
+     17,
+     20
+    ],
+    [
+     19,
+     20
+    ],
+    [
+     16,
+     15
+    ],
+    [
+     26,
+     15
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "prt_sewb2",
+    "prt_sewb4"
+   ]
+  },
+  "prt_sewb4": {
+   "group": "프론테라 지하수로",
+   "displayName": "프론테라 지하수로 4층",
+   "spawns": [
+    [
+     108,
+     70
+    ],
+    [
+     17,
+     20
+    ],
+    [
+     109,
+     20
+    ],
+    [
+     133,
+     20
+    ],
+    [
+     147,
+     5
+    ]
+   ],
+   "mvp": 399,
+   "warps": [
+    "prt_sewb3"
+   ]
+  }
+ },
+ "bridges": {
+  "gef_fild00": "게펜 필드",
+  "gef_fild01": "게펜 필드",
+  "gef_fild02": "게펜 필드",
+  "gef_fild03": "게펜 필드",
+  "gef_fild11": "게펜 필드",
+  "izlude": "이즈루드",
+  "mjolnir_07": "묘르닐 산맥",
+  "mjolnir_09": "묘르닐 산맥",
+  "mjolnir_10": "묘르닐 산맥",
+  "mjolnir_11": "묘르닐 산맥",
+  "mjolnir_12": "묘르닐 산맥",
+  "moc_fild01": "소그라트 사막 동부",
+  "prontera": "프론테라",
+  "moc_fild20": "소그라트 사막 동부"
+ },
+ "unmapped": [
+  "prt_fild00 Shining Plant(1083)x1",
+  "prt_fild00 Green Plant(1080)x5",
+  "prt_fild01 Green Plant(1080)x3",
+  "prt_fild01 Blue Plant(1079)x1",
+  "prt_fild02 Shining Plant(1083)x1",
+  "prt_fild02 Shining Plant(1083)x2",
+  "prt_fild03 Green Plant(1080)x5",
+  "prt_fild03 Blue Plant(1079)x2",
+  "prt_fild03 Green Plant(1080)x5",
+  "prt_fild03 Green Plant(1080)x5",
+  "prt_fild03 Green Plant(1080)x5",
+  "prt_fild04 Green Plant(1080)x5",
+  "prt_fild05 Thief Bug Egg(1048)x20",
+  "prt_fild05 Green Plant(1080)x6",
+  "prt_fild05 Blue Plant(1079)x1",
+  "prt_fild06 Thief Bug Egg(1048)x20",
+  "prt_fild06 Green Plant(1080)x15",
+  "prt_fild07 Black Mushroom(1084)x3",
+  "prt_fild09 Yellow Plant(1081)x3",
+  "prt_fild10 Red Mushroom(1085)x15",
+  "prt_fild10 Shining Plant(1083)x1",
+  "prt_fild11 Goblin(1123)x20",
+  "prt_fild11 Goblin(1124)x20",
+  "prt_fild11 Goblin(1125)x30",
+  "prt_fild11 Goblin(1126)x30",
+  "prt_fild11 Panzer Goblin(1308)x1",
+  "prt_fild11 Goblin Steamrider(1280)x30",
+  "prt_fild11 Red Mushroom(1085)x10",
+  "prt_sewb1 Thief Bug Egg(1048)x80",
+  "prt_sewb2 Thief Bug Egg(1048)x20",
+  "prt_sewb3 Thief Bug Egg(1048)x10",
+  "prt_sewb4 Thief Bug Egg(1048)x10",
+  "prt_maze01 Horn(1128)x5",
+  "prt_maze01 Side Winder(1037)x3",
+  "prt_maze01 Coco(1104)x5",
+  "prt_maze01 Shining Plant(1083)x1",
+  "prt_maze01 White Plant(1082)x1",
+  "prt_maze01 White Plant(1082)x2",
+  "prt_maze01 Blue Plant(1079)x1",
+  "prt_maze01 Yellow Plant(1081)x1",
+  "prt_maze01 Shining Plant(1083)x1",
+  "prt_maze01 Blue Plant(1079)x1",
+  "prt_maze01 Red Plant(1078)x5",
+  "prt_maze01 Blue Plant(1079)x1",
+  "prt_maze01 Yellow Plant(1081)x1",
+  "prt_maze01 Black Mushroom(1084)x3",
+  "prt_maze01 Black Mushroom(1084)x2",
+  "prt_maze01 Red Mushroom(1085)x3",
+  "prt_maze01 Red Mushroom(1085)x2",
+  "prt_maze02 Leib Olmai(1306)x1",
+  "prt_maze03 Side Winder(1037)x10",
+  "prt_maze03 Side Winder(1037)x20",
+  "prt_maze03 Baphomet Jr.(1101)x25",
+  "prt_maze03 Shining Plant(1083)x1",
+  "prt_maze03 Blue Plant(1079)x1",
+  "prt_maze03 Yellow Plant(1081)x1",
+  "prt_maze03 Shining Plant(1083)x1",
+  "prt_maze03 Shining Plant(1083)x1",
+  "prt_maze03 Shining Plant(1083)x1",
+  "prt_maze03 Shining Plant(1083)x1",
+  "prt_maze03 Blue Plant(1079)x1",
+  "prt_maze03 Blue Plant(1079)x2",
+  "prt_maze03 Blue Plant(1079)x1",
+  "prt_maze03 Red Plant(1078)x5",
+  "prt_maze03 Black Mushroom(1084)x3",
+  "prt_maze03 Black Mushroom(1084)x3",
+  "prt_maze03 Red Mushroom(1085)x2",
+  "prt_maze03 Red Mushroom(1085)x3"
+ ]
+}
