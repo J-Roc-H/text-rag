@@ -874,6 +874,8 @@ body.work-mode p {
 <script id="db-monsters"   type="application/json">{{__DATA_DB_MONSTERS__}}</script>
 <script id="db-monster-ai-profiles" type="application/json">{{__DATA_DB_MONSTER_AI_PROFILES__}}</script>
 <script id="db-airships" type="application/json">{{__DATA_DB_AIRSHIPS__}}</script>
+<script id="db-pets" type="application/json">{{__DATA_DB_PETS__}}</script>
+<script id="db-pet-talk" type="application/json">{{__DATA_DB_PET_TALK__}}</script>
 <script id="db-maps"       type="application/json">{{__DATA_DB_MAPS__}}</script>
 <script id="db-map-groups" type="application/json">{{__DATA_DB_MAP_GROUPS__}}</script>
 <script id="db-map-spawns" type="application/json">{{__DATA_DB_MAP_SPAWNS__}}</script>
@@ -1436,6 +1438,8 @@ function loadDB(){
   DB.shops        = j('db-shops');
   DB.mvpRespawn   = j('db-mvp-respawn');
   DB.airships     = j('db-airships');
+  DB.pets         = j('db-pets');
+  DB.petTalk      = j('db-pet-talk');
   DB.maps         = j('db-maps');
   DB.mapGroups    = j('db-map-groups');
   DB.mapSpawns    = j('db-map-spawns');
