@@ -29712,14 +29712,15 @@
     "_stub": true
   },
   "바나나 주스": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
+    "type": "소모품",
+    "emoji": "🧃",
+    "desc": "바나나를 갈아 만든 주스. 요요가 좋아한다. HP를 30 회복한다.",
+    "heal": 30,
+    "buy": 20,
     "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weight": 4,
+    "weightSrc": "official",
+    "_aegis": "Banana_Juice"
   },
   "바늘쌈지": {
     "type": "잡템",
@@ -30288,14 +30289,15 @@
     "_aegis": "Red_Herb"
   },
   "사과 주스": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
+    "type": "소모품",
+    "emoji": "🧃",
+    "desc": "사과를 짜낸 주스. 포링이 좋아한다. HP를 30 회복한다.",
+    "heal": 30,
+    "buy": 20,
     "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weight": 4,
+    "weightSrc": "official",
+    "_aegis": "Apple_Juice"
   },
   "사막 늑대의 발톱": {
     "type": "잡템",
@@ -30564,13 +30566,13 @@
   },
   "슛": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
+    "emoji": "🌱",
+    "desc": "막 돋아난 식물의 어린 싹. 데비루치가 좋아한다.",
+    "buy": 16,
+    "sell": 8,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "official",
+    "_aegis": "Shoot"
   },
   "스위트 젠츠": {
     "type": "잡템",
@@ -32431,14 +32433,15 @@
     "_stub": true
   },
   "펫 사료": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
+    "type": "소모품",
+    "emoji": "🦴",
+    "desc": "애완동물용 사료. 많은 펫이 즐겨 먹는다. 사람이 먹으면 HP를 70 회복한다.",
+    "heal": 70,
+    "buy": 1000,
+    "sell": 500,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "official",
+    "_aegis": "Pet_Food"
   },
   "펫 인큐베이터": {
     "type": "잡템",

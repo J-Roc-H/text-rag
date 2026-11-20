@@ -739,6 +739,8 @@ def audit_pets(pets, monsters, items, talk):
         counts[tier] += 1
         if p.get("food") is None:
             errors.append(f"{key}: 첫 알 후보인데 먹이가 없음")
+        elif (items.get(p["food"]) or {}).get("_stub"):
+            errors.append(f"{key}: 먹이 '{p['food']}'가 빈 아이템(_stub) — 값·설명이 없다")
         lines = ((talk.get("pets") or {}).get(key) or {}).get("lines")
         if not lines:
             errors.append(f"{key}: db-pet-talk에 대사가 없음")

@@ -34,6 +34,10 @@ CONSTANTS = {
     "feedAt": 25,          # PET_HUNGRY_HUNGRY — 이하에서 자동 급식 (75 이하면 친밀도 전량 상승)
     "fullGainMaxHunger": 75,  # PET_HUNGRY_NEUTRAL 초과면 상승량 절반, 90 초과면 과식 감소
     "src": "rathena src/map/pet.hpp e_pet_intimate_level/e_pet_hungry · pet.cpp pet_food()/pet_hungry()",
+    # 방치형 속도 배율 (rAthena battle_config pet_hungry_delay_rate와 같은 개념, 100% = 1).
+    # 원작 속도로는 12시간 방치 한 번에 모든 펫이 절친이 된다. 사용자 확정 2026-11-21:
+    # 초희귀 3종 평균이 대략 한 달(30일)에 절친 -> tests/companion-balance-smoke.js가 범위를 지킨다.
+    "hungryDelayRate": 90,
 }
 
 

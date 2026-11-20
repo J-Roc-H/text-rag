@@ -11,7 +11,8 @@
   "hungerStart": 100,
   "feedAt": 25,
   "fullGainMaxHunger": 75,
-  "src": "rathena src/map/pet.hpp e_pet_intimate_level/e_pet_hungry · pet.cpp pet_food()/pet_hungry()"
+  "src": "rathena src/map/pet.hpp e_pet_intimate_level/e_pet_hungry · pet.cpp pet_food()/pet_hungry()",
+  "hungryDelayRate": 90
  },
  "pets": {
   "PORING": {

@@ -57,7 +57,7 @@ function companionAdvance(p, nowMs) {
   const d = companionPetData(pet.key);
   if (!d || !(d.fullness > 0) || !(d.hungryDelaySec > 0) || !(nowMs > pet.lastAt)) return out;
   const k = companionConstants();
-  const tickMs = d.hungryDelaySec * 1000;
+  const tickMs = d.hungryDelaySec * 1000 * (k.hungryDelayRate > 0 ? k.hungryDelayRate : 1);  // 방치형 속도 배율
   const ticks = Math.floor((nowMs - pet.lastAt) / tickMs);
   if (ticks <= 0) return out;
   const feedAt = k.feedAt != null ? k.feedAt : 25;
