@@ -13811,7 +13811,7 @@ const TUTORIAL_QUESTS = {
     npc: "친절한 노인",
     type: "job_choice",
     reward: { zeny: 500, items: {} },
-    next: null,
+    next: "tut_06",
     dialog: [
       { speaker:"친절한 노인", text:"이제 어느 정도 모험가로서의 기본기는 갖추셨습니다. 이제 직업을 선택할 시간이에요! 각 마을마다 직업 스승이 있어서 Job Lv.10을 달성하면 전직할 수 있답니다." },
       { speaker:"친절한 노인", text:"어떻게 하시겠어요?",
@@ -13824,6 +13824,29 @@ const TUTORIAL_QUESTS = {
     ],
     dialog_later: [
       { speaker:"친절한 노인", text:"천천히 생각해보세요. 결정이 되면 다시 오세요. Job Lv.10까지 사냥을 계속하면서 고민해보세요!" }
+    ]
+  },
+
+  // 「첫 동료」 — 첫 펫 알 3개 중 하나 고르기 (source/companion.js, P3-10). 새 캐릭터는 직업 마을 이동 직후 바로 시작,
+  // 튜토리얼을 이미 마친 세이브는 companionNormalize가 available로 열어 노인에게서 받는다.
+  tut_06: {
+    title: "첫 동료",
+    npc: "친절한 노인",
+    type: "pet_choice",
+    reward: { zeny: 0, items: {} },
+    next: null,
+    dialog: [
+      { speaker:"친절한 노인", text:"아, 마침 잘 왔네. 혼자 다니는 모험은 쓸쓸한 법이지. 내가 알 세 개를 데우고 있었는데, 하나 데려가 보겠나?" },
+      { speaker:"친절한 노인", text:"어떤 녀석인지는 껍데기 무늬만 봐도 알 수 있다네. 마음에 드는 걸 골라 보게." },
+      { speaker:"player",
+        choices:[
+          { label:"알을 보여 주세요.", next:"accept" },
+          { label:"나중에 올게요.", next:"later" }
+        ]
+      }
+    ],
+    dialog_later: [
+      { speaker:"친절한 노인", text:"알은 내가 잘 데우고 있겠네. 언제든 오게나." }
     ]
   }
 };
@@ -14167,6 +14190,8 @@ function acceptQuest(questId) {
   if (q.type === 'talk') {
     p.quests[questId].state = 'completable';
   }
+  // pet_choice(「첫 동료」): 알 셋을 굴려 고르기 창을 연다 (source/companion.js)
+  if (q.type === 'pet_choice' && typeof companionBeginStarter === 'function') companionBeginStarter(p);
   log(`📋 [퀘스트 수락] ${q.title}`, 'quest');
   notify(`퀘스트 수락: ${q.title}`, 'gold');
   updateUI();
@@ -14252,6 +14277,8 @@ function completeJobChoiceQuest(job, dest) {
   closeModal();
   questWarp(dest);
   updateUI();
+  // 「첫 동료」: 직업 마을 도착 직후 그 자리에서 알 고르기 (P3-10)
+  if (typeof companionBeginStarter === 'function') companionBeginStarter(p);
 }
 
 // ══════════════════════════════════════════════

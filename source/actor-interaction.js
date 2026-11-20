@@ -375,6 +375,8 @@ function aiRenderActor(name,extraNotice){
     if(e.state==='completable') aiAddAction(`✅ ${e.q.title} · 완료를 보고한다`,'primary',()=>{ if(e.q.dialog_complete&&typeof showDialogModal==='function') showDialogModal(e.id,'complete'); else if(typeof handleDialogEnd==='function') handleDialogEnd(e.id,'complete'); });
     else if(e.state==='available') aiAddAction(`❗ ${e.q.title} · 이야기를 듣는다`,'primary',()=>{ if(typeof showDialogModal==='function') showDialogModal(e.id,'main'); });
   });
+  // 「첫 동료」 알 고르기·맡긴 알 바꾸기 (source/companion.js, P3-10)
+  if(!autoBlocked&&!languageBlocked&&typeof companionElderActions==='function') companionElderActions(name,p,aiAddAction);
 
   let special='';
   if(autoBlocked){ special+='<div class="ai-notice warn">⚔️ 자동전투 중에는 대화와 서비스를 이용할 수 없습니다. 자동사냥을 멈춘 뒤 다시 시도하세요.</div>'; }
