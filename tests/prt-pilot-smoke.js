@@ -64,4 +64,24 @@ while (q.length) { const c = q.shift(); api.mapConnections(c).forEach((n) => { i
 ['페이욘 숲 북부', '게펜', '묘르닐 산맥', '이즈루드', 'prt_maze03', 'prt_sewb4', 'prt_fild11']
   .forEach((k) => assert(seen.has(api.mapKey(k)), `프론테라에서 못 감: ${k}`));
 
+// ── Task 3: 가중치 뽑기 · 구역 끄기 ─────────────────────────────────────────────
+{
+  const c2 = { DB: { maps: { '시험': { monsters: [1, 2], safe: false }, 'w': { monsters: [1, 2, 4, 5], spawnWeights: { 1: 70, 2: 40, 4: 20, 5: 10 }, safe: false } }, monsters: D('db-monsters.json') },
+    ZONE_COUNT: 3, _zoneCache: {}, Math: Object.create(Math) };
+  vm.createContext(c2);
+  vm.runInContext([extractFunction(html, 'function getMap(ref){').replace(/PILOT_LEGACY_MAP\[key\]|MAP_LEGACY_ALIASES\[key\]/g, 'undefined'),
+    extractFunction(html, 'function getZones(mapName){'), extractFunction(html, 'function pickSpawnMonster(md, pool){'),
+    'this.api={getZones,pickSpawnMonster};'].join('\n'), c2);
+  assert.strictEqual(c2.api.getZones('w'), null, '가중치 맵은 레벨순 구역을 쓰지 않음');
+  let seed = 7; c2.Math.random = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+  const n = 10000, cnt = {};
+  for (let i = 0; i < n; i++) { const id = c2.api.pickSpawnMonster(c2.DB.maps.w, c2.DB.maps.w.monsters); cnt[id] = (cnt[id] || 0) + 1; }
+  for (const [id, w] of Object.entries({ 1: 70, 2: 40, 4: 20, 5: 10 })) assert(Math.abs(cnt[id] / n - w / 140) < 0.02, `${id} ${cnt[id] / n}`);
+  const plain = new Set(); for (let i = 0; i < 200; i++) plain.add(c2.api.pickSpawnMonster(c2.DB.maps['시험'], [1, 2]));
+  assert.strictEqual(plain.size, 2, '가중치 없는 맵은 기존처럼 목록에서 고름');
+  // 두 출현 지점이 모두 이 함수를 쓴다
+  assert(extractFunction(html, 'function spawnMonsters(){').includes('pickSpawnMonster('), '일반 출현');
+  assert((html.match(/pickSpawnMonster\(/g) || []).length >= 3, '공격적 추가 출현도');
+}
+
 console.log('prt-pilot-smoke: OK');

@@ -55052,7 +55052,7 @@ function procAggressiveSpawn(p){
     if (p.options.huntStyle === 'aggressive' && G.battles.length > 0 && G.battles.length < 5) {
       let _amd = getMap(G.currentMap);
       if (_amd && !_amd.safe && _amd.monsters && _amd.monsters.length && Math.random() < 0.20) {
-        let _aid = _amd.monsters[Math.floor(Math.random() * _amd.monsters.length)];
+        let _aid = pickSpawnMonster(_amd, _amd.monsters);
         let _am = DB.monsters[_aid];
         if (_am) {
           G.battles.push(createCombatMonster(_aid, _am, {currentHp:_am.hp, maxHp:_am.hp, statusEffects:{}, distance:getInitialDistance(p)}));
@@ -60058,9 +60058,20 @@ const ZONE_RESPAWN_MAX_MS = 20000;       // 전멸 후 리젠 딜레이 최대(m
 const ZONE_NAMES = ['A','B','C','D'];
 const _zoneCache = {};
 
+// 출현 몬스터 고르기: 원작 마릿수가 있는 맵(spawnWeights, P9 시범)은 그 비율로, 나머지는 목록에서 고르게.
+function pickSpawnMonster(md, pool){
+  let w=md&&md.spawnWeights;
+  if(w){
+    let ids=Object.keys(w), total=ids.reduce((s,id)=>s+(w[id]||0),0), r=Math.random()*total;
+    for(let id of ids){ r-=(w[id]||0); if(r<0) return Number(id); }
+    return Number(ids[ids.length-1]);
+  }
+  return pool[Math.floor(Math.random()*pool.length)];
+}
 function getZones(mapName){
   let md=getMap(mapName);
   if(!md||md.safe||!md.monsters||!md.monsters.length) return null;
+  if(md.spawnWeights) return null; // 원작 맵은 이미 레벨대별로 나뉘어 있다 — 레벨순 구역 진행을 쓰지 않음
   if(md.zones&&md.zones.length) return md.zones; // 맵 명시 zones 우선
   if(_zoneCache[mapName]) return _zoneCache[mapName];
   // 레벨 오름차순 정렬 → 균등 분할 (몬스터 종수 < 구역 수면 구역 수 축소)
@@ -60309,7 +60320,7 @@ function spawnMonsters(){
     if(!_pool||!_pool.length)_pool=md.monsters;
 
     for(let i=0;i<c;i++){
-      let id=_pool[Math.floor(Math.random()*_pool.length)];
+      let id=pickSpawnMonster(md,_pool);
       let m=DB.monsters[id];
       if(m){
         G.battles.push(createCombatMonster(id,m,{currentHp:m.hp,maxHp:m.hp,statusEffects:{},distance:initDist}));
