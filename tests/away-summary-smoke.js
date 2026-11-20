@@ -5,7 +5,8 @@ const assert = require('assert');
 const { extractBetween, html } = require('./_item-effect-harness');
 
 const src = extractBetween(html, 'const AWAY_RARE_DROP_PCT', '// 다른 창(귀환 선물');
-const api = (new Function(src + '\nreturn { AWAY_RARE_DROP_PCT, AWAY_MODAL_MIN_MS, awaySummaryLines };'))();
+// mapLabel: 원작 맵 키 -> 화면 이름 (P9 시범 이후 요약도 화면 이름을 쓴다). 이 시험의 지명은 한국어라 그대로 돌려준다.
+const api = (new Function('const mapLabel = (x) => x;\n' + src + '\nreturn { AWAY_RARE_DROP_PCT, AWAY_MODAL_MIN_MS, awaySummaryLines };'))();
 
 assert.strictEqual(api.AWAY_RARE_DROP_PCT, 1);
 assert.strictEqual(api.AWAY_MODAL_MIN_MS, 5 * 60000);

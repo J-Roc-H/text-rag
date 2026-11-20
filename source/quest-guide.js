@@ -72,16 +72,18 @@
     return best || {dest:uniq[0],route:null};
   }
 
+  // 원작 맵 키(prt_fild08)는 화면 이름(프론테라 필드 08)으로 보여 준다
+  function labelOf(n){ return (n==='…' || typeof mapLabel!=='function') ? n : mapLabel(n); }
   function routeText(best){
     if(!best || !best.dest) return '';
-    if(best.route && best.route.length===1) return `현재 위치 · ${best.dest}`;
+    if(best.route && best.route.length===1) return `현재 위치 · ${labelOf(best.dest)}`;
     if(best.route && best.route.length>1){
       const hops=best.route.length-1;
       let path=best.route;
       if(path.length>5) path=[path[0],path[1],'…',path[path.length-2],path[path.length-1]];
-      return `${path.join(' → ')} · ${hops}회 이동`;
+      return `${path.map(labelOf).join(' → ')} · ${hops}회 이동`;
     }
-    return best.dest;
+    return labelOf(best.dest);
   }
 
   function dropSources(item){

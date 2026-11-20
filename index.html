@@ -52240,7 +52240,7 @@ function loadCharacter(i){
   if((p.baseExp||0) === 0 && (p.totalKills||0) === 0 && p.baseLv === 1 && p.job === "노비스") {
       log(`✨ <b>[새로운 연대기의 시작]</b>`,'level-up');
       log(`<b>[When]</b> 천 년의 평화가 바스라지고, 마왕 모로크의 부활이 속삭여지는 혼란의 시대에.`,'narrate');
-      log(`<b>[Where]</b> 룬 미드가츠 왕국의 심장부, 바람이 머무는 <b>${G.currentMap}</b>의 초원 위에서...`,'narrate');
+      log(`<b>[Where]</b> 룬 미드가츠 왕국의 심장부, 바람이 머무는 <b>${mapLabel(G.currentMap)}</b>의 초원 위에서...`,'narrate');
       log(`<b>[Who]</b> 아직은 풋내기 모험가에 불과한 당신이,`,'narrate');
       log(`<b>[What]</b> 훗날 음유시인들의 노래가 될 위대한 모험을 막 시작했습니다.`,'narrate');
       log(`<b>[How]</b> 초보자의 낡은 장비만을 꽉 쥔 채, 두려움을 이겨내는 굳건한 용기와 함께.`,'narrate');
@@ -53735,7 +53735,7 @@ function updateUI(){
     $('char-job').textContent = (p.rebirth ? '[전승] ' : '') + p.job;
   }
   if($('char-lv')) $('char-lv').textContent=`Base.${p.baseLv} / Job.${p.jobLv}`;
-  if($('title-map')) $('title-map').textContent=G.currentMap; 
+  if($('title-map')) $('title-map').textContent=mapLabel(G.currentMap); 
   if($('map-name-disp')) $('map-name-disp').textContent='🗺 '+G.currentMap+((typeof getZoneSuffix==='function')?getZoneSuffix():''); // [2-9] 구역 표시
   applyMapTint(); // [스타일] 맵 분위기 틴트
   if($('char-emoji')) $('char-emoji').textContent=DB.jobEmoji[JOB_NAME2CODE[normalizeJob(p.job)]]||'⚔️'; 
@@ -54052,7 +54052,7 @@ function renderSituation(){
       let ids=(zones&&zones.length>=2)?(zones[Math.min(G.zoneIdx||0,zones.length-1)].monsters||md.monsters):md.monsters;
       mons=ids.map(id=>DB.monsters[id]).filter(Boolean);
     }
-    h=`<div class="panel-hdr">지역 정보</div><div class="sit-body"><div class="sit-big">${md.emoji||'🗺'} ${G.currentMap}</div>`+
+    h=`<div class="panel-hdr">지역 정보</div><div class="sit-body"><div class="sit-big">${md.emoji||'🗺'} ${mapLabel(G.currentMap)}</div>`+
       `<div class="sit-sub">${md.type||''}${md.level&&md.level!=='0'?` · 권장 Lv.${md.level}`:''}</div>`+
       (md.desc?`<div class="sit-desc">${md.desc}</div>`:'')+
       (mons.length?`<div class="sit-lbl">출현 몬스터</div>`+mons.slice(0,8).map(m=>`<div class="sit-mon">${m.emoji||'?'} ${m.name} <span>Lv.${m.lv||'?'}</span></div>`).join('')+(mons.length>8?`<div class="sit-sub">외 ${mons.length-8}종</div>`:''):
@@ -54409,11 +54409,11 @@ function enterMap(nm){
   if(!p.visitedMaps) p.visitedMaps={};
   let first=!p.visitedMaps[nm];
   if(md.entryDesc){
-    let lines=[`${md.emoji||'🗺'} <b>${nm}</b>`, md.entryDesc];
+    let lines=[`${md.emoji||'🗺'} <b>${mapLabel(nm)}</b>`, md.entryDesc];
     if(first && md.firstVisitDesc) lines.push(md.firstVisitDesc);
     logEvent('location', lines);
   } else {
-    log(`🗺 ${nm} 이동`,'location');
+    log(`🗺 ${mapLabel(nm)} 이동`,'location');
   }
   // [동반자] 새 지역 위험 조언 (친밀도에 따라 암시~수치)
   if(typeof companionPetAdvice==='function' && typeof calcStats==='function') companionPetAdvice(p, calcStats(), 'enter', {map:nm});
@@ -56887,7 +56887,7 @@ function kafraSetSave(){
   G.player.savedMap = G.currentMap;
   saveLocal(); // 비안전 맵이어도 방금 넣은 G.player.savedMap(=현재 맵)이 그대로 기록된다
   notify('귀환 지점 설정 완료','gold');
-  log(`📍 <b>[카프라]</b> 귀환 지점이 <b>${G.currentMap}</b>으로 설정되었습니다.`,'system');
+  log(`📍 <b>[카프라]</b> 귀환 지점이 <b>${mapLabel(G.currentMap)}</b>으로 설정되었습니다.`,'system');
   closeModal();
 }
 
@@ -61420,7 +61420,7 @@ function _awayCount(n, est){ return `${n>1?` ×${n}`:''}${est?` <span class="awa
 // 요약 줄 목록 — 로그 카드(full=false)와 창(full=true)이 같은 규칙을 쓴다
 function awaySummaryLines(summary, full){
   let m = summary.meta || {}, L = [];
-  L.push(`${m.timeStr||''}${m.map?` · ${m.map}`:''}${m.wasCapped?' (최대 12시간치)':''}`);
+  L.push(`${m.timeStr||''}${m.map?` · ${mapLabel(m.map)}`:''}${m.wasCapped?' (최대 12시간치)':''}`);
   let nums = [`⚔ 처치 <b>${(summary.kills||0).toLocaleString()}</b>`, `✨ EXP <b>+${(summary.exp||0).toLocaleString()}</b>`];
   if(summary.jexp) nums.push(`JEXP +${summary.jexp.toLocaleString()}`);
   if(summary.zeny) nums.push(`💰 <b>+${summary.zeny.toLocaleString()}z</b>`);
@@ -61431,7 +61431,7 @@ function awaySummaryLines(summary, full){
   if(ups.length) L.push('⬆ ' + ups.join(' · '));
   // 주요 사건
   let ev = [];
-  _awayGroup(summary.sightings, x=>x.id).forEach(g=>ev.push(`👣 <b>${g.x.name}</b>의 기척${_awayCount(g.n,g.est)} <span style="color:var(--text-dim)">(${g.x.map})</span>`));
+  _awayGroup(summary.sightings, x=>x.id).forEach(g=>ev.push(`👣 <b>${g.x.name}</b>의 기척${_awayCount(g.n,g.est)} <span style="color:var(--text-dim)">(${mapLabel(g.x.map)})</span>`));
   let evs = summary.events || [];
   _awayGroup(evs.filter(e=>e.kind==='card'), x=>x.item).forEach(g=>ev.push(`🃏 <b>${g.x.item}</b>${_awayCount(g.n,g.est)}`));
   let rare = _awayGroup(evs.filter(e=>e.kind==='rare'), x=>x.item);
@@ -61513,7 +61513,7 @@ function processOfflineTicks(elapsedMs, resume = true) {
   // (재접속 정산은 resume:false — 위치는 마지막 안전지역 규칙을 호출부가 적용)
   if(resume && isSafeMap(G.currentMap) && huntMap && !isSafeMap(huntMap)){
     G.currentMap = huntMap;
-    log(`🗺️ <b>[${G.currentMap}]</b>으로 복귀하여 사냥을 재개합니다.`, 'system');
+    log(`🗺️ <b>[${mapLabel(G.currentMap)}]</b>으로 복귀하여 사냥을 재개합니다.`, 'system');
   }
   updateUI();
   saveLocal(); // offlineHunt 기준 시각 갱신 — 정산 직후 재로드돼도 같은 구간을 두 번 받지 않게
@@ -67322,20 +67322,20 @@ function applyComboEffects(p, DB, fx, parseItem) {
     '베인스 필드':[1030,520],
     '베인스':[1160,520],
 
-    '프론테라 북쪽 평원':[610,255],
     '묘르닐 산맥':[475,275],
     '게펜':[225,385],
     '게펜 필드':[365,385],
-    '프론테라 서쪽 평원':[505,385],
     '프론테라':[650,385],
-    '프론테라 동쪽 평원':[790,385],
+    // P9 원작 맵 1:1 프론테라 시범: 원작 필드 12장 (워프 관계 기준 대략 배치)
+    'prt_fild00':[520,300], 'prt_fild01':[620,290], 'prt_fild02':[720,300], 'prt_fild03':[810,325],
+    'prt_fild04':[470,400], 'prt_fild05':[560,400], 'prt_fild06':[740,385],
+    'prt_fild07':[545,465], 'prt_fild08':[650,480], 'prt_fild09':[590,560], 'prt_fild10':[470,590], 'prt_fild11':[300,600],
     '페이욘 숲 북부':[860,465],
     '페이욘 숲 남부':[860,560],
     '페이욘':[860,655],
     '알베르타':[1030,625],
     '로컬라이징 투어':[1180,650],
 
-    '프론테라 남쪽 평원':[650,500],
     '이즈루드':[650,610],
     '소그라트 사막 동부':[515,515],
     '소그라트 사막 서부':[370,535],
@@ -69219,16 +69219,18 @@ window.__serviceSystemsV2 = {
     return best || {dest:uniq[0],route:null};
   }
 
+  // 원작 맵 키(prt_fild08)는 화면 이름(프론테라 필드 08)으로 보여 준다
+  function labelOf(n){ return (n==='…' || typeof mapLabel!=='function') ? n : mapLabel(n); }
   function routeText(best){
     if(!best || !best.dest) return '';
-    if(best.route && best.route.length===1) return `현재 위치 · ${best.dest}`;
+    if(best.route && best.route.length===1) return `현재 위치 · ${labelOf(best.dest)}`;
     if(best.route && best.route.length>1){
       const hops=best.route.length-1;
       let path=best.route;
       if(path.length>5) path=[path[0],path[1],'…',path[path.length-2],path[path.length-1]];
-      return `${path.join(' → ')} · ${hops}회 이동`;
+      return `${path.map(labelOf).join(' → ')} · ${hops}회 이동`;
     }
-    return best.dest;
+    return labelOf(best.dest);
   }
 
   function dropSources(item){
@@ -70906,7 +70908,8 @@ function companionJudge(s, m) {
     needHit: Math.max(0, (m.flee || 0) + 15 - (s.hit || 0)), needFlee: Math.max(0, (m.hit || 0) + 20 - (s.flee || 0)) };
 }
 function companionMapMonsters(name) {
-  const md = (typeof DB !== 'undefined' && DB.maps && DB.maps[name]) || null;
+  // 옛 지명 별칭(P9)도 따르도록 getMap 우선
+  const md = (typeof getMap === 'function' ? getMap(name) : (typeof DB !== 'undefined' && DB.maps && DB.maps[name])) || null;
   if (!md || md.safe) return [];
   return (md.monsters || []).map((id) => DB.monsters && DB.monsters[id]).filter(Boolean);
 }

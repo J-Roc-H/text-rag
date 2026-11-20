@@ -119,4 +119,22 @@ while (q.length) { const c = q.shift(); api.mapConnections(c).forEach((n) => { i
   assert(!html.includes('프론테라 남쪽 평원의 포링'), '튜토리얼 대사가 옛 지명');
 }
 
+// ── 화면 표시: 원작 맵 키(prt_fild08)가 아니라 화면 이름(프론테라 필드 08)을 보여 준다 (브라우저 실측에서 발견) ──
+{
+  const raw = [
+    /\$\('title-map'\)\.textContent=G\.currentMap/,
+    /sit-big">\$\{md\.emoji\|\|'🗺'\} \$\{G\.currentMap\}/,
+    /<b>\$\{nm\}<\/b>`, md\.entryDesc/,
+    /log\(`🗺 \$\{nm\} 이동`/,
+    /귀환 지점이 <b>\$\{G\.currentMap\}<\/b>/,
+    /\[\$\{G\.currentMap\}\]<\/b>으로 복귀/,
+    /바람이 머무는 <b>\$\{G\.currentMap\}<\/b>/,
+  ];
+  raw.forEach((re) => assert(!re.test(html), `원작 맵 키를 그대로 표시: ${re}`));
+  const qg = fs.readFileSync(path.join(__dirname, '..', 'source', 'quest-guide.js'), 'utf8');
+  assert(/path\.map\(\s*n\s*=>\s*.*mapLabel/.test(qg) || qg.includes('labelOf('), '퀘스트 안내 경로도 화면 이름');
+  const comp = fs.readFileSync(path.join(__dirname, '..', 'source', 'companion.js'), 'utf8');
+  assert(comp.includes("typeof getMap === 'function'"), '펫 조언의 지역 조회도 별칭을 따름');
+}
+
 console.log('prt-pilot-smoke: OK');

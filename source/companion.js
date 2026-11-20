@@ -295,7 +295,8 @@ function companionJudge(s, m) {
     needHit: Math.max(0, (m.flee || 0) + 15 - (s.hit || 0)), needFlee: Math.max(0, (m.hit || 0) + 20 - (s.flee || 0)) };
 }
 function companionMapMonsters(name) {
-  const md = (typeof DB !== 'undefined' && DB.maps && DB.maps[name]) || null;
+  // 옛 지명 별칭(P9)도 따르도록 getMap 우선
+  const md = (typeof getMap === 'function' ? getMap(name) : (typeof DB !== 'undefined' && DB.maps && DB.maps[name])) || null;
   if (!md || md.safe) return [];
   return (md.monsters || []).map((id) => DB.monsters && DB.monsters[id]).filter(Boolean);
 }
