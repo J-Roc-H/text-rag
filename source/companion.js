@@ -371,6 +371,36 @@ function companionPetAdvice(p, s, event, opt) {
   }
 }
 
+// ── 쓰러진 원인 한 줄 (P2-15 ①). 펫이 없으면 시스템 문구, 있으면 친밀도에 맞는 펫 말투 ────────
+function companionDeathNote(p, rec, s) {
+  const dmg = {};
+  ((rec && rec.rawEvents) || []).forEach((e) => { if (e.type === 'damage_taken' && e.monster) dmg[e.monster] = (dmg[e.monster] || 0) + (Number(e.amount) || 0); });
+  const top = Object.keys(dmg).sort((a, b) => dmg[b] - dmg[a])[0];
+  if (!top || !s) return '';
+  const m = Object.values((typeof DB !== 'undefined' && DB.monsters) || {}).find((x) => x && x.name === top) || { name: top };
+  const j = companionJudge(s, m);
+  if (!p || !p.companions || !p.companions.pet) return `(쓰러진 원인: ${top} — 명중 ${j.hr}% · 피격 ${j.mhr}%)`;
+  const pn = `🐾 ${companionPetName(p)}`, lv = companionAdviceLevel(p);
+  if (lv === 'hint') return `${pn}: …무서웠어.`;
+  if (lv === 'kind') return `${pn}: ${top}한테 ${j.hitShort ? '공격이 잘 안 맞았어' : '너무 많이 맞았어'}.`;
+  const shortBit = j.hitShort ? ` 명중이 ${j.needHit} 모자라.` : j.fleeShort ? ` 회피가 ${j.needFlee} 모자라.` : '';
+  return `${pn}: ${top}한테 명중 ${j.hr}%, 맞을 확률 ${j.mhr}%였어.${shortBit}`;
+}
+
+// 주인이 쓰러졌을 때: 펫 대사 -> 원인 한 줄. 원작 IntimacyOwnerDie(접속 중만 — 방치 표본 사망은 무시)
+function companionOnOwnerDeath(p, rec, s, nowMs) {
+  if (!p || companionIsReplay()) return;
+  const now = nowMs != null ? nowMs : Date.now();
+  const note = companionDeathNote(p, rec, s);
+  const pet = p.companions && p.companions.pet;
+  if (!pet) { if (note && typeof log === 'function') log(note, 'system'); return; }
+  const d = companionPetData(pet.key) || {};
+  const dec = d.intimacy && d.intimacy.ownerDie != null ? d.intimacy.ownerDie : 0;
+  pet.intimacy = Math.max(0, Math.min(1000, pet.intimacy + dec));
+  companionPetTalk(p, 'ownerDie', now, { urgent: true });
+  if (note) companionSay(p, 'death', note, { now, urgent: true, everyMs: 0 });
+}
+
 // ── 접속 중 진행 (processTurn·타이머). 방치 정산은 companionAdvance만 쓴다(말 없음) ───────────
 function companionTickOnline(p, nowMs, inBattle) {
   if (!p || !p.companions || !p.companions.pet || companionIsReplay()) return;

@@ -145,4 +145,54 @@ const S = { hit: 60, flee: 30, carriedWeight: 100, maxWeight: 2000 };   // 오�
   assert.strictEqual(logs.length, 0);
 }
 
+// ── Task 7: 쓰러진 원인 한 줄 (P2-15 ①) ───────────────────────────────────────────────
+const REC = { rawEvents: [
+  { type: 'damage_taken', monster: '단단이', amount: 10 },
+  { type: 'damage_taken', monster: '오크 전사', amount: 90 },
+  { type: 'damage_taken', monster: '오크 전사', amount: 80 },
+] };
+
+// death_note_no_pet: 펫이 없으면 시스템 문구 한 줄 (가장 많이 때린 몬스터와 두 확률)
+{
+  const { ctx } = env();
+  const p = { inventory: {} }; ctx.companionNormalize(p);
+  const line = ctx.companionDeathNote(p, REC, S);
+  assert(line.includes('오크 전사') && line.includes('20%') && line.includes('95%'), line);
+}
+
+// death_note_pet_stage0: 펫이 있고 어색하면 수치 없이
+{
+  const { ctx, p } = env();
+  p.companions.pet.intimacy = 50;
+  const line = ctx.companionDeathNote(p, REC, S);
+  assert(!/[0-9]/.test(line.replace(/<[^>]*>/g, '')), line);
+}
+
+// owner_death: 대사 -> 원인 순서로 말하고, 원작대로 친밀도 -ownerDie (접속 중만)
+{
+  const { ctx, p, logs } = env();
+  ctx.DB.pets.pets.PORING.intimacy.ownerDie = -20;
+  p.companions.pet.intimacy = 950;
+  ctx.companionOnOwnerDeath(p, REC, S, 30 * MIN);
+  assert.strictEqual(p.companions.pet.intimacy, 930);
+  assert.strictEqual(logs.length, 2, logs.join('\n'));
+  assert(TALK.pets.PORING.lines.ownerDie.full.concat(TALK.pets.PORING.lines.ownerDie.normal, TALK.pets.PORING.lines.ownerDie.hungry)
+    .some((l) => logs[0].includes(l)), logs[0]);
+  assert(logs[1].includes('오크 전사'), logs[1]);
+}
+{
+  const { ctx, p, logs, fakeDate } = env({ window: true });
+  ctx.DB.pets.pets.PORING.intimacy.ownerDie = -20;
+  fakeDate.now = () => 5;                                            // 방치 표본 중 사망
+  ctx.companionOnOwnerDeath(p, REC, S, 30 * MIN);
+  assert.strictEqual(p.companions.pet.intimacy, 250);
+  assert.strictEqual(logs.length, 0);
+}
+
+// 배선: 사망 지점에서 호출
+{
+  const { html } = require('./_item-effect-harness');
+  assert(/finishCombatRecord\('death'\)[^\n]*companionOnOwnerDeath\(/.test(html), '사망 지점(finishCombatRecord death) 같은 줄에서 호출');
+}
+
 console.log('companion-advice-smoke: OK');

@@ -7283,7 +7283,7 @@ function processTurn(){
       updateUI(); if(G.autoHunt) scheduleTickAspd(600);
     }
     else {
-      recordCombatEvent('death',{player:p.name}); G.battles=[]; finishCombatRecord('death'); p.hp=0; log('💀 <b>쓰러졌습니다...</b> 마을 귀환','error'); pbReact('death');
+      recordCombatEvent('death',{player:p.name}); G.battles=[]; finishCombatRecord('death'); p.hp=0; log('💀 <b>쓰러졌습니다...</b> 마을 귀환','error'); pbReact('death'); if(typeof companionOnOwnerDeath==='function') companionOnOwnerDeath(p,(p.combatRecords||[]).slice(-1)[0],calcStats()); /* [동반자] 쓰러진 원인 한 줄·펫 대사 */
       // 경험치 손실 (Pre-Renewal: 현재 레벨 필요 EXP의 1%. Lv1·Lv99 제외. 레벨 다운 없음)
       if(p.baseLv > 1 && p.baseLv < 99){
         let expLoss = Math.floor((DB.expTable[p.baseLv]||0) * 0.01);
