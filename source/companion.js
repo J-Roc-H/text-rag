@@ -76,3 +76,26 @@ function companionAdvance(p, nowMs) {
   out.stageTo = companionStage(pet.intimacy);
   return out;
 }
+
+// 방치 요약 한 줄 (awaySummaryLines가 summary.companion으로 받는다). 펫이 없으면 ''.
+function companionAwaySummaryLine(p, res) {
+  const pet = p && p.companions && p.companions.pet;
+  if (!pet || !res) return '';
+  const d = companionPetData(pet.key) || {};
+  const food = d.food || '먹이';
+  const left = ((p.inventory || {})[food]) || 0;
+  let line = `🐾 <b>${d.name || pet.key}</b>: ${food} ${res.fed || 0}개 먹음`;
+  if (res.stageTo != null && res.stageFrom != null && res.stageTo !== res.stageFrom) {
+    line += ` · ${COMPANION_STAGE_NAMES[res.stageFrom]} → ${COMPANION_STAGE_NAMES[res.stageTo]}`;
+  }
+  line += ` (${food} ${left}개 남음)`;
+  if (!left && pet.hunger <= 0) line += ' · 먹이가 떨어져 친밀도가 멈춰 있음';
+  return line;
+}
+
+// 사냥 밖(마을 등)에서도 펫 시간이 흐르도록 60초마다 진행. 헤드리스·테스트(vm)에는 타이머가 없다.
+if (typeof setInterval === 'function' && typeof window !== 'undefined') {
+  setInterval(function () {
+    if (typeof G !== 'undefined' && G.player) companionAdvance(G.player, Date.now());
+  }, 60000);
+}

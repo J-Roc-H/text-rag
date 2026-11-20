@@ -54336,6 +54336,7 @@ function awardKillReward(p, mon, set, stats){
 }
 
 function processTurn(){
+  if(typeof companionAdvance==='function' && G.player) companionAdvance(G.player, Date.now()); // [동반자] 펫 시간 (헤드리스 과거 시각이면 무시)
   if(!G.battles.length)return;
   ensureCombatRecord(); G.combatTick=(G.combatTick||0)+1;
   let combatWorld=ensureCombatWorld(); combatWorld.tick=G.combatTick;
@@ -60592,6 +60593,7 @@ function awaySummaryLines(summary, full){
   rare.slice(0, full ? rare.length : 3).forEach(g=>ev.push(`💎 희귀 드롭: <b>${g.x.item}</b>${_awayCount(g.n,g.est)}`));
   if(!full && rare.length > 3) ev.push(`💎 그 밖의 희귀 드롭 ${rare.length-3}종`);
   if(summary.deaths) ev.push(`💀 ${summary.deaths}회 쓰러짐 (휴식 후 사냥터로 복귀)`);
+  if(summary.companion) ev.push(summary.companion);
   if(m.potOut) ev.push('🧪 자동 회복약이 떨어졌다 — 보충 필요');
   if(ev.length){ L.push('<b>주요 사건</b>'); ev.forEach(x=>L.push('&nbsp;&nbsp;' + x)); }
   let keys = Object.keys(summary.items||{});
@@ -60622,6 +60624,8 @@ function showAwaySummaryModal(summary){
 }
 
 function processOfflineTicks(elapsedMs, resume = true) {
+  // [동반자] 헤드리스 표본이 시계를 과거로 돌리기 전에, 실제 시각으로 펫 시간을 한 번만 진행 (P3-10)
+  let companionRes = (G.player && typeof companionAdvance==='function') ? companionAdvance(G.player, Date.now()) : null;
   if(!G.autoHunt || !G.player) return;
   let huntMap = G.currentMap; // 오프라인 처리 전 사냥 맵 저장
   let s = calcStats();
@@ -60632,6 +60636,7 @@ function processOfflineTicks(elapsedMs, resume = true) {
   if(ticks <= 0) return;
 
   let summary = { kills:0, exp:0, jexp:0, zeny:0, items:{}, deaths:0 };
+  summary.companion = companionRes ? companionAwaySummaryLine(G.player, companionRes) : '';
   let p = G.player;
   let kc0 = Object.assign({}, p.killCount || {});
   let inv0 = Object.assign({}, p.inventory || {});
@@ -69742,6 +69747,29 @@ function companionAdvance(p, nowMs) {
   pet.lastAt += ticks * tickMs;
   out.stageTo = companionStage(pet.intimacy);
   return out;
+}
+
+// 방치 요약 한 줄 (awaySummaryLines가 summary.companion으로 받는다). 펫이 없으면 ''.
+function companionAwaySummaryLine(p, res) {
+  const pet = p && p.companions && p.companions.pet;
+  if (!pet || !res) return '';
+  const d = companionPetData(pet.key) || {};
+  const food = d.food || '먹이';
+  const left = ((p.inventory || {})[food]) || 0;
+  let line = `🐾 <b>${d.name || pet.key}</b>: ${food} ${res.fed || 0}개 먹음`;
+  if (res.stageTo != null && res.stageFrom != null && res.stageTo !== res.stageFrom) {
+    line += ` · ${COMPANION_STAGE_NAMES[res.stageFrom]} → ${COMPANION_STAGE_NAMES[res.stageTo]}`;
+  }
+  line += ` (${food} ${left}개 남음)`;
+  if (!left && pet.hunger <= 0) line += ' · 먹이가 떨어져 친밀도가 멈춰 있음';
+  return line;
+}
+
+// 사냥 밖(마을 등)에서도 펫 시간이 흐르도록 60초마다 진행. 헤드리스·테스트(vm)에는 타이머가 없다.
+if (typeof setInterval === 'function' && typeof window !== 'undefined') {
+  setInterval(function () {
+    if (typeof G !== 'undefined' && G.player) companionAdvance(G.player, Date.now());
+  }, 60000);
 }
 </script>
 </body>
