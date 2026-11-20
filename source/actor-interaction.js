@@ -203,6 +203,8 @@ function aiMarkInteractTargets(name,p){
     if(!qs||qs.state!=='active'||q.type!=='interact'||!q.target_npc) continue;
     if(name===q.target_npc||name.startsWith(q.target_npc)){
       qs.state='completable'; done.push(q.title);
+      // 튜토리얼 현장 단계(카프라)는 노인에게 돌아가지 않고 그 자리에서 완료 (DEVREF-E-C P2-16)
+      if(typeof autoCompleteTutorialStep==='function' && autoCompleteTutorialStep(id)) continue;
       if(typeof log==='function') log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`,'quest');
       if(typeof notify==='function') notify('퀘스트 조건 달성!','gold');
     }

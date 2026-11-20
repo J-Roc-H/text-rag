@@ -497,13 +497,16 @@
   };
 
   // Overrides the legacy hard-coded ASCII world map after the main bundle loads.
-  window.showWorldMapModal=function(){
+  // dest(선택): 퀘스트 안내가 넘긴 목적지. 주면 그 지역을 선택해 현재 위치에서의 경로를 강조한다.
+  window.showWorldMapModal=function(dest){
     if(typeof DB==='undefined' || !DB.maps){
       if(typeof openModal==='function') openModal('🗺 세계지도','지도 데이터를 불러오지 못했습니다.',[{label:'닫기',action:()=>{}}]);
       return;
     }
+    const hasDest=!!(dest && mapData(dest));
+    if(hasDest) WM_STATE.selected=dest;
     if(!WM_STATE.selected || !mapData(WM_STATE.selected)) WM_STATE.selected=(typeof G!=='undefined'&&G.currentMap)||'프론테라';
     openModal('🗺 세계지도', mapHtml(), [{label:'닫기',action:()=>{}}]);
-    setTimeout(()=>focusMap('current'),0);
+    setTimeout(()=>focusMap(hasDest?'selected':'current'),0);
   };
 })();

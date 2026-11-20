@@ -7625,6 +7625,7 @@ function checkQuestKill(monsterName) {
       log(`📋 [퀘스트] ${q.title}: ${qs.count}/${q.count}`, 'quest');
       if (qs.count >= q.count) {
         qs.state = 'completable';
+        if (autoCompleteTutorialStep(id)) continue;
         log(`✅ [퀘스트] ${q.title} — 완료! ${q.npc}에게 보고하세요.`, 'quest');
         notify(`퀘스트 완료 조건 달성!`, 'gold');
       }
@@ -7644,6 +7645,7 @@ function checkQuestGather() {
       qs.count = have;
       if (have >= q.count) {
         qs.state = 'completable';
+        if (autoCompleteTutorialStep(id)) continue;
         log(`✅ [퀘스트] ${q.title} — 완료! ${q.npc}에게 보고하세요.`, 'quest');
         notify(`퀘스트 완료 조건 달성!`, 'gold');
       }
@@ -7946,8 +7948,10 @@ window.talkNPC = function(nm){
         // interact 퀘스트: NPC 이름이 target_npc로 시작하면 완료 (지역명 접미사 허용)
         if (nm === q.target_npc || nm.startsWith(q.target_npc)) {
           qs.state = 'completable';
-          log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`, 'quest');
-          notify(`퀘스트 조건 달성!`, 'gold');
+          if (!autoCompleteTutorialStep(id)) {
+            log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`, 'quest');
+            notify(`퀘스트 조건 달성!`, 'gold');
+          }
         }
       }
       // interact가 아닌 경우 일반 NPC 서비스 진행
@@ -7972,8 +7976,10 @@ window.talkNPC = function(nm){
       if (q.type !== 'interact') continue;
       if (nm === q.target_npc || nm.startsWith(q.target_npc)) {
         qs.state = 'completable';
-        log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`, 'quest');
-        notify(`퀘스트 조건 달성!`, 'gold');
+        if (!autoCompleteTutorialStep(id)) {
+          log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`, 'quest');
+          notify(`퀘스트 조건 달성!`, 'gold');
+        }
         break;
       }
     }
@@ -13895,6 +13901,47 @@ function giveQuestReward(q) {
   }
 }
 
+// ── 튜토리얼 현장 완료 (DEVREF-E-C P2-16): 사냥·수집·카프라 단계는 노인에게 돌아가 보고하지 않는다.
+//    노인을 만나는 것은 처음(tut_01 퀴즈)과 마지막(tut_05 전직 갈림길) 두 번뿐이다.
+//    이미 'completable'로 저장된 옛 세이브는 기존대로 노인에게 보고하면 이어진다.
+const TUT_AUTO_STEPS = ['tut_02', 'tut_03', 'tut_04'];
+function isTutorialAutoStep(q) {
+  return TUT_AUTO_STEPS.some(id => TUTORIAL_QUESTS[id] === q);
+}
+function logTutorialMessage(lines) {
+  (lines || []).forEach(l => {
+    if (l && l.text && l.speaker !== 'player') log(`📜 ${l.speaker}(전언): "${l.text}"`, 'npc');
+  });
+}
+function startTutorialStepInPlace(id) {
+  let p = G.player, q = TUTORIAL_QUESTS[id];
+  if (!p || !q) return;
+  p.quests[id] = { state: 'active', count: 0 };
+  logTutorialMessage((q.dialog || []).slice(0, 1));
+  log(`📋 [퀘스트 수락] ${q.title}`, 'quest');
+  notify(`퀘스트 수락: ${q.title}`, 'gold');
+  if (q.type === 'gather') checkQuestGather(); // 이미 모아 둔 젤로피가 있으면 바로 완료
+}
+// 다음 튜토리얼로 잇기: 현장 단계면 바로 수락, 아니면(전직 갈림길) 노인에게 돌아가라고 안내
+function continueTutorial(q) {
+  if (q.next && TUT_AUTO_STEPS.includes(q.next)) { startTutorialStepInPlace(q.next); return; }
+  unlockNextQuest(q);
+  let nq = q.next && TUTORIAL_QUESTS[q.next];
+  if (nq && isTutorialAutoStep(q)) log(`📋 ${nq.npc || q.npc}에게 돌아가 [${nq.title}]을(를) 상담하세요.`, 'quest');
+}
+function autoCompleteTutorialStep(id) {
+  let p = G.player, q = TUTORIAL_QUESTS[id], qs = p && p.quests && p.quests[id];
+  if (!q || !qs || !TUT_AUTO_STEPS.includes(id) || qs.state === 'done') return false;
+  qs.state = 'done';
+  logTutorialMessage(q.dialog_complete);
+  giveQuestReward(q);
+  log(`✅ [퀘스트 완료] ${q.title}`, 'quest');
+  notify('퀘스트 완료!', 'gold');
+  continueTutorial(q);
+  updateUI();
+  return true;
+}
+
 // ── 다음 퀘스트 해금
 function unlockNextQuest(q) {
   let p = G.player;
@@ -14072,9 +14119,9 @@ function handleDialogEnd(questId, branch) {
     // 퀴즈 성공 → 퀘스트 완료
     p.quests[questId].state = 'done';
     giveQuestReward(q);
-    unlockNextQuest(q);
     log(`✅ [퀘스트 완료] ${q.title}`, 'quest');
     notify('퀘스트 완료!', 'gold');
+    continueTutorial(q);
     updateUI();
     return;
   }
@@ -14086,9 +14133,9 @@ function handleDialogEnd(questId, branch) {
       p.quests[questId].state = 'done';
     }
     giveQuestReward(q);
-    unlockNextQuest(q);
     log(`✅ [퀘스트 완료] ${q.title}`, 'quest');
     notify('퀘스트 완료!', 'gold');
+    continueTutorial(q);
     updateUI();
     return;
   }

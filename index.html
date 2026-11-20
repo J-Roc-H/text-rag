@@ -51764,6 +51764,7 @@ function checkQuestKill(monsterName) {
       log(`📋 [퀘스트] ${q.title}: ${qs.count}/${q.count}`, 'quest');
       if (qs.count >= q.count) {
         qs.state = 'completable';
+        if (autoCompleteTutorialStep(id)) continue;
         log(`✅ [퀘스트] ${q.title} — 완료! ${q.npc}에게 보고하세요.`, 'quest');
         notify(`퀘스트 완료 조건 달성!`, 'gold');
       }
@@ -51783,6 +51784,7 @@ function checkQuestGather() {
       qs.count = have;
       if (have >= q.count) {
         qs.state = 'completable';
+        if (autoCompleteTutorialStep(id)) continue;
         log(`✅ [퀘스트] ${q.title} — 완료! ${q.npc}에게 보고하세요.`, 'quest');
         notify(`퀘스트 완료 조건 달성!`, 'gold');
       }
@@ -52085,8 +52087,10 @@ window.talkNPC = function(nm){
         // interact 퀘스트: NPC 이름이 target_npc로 시작하면 완료 (지역명 접미사 허용)
         if (nm === q.target_npc || nm.startsWith(q.target_npc)) {
           qs.state = 'completable';
-          log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`, 'quest');
-          notify(`퀘스트 조건 달성!`, 'gold');
+          if (!autoCompleteTutorialStep(id)) {
+            log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`, 'quest');
+            notify(`퀘스트 조건 달성!`, 'gold');
+          }
         }
       }
       // interact가 아닌 경우 일반 NPC 서비스 진행
@@ -52111,8 +52115,10 @@ window.talkNPC = function(nm){
       if (q.type !== 'interact') continue;
       if (nm === q.target_npc || nm.startsWith(q.target_npc)) {
         qs.state = 'completable';
-        log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`, 'quest');
-        notify(`퀘스트 조건 달성!`, 'gold');
+        if (!autoCompleteTutorialStep(id)) {
+          log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`, 'quest');
+          notify(`퀘스트 조건 달성!`, 'gold');
+        }
         break;
       }
     }
@@ -58034,6 +58040,47 @@ function giveQuestReward(q) {
   }
 }
 
+// ── 튜토리얼 현장 완료 (DEVREF-E-C P2-16): 사냥·수집·카프라 단계는 노인에게 돌아가 보고하지 않는다.
+//    노인을 만나는 것은 처음(tut_01 퀴즈)과 마지막(tut_05 전직 갈림길) 두 번뿐이다.
+//    이미 'completable'로 저장된 옛 세이브는 기존대로 노인에게 보고하면 이어진다.
+const TUT_AUTO_STEPS = ['tut_02', 'tut_03', 'tut_04'];
+function isTutorialAutoStep(q) {
+  return TUT_AUTO_STEPS.some(id => TUTORIAL_QUESTS[id] === q);
+}
+function logTutorialMessage(lines) {
+  (lines || []).forEach(l => {
+    if (l && l.text && l.speaker !== 'player') log(`📜 ${l.speaker}(전언): "${l.text}"`, 'npc');
+  });
+}
+function startTutorialStepInPlace(id) {
+  let p = G.player, q = TUTORIAL_QUESTS[id];
+  if (!p || !q) return;
+  p.quests[id] = { state: 'active', count: 0 };
+  logTutorialMessage((q.dialog || []).slice(0, 1));
+  log(`📋 [퀘스트 수락] ${q.title}`, 'quest');
+  notify(`퀘스트 수락: ${q.title}`, 'gold');
+  if (q.type === 'gather') checkQuestGather(); // 이미 모아 둔 젤로피가 있으면 바로 완료
+}
+// 다음 튜토리얼로 잇기: 현장 단계면 바로 수락, 아니면(전직 갈림길) 노인에게 돌아가라고 안내
+function continueTutorial(q) {
+  if (q.next && TUT_AUTO_STEPS.includes(q.next)) { startTutorialStepInPlace(q.next); return; }
+  unlockNextQuest(q);
+  let nq = q.next && TUTORIAL_QUESTS[q.next];
+  if (nq && isTutorialAutoStep(q)) log(`📋 ${nq.npc || q.npc}에게 돌아가 [${nq.title}]을(를) 상담하세요.`, 'quest');
+}
+function autoCompleteTutorialStep(id) {
+  let p = G.player, q = TUTORIAL_QUESTS[id], qs = p && p.quests && p.quests[id];
+  if (!q || !qs || !TUT_AUTO_STEPS.includes(id) || qs.state === 'done') return false;
+  qs.state = 'done';
+  logTutorialMessage(q.dialog_complete);
+  giveQuestReward(q);
+  log(`✅ [퀘스트 완료] ${q.title}`, 'quest');
+  notify('퀘스트 완료!', 'gold');
+  continueTutorial(q);
+  updateUI();
+  return true;
+}
+
 // ── 다음 퀘스트 해금
 function unlockNextQuest(q) {
   let p = G.player;
@@ -58211,9 +58258,9 @@ function handleDialogEnd(questId, branch) {
     // 퀴즈 성공 → 퀘스트 완료
     p.quests[questId].state = 'done';
     giveQuestReward(q);
-    unlockNextQuest(q);
     log(`✅ [퀘스트 완료] ${q.title}`, 'quest');
     notify('퀘스트 완료!', 'gold');
+    continueTutorial(q);
     updateUI();
     return;
   }
@@ -58225,9 +58272,9 @@ function handleDialogEnd(questId, branch) {
       p.quests[questId].state = 'done';
     }
     giveQuestReward(q);
-    unlockNextQuest(q);
     log(`✅ [퀘스트 완료] ${q.title}`, 'quest');
     notify('퀘스트 완료!', 'gold');
+    continueTutorial(q);
     updateUI();
     return;
   }
@@ -63320,14 +63367,17 @@ function applyComboEffects(p, DB, fx, parseItem) {
   };
 
   // Overrides the legacy hard-coded ASCII world map after the main bundle loads.
-  window.showWorldMapModal=function(){
+  // dest(선택): 퀘스트 안내가 넘긴 목적지. 주면 그 지역을 선택해 현재 위치에서의 경로를 강조한다.
+  window.showWorldMapModal=function(dest){
     if(typeof DB==='undefined' || !DB.maps){
       if(typeof openModal==='function') openModal('🗺 세계지도','지도 데이터를 불러오지 못했습니다.',[{label:'닫기',action:()=>{}}]);
       return;
     }
+    const hasDest=!!(dest && mapData(dest));
+    if(hasDest) WM_STATE.selected=dest;
     if(!WM_STATE.selected || !mapData(WM_STATE.selected)) WM_STATE.selected=(typeof G!=='undefined'&&G.currentMap)||'프론테라';
     openModal('🗺 세계지도', mapHtml(), [{label:'닫기',action:()=>{}}]);
-    setTimeout(()=>focusMap('current'),0);
+    setTimeout(()=>focusMap(hasDest?'selected':'current'),0);
   };
 })();
 </script>
@@ -64390,8 +64440,11 @@ function svcMarkInteractTarget(nm,p){
     if(!qs||qs.state!=='active'||q.type!=='interact') continue;
     if(nm===q.target_npc||nm.startsWith(q.target_npc)){
       qs.state='completable';
-      log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`,'quest');
-      notify('퀘스트 조건 달성!','gold');
+      // 튜토리얼 현장 단계(카프라)는 노인에게 돌아가지 않고 그 자리에서 완료 (DEVREF-E-C P2-16)
+      if(!(typeof autoCompleteTutorialStep==='function' && autoCompleteTutorialStep(id))){
+        log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`,'quest');
+        notify('퀘스트 조건 달성!','gold');
+      }
       break;
     }
   }
@@ -64609,6 +64662,9 @@ window.__serviceSystemsV2 = {
       .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
 
+  // showQuestModal이 그릴 때마다 비우고, 진행 중 카드 중 첫 목적지를 담는다 (「지도 열기」용).
+  let firstActiveDest='';
+
   function fmt(n){
     const x = Number(n || 0);
     return Number.isFinite(x) ? x.toLocaleString() : String(n || 0);
@@ -64669,9 +64725,8 @@ window.__serviceSystemsV2 = {
     return best || {dest:uniq[0],route:null};
   }
 
-  function routeText(destinations){
-    const best=bestDestination(destinations);
-    if(!best.dest) return '';
+  function routeText(best){
+    if(!best || !best.dest) return '';
     if(best.route && best.route.length===1) return `현재 위치 · ${best.dest}`;
     if(best.route && best.route.length>1){
       const hops=best.route.length-1;
@@ -64867,6 +64922,7 @@ window.__serviceSystemsV2 = {
 
   function reportInfo(q,state,step){
     if(state==='done' || state==='available') return '';
+    if(state==='active' && typeof isTutorialAutoStep==='function' && isTutorialAutoStep(q)) return '보고 필요 없음 · 조건을 채우면 그 자리에서 완료';
     const npc=q.npc || (step&&step.npc);
     if(!npc) return '';
     const map=npcMap(npc);
@@ -64895,7 +64951,12 @@ window.__serviceSystemsV2 = {
     const obj=objectiveInfo(q,state,qs,step);
     const req=requirementText(q,isJob);
     const narrative=firstNarrative(q,step);
-    const route=routeText(obj.maps);
+    const best=bestDestination(obj.maps);
+    const route=routeText(best);
+    const here=(typeof G!=='undefined'&&G.currentMap)||'';
+    const mapBtn=(best.dest && best.dest!==here)
+      ? ` <button class="qg-map" data-dest="${esc(best.dest)}" onclick="questGuideOpenMap(this.dataset.dest)">🗺 경로</button>` : '';
+    if(!firstActiveDest && best.dest && (state==='active'||state==='completable')) firstActiveDest=best.dest;
     const report=reportInfo(q,state,step);
     const rew=rewardText(q);
     const progress=progressHtml(src,state,qs,isJob);
@@ -64913,7 +64974,7 @@ window.__serviceSystemsV2 = {
       <div class="qg-head"><div><div class="qg-title">${esc(q.title)}</div>${req?`<div class="qg-req">${esc(req)}</div>`:''}</div><em>${stateMeta[0]}</em></div>
       ${narrative?`<div class="qg-story">${esc(narrative)}</div>`:''}
       <div class="qg-row qg-now"><span>지금 할 일</span><b>${esc(obj.label)}</b></div>
-      ${route?`<div class="qg-row"><span>어디서</span><b>${esc(route)}</b></div>`:''}
+      ${route?`<div class="qg-row"><span>어디서</span><b>${esc(route)}${mapBtn}</b></div>`:''}
       ${obj.source?`<div class="qg-source"><span>획득처</span><div>${obj.source}</div></div>`:''}
       ${progress}
       ${sourceActions}
@@ -64938,15 +64999,26 @@ window.__serviceSystemsV2 = {
       .qg-source{display:grid;grid-template-columns:56px minmax(0,1fr);gap:6px;font-size:10px;line-height:1.5;margin-top:3px}.qg-source>div{color:var(--text);overflow-wrap:anywhere}
       .qg-progress{margin:7px 0 2px 62px}.qg-progress>div:first-child{display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim)}.qg-bar{height:5px;background:#e0e8ed;border-radius:3px;overflow:hidden;margin-top:2px}.qg-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue-light),var(--gold))}
       .qg-multi{margin:6px 0 2px 62px;display:flex;flex-wrap:wrap;gap:4px}.qg-multi span{font-size:10px;border:1px solid var(--border);border-radius:9px;padding:1px 6px;background:var(--bg-panel)}
+      .qg-map{margin-left:6px;font-size:10px;padding:1px 7px;border:1px solid var(--border);border-radius:9px;background:var(--bg-panel);color:var(--text);cursor:pointer;white-space:nowrap}
       .qg-section{display:flex;align-items:center;gap:6px;margin-top:6px;cursor:pointer;user-select:none;font-size:10px;color:var(--text-dim);font-weight:700}.qg-empty{text-align:center;padding:28px;color:var(--text-dim);font-size:11px;line-height:1.7}
       @media(max-width:700px){.qg-wrap{max-height:72vh}.qg-card{padding:9px}.qg-row,.qg-source{grid-template-columns:52px minmax(0,1fr)}.qg-progress,.qg-multi{margin-left:58px}}
     `;
     document.head.appendChild(s);
   }
 
+  // 퀘스트 카드의 「🗺 경로」와 아래 「지도 열기」: 목적지를 넘겨 세계지도에서 경로를 강조한다 (자동 이동 없음).
+  window.questGuideOpenMap=function(dest){
+    if(typeof closeModal==='function') closeModal();
+    setTimeout(()=>{
+      if(typeof showWorldMapModal==='function') showWorldMapModal(dest||'');
+      else if(typeof showMapModal==='function') showMapModal();
+    },0);
+  };
+
   showQuestModal=function(){
     const p=(typeof G!=='undefined')?G.player:null; if(!p) return;
     ensureStyle();
+    firstActiveDest='';
     if(!p.quests) p.quests={};
     let active='', available='', done='';
     let ac=0,av=0,dn=0;
@@ -64993,7 +65065,8 @@ window.__serviceSystemsV2 = {
       }
     }
     h+='</div>';
-    openModal('📋 퀘스트 안내',h,[{label:'지도 열기',action:()=>{setTimeout(()=>{if(typeof showWorldMapModal==='function')showWorldMapModal();else if(typeof showMapModal==='function')showMapModal();},0);}},{label:'닫기',action:()=>{}}]);
+    const mapDest=firstActiveDest;
+    openModal('📋 퀘스트 안내',h,[{label:'지도 열기',action:()=>{setTimeout(()=>{if(typeof showWorldMapModal==='function')showWorldMapModal(mapDest);else if(typeof showMapModal==='function')showMapModal();},0);}},{label:'닫기',action:()=>{}}]);
   };
 })();
 </script>
@@ -65203,6 +65276,8 @@ function aiMarkInteractTargets(name,p){
     if(!qs||qs.state!=='active'||q.type!=='interact'||!q.target_npc) continue;
     if(name===q.target_npc||name.startsWith(q.target_npc)){
       qs.state='completable'; done.push(q.title);
+      // 튜토리얼 현장 단계(카프라)는 노인에게 돌아가지 않고 그 자리에서 완료 (DEVREF-E-C P2-16)
+      if(typeof autoCompleteTutorialStep==='function' && autoCompleteTutorialStep(id)) continue;
       if(typeof log==='function') log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`,'quest');
       if(typeof notify==='function') notify('퀘스트 조건 달성!','gold');
     }

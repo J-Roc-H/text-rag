@@ -9,6 +9,9 @@
       .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
 
+  // showQuestModal이 그릴 때마다 비우고, 진행 중 카드 중 첫 목적지를 담는다 (「지도 열기」용).
+  let firstActiveDest='';
+
   function fmt(n){
     const x = Number(n || 0);
     return Number.isFinite(x) ? x.toLocaleString() : String(n || 0);
@@ -69,9 +72,8 @@
     return best || {dest:uniq[0],route:null};
   }
 
-  function routeText(destinations){
-    const best=bestDestination(destinations);
-    if(!best.dest) return '';
+  function routeText(best){
+    if(!best || !best.dest) return '';
     if(best.route && best.route.length===1) return `현재 위치 · ${best.dest}`;
     if(best.route && best.route.length>1){
       const hops=best.route.length-1;
@@ -267,6 +269,7 @@
 
   function reportInfo(q,state,step){
     if(state==='done' || state==='available') return '';
+    if(state==='active' && typeof isTutorialAutoStep==='function' && isTutorialAutoStep(q)) return '보고 필요 없음 · 조건을 채우면 그 자리에서 완료';
     const npc=q.npc || (step&&step.npc);
     if(!npc) return '';
     const map=npcMap(npc);
@@ -295,7 +298,12 @@
     const obj=objectiveInfo(q,state,qs,step);
     const req=requirementText(q,isJob);
     const narrative=firstNarrative(q,step);
-    const route=routeText(obj.maps);
+    const best=bestDestination(obj.maps);
+    const route=routeText(best);
+    const here=(typeof G!=='undefined'&&G.currentMap)||'';
+    const mapBtn=(best.dest && best.dest!==here)
+      ? ` <button class="qg-map" data-dest="${esc(best.dest)}" onclick="questGuideOpenMap(this.dataset.dest)">🗺 경로</button>` : '';
+    if(!firstActiveDest && best.dest && (state==='active'||state==='completable')) firstActiveDest=best.dest;
     const report=reportInfo(q,state,step);
     const rew=rewardText(q);
     const progress=progressHtml(src,state,qs,isJob);
@@ -313,7 +321,7 @@
       <div class="qg-head"><div><div class="qg-title">${esc(q.title)}</div>${req?`<div class="qg-req">${esc(req)}</div>`:''}</div><em>${stateMeta[0]}</em></div>
       ${narrative?`<div class="qg-story">${esc(narrative)}</div>`:''}
       <div class="qg-row qg-now"><span>지금 할 일</span><b>${esc(obj.label)}</b></div>
-      ${route?`<div class="qg-row"><span>어디서</span><b>${esc(route)}</b></div>`:''}
+      ${route?`<div class="qg-row"><span>어디서</span><b>${esc(route)}${mapBtn}</b></div>`:''}
       ${obj.source?`<div class="qg-source"><span>획득처</span><div>${obj.source}</div></div>`:''}
       ${progress}
       ${sourceActions}
@@ -338,15 +346,26 @@
       .qg-source{display:grid;grid-template-columns:56px minmax(0,1fr);gap:6px;font-size:10px;line-height:1.5;margin-top:3px}.qg-source>div{color:var(--text);overflow-wrap:anywhere}
       .qg-progress{margin:7px 0 2px 62px}.qg-progress>div:first-child{display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim)}.qg-bar{height:5px;background:#e0e8ed;border-radius:3px;overflow:hidden;margin-top:2px}.qg-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue-light),var(--gold))}
       .qg-multi{margin:6px 0 2px 62px;display:flex;flex-wrap:wrap;gap:4px}.qg-multi span{font-size:10px;border:1px solid var(--border);border-radius:9px;padding:1px 6px;background:var(--bg-panel)}
+      .qg-map{margin-left:6px;font-size:10px;padding:1px 7px;border:1px solid var(--border);border-radius:9px;background:var(--bg-panel);color:var(--text);cursor:pointer;white-space:nowrap}
       .qg-section{display:flex;align-items:center;gap:6px;margin-top:6px;cursor:pointer;user-select:none;font-size:10px;color:var(--text-dim);font-weight:700}.qg-empty{text-align:center;padding:28px;color:var(--text-dim);font-size:11px;line-height:1.7}
       @media(max-width:700px){.qg-wrap{max-height:72vh}.qg-card{padding:9px}.qg-row,.qg-source{grid-template-columns:52px minmax(0,1fr)}.qg-progress,.qg-multi{margin-left:58px}}
     `;
     document.head.appendChild(s);
   }
 
+  // 퀘스트 카드의 「🗺 경로」와 아래 「지도 열기」: 목적지를 넘겨 세계지도에서 경로를 강조한다 (자동 이동 없음).
+  window.questGuideOpenMap=function(dest){
+    if(typeof closeModal==='function') closeModal();
+    setTimeout(()=>{
+      if(typeof showWorldMapModal==='function') showWorldMapModal(dest||'');
+      else if(typeof showMapModal==='function') showMapModal();
+    },0);
+  };
+
   showQuestModal=function(){
     const p=(typeof G!=='undefined')?G.player:null; if(!p) return;
     ensureStyle();
+    firstActiveDest='';
     if(!p.quests) p.quests={};
     let active='', available='', done='';
     let ac=0,av=0,dn=0;
@@ -393,6 +412,7 @@
       }
     }
     h+='</div>';
-    openModal('📋 퀘스트 안내',h,[{label:'지도 열기',action:()=>{setTimeout(()=>{if(typeof showWorldMapModal==='function')showWorldMapModal();else if(typeof showMapModal==='function')showMapModal();},0);}},{label:'닫기',action:()=>{}}]);
+    const mapDest=firstActiveDest;
+    openModal('📋 퀘스트 안내',h,[{label:'지도 열기',action:()=>{setTimeout(()=>{if(typeof showWorldMapModal==='function')showWorldMapModal(mapDest);else if(typeof showMapModal==='function')showMapModal();},0);}},{label:'닫기',action:()=>{}}]);
   };
 })();
