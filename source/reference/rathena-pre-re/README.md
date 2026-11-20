@@ -64,3 +64,13 @@ bytes, blob SHA `57c1f74da021a1d574bce534530d2a8dcd845fda`)은 이미
 exact-match로 별도 수행 — 숫자 ID에 의존하지 않는다, `ITEM_COMBO_CANON_PATCH_NOTES.md`
 §4 참조), 278개 AegisName 전부(빠짐없이 전수 확인, 누락 0건)에 대해서만 `{Id, Name,
 Type, srcFile}` 4개 필드만 추출해 29KB로 축소했다.
+
+## pet_db.yml (2026-11-21 추가, P3-10 펫 1단계)
+
+| 항목 | 값 |
+|---|---|
+| source | https://github.com/rathena/rathena `db/pre-re/pet_db.yml` |
+| last commit touching file | `b8c16343940c244b35e9013ac80e6142fd9f86b7` |
+| blob SHA | `7d560b5b62c9477f4da8cee432217277501a09a9` (23,114 bytes; 저장본은 줄바꿈 CRLF라 크기가 다름) |
+| 쓰는 곳 | `tools/build_pet_db.py` -> `source/data/db-pets.json` |
+| 함께 읽은 소스(복제 안 함) | `src/map/pet.hpp` e_pet_intimate_level·e_pet_hungry, `src/map/pet.cpp` pet_food()·pet_hungry() |
