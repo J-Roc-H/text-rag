@@ -67,7 +67,10 @@ function env(food) {
   assert(iAdv > 0 && iAdv < iHunt, '방치 정산은 자동사냥 여부와 무관하게, 헤드리스 전에 펫을 진행해야 한다');
   assert(offline.indexOf('summary.companion') > offline.indexOf('let summary'), 'summary에 펫 결과를 싣는다');
   const turn = extractFunction(html, 'function processTurn(){');
-  assert(turn.includes('companionAdvance('), 'processTurn에서 펫 시간 진행');
+  assert(turn.includes('companionTickOnline('), 'processTurn에서 펫 시간 진행(+대사, Task 6)');
+  const enter = extractFunction(html, 'function enterMap(nm){');
+  assert(enter.includes("companionPetAdvice(p, calcStats(), 'enter'"), '지역 진입 조언 (Task 6)');
+  assert(html.includes('id="ctx-pet"') && html.includes("companionPetTalk(p,'ownerLevelUp'"), '펫 단추·레벨업 대사 (Task 6)');
   const lines = extractFunction(html, 'function awaySummaryLines(summary, full){');
   assert(lines.includes('summary.companion'), '방치 요약에 펫 한 줄');
   assert(SRC.includes('setInterval('), '마을 등 사냥 밖에서도 60초마다 진행');

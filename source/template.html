@@ -1028,6 +1028,7 @@ body.work-mode p {
 <button class="menu-btn" id="ctx-npc" onclick="showNpcModal()">💬 NPC</button>
 <button class="menu-btn" id="ctx-skill" style="display:none" onclick="showSkillModal()">✨ 스킬<i class="tab-badge" id="skill-badge" style="display:none"></i></button>
 <button class="menu-btn" id="quest-btn" style="display:none" onclick="showQuestModal()">📋 퀘스트<i class="tab-badge" id="quest-badge" style="display:none"></i></button>
+<button class="menu-btn" id="ctx-pet" style="display:none" onclick="showCompanionModal()">🐾 펫</button>
 <button class="menu-btn pc-only" onclick="showInvModal()">🎒 가방</button>
 <button class="menu-btn pc-only" onclick="showMoreMenu()">☰ 메뉴</button>
 </div>
@@ -5682,6 +5683,7 @@ function gainBaseExp(p, amount, silent){
       let canSpendNow = canSpendStatPoint(p);
       log(`🌟 Base Lv.${p.baseLv} 달성 — 상태 포인트 +${gainedPts} · 보유 ${p.statPoints}${canSpendNow?' · 능력치 배분 가능':''}`,'level-up');
       notify('레벨 업!','gold'); pbReact('levelup');
+      if(typeof companionPetTalk==='function') companionPetTalk(p,'ownerLevelUp',Date.now(),{urgent:true}); // [동반자]
     }
   }
   if(lvUp && !silent){
@@ -5898,6 +5900,8 @@ function enterMap(nm){
   } else {
     log(`🗺 ${nm} 이동`,'location');
   }
+  // [동반자] 새 지역 위험 조언 (친밀도에 따라 암시~수치)
+  if(typeof companionPetAdvice==='function' && typeof calcStats==='function') companionPetAdvice(p, calcStats(), 'enter', {map:nm});
   p.visitedMaps[nm]=true;
 
   if(MAP_QUEST_DISCOVERY[nm] && p.quests){
@@ -6651,7 +6655,7 @@ function awardKillReward(p, mon, set, stats){
 }
 
 function processTurn(){
-  if(typeof companionAdvance==='function' && G.player) companionAdvance(G.player, Date.now()); // [동반자] 펫 시간 (헤드리스 과거 시각이면 무시)
+  if(typeof companionTickOnline==='function' && G.player) companionTickOnline(G.player, Date.now(), !!(G.battles&&G.battles.length)); // [동반자] 펫 시간·대사 (헤드리스 중엔 무시)
   if(!G.battles.length)return;
   ensureCombatRecord(); G.combatTick=(G.combatTick||0)+1;
   let combatWorld=ensureCombatWorld(); combatWorld.tick=G.combatTick;

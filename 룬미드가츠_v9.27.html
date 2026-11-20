@@ -48713,6 +48713,7 @@ body.work-mode p {
 <button class="menu-btn" id="ctx-npc" onclick="showNpcModal()">💬 NPC</button>
 <button class="menu-btn" id="ctx-skill" style="display:none" onclick="showSkillModal()">✨ 스킬<i class="tab-badge" id="skill-badge" style="display:none"></i></button>
 <button class="menu-btn" id="quest-btn" style="display:none" onclick="showQuestModal()">📋 퀘스트<i class="tab-badge" id="quest-badge" style="display:none"></i></button>
+<button class="menu-btn" id="ctx-pet" style="display:none" onclick="showCompanionModal()">🐾 펫</button>
 <button class="menu-btn pc-only" onclick="showInvModal()">🎒 가방</button>
 <button class="menu-btn pc-only" onclick="showMoreMenu()">☰ 메뉴</button>
 </div>
@@ -53367,6 +53368,7 @@ function gainBaseExp(p, amount, silent){
       let canSpendNow = canSpendStatPoint(p);
       log(`🌟 Base Lv.${p.baseLv} 달성 — 상태 포인트 +${gainedPts} · 보유 ${p.statPoints}${canSpendNow?' · 능력치 배분 가능':''}`,'level-up');
       notify('레벨 업!','gold'); pbReact('levelup');
+      if(typeof companionPetTalk==='function') companionPetTalk(p,'ownerLevelUp',Date.now(),{urgent:true}); // [동반자]
     }
   }
   if(lvUp && !silent){
@@ -53583,6 +53585,8 @@ function enterMap(nm){
   } else {
     log(`🗺 ${nm} 이동`,'location');
   }
+  // [동반자] 새 지역 위험 조언 (친밀도에 따라 암시~수치)
+  if(typeof companionPetAdvice==='function' && typeof calcStats==='function') companionPetAdvice(p, calcStats(), 'enter', {map:nm});
   p.visitedMaps[nm]=true;
 
   if(MAP_QUEST_DISCOVERY[nm] && p.quests){
@@ -54336,7 +54340,7 @@ function awardKillReward(p, mon, set, stats){
 }
 
 function processTurn(){
-  if(typeof companionAdvance==='function' && G.player) companionAdvance(G.player, Date.now()); // [동반자] 펫 시간 (헤드리스 과거 시각이면 무시)
+  if(typeof companionTickOnline==='function' && G.player) companionTickOnline(G.player, Date.now(), !!(G.battles&&G.battles.length)); // [동반자] 펫 시간·대사 (헤드리스 중엔 무시)
   if(!G.battles.length)return;
   ensureCombatRecord(); G.combatTick=(G.combatTick||0)+1;
   let combatWorld=ensureCombatWorld(); combatWorld.tick=G.combatTick;
@@ -69931,11 +69935,209 @@ function companionElderActions(name, p, addAction) {
   }
 }
 
-// 사냥 밖(마을 등)에서도 펫 시간이 흐르도록 60초마다 진행. 헤드리스·테스트(vm)에는 타이머가 없다.
+// ── 말하기 통로 (조언·일상 대사 공용, 호문쿨루스도 이 통로를 쓴다) ─────────────────────────────
+var COMPANION_REAL_NOW = Date.now;          // 방치 정산 헤드리스는 Date.now를 바꿔 끼운다 -> 그동안 침묵
+var COMPANION_QUIET_MS = 4 * 60 * 1000;     // 급하지 않은 조언 뒤 공용 쉼 (설계자 판단, 파이 수호령 3~5분의 가운데)
+var COMPANION_SAME_KEY_MS = 5 * 60 * 1000;  // 같은 조언 최소 간격
+var COMPANION_TALK_MS = 10 * 60 * 1000;     // 같은 일상 대사 사건 최소 간격
+var COMPANION_HIT_MIN = 80;                 // 내 명중률이 이보다 낮으면 "부족" (설계자 판단)
+var COMPANION_MOB_HIT_MAX = 60;             // 몬스터가 나를 맞히는 확률이 이보다 높으면 "부족" (설계자 판단)
+var COMPANION_HEAVY_HIT = 0.08;             // …단, 한 대가 최대 체력의 8% 이상일 때만 (포링에게 자주 맞는 건 문제가 아니다)
+
+function companionIsReplay() { return typeof window !== 'undefined' && Date.now !== COMPANION_REAL_NOW; }
+function companionPetName(p) {
+  const pet = p && p.companions && p.companions.pet;
+  return pet ? ((companionPetData(pet.key) || {}).name || pet.key) : '';
+}
+// 친밀도 단계 -> 조언 정보량: hint(어색함·서먹함) · kind(보통) · direct(친함·절친)
+function companionAdviceLevel(p) {
+  const st = companionStage(p.companions.pet.intimacy);
+  return st >= 3 ? 'direct' : st === 2 ? 'kind' : 'hint';
+}
+
+function companionSay(p, key, text, opt) {
+  opt = opt || {};
+  const c = p && p.companions;
+  if (!c || !c.advice || !c.advice.on || companionIsReplay()) return false;
+  const now = opt.now != null ? opt.now : Date.now();
+  const last = c.advice.lastSaid[key];
+  if (last != null && now - last < (opt.everyMs != null ? opt.everyMs : COMPANION_SAME_KEY_MS)) return false;
+  if (!opt.urgent && now < (c.advice.quietUntil || 0)) return false;
+  c.advice.lastSaid[key] = now;
+  if (!opt.urgent) c.advice.quietUntil = now + COMPANION_QUIET_MS;
+  c.advice.lastAdviceAt = now;
+  if (typeof log === 'function') log(text, 'npc');
+  return true;
+}
+
+// 일상 대사: 원작 pettalktable처럼 배고픔 구간 × 사건. 조언과 같은 순간이면 조언이 먼저(대사 생략).
+function companionHungerBand(h) { return h <= 25 ? 'hungry' : h > 75 ? 'full' : 'normal'; }
+function companionPetTalk(p, event, nowMs, opt) {
+  opt = opt || {};
+  const c = p && p.companions, pet = c && c.pet;
+  if (!pet || !c.advice || !c.advice.on || companionIsReplay()) return false;
+  const now = nowMs != null ? nowMs : Date.now();
+  if (c.advice.lastAdviceAt === now) return false;
+  if (!opt.urgent && now < (c.advice.talkQuietUntil || 0)) return false;
+  const set = (typeof DB !== 'undefined' && DB.petTalk && DB.petTalk.pets && DB.petTalk.pets[pet.key]) || null;
+  const lines = set && set.lines && set.lines[event] && set.lines[event][companionHungerBand(pet.hunger)];
+  if (!lines || !lines.length) return false;
+  const key = 'talk:' + event, last = c.advice.lastSaid[key];
+  if (last != null && now - last < COMPANION_TALK_MS) return false;
+  c.advice.lastSaid[key] = now;
+  c.advice.talkQuietUntil = now + COMPANION_QUIET_MS;
+  if (typeof log === 'function') log(`🐾 ${companionPetName(p)}: "${lines[Math.floor(Math.random() * lines.length)]}"`, 'npc');
+  return true;
+}
+
+// ── 펫의 조언 (싸우기 전: 장소·위험·준비물). 판정은 원작 명중 공식 그대로 ─────────────────
+function companionClampRate(v) { return Math.max(5, Math.min(95, v)); }
+function companionJudge(s, m) {
+  const hr = companionClampRate(80 + (s.hit || 0) - (m.flee || 0));
+  const mhr = companionClampRate(80 + (m.hit || 0) - (s.flee || 0));
+  const heavy = (m.atk || 0) >= (s.maxHp || Infinity) * COMPANION_HEAVY_HIT;
+  return { m, hr, mhr, hitShort: hr < COMPANION_HIT_MIN, fleeShort: mhr > COMPANION_MOB_HIT_MAX && heavy,
+    needHit: Math.max(0, (m.flee || 0) + 15 - (s.hit || 0)), needFlee: Math.max(0, (m.hit || 0) + 20 - (s.flee || 0)) };
+}
+function companionMapMonsters(name) {
+  const md = (typeof DB !== 'undefined' && DB.maps && DB.maps[name]) || null;
+  if (!md || md.safe) return [];
+  return (md.monsters || []).map((id) => DB.monsters && DB.monsters[id]).filter(Boolean);
+}
+function companionBestHunt(s) {
+  let best = null, next = null;
+  Object.keys((typeof DB !== 'undefined' && DB.maps) || {}).forEach((map) => {
+    companionMapMonsters(map).forEach((m) => {
+      const j = companionJudge(s, m);
+      if (!j.hitShort && !j.fleeShort) { if (!best || (m.lv || 0) > (best.m.lv || 0)) best = Object.assign({ map }, j); }
+    });
+  });
+  Object.keys((typeof DB !== 'undefined' && DB.maps) || {}).forEach((map) => {
+    companionMapMonsters(map).forEach((m) => {
+      const j = companionJudge(s, m);
+      if ((j.hitShort || j.fleeShort) && (!best || (m.lv || 0) > (best.m.lv || 0)) && (!next || (m.lv || 0) < (next.m.lv || 0))) next = Object.assign({ map }, j);
+    });
+  });
+  return { best, next };
+}
+function companionPotionCount(p) {
+  const list = (typeof AUTO_HP_POTS !== 'undefined' && AUTO_HP_POTS) || ['이그드라실의 열매', '하얀포션', '주홍포션', '노란포션', '빨간포션'];
+  return list.reduce((a, n) => a + ((p.inventory || {})[n] || 0), 0);
+}
+
+function companionPetAdvice(p, s, event, opt) {
+  opt = opt || {};
+  if (!p || !p.companions || !p.companions.pet || !s) return;
+  const now = opt.now != null ? opt.now : Date.now();
+  const lv = companionAdviceLevel(p), pn = `🐾 ${companionPetName(p)}`;
+  const say = (key, text, o) => companionSay(p, key, `${pn}: ${text}`, Object.assign({ now }, o || {}));
+  const shortText = (j) => j.hitShort ? `명중이 ${j.needHit} 모자라(지금 ${j.hr}%)` : `회피가 ${j.needFlee} 모자라(맞을 확률 ${j.mhr}%)`;
+
+  if (event === 'enter') {
+    const worst = companionMapMonsters(opt.map).map((m) => companionJudge(s, m)).filter((j) => j.hitShort || j.fleeShort)
+      .sort((a, b) => (a.hr - a.mhr) - (b.hr - b.mhr))[0];
+    if (!worst) return;
+    let text;
+    if (lv === 'hint') text = '저기… 왠지 싫어.';
+    else if (lv === 'kind') text = worst.hitShort ? `저 ${worst.m.name}, 잘 안 맞을 것 같아.` : `저 ${worst.m.name}한테 많이 맞을 것 같아.`;
+    else {
+      const b = companionBestHunt(s).best;
+      text = `${worst.m.name}한테 ${shortText(worst)}.${b ? ` 지금은 ${b.map}(으)로 가.` : ''}`;
+    }
+    say('enter:' + opt.map, text, { urgent: true });
+    return;
+  }
+  if (event === 'tick') {
+    const pct = s.maxWeight ? Math.floor((s.carriedWeight || 0) * 100 / s.maxWeight) : 0;
+    if (pct >= 90) {
+      say('w90', lv === 'hint' ? '가방이 너무 무거워 보여…' : lv === 'kind' ? '짐 때문에 싸울 수가 없어!' : `무게 ${pct}% — 90%를 넘어서 공격을 못 해. 좀 팔자.`);
+      return;
+    }
+    if (pct >= 50 && say('w50', lv === 'hint' ? '가방이… 묵직해.' : lv === 'kind' ? '짐이 많아서 몸이 안 낫는 것 같아.' : `무게 ${pct}% — 50%를 넘어서 자연 회복이 멈췄어.`)) return;
+    const pots = companionPotionCount(p);
+    if (pots <= 3 && say('pot', lv === 'hint' ? '주머니가 가벼운 것 같아…' : lv === 'kind' ? '물약이 얼마 없어.' : `물약 ${pots}개 남았어. 보충하자.`)) return;
+    const food = (companionPetData(p.companions.pet.key) || {}).food;
+    const fl = food ? ((p.inventory || {})[food] || 0) : null;
+    if (food && fl <= 3) say('food', lv === 'hint' ? '배고파질 것 같아…' : lv === 'kind' ? `${food}이(가) 얼마 없어.` : `${food} ${fl}개 남았어. 떨어지면 나랑 더 못 친해져.`);
+    return;
+  }
+  if (event === 'ask') {
+    const { best, next } = companionBestHunt(s);
+    let text;
+    // 부족 없는 곳이 없으면(막 시작한 캐릭터 등) 가장 만만한 곳을 권한다 — "어디든 버겁다"는 쓸모없는 말이다
+    if (!best && next) text = lv === 'hint' ? '음… 저쪽이 그나마 나을 것 같은데…'
+      : lv === 'kind' ? `${next.map} 쪽이 그나마 만만할 것 같아.`
+      : `지금은 ${next.map}의 ${next.m.name}(Lv ${next.m.lv})가 제일 만만해. 그래도 ${shortText(next)}.`;
+    else if (!best) text = '음… 아직은 마을 근처가 좋겠어.';
+    else if (lv === 'hint') text = '음… 저쪽이 좋을 것 같은데…';
+    else if (lv === 'kind') text = `${best.map} 쪽이 괜찮을 것 같아.`;
+    else text = `${best.map}의 ${best.m.name}(Lv ${best.m.lv})까진 문제없어.${next ? ` 다음은 ${next.map}의 ${next.m.name} — ${shortText(next)}.` : ''}`;
+    say('ask', text, { urgent: true, everyMs: 0 });
+  }
+}
+
+// ── 접속 중 진행 (processTurn·타이머). 방치 정산은 companionAdvance만 쓴다(말 없음) ───────────
+function companionTickOnline(p, nowMs, inBattle) {
+  if (!p || !p.companions || !p.companions.pet || companionIsReplay()) return;
+  const r = companionAdvance(p, nowMs);
+  if (r.fed > 0) companionPetTalk(p, 'feed', nowMs);
+  if (r.stageTo > r.stageFrom) {
+    if (typeof log === 'function') log(`💞 ${companionPetName(p)}와(과)의 친밀도: <b>${COMPANION_STAGE_NAMES[r.stageTo]}</b>`, 'level-up');
+    if (typeof notify === 'function') notify(`친밀도 ${COMPANION_STAGE_NAMES[r.stageTo]}`, 'gold');
+  }
+  if (inBattle) {
+    if (p.maxHp && p.hp / p.maxHp < 0.3) companionPetTalk(p, 'danger', nowMs, { urgent: true });
+    else if (Math.random() < 0.02) companionPetTalk(p, 'hunt', nowMs);
+  }
+}
+
+function companionSyncButton() {
+  if (typeof document === 'undefined') return;
+  const b = document.getElementById('ctx-pet');
+  const has = typeof G !== 'undefined' && G.player && G.player.companions && G.player.companions.pet;
+  if (b) b.style.display = has ? '' : 'none';
+}
+
+function showCompanionModal() {
+  const p = typeof G !== 'undefined' && G.player;
+  if (!p || !p.companions || !p.companions.pet || typeof openModal !== 'function') return;
+  companionTickOnline(p, Date.now(), false);
+  const pet = p.companions.pet, d = companionPetData(pet.key) || {};
+  const talk = (DB.petTalk && DB.petTalk.pets && DB.petTalk.pets[pet.key]) || {};
+  const st = companionStage(pet.intimacy), band = companionHungerBand(pet.hunger);
+  const bandText = { hungry: '배고픔', normal: '보통', full: '배부름' }[band];
+  const food = d.food || '—', fl = d.food ? ((p.inventory || {})[d.food] || 0) : 0;
+  const on = p.companions.advice.on;
+  const body = `<div style="font-size:12px;line-height:1.7">
+    <b style="font-size:14px">🐾 ${d.name || pet.key}</b> <span style="font-size:10px;color:var(--text-dim)">Lv ${d.lv || '?'}</span>
+    <div style="font-size:11px;color:var(--text-dim)">${talk.persona || ''}</div>
+    <div>친밀도: <b>${COMPANION_STAGE_NAMES[st]}</b> <span style="font-size:10px;color:var(--text-dim)">(${pet.intimacy}/1000)</span></div>
+    <div>배: ${bandText} <span style="font-size:10px;color:var(--text-dim)">(${pet.hunger}/100)</span></div>
+    <div>먹이: ${food} <b>${fl}</b>개 <span style="font-size:10px;color:var(--text-dim)">— 알맞게 배고플 때 알아서 먹습니다. 떨어지면 친밀도가 멈춥니다.</span></div>
+    <div style="font-size:10px;color:var(--text-dim);margin-top:4px">친해질수록 조언이 또렷해집니다 (어색함·서먹함: 암시 · 보통: 이유 · 친함·절친: 수치와 권유).</div></div>`;
+  openModal('🐾 펫', body, [
+    { label: '🐾 어디서 사냥할까?', action: () => { if (typeof calcStats === 'function') companionPetAdvice(p, calcStats(), 'ask'); } },
+    { label: on ? '🔕 조언 끄기' : '🔔 조언 켜기', action: () => { p.companions.advice.on = !on; if (typeof saveLocal === 'function') saveLocal(); } },
+    { label: '닫기', action: () => {} },
+  ]);
+}
+
+// 사냥 밖(마을 등)에서도 펫 시간이 흐르도록 1분마다 진행 + 준비물 조언 + 가끔 혼잣말.
+// 접속 인사는 게임 화면에 처음 들어왔을 때 한 번. 헤드리스·테스트(vm)에는 타이머가 없다.
 if (typeof setInterval === 'function' && typeof window !== 'undefined') {
+  let lastMinute = 0, greetedFor = null;
   setInterval(function () {
-    if (typeof G !== 'undefined' && G.player) companionAdvance(G.player, Date.now());
-  }, 60000);
+    if (typeof G === 'undefined' || !G.player || companionIsReplay()) { companionSyncButton(); return; }
+    const p = G.player, now = Date.now();
+    companionSyncButton();
+    if (!p.companions || !p.companions.pet) return;
+    if (greetedFor !== p) { greetedFor = p; companionPetTalk(p, 'connect', now, { urgent: true }); }
+    if (now - lastMinute < 60000) return;
+    lastMinute = now;
+    companionTickOnline(p, now, false);
+    if (typeof calcStats === 'function') companionPetAdvice(p, calcStats(), 'tick');
+    if (Math.random() < 0.3) companionPetTalk(p, 'idle', now);
+  }, 5000);
 }
 </script>
 </body>
