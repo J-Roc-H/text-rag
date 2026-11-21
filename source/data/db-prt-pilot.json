@@ -1,6 +1,672 @@
 {
- "src": "rathena dd073ca npc/pre-re/mobs (prontera·prt_sew·prt_maze) + npc/**/warps — 사실값만 추출",
+ "src": "rathena dd073ca npc/pre-re/mobs (prontera·prt_sew·prt_maze·iz_dun·payon·pay_dun) + npc/**/warps — 사실값만 추출",
  "maps": {
+  "iz_dun00": {
+   "group": "바이란 섬 해저동굴",
+   "displayName": "해저동굴 1층",
+   "spawns": [
+    [
+     114,
+     65
+    ],
+    [
+     43,
+     45
+    ],
+    [
+     45,
+     15
+    ],
+    [
+     41,
+     15
+    ],
+    [
+     44,
+     15
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "iz_dun01",
+    "izlu2dun"
+   ]
+  },
+  "iz_dun01": {
+   "group": "바이란 섬 해저동굴",
+   "displayName": "해저동굴 2층",
+   "spawns": [
+    [
+     44,
+     60
+    ],
+    [
+     45,
+     50
+    ],
+    [
+     41,
+     30
+    ],
+    [
+     43,
+     15
+    ],
+    [
+     115,
+     15
+    ],
+    [
+     114,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "iz_dun00",
+    "iz_dun02"
+   ]
+  },
+  "iz_dun02": {
+   "group": "바이란 섬 해저동굴",
+   "displayName": "해저동굴 3층",
+   "spawns": [
+    [
+     115,
+     60
+    ],
+    [
+     41,
+     40
+    ],
+    [
+     405,
+     40
+    ],
+    [
+     76,
+     40
+    ],
+    [
+     77,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "iz_dun01",
+    "iz_dun03"
+   ]
+  },
+  "iz_dun03": {
+   "group": "바이란 섬 해저동굴",
+   "displayName": "해저동굴 4층",
+   "spawns": [
+    [
+     482,
+     45
+    ],
+    [
+     41,
+     40
+    ],
+    [
+     75,
+     40
+    ],
+    [
+     74,
+     40
+    ],
+    [
+     495,
+     20
+    ],
+    [
+     77,
+     3
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "iz_dun02",
+    "iz_dun04"
+   ]
+  },
+  "iz_dun04": {
+   "group": "바이란 섬 해저동굴",
+   "displayName": "해저동굴 5층",
+   "spawns": [
+    [
+     77,
+     52
+    ],
+    [
+     496,
+     50
+    ],
+    [
+     41,
+     18
+    ],
+    [
+     495,
+     10
+    ],
+    [
+     75,
+     10
+    ],
+    [
+     117,
+     3
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "iz_dun03"
+   ]
+  },
+  "pay_dun00": {
+   "group": "페이욘 동굴",
+   "displayName": "페이욘 동굴 1층",
+   "spawns": [
+    [
+     52,
+     35
+    ],
+    [
+     51,
+     20
+    ],
+    [
+     19,
+     15
+    ],
+    [
+     20,
+     15
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "pay_arche",
+    "pay_dun01"
+   ]
+  },
+  "pay_dun01": {
+   "group": "페이욘 동굴",
+   "displayName": "페이욘 동굴 2층",
+   "spawns": [
+    [
+     449,
+     50
+    ],
+    [
+     448,
+     30
+    ],
+    [
+     119,
+     15
+    ],
+    [
+     133,
+     5
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "pay_dun00",
+    "pay_dun02"
+   ]
+  },
+  "pay_dun02": {
+   "group": "페이욘 동굴",
+   "displayName": "페이욘 동굴 3층",
+   "spawns": [
+    [
+     48,
+     40
+    ],
+    [
+     41,
+     31
+    ],
+    [
+     49,
+     30
+    ],
+    [
+     448,
+     20
+    ],
+    [
+     449,
+     15
+    ],
+    [
+     20,
+     10
+    ],
+    [
+     15,
+     3
+    ],
+    [
+     121,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "pay_dun01",
+    "pay_dun03"
+   ]
+  },
+  "pay_dun03": {
+   "group": "페이욘 동굴",
+   "displayName": "페이욘 동굴 4층",
+   "spawns": [
+    [
+     50,
+     70
+    ],
+    [
+     41,
+     17
+    ],
+    [
+     15,
+     10
+    ],
+    [
+     80,
+     4
+    ],
+    [
+     48,
+     3
+    ],
+    [
+     49,
+     3
+    ],
+    [
+     498,
+     3
+    ],
+    [
+     121,
+     2
+    ],
+    [
+     393,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "pay_dun02",
+    "pay_dun04"
+   ]
+  },
+  "pay_dun04": {
+   "group": "페이욘 동굴",
+   "displayName": "페이욘 동굴 5층",
+   "spawns": [
+    [
+     122,
+     40
+    ],
+    [
+     120,
+     30
+    ],
+    [
+     121,
+     30
+    ],
+    [
+     498,
+     15
+    ],
+    [
+     448,
+     15
+    ],
+    [
+     499,
+     1
+    ],
+    [
+     500,
+     1
+    ],
+    [
+     182,
+     1
+    ]
+   ],
+   "mvp": 199,
+   "warps": [
+    "pay_dun03"
+   ]
+  },
+  "pay_fild01": {
+   "group": "페이욘 필드",
+   "displayName": "페이욘 필드 01",
+   "spawns": [
+    [
+     11,
+     100
+    ],
+    [
+     10,
+     10
+    ],
+    [
+     20,
+     10
+    ],
+    [
+     1,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "moc_fild03",
+    "pay_fild02",
+    "pay_fild07",
+    "payon"
+   ]
+  },
+  "pay_fild02": {
+   "group": "페이욘 필드",
+   "displayName": "페이욘 필드 02",
+   "spawns": [
+    [
+     24,
+     70
+    ],
+    [
+     25,
+     30
+    ],
+    [
+     20,
+     20
+    ],
+    [
+     11,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "pay_fild01",
+    "pay_fild03",
+    "pay_fild05",
+    "pay_fild11"
+   ]
+  },
+  "pay_fild03": {
+   "group": "페이욘 필드",
+   "displayName": "페이욘 필드 03",
+   "spawns": [
+    [
+     4,
+     50
+    ],
+    [
+     2,
+     50
+    ],
+    [
+     1,
+     30
+    ],
+    [
+     10,
+     30
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "alberta",
+    "pay_fild02",
+    "pay_fild06",
+    "pay_fild07"
+   ]
+  },
+  "pay_fild04": {
+   "group": "페이욘 필드",
+   "displayName": "페이욘 필드 04",
+   "spawns": [
+    [
+     1,
+     40
+    ],
+    [
+     5,
+     40
+    ],
+    [
+     20,
+     40
+    ],
+    [
+     118,
+     10
+    ],
+    [
+     91,
+     1
+    ],
+    [
+     101,
+     1
+    ],
+    [
+     462,
+     1
+    ],
+    [
+     94,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "moc_fild01",
+    "moc_fild02"
+   ]
+  },
+  "pay_fild05": {
+   "group": "페이욘 필드",
+   "displayName": "페이욘 필드 05",
+   "spawns": [
+    [
+     26,
+     65
+    ],
+    [
+     20,
+     20
+    ],
+    [
+     410,
+     5
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "pay_fild02",
+    "pay_fild06"
+   ]
+  },
+  "pay_fild06": {
+   "group": "페이욘 필드",
+   "displayName": "페이욘 필드 06",
+   "spawns": [
+    [
+     497,
+     90
+    ],
+    [
+     109,
+     40
+    ],
+    [
+     11,
+     20
+    ],
+    [
+     20,
+     20
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "pay_fild03",
+    "pay_fild05"
+   ]
+  },
+  "pay_fild07": {
+   "group": "페이욘 필드",
+   "displayName": "페이욘 필드 07",
+   "spawns": [
+    [
+     28,
+     70
+    ],
+    [
+     119,
+     40
+    ],
+    [
+     36,
+     30
+    ],
+    [
+     20,
+     20
+    ],
+    [
+     10,
+     20
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "pay_fild01",
+    "pay_fild03",
+    "pay_fild08",
+    "pay_fild10"
+   ]
+  },
+  "pay_fild08": {
+   "group": "페이욘 필드",
+   "displayName": "페이욘 필드 08",
+   "spawns": [
+    [
+     11,
+     70
+    ],
+    [
+     10,
+     50
+    ],
+    [
+     1,
+     30
+    ],
+    [
+     4,
+     20
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "pay_fild07",
+    "pay_fild09",
+    "payon"
+   ]
+  },
+  "pay_fild09": {
+   "group": "페이욘 필드",
+   "displayName": "페이욘 필드 09",
+   "spawns": [
+    [
+     13,
+     80
+    ],
+    [
+     36,
+     70
+    ],
+    [
+     20,
+     20
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "pay_fild08",
+    "pay_fild10"
+   ]
+  },
+  "pay_fild10": {
+   "group": "페이욘 필드",
+   "displayName": "페이욘 필드 10",
+   "spawns": [
+    [
+     122,
+     70
+    ],
+    [
+     498,
+     65
+    ],
+    [
+     26,
+     20
+    ],
+    [
+     121,
+     4
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "pay_fild07",
+    "pay_fild09"
+   ]
+  },
+  "pay_fild11": {
+   "group": "페이욘 필드",
+   "displayName": "페이욘 필드 11",
+   "spawns": [
+    [
+     121,
+     60
+    ],
+    [
+     410,
+     50
+    ],
+    [
+     498,
+     30
+    ]
+   ],
+   "mvp": 196,
+   "warps": [
+    "moc_fild03",
+    "pay_fild02"
+   ]
+  },
   "prt_fild00": {
    "group": "프론테라 필드",
    "displayName": "프론테라 필드 00",
@@ -722,11 +1388,13 @@
   }
  },
  "bridges": {
+  "alberta": "알베르타",
   "gef_fild00": "게펜 필드",
   "gef_fild01": "게펜 필드",
   "gef_fild02": "게펜 필드",
   "gef_fild03": "게펜 필드",
   "gef_fild11": "게펜 필드",
+  "izlu2dun": "이즈루드",
   "izlude": "이즈루드",
   "mjolnir_07": "묘르닐 산맥",
   "mjolnir_09": "묘르닐 산맥",
@@ -734,6 +1402,10 @@
   "mjolnir_11": "묘르닐 산맥",
   "mjolnir_12": "묘르닐 산맥",
   "moc_fild01": "소그라트 사막 동부",
+  "moc_fild02": "소그라트 사막 동부",
+  "moc_fild03": "소그라트 사막 동부",
+  "pay_arche": "페이욘",
+  "payon": "페이욘",
   "prontera": "프론테라",
   "moc_fild20": "소그라트 사막 동부"
  },
@@ -787,6 +1459,73 @@
   "prt_maze03 Black Mushroom(1084)x3",
   "prt_maze03 Black Mushroom(1084)x3",
   "prt_maze03 Red Mushroom(1085)x2",
-  "prt_maze03 Red Mushroom(1085)x3"
+  "prt_maze03 Red Mushroom(1085)x3",
+  "iz_dun00 Black Mushroom(1084)x5",
+  "iz_dun01 Black Mushroom(1084)x10",
+  "iz_dun02 Black Mushroom(1084)x15",
+  "pay_fild01 Black Mushroom(1084)x1",
+  "pay_fild01 Black Mushroom(1084)x1",
+  "pay_fild01 Black Mushroom(1084)x1",
+  "pay_fild01 Black Mushroom(1084)x1",
+  "pay_fild01 Black Mushroom(1084)x1",
+  "pay_fild01 Black Mushroom(1084)x1",
+  "pay_fild01 Black Mushroom(1084)x1",
+  "pay_fild01 Black Mushroom(1084)x1",
+  "pay_fild01 Black Mushroom(1084)x1",
+  "pay_fild01 Black Mushroom(1084)x1",
+  "pay_fild01 Black Mushroom(1084)x1",
+  "pay_fild01 Black Mushroom(1084)x1",
+  "pay_fild01 Black Mushroom(1084)x1",
+  "pay_fild01 Black Mushroom(1084)x1",
+  "pay_fild01 Black Mushroom(1084)x1",
+  "pay_fild01 Green Plant(1080)x5",
+  "pay_fild02 Green Plant(1080)x4",
+  "pay_fild02 Red Mushroom(1085)x4",
+  "pay_fild03 Red Mushroom(1085)x6",
+  "pay_fild03 Green Plant(1080)x4",
+  "pay_fild04 Shining Plant(1083)x1",
+  "pay_fild04 Green Plant(1080)x5",
+  "pay_fild05 Green Plant(1080)x4",
+  "pay_fild05 Green Plant(1080)x4",
+  "pay_fild06 Red Mushroom(1085)x8",
+  "pay_fild06 Green Plant(1080)x10",
+  "pay_fild06 Shining Plant(1083)x1",
+  "pay_fild07 Green Plant(1080)x8",
+  "pay_fild08 Green Plant(1080)x10",
+  "pay_fild08 Shining Plant(1083)x1",
+  "pay_fild09 Green Plant(1080)x10",
+  "pay_fild09 Shining Plant(1083)x1",
+  "pay_fild10 Green Plant(1080)x5",
+  "pay_fild10 Green Plant(1080)x5",
+  "pay_fild10 Green Plant(1080)x5",
+  "pay_fild10 Blue Plant(1079)x1",
+  "pay_fild10 Blue Plant(1079)x1",
+  "pay_fild10 Blue Plant(1079)x1",
+  "pay_fild11 Red Mushroom(1085)x3",
+  "pay_fild11 Red Mushroom(1085)x3",
+  "pay_dun00 Red Plant(1078)x15",
+  "pay_dun00 Black Mushroom(1084)x3",
+  "pay_dun01 Black Mushroom(1084)x7",
+  "pay_dun01 Red Plant(1078)x10",
+  "pay_dun02 Red Plant(1078)x1",
+  "pay_dun02 Black Mushroom(1084)x1",
+  "pay_dun02 Black Mushroom(1084)x7",
+  "pay_dun02 White Plant(1082)x3",
+  "pay_dun02 White Plant(1082)x3",
+  "pay_dun02 Red Plant(1078)x4",
+  "pay_dun02 Red Plant(1078)x4",
+  "pay_dun03 Red Plant(1078)x1",
+  "pay_dun03 Blue Plant(1079)x1",
+  "pay_dun03 Green Plant(1080)x1",
+  "pay_dun03 Yellow Plant(1081)x1",
+  "pay_dun03 Red Plant(1078)x15",
+  "pay_dun03 White Plant(1082)x3",
+  "pay_dun03 White Plant(1082)x2",
+  "pay_dun04 Shining Plant(1083)x1",
+  "pay_dun04 Shining Plant(1083)x1",
+  "pay_dun04 Red Plant(1078)x10",
+  "pay_dun04 White Plant(1082)x2",
+  "pay_dun04 White Plant(1082)x2",
+  "pay_dun04 White Plant(1082)x2"
  ]
 }

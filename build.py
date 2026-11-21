@@ -721,8 +721,8 @@ def audit_prt_pilot(pilot, maps, monsters, mvp):
     """원작 맵 1:1 프론테라 시범 데이터 감사. 이 데이터는 tools/build_prt_pilot.py만 만든다(손으로 고치지 않음)."""
     errors = []
     pm = pilot.get("maps") or {}
-    if len(pm) != 19:
-        errors.append(f"시범 맵 수 {len(pm)} (19여야 함)")
+    if not pm:
+        errors.append("원작 맵 데이터가 비어 있음")
     for mid, m in pm.items():
         if mid in maps:
             errors.append(f"{mid}: db-maps.json에 같은 키가 손으로 들어가 있음 — 시범 맵은 db-prt-pilot만 소유")
@@ -736,7 +736,7 @@ def audit_prt_pilot(pilot, maps, monsters, mvp):
         if m.get("mvp") and str(m["mvp"]) not in mvp:
             errors.append(f"{mid}: MVP {m['mvp']}가 db-mvp-respawn에 없음")
         for t in m.get("warps") or []:
-            if t not in pm and t not in (pilot.get("bridges") or {}) and not t.startswith(("prt_monk", "prt_gld")):
+            if t not in pm and t not in (pilot.get("bridges") or {}) and not t.startswith(("prt_monk", "prt_gld", "pay_gld")):
                 errors.append(f"{mid}: 워프 목적지 {t}가 시범 맵도 다리도 아님")
     for o, legacy in (pilot.get("bridges") or {}).items():
         if legacy not in maps:
@@ -857,7 +857,10 @@ def main():
         print("OK - map audit")
 
     npc_errors, npc_warnings = audit_npcs(
-        parsed["DB_NPCS"], parsed["DB_MAPS"], parsed["DB_ITEMS"], parsed["DB_SHOPS"]
+        parsed["DB_NPCS"],
+        # 원작 맵(db-prt-pilot)은 런타임에 설치되는 실맵이라 NPC 목적지로 쓸 수 있다
+        {**parsed["DB_MAPS"], **(parsed.get("DB_PRT_PILOT") or {}).get("maps", {})},
+        parsed["DB_ITEMS"], parsed["DB_SHOPS"]
     )
     if npc_errors:
         joined = "\n  - ".join(npc_errors)
