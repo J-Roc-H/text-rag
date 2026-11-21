@@ -185,6 +185,10 @@
      30
     ],
     [
+     494,
+     20
+    ],
+    [
      17,
      10
     ]
@@ -208,6 +212,10 @@
     [
      1,
      60
+    ],
+    [
+     494,
+     20
     ],
     [
      4,
@@ -346,7 +354,11 @@
    "spawns": [
     [
      27,
-     10
+     110
+    ],
+    [
+     351,
+     30
     ],
     [
      352,
@@ -413,11 +425,19 @@
      5
     ],
     [
+     492,
+     5
+    ],
+    [
      113,
      5
     ],
     [
      110,
+     5
+    ],
+    [
+     491,
      5
     ],
     [
@@ -450,6 +470,10 @@
     ],
     [
      39,
+     3
+    ],
+    [
+     493,
      3
     ],
     [
@@ -487,6 +511,10 @@
     [
      455,
      1
+    ],
+    [
+     433,
+     1
     ]
    ],
    "mvp": null,
@@ -504,12 +532,20 @@
      45
     ],
     [
+     493,
+     30
+    ],
+    [
      79,
      30
     ],
     [
      39,
      30
+    ],
+    [
+     100,
+     25
     ],
     [
      478,
@@ -550,6 +586,10 @@
    "displayName": "프론테라 지하수로 1층",
    "spawns": [
     [
+     494,
+     80
+    ],
+    [
      17,
      30
     ],
@@ -583,6 +623,10 @@
     [
      114,
      30
+    ],
+    [
+     494,
+     20
     ],
     [
      11,
@@ -630,6 +674,10 @@
     [
      26,
      15
+    ],
+    [
+     494,
+     10
     ]
    ],
    "mvp": null,
@@ -657,6 +705,10 @@
     [
      133,
      20
+    ],
+    [
+     494,
+     10
     ],
     [
      147,
@@ -698,29 +750,15 @@
   "prt_fild03 Green Plant(1080)x5",
   "prt_fild03 Green Plant(1080)x5",
   "prt_fild04 Green Plant(1080)x5",
-  "prt_fild05 Thief Bug Egg(1048)x20",
   "prt_fild05 Green Plant(1080)x6",
   "prt_fild05 Blue Plant(1079)x1",
-  "prt_fild06 Thief Bug Egg(1048)x20",
   "prt_fild06 Green Plant(1080)x15",
   "prt_fild07 Black Mushroom(1084)x3",
   "prt_fild09 Yellow Plant(1081)x3",
   "prt_fild10 Red Mushroom(1085)x15",
   "prt_fild10 Shining Plant(1083)x1",
-  "prt_fild11 Goblin(1123)x20",
-  "prt_fild11 Goblin(1124)x20",
-  "prt_fild11 Goblin(1125)x30",
-  "prt_fild11 Goblin(1126)x30",
   "prt_fild11 Panzer Goblin(1308)x1",
-  "prt_fild11 Goblin Steamrider(1280)x30",
   "prt_fild11 Red Mushroom(1085)x10",
-  "prt_sewb1 Thief Bug Egg(1048)x80",
-  "prt_sewb2 Thief Bug Egg(1048)x20",
-  "prt_sewb3 Thief Bug Egg(1048)x10",
-  "prt_sewb4 Thief Bug Egg(1048)x10",
-  "prt_maze01 Horn(1128)x5",
-  "prt_maze01 Side Winder(1037)x3",
-  "prt_maze01 Coco(1104)x5",
   "prt_maze01 Shining Plant(1083)x1",
   "prt_maze01 White Plant(1082)x1",
   "prt_maze01 White Plant(1082)x2",
@@ -735,10 +773,6 @@
   "prt_maze01 Black Mushroom(1084)x2",
   "prt_maze01 Red Mushroom(1085)x3",
   "prt_maze01 Red Mushroom(1085)x2",
-  "prt_maze02 Leib Olmai(1306)x1",
-  "prt_maze03 Side Winder(1037)x10",
-  "prt_maze03 Side Winder(1037)x20",
-  "prt_maze03 Baphomet Jr.(1101)x25",
   "prt_maze03 Shining Plant(1083)x1",
   "prt_maze03 Blue Plant(1079)x1",
   "prt_maze03 Yellow Plant(1081)x1",
