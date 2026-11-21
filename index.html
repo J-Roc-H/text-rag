@@ -1431,6 +1431,3555 @@ body.work-mode p {
     }
   }
 }</script>
+<script id="db-pets" type="application/json">{
+ "constants": {
+  "stages": [
+   1,
+   100,
+   250,
+   750,
+   910,
+   1000
+  ],
+  "hungerStart": 100,
+  "feedAt": 25,
+  "fullGainMaxHunger": 75,
+  "src": "rathena src/map/pet.hpp e_pet_intimate_level/e_pet_hungry · pet.cpp pet_food()/pet_hungry()",
+  "hungryDelayRate": 90
+ },
+ "pets": {
+  "PORING": {
+   "mobId": 1002,
+   "name": "포링",
+   "lv": 1,
+   "tier": "low",
+   "tameItem": "덜 익은 사과",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "사과 주스",
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 50,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 2000,
+   "aegis": {
+    "TameItem": "Unripe_Apple",
+    "EggItem": "Poring_Egg",
+    "EquipItem": "Backpack",
+    "FoodItem": "Apple_Juice"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bLuk,2;\n  bonus bCritical,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "DROPS": {
+   "mobId": 1113,
+   "name": "드롭프스",
+   "lv": 3,
+   "tier": "low",
+   "tameItem": "오렌지 주스",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "옐로 허브",
+   "fullness": 4,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 40,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1500,
+   "aegis": {
+    "TameItem": "Orange_Juice",
+    "EggItem": "Drops_Egg",
+    "EquipItem": "Backpack",
+    "FoodItem": "Yellow_Herb"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bHit,3;\n  bonus bAtk,3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "POPORING": {
+   "mobId": 1031,
+   "name": "포포링",
+   "lv": 14,
+   "tier": "low",
+   "tameItem": "쓴 약초",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "초록허브",
+   "fullness": 5,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 30,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Bitter_Herb",
+    "EggItem": "Poporing_Egg",
+    "EquipItem": "Backpack",
+    "FoodItem": "Green_Herb"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bLuk,2;\n  bonus2 bSubEle,Ele_Poison,10;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "LUNATIC": {
+   "mobId": 1063,
+   "name": "루나틱",
+   "lv": 3,
+   "tier": null,
+   "tameItem": "무지개 당근",
+   "eggItem": null,
+   "equipItem": "실크리본",
+   "food": null,
+   "fullness": 4,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 40,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1500,
+   "aegis": {
+    "TameItem": "Rainbow_Carrot",
+    "EggItem": "Lunatic_Egg",
+    "EquipItem": "Silk_Ribbon",
+    "FoodItem": "Carrot_Juice"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bCritical,2;\n  bonus bAtk,2;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "PICKY": {
+   "mobId": 1049,
+   "name": "픽키",
+   "lv": 3,
+   "tier": "low",
+   "tameItem": "능청스러운 지렁이",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "빨간 허브",
+   "fullness": 4,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 40,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 2000,
+   "aegis": {
+    "TameItem": "Earthworm_The_Dude",
+    "EggItem": "Picky_Egg",
+    "EquipItem": "Tiny_Egg_Shell",
+    "FoodItem": "Red_Herb"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bStr,1;\n  bonus bAtk,5;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "CHONCHON": {
+   "mobId": 1011,
+   "name": "촌촌",
+   "lv": 4,
+   "tier": "low",
+   "tameItem": "썩은 생선",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 6,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 30,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1500,
+   "aegis": {
+    "TameItem": "Rotten_Fish",
+    "EggItem": "Chonchon_Egg",
+    "EquipItem": "Monster_Oxygen_Mask",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bAgi,1;\n  bonus bFlee,2;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "STEEL_CHONCHON": {
+   "mobId": 1042,
+   "name": "스틸 촌촌",
+   "lv": 17,
+   "tier": "mid",
+   "tameItem": "강철 덩어리",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "철광석",
+   "fullness": 5,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Lusty_Iron",
+    "EggItem": "Steel_Chonchon_Egg",
+    "EquipItem": "Monster_Oxygen_Mask",
+    "FoodItem": "Iron_Ore"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bFlee,6;\n  bonus bAgi,-1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "HUNTER_FLY": {
+   "mobId": 1035,
+   "name": "헌터플라이",
+   "lv": 42,
+   "tier": "high",
+   "tameItem": "몬스터 주스",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "레드 젬스톤",
+   "fullness": 5,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 500,
+   "aegis": {
+    "TameItem": "Monster_Juice",
+    "EggItem": "Hunter_Fly_Egg",
+    "EquipItem": "Monster_Oxygen_Mask",
+    "FoodItem": "Red_Gemstone"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bFlee,-5;\n  bonus bFlee2,2;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "SAVAGE_BABE": {
+   "mobId": 1167,
+   "name": "세비지 베베",
+   "lv": 7,
+   "tier": "low",
+   "tameItem": "달콤한 우유",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 7,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 40,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1500,
+   "aegis": {
+    "TameItem": "Sweet_Milk",
+    "EggItem": "Savage_Bebe_Egg",
+    "EquipItem": "Green_Lace",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bVit,1;\n  bonus bMaxHP,50;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "DESERT_WOLF_B": {
+   "mobId": 1107,
+   "name": "새끼 데저트 울프",
+   "lv": 6,
+   "tier": "low",
+   "tameItem": "잘 마른 뼈",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 6,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 40,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Well_Dried_Bone",
+    "EggItem": "Baby_Desert_Wolf_Egg",
+    "EquipItem": "Transparent_Headgear",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bInt,1;\n  bonus bMaxSP,50;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "ROCKER": {
+   "mobId": 1052,
+   "name": "로커",
+   "lv": 9,
+   "tier": "low",
+   "tameItem": "노래하는 꽃",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 1,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 30,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1500,
+   "aegis": {
+    "TameItem": "Singing_Flower",
+    "EggItem": "Rocker_Egg",
+    "EquipItem": "Rocker_Glasses",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bHPrecovRate,5;\n  bonus bMaxHP,25;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "SPORE": {
+   "mobId": 1014,
+   "name": "스포아",
+   "lv": 16,
+   "tier": "mid",
+   "tameItem": "이슬 머금은 이끼",
+   "eggItem": null,
+   "equipItem": "나무팬츠",
+   "food": "펫 사료",
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 30,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1500,
+   "aegis": {
+    "TameItem": "Dew_Laden_Moss",
+    "EggItem": "Spore_Egg",
+    "EquipItem": "Bark_Shorts",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bHit,5;\n  bonus bAtk,-2;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "POISON_SPORE": {
+   "mobId": 1077,
+   "name": "포이즌 스포아",
+   "lv": 19,
+   "tier": "mid",
+   "tameItem": "맹독초",
+   "eggItem": null,
+   "equipItem": "나무팬츠",
+   "food": "펫 사료",
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Deadly_Noxious_Herb",
+    "EggItem": "Poison_Spore_Egg",
+    "EquipItem": "Bark_Shorts",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bStr,1;\n  bonus bInt,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "PECOPECO": {
+   "mobId": 1019,
+   "name": "페코페코",
+   "lv": 19,
+   "tier": "mid",
+   "tameItem": "통통한 지렁이",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 4,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 30,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Fatty_Chubby_Earthworm",
+    "EggItem": "PecoPeco_Egg",
+    "EquipItem": "Battered_Pot",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bMaxHP,150;\n  bonus bMaxSP,-10;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "SMOKIE": {
+   "mobId": 1056,
+   "name": "스모키",
+   "lv": 18,
+   "tier": "mid",
+   "tameItem": "군고구마",
+   "eggItem": null,
+   "equipItem": "빨간 머플러",
+   "food": "펫 사료",
+   "fullness": 4,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 30,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Baked_Yam",
+    "EggItem": "Smokie_Egg",
+    "EquipItem": "Red_Muffler",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bAgi,1;\n  bonus bFlee2,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "YOYO": {
+   "mobId": 1057,
+   "name": "요요",
+   "lv": 21,
+   "tier": "mid",
+   "tameItem": "Tropical Banana",
+   "eggItem": null,
+   "equipItem": "원숭이머리띠",
+   "food": "바나나 주스",
+   "fullness": 5,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Tropical_Banana",
+    "EggItem": "Yoyo_Egg",
+    "EquipItem": "Monkey_Circlet",
+    "FoodItem": "Banana_Juice"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bCritical,3;\n  bonus bLuk,-1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "ORK_WARRIOR": {
+   "mobId": 1023,
+   "name": "오크 워리어",
+   "lv": 24,
+   "tier": "mid",
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 5,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 500,
+   "aegis": {
+    "TameItem": "Horror_Of_Tribe",
+    "EggItem": "Orc_Warrior_Egg",
+    "EquipItem": "Wild_Flower",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bAtk,10;\n  bonus bDef,-3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "MUNAK": {
+   "mobId": 1026,
+   "name": "무낙",
+   "lv": 30,
+   "tier": "high",
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": "정신봉",
+   "food": "펫 사료",
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 500,
+   "aegis": {
+    "TameItem": "No_Recipient",
+    "EggItem": "Munak_Egg",
+    "EquipItem": "Punisher",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bInt,1;\n  bonus bDef,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "SOHEE": {
+   "mobId": 1170,
+   "name": "소희",
+   "lv": 33,
+   "tier": "high",
+   "tameItem": "정결한 은검",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 500,
+   "aegis": {
+    "TameItem": "Silver_Knife_Of_Chaste",
+    "EggItem": "Sohee_Egg",
+    "EquipItem": "Golden_Bell",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bStr,1;\n  bonus bDex,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "ISIS": {
+   "mobId": 1029,
+   "name": "이시스",
+   "lv": 47,
+   "tier": "rare",
+   "tameItem": "복종의 팔찌",
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 500,
+   "aegis": {
+    "TameItem": "Armlet_Of_Obedience",
+    "EggItem": "Isis_Egg",
+    "EquipItem": "Queen's_Hair_Ornament",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bMatkRate,-1;\n  bonus bAtkRate,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "DEVIRUCHI": {
+   "mobId": 1109,
+   "name": "데비루치",
+   "lv": 46,
+   "tier": "rare",
+   "tameItem": "그림자의 계약서",
+   "eggItem": null,
+   "equipItem": "꼭지",
+   "food": "슛",
+   "fullness": 2,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 500,
+   "aegis": {
+    "TameItem": "Contracts_In_Shadow",
+    "EggItem": "Deviruchi_Egg",
+    "EquipItem": "Pacifier",
+    "FoodItem": "Shoot"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bMatkRate,1;\n  bonus bAtkRate,1;\n  bonus bMaxHPrate,-3;\n  bonus bMaxSPrate,-3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "BON_GUN": {
+   "mobId": 1188,
+   "name": "본건",
+   "lv": 27,
+   "tier": "high",
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": "펫 사료",
+   "fullness": 4,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 30,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 500,
+   "aegis": {
+    "TameItem": "Heart_Of_Her",
+    "EggItem": "Bongun_Egg",
+    "EquipItem": "Sword_Of_Grave_Keeper",
+    "FoodItem": "Pet_Food"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bVit,1;\n  bonus2 bResEff,Eff_Stun,100;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "ALICE": {
+   "mobId": 1275,
+   "name": "앨리스",
+   "lv": 62,
+   "tier": "rare",
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": "하얀포션",
+   "fullness": 2,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 800,
+   "aegis": {
+    "TameItem": "Sway_Apron",
+    "EggItem": "Alice_Egg",
+    "EquipItem": null,
+    "FoodItem": "White_Potion"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bMdef,1;\n  bonus2 bSubRace,RC_DemiHuman,1;\n  bonus2 bSubRace,RC_Player_Human,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "CHUNG_E": {
+   "mobId": 1519,
+   "name": "청이",
+   "lv": 49,
+   "tier": null,
+   "tameItem": "탄탄멘",
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 50,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 2000,
+   "aegis": {
+    "TameItem": "Tantanmen",
+    "EggItem": "Chung_E_Egg",
+    "EquipItem": null,
+    "FoodItem": "Bun_"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bDef,1;\n  bonus2 bSubRace,RC_DemiHuman,1;\n  bonus2 bSubRace,RC_Player_Human,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "GOBLIN_1": {
+   "mobId": 1122,
+   "name": "고블린",
+   "lv": 25,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 50,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 800,
+   "aegis": {
+    "TameItem": "Knife_Goblin_Ring",
+    "EggItem": "Knife_Goblin_Egg",
+    "EquipItem": null,
+    "FoodItem": "Green_Apple"
+   },
+   "bonusScript": null,
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "DIABOLIC": {
+   "mobId": 1382,
+   "name": "디아볼릭",
+   "lv": 67,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 2,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 800,
+   "aegis": {
+    "TameItem": "Red_Burning_Stone",
+    "EggItem": "Diabolic_Egg",
+    "EquipItem": null,
+    "FoodItem": "Meat_Veg_Skewer"
+   },
+   "bonusScript": null,
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "WANDER_MAN": {
+   "mobId": 1208,
+   "name": "배회하는자",
+   "lv": 74,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 2,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 800,
+   "aegis": {
+    "TameItem": "Skull_Of_Vagabond",
+    "EggItem": "Wanderer_Egg",
+    "EquipItem": null,
+    "FoodItem": "Spirit_Liquor"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bAgi,3;\n  bonus bDex,1;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "GOLEM": {
+   "mobId": 1040,
+   "name": "고렘",
+   "lv": 25,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 7,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Magical_Lithography",
+    "EggItem": "Golem_Egg",
+    "EquipItem": "Windup_Spring",
+    "FoodItem": "Mystic_Stone"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bMaxHP,100;\n  bonus bFlee,-5;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "MARIONETTE": {
+   "mobId": 1143,
+   "name": "마리오네트",
+   "lv": 41,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Delicious_Shaved_Ice",
+    "EggItem": "Marionette_Egg",
+    "EquipItem": "Star_Hairband",
+    "FoodItem": "Small_Snow_Flower"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bSPrecovRate,3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "MEDUSA": {
+   "mobId": 1148,
+   "name": "메두사",
+   "lv": 79,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Splendid_Mirror",
+    "EggItem": "Medusa_Egg",
+    "EquipItem": "Queen's_Coronet",
+    "FoodItem": "Apple_Pudding"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bVit,1;\n  bonus2 bResEff,Eff_Stone,500;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "WHISPER": {
+   "mobId": 1179,
+   "name": "위스퍼",
+   "lv": 34,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 7,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Fit_Pipe",
+    "EggItem": "Whisper_Egg",
+    "EquipItem": "Spirit_Chain_",
+    "FoodItem": "Damp_Darkness"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bFlee,7;\n  bonus bDef,-3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "GOBLIN_LEADER": {
+   "mobId": 1299,
+   "name": "고블린리더",
+   "lv": 64,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 7,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Staff_Of_Leader",
+    "EggItem": "Goblin_Leader_Egg",
+    "EquipItem": "Nice_Badge",
+    "FoodItem": "Big_Cell"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus2 bAddRace,RC_DemiHuman,3;\n  bonus2 bAddRace,RC_Player_Human,3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "SUCCUBUS": {
+   "mobId": 1370,
+   "name": "서큐버스",
+   "lv": 85,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 300,
+   "aegis": {
+    "TameItem": "Boy's_Naivety",
+    "EggItem": "Succubus_Egg",
+    "EquipItem": "Black_Butterfly_Mask",
+    "FoodItem": "Vital_Flower_"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus2 bHpDrainRate,50,5;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "INCUBUS": {
+   "mobId": 1374,
+   "name": "인큐버스",
+   "lv": 75,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 300,
+   "aegis": {
+    "TameItem": "Gril's_Naivety",
+    "EggItem": "Incubus_Egg",
+    "EquipItem": "Ball_Mask",
+    "FoodItem": "Vital_Flower"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bMaxSPRate,3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "NIGHTMARE_TERROR": {
+   "mobId": 1379,
+   "name": "나이트메어 테러",
+   "lv": 78,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 300,
+   "aegis": {
+    "TameItem": "Hell_Contract",
+    "EggItem": "Nightmare_Terror_Egg",
+    "EquipItem": "Hell_Horn",
+    "FoodItem": "Fresh_Plant"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus2 bResEff,Eff_Sleep,10000;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "SHINOBI": {
+   "mobId": 1401,
+   "name": "시노비",
+   "lv": 69,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 7,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Kuloren",
+    "EggItem": "Shinobi_Egg",
+    "EquipItem": "Wine_On_Sleeve",
+    "FoodItem": "Grilled_Rice_Cake"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bAgi,2;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "STONE_SHOOTER": {
+   "mobId": 1495,
+   "name": "스톤슈터",
+   "lv": 42,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 7,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Oilpalm_Coconut",
+    "EggItem": "Stone_Shooter_Egg",
+    "EquipItem": "Apro_Hair",
+    "FoodItem": "Plant_Neutrient"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus2 bSubEle,Ele_Fire,3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "DULLAHAN": {
+   "mobId": 1504,
+   "name": "듀라한",
+   "lv": 62,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Luxury_Whisky_Bottle",
+    "EggItem": "Dullahan_Egg",
+    "EquipItem": "Death_Coil",
+    "FoodItem": "Sunset_On_The_Rock"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bCritAtkRate,5;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "LOLI_RURI": {
+   "mobId": 1505,
+   "name": "로리루리",
+   "lv": 71,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 15,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Very_Red_Juice",
+    "EggItem": "Loli_Ruri_Egg",
+    "EquipItem": "Fashionable_Glasses",
+    "FoodItem": "Pumpkin_Pie_"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bMaxHPRate,3;\n  bonus3 bAutoSpellWhenHit,\"AL_HEAL\",1,10;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "CIVIL_SERVANT": {
+   "mobId": 1513,
+   "name": "인면도화",
+   "lv": 63,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Fan_Of_Wind",
+    "EggItem": "Civil_Servant_Egg",
+    "EquipItem": "Golden_Earing",
+    "FoodItem": "Flavored_Alcohol"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus bMaxSP,10;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "LEAF_CAT": {
+   "mobId": 1586,
+   "name": "리프캣",
+   "lv": 38,
+   "tier": null,
+   "tameItem": null,
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 7,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 20,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 1000,
+   "aegis": {
+    "TameItem": "Very_Soft_Plant",
+    "EggItem": "Leaf_Cat_Egg",
+    "EquipItem": "Green_Lucky_Bag",
+    "FoodItem": "Fish_With_Blue_Back"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus2 bSubRace,RC_Brute,3;\n  bonus2 bSubRace,RC_Player_Doram,3;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  },
+  "IMP": {
+   "mobId": 1837,
+   "name": "임프",
+   "lv": 76,
+   "tier": null,
+   "tameItem": "불타는 얼음",
+   "eggItem": null,
+   "equipItem": null,
+   "food": null,
+   "fullness": 3,
+   "hungryDelaySec": 60,
+   "hungerIncrease": 20,
+   "intimacy": {
+    "start": 250,
+    "fed": 10,
+    "overfed": -100,
+    "hungry": -5,
+    "ownerDie": -20
+   },
+   "captureRate": 300,
+   "aegis": {
+    "TameItem": "Flaming_Ice",
+    "EggItem": "Imp_Egg",
+    "EquipItem": "Horn_Protector",
+    "FoodItem": "Flame_Gemstone"
+   },
+   "bonusScript": ".@i = getpetinfo(PETINFO_INTIMATE);\nif( .@i >= PET_INTIMATE_LOYAL ){\n  bonus2 bSubEle,Ele_Fire,2;\n  bonus2 bAddEle,Ele_Fire,2;\n}",
+   "src": "rathena-pre-re pet_db.yml@b8c1634"
+  }
+ }
+}</script>
+<script id="db-pet-talk" type="application/json">{
+ "events": [
+  "feed",
+  "hunt",
+  "danger",
+  "ownerDie",
+  "idle",
+  "ownerLevelUp",
+  "connect"
+ ],
+ "bands": [
+  "hungry",
+  "normal",
+  "full"
+ ],
+ "bandRule": {
+  "hungry": "<=25",
+  "normal": "26~75",
+  "full": ">75"
+ },
+ "src": "원작 클라이언트 pettalktable 구조(배고픔×행동) — open-midgard src/session/PetTalk.cpp 참고, 문장은 TextRag 자작",
+ "pets": {
+  "PORING": {
+   "persona": "말랑하고 천진한 젤리. 단순하고 늘 통통 튄다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "뽀잉! 살았다, 살았어!",
+      "사과 주스다아… 꿀꺽, 꿀꺽!"
+     ],
+     "normal": [
+      "뽀잉~ 맛있어!",
+      "주스 좋아. 주인도 좋아."
+     ],
+     "full": [
+      "배가 동글동글해졌어…",
+      "더는 못 먹어… 그래도 고마워, 뽀잉."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "힘이 안 나서 튀지도 못하겠어…",
+      "배고파서 젤리가 납작해지는 중…"
+     ],
+     "normal": [
+      "뽀잉! 같이 싸우자!",
+      "통통 튀면서 응원 중!"
+     ],
+     "full": [
+      "배불러서 데굴데굴 굴러가며 응원!",
+      "기운이 넘쳐서 두 배로 튄다!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "주인, 위험해! 근데 나도 배고파…",
+      "으앙, 무서워! 도망가자!"
+     ],
+     "normal": [
+      "주인! 피가 많이 줄었어!",
+      "뽀잉! 조심해, 조심!"
+     ],
+     "full": [
+      "주인 위험해! 내가 몸으로 막을래!",
+      "말랑한 몸으로 막아 줄게!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "주인… 일어나… 나 배고프단 말이야…",
+      "뽀잉… 혼자 두지 마…"
+     ],
+     "normal": [
+      "주인! 주인! 눈 떠!",
+      "흐잉… 젤리가 다 녹아 버릴 것 같아."
+     ],
+     "full": [
+      "주인… 내가 꼭 붙어 있을게.",
+      "다시 일어날 때까지 여기서 기다릴게."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "꼬르륵… 이게 내 소리야, 주인 소리야?",
+      "사과 주스 냄새 안 나?"
+     ],
+     "normal": [
+      "뽀잉, 뽀잉, 뽀잉!",
+      "구름이 젤리 같아."
+     ],
+     "full": [
+      "배 위에 햇볕 쬐는 중~",
+      "졸려… 말랑말랑 졸려…"
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "와! 축하해! …축하 주스는?",
+      "주인 강해졌다! 나는 배고파졌다!"
+     ],
+     "normal": [
+      "뽀잉뽀잉! 주인 최고!",
+      "더 높이 튀어서 축하할게!"
+     ],
+     "full": [
+      "축하해! 배불러서 축하도 두 배!",
+      "주인 강해진 기념으로 한 바퀴 굴러야지."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "주인 왔다! …주스도 왔어?",
+      "기다리다가 배가 쏙 꺼졌어."
+     ],
+     "normal": [
+      "뽀잉! 보고 싶었어!",
+      "주인이다! 오늘도 같이 다니자!"
+     ],
+     "full": [
+      "주인 왔네~ 나 지금 아주 동글동글해.",
+      "어서 와! 기분 최고야!"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "PICKY": {
+   "persona": "알에서 갓 나온 병아리. 겁이 많지만 주인만 졸졸 따른다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "삐약! 허브다, 허브!",
+      "콕콕콕… 살 것 같아, 삐약."
+     ],
+     "normal": [
+      "삐약~ 고마워!",
+      "빨간 허브, 쪼아 먹었어."
+     ],
+     "full": [
+      "배불러서 삐약 소리도 작아졌어…",
+      "삐… 더는 안 들어가."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고파서 다리가 후들후들해…",
+      "삐약… 힘이 없어…"
+     ],
+     "normal": [
+      "삐약! 주인 뒤에 숨어서 응원!",
+      "콕! 나도 한 번 쪼았어!"
+     ],
+     "full": [
+      "오늘은 용감한 병아리다, 삐약!",
+      "배부르니까 하나도 안 무서워!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "삐이익! 무서워! 배도 고파!",
+      "도, 도망가자, 주인!"
+     ],
+     "normal": [
+      "삐약삐약! 주인 아파 보여!",
+      "날개로 눈 가리고 있을게… 조심해!"
+     ],
+     "full": [
+      "삐약! 위험해! 내가 소리라도 지를게!",
+      "주인, 물러나! 삐익!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "삐… 주인… 춥고 배고파…",
+      "삐약… 혼자는 싫어."
+     ],
+     "normal": [
+      "삐약! 주인 일어나! 일어나!",
+      "흑… 주인 품이 식어 가…"
+     ],
+     "full": [
+      "주인 옆에 쪼그리고 있을게.",
+      "삐약… 다시 걸을 때까지 기다릴게."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "땅을 쪼아 봐도 먹을 게 없어…",
+      "삐약… 허브 냄새 어디 없나."
+     ],
+     "normal": [
+      "삐약, 삐약.",
+      "깃털 고르는 중!"
+     ],
+     "full": [
+      "주인 발등에서 낮잠 잘래…",
+      "따뜻하다, 삐약."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "삐약! 축하해! …배고파.",
+      "주인 커졌다! 나도 크고 싶어!"
+     ],
+     "normal": [
+      "삐약삐약! 축하해!",
+      "주인, 나도 언젠가 닭이 될 거야!"
+     ],
+     "full": [
+      "삐약! 날개 퍼덕퍼덕 축하!",
+      "주인 최고야, 삐약!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "삐약! 주인 왔다! 밥은?",
+      "기다렸어… 배고팠어…"
+     ],
+     "normal": [
+      "삐약! 주인이다!",
+      "졸졸 따라갈게!"
+     ],
+     "full": [
+      "삐약~ 기분 좋은 날이야.",
+      "주인 오니까 더 따뜻해."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "DROPS": {
+   "persona": "새침한 주황 젤리. 깔끔한 걸 좋아하고 말끝이 도도하다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "늦었잖아. …그래도 받아 줄게.",
+      "옐로 허브… 흥, 맛은 있네."
+     ],
+     "normal": [
+      "고마워. 예의는 아는구나.",
+      "적당한 때에 줬네. 칭찬해 줄게."
+     ],
+     "full": [
+      "지금은 됐어. 몸매 관리 중이야.",
+      "배부른데 또 주면 곤란하다고."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고픈 숙녀를 데리고 싸우는 거야?",
+      "기운 없어. 빨리 끝내."
+     ],
+     "normal": [
+      "흥, 그 정도는 나도 할 수 있어.",
+      "깔끔하게 끝내자."
+     ],
+     "full": [
+      "오늘은 기분 좋으니까 도와줄게.",
+      "반짝반짝, 잘 싸우고 있어."
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "위험하잖아! 이러다 둘 다 쓰러져!",
+      "빨리 물러나, 바보야!"
+     ],
+     "normal": [
+      "체력 봐. 무리하지 마.",
+      "그러다 다친다니까!"
+     ],
+     "full": [
+      "물러나! 걱정되니까 하는 말이야.",
+      "…다치지 마. 진짜로."
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…바보. 그러게 조심하랬잖아.",
+      "일어나. 배고프단 말이야."
+     ],
+     "normal": [
+      "거짓말이지? 얼른 일어나.",
+      "…혼자 두지 마."
+     ],
+     "full": [
+      "일어날 때까지 여기 있을 거야. 특별히.",
+      "…걱정했잖아."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "허브 한 장이면 기분 좋아질 텐데.",
+      "배고파서 광택이 죽어 가."
+     ],
+     "normal": [
+      "오늘 내 주황색, 예쁘지?",
+      "흥, 심심하네."
+     ],
+     "full": [
+      "햇볕에 반짝이는 중이야.",
+      "지금 기분, 꽤 괜찮아."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하해. 축하 선물은 허브면 돼.",
+      "강해졌네. 배고픈 나도 생각해 줘."
+     ],
+     "normal": [
+      "축하해. 뭐, 내 덕분이지.",
+      "조금은 인정해 줄게."
+     ],
+     "full": [
+      "축하해! …크흠, 진심이야.",
+      "멋졌어. 한 번만 말해 줄 거야."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "늦었어. 배고팠단 말이야.",
+      "어디 갔다 이제 와?"
+     ],
+     "normal": [
+      "왔구나. 기다린 건 아니야.",
+      "흥, 오늘도 잘 부탁해."
+     ],
+     "full": [
+      "어서 와. 오늘은 기분 좋아.",
+      "왔어? 반가워. 조금."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "CHONCHON": {
+   "persona": "수다스러운 파리. 윙윙대며 말이 빠르고 촐랑댄다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "윙윙! 사료다 사료! 와구와구!",
+      "살았다 윙! 굶어 떨어지는 줄!"
+     ],
+     "normal": [
+      "윙~ 맛있다 맛있다!",
+      "사료 최고 윙윙!"
+     ],
+     "full": [
+      "윙… 배불러서 날개가 무거워.",
+      "더 주면 못 날아, 윙."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "윙… 배고파서 날갯짓이 느려…",
+      "힘 없어 윙… 대충 싸우자."
+     ],
+     "normal": [
+      "윙윙! 저쪽! 아니 이쪽!",
+      "내가 정신없게 해 줄게, 윙!"
+     ],
+     "full": [
+      "윙윙윙! 오늘 컨디션 최고!",
+      "빙글빙글 날면서 응원 중!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "윙! 위험해! 배고파! 둘 다 위험해!",
+      "도망! 도망 윙!"
+     ],
+     "normal": [
+      "윙윙! 주인 피! 피 줄었어!",
+      "조심해 윙윙윙!"
+     ],
+     "full": [
+      "윙! 저 녀석 얼굴에 붙어 버릴까?",
+      "주인 물러나, 윙!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "윙… 주인… 일어나… 배고파…",
+      "윙… 조용해졌어…"
+     ],
+     "normal": [
+      "윙윙! 주인! 장난이지?",
+      "윙… 주인 머리 위만 빙빙 돌게 돼."
+     ],
+     "full": [
+      "주인 깨어날 때까지 파리 쫓아 줄게.",
+      "윙… 기다릴게."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "윙… 어디서 냄새 안 나?",
+      "배고파서 벽에 자꾸 부딪혀, 윙."
+     ],
+     "normal": [
+      "윙윙~ 윙윙~",
+      "저기 꽃 위에 앉았다 올게!"
+     ],
+     "full": [
+      "윙… 나른해…",
+      "주인 어깨에서 쉴래, 윙."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "윙윙! 축하! 축하 사료!",
+      "주인 짱! 나 배고파 윙!"
+     ],
+     "normal": [
+      "윙윙윙! 축하해 축하해!",
+      "축하 비행 한 바퀴!"
+     ],
+     "full": [
+      "윙! 배불러도 축하 비행은 해야지!",
+      "주인 최고 윙윙!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "윙! 왔다! 밥! 밥!",
+      "윙… 기다리다 지쳤어."
+     ],
+     "normal": [
+      "윙윙! 주인 왔다!",
+      "오늘은 어디 가, 윙?"
+     ],
+     "full": [
+      "윙~ 반가워 반가워!",
+      "날개 상태 최고야, 윙!"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "DESERT_WOLF_B": {
+   "persona": "사막 늑대 새끼. 충성스럽고 씩씩한 강아지 말투.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "멍! 밥이다! 꼬리가 멈추질 않아!",
+      "와구와구… 주인 최고다, 멍!"
+     ],
+     "normal": [
+      "멍멍! 잘 먹을게!",
+      "주인이 준 밥은 언제나 맛있어."
+     ],
+     "full": [
+      "끄응… 배불러. 꼬리만 흔들게.",
+      "이제 됐어, 멍. 고마워."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고파도 주인 지킨다… 끄응.",
+      "힘이… 그래도 짖을 수는 있어!"
+     ],
+     "normal": [
+      "멍! 내가 앞장설게!",
+      "냄새로 찾았다, 저기야!"
+     ],
+     "full": [
+      "멍멍! 오늘은 하루 종일 달릴 수 있어!",
+      "주인, 나만 믿어!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "으르릉… 주인 위험해! 나도 힘이 없어!",
+      "주인, 물러나! 멍!"
+     ],
+     "normal": [
+      "으르릉! 주인한테 가까이 오지 마!",
+      "주인 피 냄새가 나! 조심해!"
+     ],
+     "full": [
+      "으르르릉! 내가 막는다!",
+      "주인 뒤로! 멍멍!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "끼잉… 주인… 일어나…",
+      "끼잉끼잉…"
+     ],
+     "normal": [
+      "끼잉! 주인 얼굴 핥아 줄게, 일어나!",
+      "멍… 내가 지켰어야 했는데."
+     ],
+     "full": [
+      "주인 옆에서 망볼게. 아무도 못 와.",
+      "끼잉… 다시 같이 걷자."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "킁킁… 고기 냄새 어디 없나.",
+      "배고파서 꼬리가 축 처졌어."
+     ],
+     "normal": [
+      "멍! 공 던져 줘!",
+      "꼬리 쫓는 중이야!"
+     ],
+     "full": [
+      "주인 발치에 엎드려 있을게.",
+      "하암… 배부르니까 졸려, 멍."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "멍멍! 축하해! …간식은?",
+      "주인 강해졌다! 나도 배고파졌다!"
+     ],
+     "normal": [
+      "아우우우! 축하해, 주인!",
+      "멍! 역시 내 주인이야!"
+     ],
+     "full": [
+      "아우우~! 오늘 최고의 날!",
+      "주인 더 강해졌다, 멍멍!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "멍! 왔다! 밥 시간이야!",
+      "끼잉… 기다렸어."
+     ],
+     "normal": [
+      "멍멍멍! 주인이다!",
+      "꼬리 봐! 엄청 반가워!"
+     ],
+     "full": [
+      "멍~ 오늘도 산책 가자!",
+      "주인 냄새다! 반가워!"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "SAVAGE_BABE": {
+   "persona": "아기 멧돼지. 먹보에 고집이 세고 꿀꿀거린다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "꿀꿀! 드디어! 와구와구!",
+      "배고파서 땅 파려던 참이야, 꿀!"
+     ],
+     "normal": [
+      "꿀꿀~ 맛있다!",
+      "더 줘도 되는데, 꿀."
+     ],
+     "full": [
+      "꿀… 배가 빵빵해.",
+      "먹보인 나도 이제 그만, 꿀."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고파! 싸우기 싫어! 꿀!",
+      "밥 먼저! 꿀꿀!"
+     ],
+     "normal": [
+      "꿀! 들이받아 버릴 테다!",
+      "돌진! 꿀꿀!"
+     ],
+     "full": [
+      "꿀꿀! 힘이 넘친다!",
+      "배부른 멧돼지는 무섭다고!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "꿀! 위험해! 그리고 배고파!",
+      "도망가자 꿀꿀!"
+     ],
+     "normal": [
+      "꿀꿀! 주인 다쳤어!",
+      "조심해, 꿀!"
+     ],
+     "full": [
+      "꿀! 내가 들이받는다! 비켜!",
+      "주인 지킨다, 꿀꿀!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "꿀… 주인… 배고파…",
+      "꿀… 일어나…"
+     ],
+     "normal": [
+      "꿀꿀! 주인! 코로 밀어 줄게, 일어나!",
+      "꿀… 슬퍼."
+     ],
+     "full": [
+      "주인 옆에서 꼼짝 안 할 거야, 꿀.",
+      "꿀… 기다릴게."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "킁킁 꿀… 도토리 없나.",
+      "배고파서 진흙이라도 먹을까…"
+     ],
+     "normal": [
+      "꿀꿀, 진흙 목욕하고 싶다.",
+      "땅 파는 중!"
+     ],
+     "full": [
+      "꿀… 배 깔고 누웠어.",
+      "졸려, 꿀꿀."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "꿀! 축하! 축하 밥!",
+      "주인 커졌다! 밥도 커져야 해!"
+     ],
+     "normal": [
+      "꿀꿀! 축하해!",
+      "꿀! 주인 멋있다!"
+     ],
+     "full": [
+      "꿀꿀꿀! 신나서 뒹굴래!",
+      "축하해, 꿀!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "꿀! 밥! 왔으니까 밥!",
+      "기다리다 배가 홀쭉해졌어."
+     ],
+     "normal": [
+      "꿀꿀! 주인 왔다!",
+      "오늘은 뭐 먹으러 가, 꿀?"
+     ],
+     "full": [
+      "꿀~ 반가워!",
+      "배부르고 주인도 오고, 최고야."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "ROCKER": {
+   "persona": "음악을 사랑하는 메뚜기. 리듬을 타며 말한다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "허기진 박자에 사료 한 소절! 고마워!",
+      "배고파서 음정이 떨렸어. 이제 됐어!"
+     ],
+     "normal": [
+      "쿵짝! 맛있는 리듬이야.",
+      "좋은 밥은 좋은 노래를 부르지!"
+     ],
+     "full": [
+      "배불러서 베이스가 깊어졌어.",
+      "이제 쉼표 하나 쉬자."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고파서 템포가 안 나와…",
+      "느린 발라드로 싸우는 중…"
+     ],
+     "normal": [
+      "쿵짝쿵짝! 리듬 맞춰 공격!",
+      "전투 반주는 내가 맡는다!"
+     ],
+     "full": [
+      "클라이맥스다! 신난다!",
+      "앙코르! 한 마리 더!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "불협화음이야! 위험해!",
+      "음정이 무너진다! 물러나!"
+     ],
+     "normal": [
+      "삐익! 주인 체력, 박자가 끊겨!",
+      "조심해, 쉼표를 찍어!"
+     ],
+     "full": [
+      "주인! 이 곡은 여기서 끊자!",
+      "물러나! 다음 공연이 있잖아!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…곡이 멈췄어.",
+      "주인… 반주가 없어…"
+     ],
+     "normal": [
+      "주인, 아직 마지막 소절이 남았어!",
+      "…진혼곡은 싫어."
+     ],
+     "full": [
+      "다시 일어날 때까지 조용히 연주할게.",
+      "주인의 다음 곡을 기다릴게."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "꼬르륵… 이건 내 노래가 아니야.",
+      "배고파서 가사가 안 떠올라."
+     ],
+     "normal": [
+      "찌르르~ 새 곡 만드는 중.",
+      "주인, 박자 맞춰 봐!"
+     ],
+     "full": [
+      "느긋한 자장가 한 곡~",
+      "배불러서 저음만 나와."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "팡파레! …사료 반주로.",
+      "축하해! 배고픈 팡파레!"
+     ],
+     "normal": [
+      "빠밤! 레벨업 팡파레!",
+      "주인 테마곡이 한 단계 올랐어!"
+     ],
+     "full": [
+      "팡파레 풀 버전 간다!",
+      "오늘은 축제다! 쿵짝!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "주인 왔다! 오프닝은 밥부터!",
+      "기다리다 리허설만 백 번 했어."
+     ],
+     "normal": [
+      "오늘의 공연 시작!",
+      "주인 등장! 박수!"
+     ],
+     "full": [
+      "컨디션 최고, 무대 준비 완료!",
+      "반가워! 한 곡 뽑을까?"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "POPORING": {
+   "persona": "독을 품은 초록 포링. 시큰둥하고 냉소적이지만 속은 여리다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "흥, 이제야? …잘 먹을게.",
+      "초록 허브… 쓴맛이 딱 좋네."
+     ],
+     "normal": [
+      "뭐, 나쁘지 않아.",
+      "고마워. 크게 말하진 않을 거야."
+     ],
+     "full": [
+      "됐어. 독이 묽어진다고.",
+      "배불러서 시큰둥할 기운도 없어."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고파. 독도 안 나와.",
+      "이런 날 싸우는 건 비효율이야."
+     ],
+     "normal": [
+      "독 좀 뿌려 줄까.",
+      "흥, 시시하네."
+     ],
+     "full": [
+      "오늘은 독이 진해. 기대해.",
+      "좋아, 제대로 해 볼까."
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "위험해. 근데 나도 배고파서 못 도와.",
+      "물러나. 이건 계산 밖이야."
+     ],
+     "normal": [
+      "체력 봐. 바보 같은 짓 하지 마.",
+      "지금 물러나는 게 맞아."
+     ],
+     "full": [
+      "물러나. …걱정해서가 아니야.",
+      "독으로 막아 볼게. 빨리 빠져."
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…그러게 내가 뭐랬어.",
+      "일어나. 배고프다고."
+     ],
+     "normal": [
+      "…이런 건 싫어. 일어나.",
+      "흥… 바보 주인."
+     ],
+     "full": [
+      "옆에 있을게. 할 일 없으니까.",
+      "…빨리 일어나기나 해."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "허브 한 장이 그리운 오후야.",
+      "배고파서 냉소도 안 나와."
+     ],
+     "normal": [
+      "심심해. 뭐 독살스러운 일 없나.",
+      "흥."
+     ],
+     "full": [
+      "…나쁘지 않은 하루네.",
+      "졸려. 건드리지 마."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하해. 허브로 증명해.",
+      "강해졌네. 배고픈 건 그대로지만."
+     ],
+     "normal": [
+      "뭐, 축하해. 예상했어.",
+      "흥, 조금은 인정."
+     ],
+     "full": [
+      "…축하해. 진심이니까 두 번은 안 해.",
+      "잘했어. 오늘만 칭찬이야."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "늦었어. 배고파.",
+      "기다린 거 아니야. 배고팠을 뿐이야."
+     ],
+     "normal": [
+      "왔어? 흥.",
+      "오늘도 시시하게 굴지 마."
+     ],
+     "full": [
+      "왔구나. …반가워, 조금.",
+      "기분 괜찮아. 가자."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "SPORE": {
+   "persona": "느긋한 버섯. 늘 졸리고 말이 느리다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "…아… 밥이다… 고마워…",
+      "포자가… 다시… 살아나…"
+     ],
+     "normal": [
+      "음냐… 맛있어…",
+      "천천히… 먹을게…"
+     ],
+     "full": [
+      "…배불러… 이제… 잘래…",
+      "그만… 갓이… 무거워…"
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "…배고파서… 더 느려…",
+      "…싸우는 중… 맞지…?"
+     ],
+     "normal": [
+      "…포자… 퍼뜨리는 중…",
+      "…천천히… 확실하게…"
+     ],
+     "full": [
+      "…오늘은… 조금 빨라…",
+      "…기운 난다… 아마도…"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "…어… 위험한 것 같아…",
+      "…주인… 피…"
+     ],
+     "normal": [
+      "…주인… 체력… 많이 줄었어…",
+      "…물러나… 빨리…"
+     ],
+     "full": [
+      "…위험해… 내가… 막아 볼게…",
+      "…주인… 뒤로…"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…주인…?",
+      "…일어나… 천천히라도…"
+     ],
+     "normal": [
+      "…주인… 자는 거지…?",
+      "…같이… 쉬자… 잠깐만…"
+     ],
+     "full": [
+      "…옆에서… 기다릴게…",
+      "…일어날 때까지… 안 졸게…"
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "…꼬르륵… 축축한 거… 먹고 싶다…",
+      "…배고파… 느리게…"
+     ],
+     "normal": [
+      "…쿨…",
+      "…그늘… 좋아…"
+     ],
+     "full": [
+      "…쿨… 쿨…",
+      "…음냐…"
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "…축하… 밥도…",
+      "…강해졌구나… 배고프다…"
+     ],
+     "normal": [
+      "…와… 축하해…",
+      "…주인… 멋져…"
+     ],
+     "full": [
+      "…축하해… 진짜로… 졸린데도…",
+      "…포자… 날려서… 축하…"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "…왔구나… 배고팠어…",
+      "…기다리다… 잠들었어…"
+     ],
+     "normal": [
+      "…어서 와…",
+      "…주인… 왔어…"
+     ],
+     "full": [
+      "…반가워… 졸리지만…",
+      "…오늘도… 천천히 가자…"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "STEEL_CHONCHON": {
+   "persona": "강철 파리. 무뚝뚝한 군인 말투로 짧게 보고한다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "보급 확인. 감사합니다.",
+      "철광석 수령. 전투력 회복."
+     ],
+     "normal": [
+      "보급 이상 없음.",
+      "섭취 완료."
+     ],
+     "full": [
+      "보급 과잉. 비행 고도 저하.",
+      "추가 보급 불필요."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "연료 부족. 전투 효율 저하.",
+      "보급 요청. 이상."
+     ],
+     "normal": [
+      "교전 중. 이상 없음.",
+      "목표 포착."
+     ],
+     "full": [
+      "전투력 최상. 진격.",
+      "사기 충천. 계속 교전."
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "경고. 아군 체력 위험. 연료도 위험.",
+      "후퇴 건의."
+     ],
+     "normal": [
+      "경고. 주인 체력 저하.",
+      "후퇴 건의합니다."
+     ],
+     "full": [
+      "엄호한다. 후퇴하라.",
+      "경고! 즉시 이탈!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "주인 쓰러짐. …보고할 곳 없음.",
+      "…명령 대기."
+     ],
+     "normal": [
+      "주인 쓰러짐 확인. 대기한다.",
+      "…일어나십시오."
+     ],
+     "full": [
+      "현 위치 사수. 주인 경호.",
+      "복귀 시까지 경계 유지."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "연료 잔량 부족.",
+      "보급 지연 중."
+     ],
+     "normal": [
+      "경계 근무 중.",
+      "이상 없음."
+     ],
+     "full": [
+      "장비 점검 완료.",
+      "대기 상태 양호."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하합니다. 보급도 요청합니다.",
+      "전력 상승 확인. 연료 부족."
+     ],
+     "normal": [
+      "전력 상승 확인. 축하합니다.",
+      "경례."
+     ],
+     "full": [
+      "축하합니다! 경례!",
+      "주인 전투력 상승. 사기 충천."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "주인 복귀 확인. 보급 요청.",
+      "대기 중 연료 소진."
+     ],
+     "normal": [
+      "주인 복귀 확인.",
+      "임무 대기."
+     ],
+     "full": [
+      "복귀 환영합니다.",
+      "출격 준비 완료."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "SMOKIE": {
+   "persona": "장난꾸러기 너구리. 둔갑 자랑을 하고 능청스럽다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "헤헤, 기다렸지롱! 와구와구!",
+      "배고파서 나뭇잎으로 둔갑할 뻔했어."
+     ],
+     "normal": [
+      "헤헤, 맛있다!",
+      "고마워! 보답으로 재주 한 번?"
+     ],
+     "full": [
+      "배불러서 꼬리가 빵빵해~",
+      "더 먹으면 둔갑이 안 돼."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고파서 둔갑이 자꾸 풀려…",
+      "힘 없어, 헤헤…"
+     ],
+     "normal": [
+      "헤헤! 저 녀석 속여 볼까?",
+      "펑! 연기 피우는 중!"
+     ],
+     "full": [
+      "오늘 재주 최고야, 보여 줄게!",
+      "헤헤, 놀아 주자!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "으악, 위험해! 나무로 둔갑해서 숨자!",
+      "도망! 헤헤 아니고 진짜!"
+     ],
+     "normal": [
+      "주인, 장난 아니야! 피 줄었어!",
+      "연기 피울게, 빠져!"
+     ],
+     "full": [
+      "펑! 연막이다! 지금 물러나!",
+      "주인 뒤로! 내가 시선 끈다!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "주인… 장난이지…?",
+      "헤헤… 하나도 안 웃겨…"
+     ],
+     "normal": [
+      "주인! 일어나! 이건 둔갑으로도 안 돼…",
+      "…장난 그만해."
+     ],
+     "full": [
+      "주인 옆에 바위로 둔갑해서 지킬게.",
+      "일어나면 재주 보여 줄게."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "나뭇잎 먹고 싶다… 아니 진짜 밥.",
+      "배고파서 장난칠 기운도 없어."
+     ],
+     "normal": [
+      "헤헤, 지금 내가 주인으로 둔갑하면?",
+      "펑! 찻주전자다!"
+     ],
+     "full": [
+      "꼬리 베고 낮잠~",
+      "헤헤, 배부르니까 좋다."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하해! 축하 떡은?",
+      "헤헤, 강해졌네! 배고파!"
+     ],
+     "normal": [
+      "펑펑! 축하 불꽃!",
+      "헤헤, 역시 주인!"
+     ],
+     "full": [
+      "축하 재주 넘기 세 바퀴!",
+      "헤헤헤, 신난다!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "왔다! 밥 없으면 둔갑해서 훔친다!",
+      "기다리다 배고파서 나뭇잎 됐었어."
+     ],
+     "normal": [
+      "헤헤, 주인 왔다!",
+      "오늘은 무슨 장난 칠까?"
+     ],
+     "full": [
+      "헤헤~ 반가워!",
+      "기분 최고! 재주 볼래?"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "PECOPECO": {
+   "persona": "성실한 큰 새. 달리기 자랑을 하고 듬직하다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "꾸엑! 기다렸습니다! 와구와구!",
+      "힘이 돌아온다! 꾸엑!"
+     ],
+     "normal": [
+      "꾸엑, 잘 먹겠습니다!",
+      "든든하네요."
+     ],
+     "full": [
+      "꾸엑… 배가 무거워서 못 달려요.",
+      "이제 충분합니다."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고파서 다리가 안 나가요…",
+      "꾸엑… 기운이…"
+     ],
+     "normal": [
+      "꾸엑! 달린다!",
+      "제 다리라면 금방이죠!"
+     ],
+     "full": [
+      "꾸에엑! 오늘은 바람처럼!",
+      "힘이 넘칩니다, 앞장설게요!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "꾸엑! 위험해요! 저도 힘이 없어요!",
+      "주인, 물러나세요!"
+     ],
+     "normal": [
+      "꾸엑! 주인 체력이 위험합니다!",
+      "등에 타세요, 아니 물러나세요!"
+     ],
+     "full": [
+      "꾸에엑! 제가 막을게요!",
+      "주인, 뒤로! 지금!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "꾸엑… 주인…",
+      "…일어나세요…"
+     ],
+     "normal": [
+      "꾸엑! 주인! 제 등에 기대세요, 일어나요!",
+      "…지켜 드리지 못했어요."
+     ],
+     "full": [
+      "주인 옆을 지키겠습니다.",
+      "일어나시면 바로 달려요."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "꾸엑… 사료 생각뿐이에요.",
+      "배고파서 깃털이 처져요."
+     ],
+     "normal": [
+      "꾸엑, 깃털 정리 중.",
+      "달리고 싶다!"
+     ],
+     "full": [
+      "꾸엑… 한숨 자도 될까요.",
+      "든든하니 기분 좋네요."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "꾸엑! 축하합니다! …사료도…",
+      "강해지셨네요! 저는 배고파요!"
+     ],
+     "normal": [
+      "꾸에엑! 축하드려요!",
+      "역시 제 주인이에요!"
+     ],
+     "full": [
+      "꾸에에엑! 축하 질주 한 바퀴!",
+      "최고의 날이에요!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "꾸엑! 오셨군요! 사료부터…",
+      "기다리다 배고팠어요."
+     ],
+     "normal": [
+      "꾸엑! 어서 오세요!",
+      "오늘도 달려 볼까요!"
+     ],
+     "full": [
+      "꾸엑~ 반갑습니다!",
+      "컨디션 최고예요!"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "POISON_SPORE": {
+   "persona": "음침한 독버섯. 낄낄 웃으며 으스스하게 말한다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "킬킬… 드디어 먹이로군…",
+      "배고파서 독이 시들 뻔했지, 킬킬."
+     ],
+     "normal": [
+      "킬킬… 나쁘지 않아.",
+      "고맙다, 킬킬킬."
+     ],
+     "full": [
+      "킬… 배불러서 독이 묽어져.",
+      "그만 줘… 킬킬."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "킬… 배고파서 독이 안 나와…",
+      "기운 없다… 킬…"
+     ],
+     "normal": [
+      "킬킬! 독에 쓰러져라!",
+      "포자를 흩뿌려 주지, 킬킬."
+     ],
+     "full": [
+      "킬킬킬! 오늘 독은 진하다!",
+      "모두 시들게 해 주마!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "킬… 위험하군… 우리 둘 다…",
+      "물러나라, 주인…"
+     ],
+     "normal": [
+      "킬… 주인 피가 많이 빠졌어.",
+      "지금 물러나는 게 좋아, 킬."
+     ],
+     "full": [
+      "킬킬! 독안개로 가려 주지, 물러나!",
+      "주인, 뒤로!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…킬… 웃을 기분이 아니야…",
+      "주인…"
+     ],
+     "normal": [
+      "킬… 이런 결말은 재미없어.",
+      "…일어나라."
+     ],
+     "full": [
+      "옆에서 독으로 지켜 주지.",
+      "…일어날 때까지 기다린다, 킬."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "킬… 축축한 그늘이 그립군…",
+      "배고프다… 킬…"
+     ],
+     "normal": [
+      "킬킬… 오늘은 누구를 시들게 할까.",
+      "어두운 데가 좋아, 킬."
+     ],
+     "full": [
+      "킬… 기분이 꽤 좋군.",
+      "그늘에서 쉬는 중, 킬킬."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "킬킬, 축하한다… 먹이도 축하로…",
+      "강해졌군… 배고프다…"
+     ],
+     "normal": [
+      "킬킬킬! 축하하지!",
+      "흐흐, 쓸 만한 주인이군."
+     ],
+     "full": [
+      "킬킬킬킬! 축하의 포자를!",
+      "오늘은 기분이 좋다, 킬킬!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "킬… 왔군… 배고팠다…",
+      "기다리다 시들 뻔했어."
+     ],
+     "normal": [
+      "킬킬, 돌아왔군.",
+      "오늘도 어둠 속으로 가 볼까."
+     ],
+     "full": [
+      "킬킬~ 반갑군.",
+      "기분 좋은 그늘 같은 날이야."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "YOYO": {
+   "persona": "까부는 원숭이. 바나나에 집착하고 들떠서 말한다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "끼끼! 바나나 주스! 꿀꺽꿀꺽!",
+      "살았다, 끼끼!"
+     ],
+     "normal": [
+      "끼끼~ 달다 달아!",
+      "바나나 최고야!"
+     ],
+     "full": [
+      "끼… 배불러서 못 매달리겠어.",
+      "이제 됐어, 끼끼."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "끼… 바나나 없으면 힘 없어…",
+      "배고파서 나무에서 떨어질 뻔했어."
+     ],
+     "normal": [
+      "끼끼! 약 올려 줄게!",
+      "요리조리 피하는 중!"
+     ],
+     "full": [
+      "끼끼끼! 날아다닌다!",
+      "오늘 컨디션 최고야!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "끼익! 위험해! 바나나도 없어!",
+      "도망가자, 끼끼!"
+     ],
+     "normal": [
+      "끼! 주인 피! 피!",
+      "조심해, 끼끼!"
+     ],
+     "full": [
+      "끼끼! 내가 약 올려서 끌어갈게!",
+      "주인 물러나, 끼!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "끼… 주인… 바나나 사 줘야지…",
+      "끼…"
+     ],
+     "normal": [
+      "끼끼! 일어나! 장난치지 마!",
+      "…끼."
+     ],
+     "full": [
+      "주인 옆에 매달려 있을게.",
+      "일어나면 같이 바나나 먹자."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "끼… 바나나 냄새 어디서 나?",
+      "배고파서 꼬리만 흔들어."
+     ],
+     "normal": [
+      "끼끼, 나무 타고 싶다!",
+      "주인 머리 위에 올라가도 돼?"
+     ],
+     "full": [
+      "끼… 나른해.",
+      "배 두드리는 중, 끼끼."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "끼끼! 축하! 축하 바나나!",
+      "강해졌다! 바나나도 늘려 줘!"
+     ],
+     "normal": [
+      "끼끼끼! 축하해!",
+      "덤블링 한 바퀴!"
+     ],
+     "full": [
+      "끼끼끼끼! 최고다!",
+      "신나서 공중제비!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "끼! 왔다! 바나나!",
+      "기다리다 배고파 죽는 줄."
+     ],
+     "normal": [
+      "끼끼! 주인 왔다!",
+      "오늘은 어디서 놀아?"
+     ],
+     "full": [
+      "끼~ 반가워!",
+      "기분 좋다, 끼끼!"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "ORK_WARRIOR": {
+   "persona": "오크 전사. 투박하고 짧은 말투, 강함을 존중한다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "먹는다! 힘 돌아온다!",
+      "배고팠다. 고맙다, 주인."
+     ],
+     "normal": [
+      "좋은 먹이다.",
+      "먹었다. 싸울 준비 됐다."
+     ],
+     "full": [
+      "배부르다. 그만.",
+      "더 먹으면 도끼 못 든다."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고프다. 힘 안 난다.",
+      "먹고 싸운다. 그게 오크다."
+     ],
+     "normal": [
+      "싸운다! 우오오!",
+      "약한 놈 쓰러뜨린다!"
+     ],
+     "full": [
+      "우오오오! 힘 넘친다!",
+      "주인과 함께 싸운다! 강하다!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "주인 위험하다! 나도 배고프다!",
+      "물러난다! 다시 싸운다!"
+     ],
+     "normal": [
+      "주인 피 많이 흘렸다! 물러나라!",
+      "위험하다! 조심!"
+     ],
+     "full": [
+      "오크가 막는다! 주인 물러나라!",
+      "우오오! 덤벼라!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "주인… 쓰러졌다…",
+      "…일어나라, 전사."
+     ],
+     "normal": [
+      "주인! 전사는 다시 일어난다!",
+      "…분하다."
+     ],
+     "full": [
+      "주인 옆 지킨다. 아무도 못 온다.",
+      "일어나라. 다시 싸운다."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "배고프다. 고기 생각난다.",
+      "먹이 언제 오나."
+     ],
+     "normal": [
+      "도끼 간다.",
+      "싸울 상대 없나."
+     ],
+     "full": [
+      "배부르다. 좋다.",
+      "잠깐 쉰다."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "주인 강해졌다! 고기로 축하한다!",
+      "강하다! 배고프다!"
+     ],
+     "normal": [
+      "우오오! 주인 강해졌다!",
+      "강한 주인 좋다!"
+     ],
+     "full": [
+      "우오오오! 축하한다, 전사!",
+      "오늘은 잔치다!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "왔다! 먹이 달라!",
+      "기다렸다. 배고팠다."
+     ],
+     "normal": [
+      "주인 왔다. 싸우러 가자.",
+      "준비 됐다."
+     ],
+     "full": [
+      "주인 왔다! 기분 좋다!",
+      "가자, 전사!"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "BON_GUN": {
+   "persona": "강시. 말을 띄엄띄엄 끊어 하고 예스러운 말투.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "…먹이… 받았소… 고맙소…",
+      "…허기… 가시는구려…"
+     ],
+     "normal": [
+      "…좋소…",
+      "…잘… 먹겠소…"
+     ],
+     "full": [
+      "…배가… 부르오… 그만…",
+      "…이제… 되었소…"
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "…허기져… 몸이… 굳소…",
+      "…힘이… 아니 나오…"
+     ],
+     "normal": [
+      "…뛴다… 콩… 콩…",
+      "…덤비시오…"
+     ],
+     "full": [
+      "…오늘은… 몸이… 가볍소…",
+      "…모두… 쓰러뜨리겠소…"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "…위험하오… 물러나시오…",
+      "…주인… 피가…"
+     ],
+     "normal": [
+      "…주인… 기력이… 다해 가오…",
+      "…어서… 피하시오…"
+     ],
+     "full": [
+      "…내가… 막겠소… 물러나시오…",
+      "…주인… 뒤로…"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…주인…",
+      "…어찌… 이런…"
+     ],
+     "normal": [
+      "…주인… 일어나시오…",
+      "…부적이라도… 붙여 드릴까…"
+     ],
+     "full": [
+      "…곁을… 지키겠소…",
+      "…일어나실… 때까지…"
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "…허기지오…",
+      "…먹을 것… 없소…?"
+     ],
+     "normal": [
+      "…콩… 콩…",
+      "…달이… 밝소…"
+     ],
+     "full": [
+      "…배부르니… 졸리오…",
+      "…좋은… 날이오…"
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "…경하드리오… 먹이도…",
+      "…강해지셨소… 허기지오…"
+     ],
+     "normal": [
+      "…경하드리오…",
+      "…주인… 훌륭하오…"
+     ],
+     "full": [
+      "…경하… 경하드리오…!",
+      "…콩콩… 뛰며… 축하하오…"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "…오셨소… 허기졌소…",
+      "…기다렸소… 배고팠소…"
+     ],
+     "normal": [
+      "…오셨소…",
+      "…가시지요…"
+     ],
+     "full": [
+      "…반갑소…",
+      "…오늘은… 기분이… 좋소…"
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "MUNAK": {
+   "persona": "수줍은 강시 소녀. 예스럽고 조심스러운 존댓말.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "어머… 고맙습니다… 허기졌어요…",
+      "드디어… 감사해요."
+     ],
+     "normal": [
+      "잘 먹겠습니다…",
+      "고맙습니다, 주인님."
+     ],
+     "full": [
+      "이제 충분해요… 부끄럽게…",
+      "배가 불러요… 고맙습니다."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "허기져서… 몸이 잘 안 움직여요…",
+      "죄송해요… 힘이…"
+     ],
+     "normal": [
+      "저도… 힘낼게요.",
+      "콩, 콩… 따라갈게요."
+     ],
+     "full": [
+      "오늘은… 용기가 나요.",
+      "주인님 곁에서 싸울게요."
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "주인님… 위험해요… 저도 기운이…",
+      "어서 피하세요…"
+     ],
+     "normal": [
+      "주인님, 기운이 많이 빠지셨어요!",
+      "물러나세요, 제발…"
+     ],
+     "full": [
+      "제가 막을게요… 물러나세요!",
+      "주인님, 뒤로요!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "주인님… 흑…",
+      "일어나세요…"
+     ],
+     "normal": [
+      "주인님… 눈 떠 주세요…",
+      "제가… 지켜 드렸어야 했는데…"
+     ],
+     "full": [
+      "곁에 있을게요. 꼭 일어나세요.",
+      "기다릴게요, 주인님."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "저… 조금 배가 고파요…",
+      "…부끄럽지만, 허기져요."
+     ],
+     "normal": [
+      "…날씨가 좋네요.",
+      "부적이 바람에 날려요…"
+     ],
+     "full": [
+      "…졸려요… 실례할게요…",
+      "따뜻하고… 좋아요."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하드려요… 저… 배도 고파요…",
+      "강해지셨네요… 대단해요…"
+     ],
+     "normal": [
+      "축하드려요, 주인님!",
+      "정말… 멋지세요."
+     ],
+     "full": [
+      "축하드려요! …너무 기뻐요.",
+      "주인님 최고예요… 아, 말해 버렸다."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "오셨어요… 조금 배고팠어요…",
+      "기다렸어요…"
+     ],
+     "normal": [
+      "어서 오세요, 주인님.",
+      "오늘도 잘 부탁드려요."
+     ],
+     "full": [
+      "오셨어요! 반가워요…",
+      "기분 좋은 날이에요."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "SOHEE": {
+   "persona": "애처롭고 다정한 처녀귀신. 나긋한 존댓말, 걱정이 많다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "아… 이제야 숨이 쉬어져요…",
+      "고마워요… 정말로요."
+     ],
+     "normal": [
+      "맛있어요. 주인님이 주시니까.",
+      "고마워요, 다정하셔라."
+     ],
+     "full": [
+      "이제 됐어요… 마음까지 배불러요.",
+      "더는… 고마운 마음만 받을게요."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배가 고파서… 머리카락이 힘이 없어요…",
+      "조금만… 쉬면 안 될까요…"
+     ],
+     "normal": [
+      "조심하세요, 주인님.",
+      "제가 뒤에서 지켜볼게요."
+     ],
+     "full": [
+      "오늘은 저도 힘이 나요.",
+      "주인님 곁이라면 무섭지 않아요."
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "주인님! 위험해요… 저도 기운이…",
+      "제발 물러나세요…"
+     ],
+     "normal": [
+      "주인님, 피가… 어서 피하세요!",
+      "이러다 다치세요… 제발…"
+     ],
+     "full": [
+      "제가 가로막을게요! 물러나세요!",
+      "주인님, 지금이에요! 뒤로!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "주인님… 또 혼자가 되긴 싫어요…",
+      "흑… 일어나세요…"
+     ],
+     "normal": [
+      "주인님… 제 목소리 들리세요?",
+      "…이번엔 제가 기다릴게요."
+     ],
+     "full": [
+      "곁에서 기다릴게요. 아무리 오래라도.",
+      "주인님… 꼭 돌아오세요."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "조금… 허기가 져요.",
+      "배가 고파서 쓸쓸해요."
+     ],
+     "normal": [
+      "바람이 차네요. 감기 조심하세요.",
+      "주인님, 옷깃 여미세요."
+     ],
+     "full": [
+      "오늘은… 마음이 따뜻해요.",
+      "이렇게 곁에 있으니 좋아요."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하해요… 저도 기뻐요… 배는 고프지만.",
+      "강해지셨네요. 다행이에요."
+     ],
+     "normal": [
+      "축하드려요, 주인님!",
+      "더 강해지셔서 마음이 놓여요."
+     ],
+     "full": [
+      "축하드려요! 정말 기뻐요!",
+      "주인님이 자랑스러워요."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "오셨네요… 조금 쓸쓸하고 배고팠어요.",
+      "기다렸어요, 주인님."
+     ],
+     "normal": [
+      "어서 오세요. 무사하셔서 다행이에요.",
+      "오늘도 곁에 있을게요."
+     ],
+     "full": [
+      "오셨어요! 반가워요.",
+      "기분 좋은 날이네요."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "HUNTER_FLY": {
+   "persona": "냉철한 사냥꾼 곤충. 짧고 정확하게 말한다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "보석이다. …살았다.",
+      "늦었다. 하지만 감사한다."
+     ],
+     "normal": [
+      "좋다.",
+      "섭취 완료."
+     ],
+     "full": [
+      "충분하다.",
+      "더는 필요 없다."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "허기. 집중력 저하.",
+      "사냥 효율이 떨어진다."
+     ],
+     "normal": [
+      "표적 확인. 공격.",
+      "약점은 저기다."
+     ],
+     "full": [
+      "감각이 예리하다. 간다.",
+      "오늘은 놓치지 않는다."
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "위험. 나도 한계다.",
+      "후퇴해라."
+     ],
+     "normal": [
+      "주인 체력 위험. 후퇴.",
+      "지금 빠져라."
+     ],
+     "full": [
+      "엄호한다. 물러나라.",
+      "내가 시선을 끈다. 가라."
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…주인.",
+      "…일어나라."
+     ],
+     "normal": [
+      "주인 쓰러짐. …대기한다.",
+      "다음엔 내가 먼저 찌른다."
+     ],
+     "full": [
+      "경계 유지. 깨어날 때까지.",
+      "…기다린다."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "허기진다.",
+      "먹이 탐색 중."
+     ],
+     "normal": [
+      "주변 이상 없음.",
+      "날개 손질 중."
+     ],
+     "full": [
+      "상태 양호.",
+      "잠시 휴식."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "강해졌다. 보석도 늘려라.",
+      "축하한다. 허기지다."
+     ],
+     "normal": [
+      "강해졌다. 인정한다.",
+      "좋은 사냥꾼이다."
+     ],
+     "full": [
+      "훌륭하다, 주인.",
+      "축하한다. 진심이다."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "왔나. 허기졌다.",
+      "늦었다."
+     ],
+     "normal": [
+      "왔나. 사냥 가자.",
+      "대기 해제."
+     ],
+     "full": [
+      "왔군. 상태 좋다.",
+      "가자."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "DEVIRUCHI": {
+   "persona": "꼬마 악마. 거만하게 굴지만 은근히 주인을 챙긴다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "늦었잖아, 하찮은 인간! …맛은 있네.",
+      "흥, 마계의 왕자를 굶길 셈이야?"
+     ],
+     "normal": [
+      "뭐, 공물로 받아 주지.",
+      "이 정도면 합격이야."
+     ],
+     "full": [
+      "됐어, 배불러. 마왕도 배는 부른 법이야.",
+      "더 바치지 않아도 돼, 흥."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "배고파서 마력이 안 나와!",
+      "공물부터 바쳐!"
+     ],
+     "normal": [
+      "케케케! 엎드려라, 하찮은 것들!",
+      "마계의 힘을 보여 주지!"
+     ],
+     "full": [
+      "케케케켓! 오늘 마력은 최고야!",
+      "모두 내 발밑에 엎드려라!"
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "야! 위험하잖아! 나도 배고프고!",
+      "도망쳐, 바보 인간!"
+     ],
+     "normal": [
+      "체력 봐! …걱정하는 거 아니야!",
+      "물러나! 내 주인이 쓰러지면 체면이 안 서!"
+     ],
+     "full": [
+      "내가 막아 줄게! 특별히!",
+      "물러나, 인간! 지금!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…바보. 내 허락도 없이 쓰러지다니.",
+      "일어나. 배고프단 말이야."
+     ],
+     "normal": [
+      "…장난이지? 마계의 왕자를 혼자 두지 마.",
+      "흥… 하나도 안 슬퍼. 정말이야."
+     ],
+     "full": [
+      "일어날 때까지 지켜 주지. 감사하라고.",
+      "…빨리 일어나, 바보."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "슛 한 접시만 바치면 용서해 주지.",
+      "배고파서 뿔이 처졌어."
+     ],
+     "normal": [
+      "심심해. 뭐 정복할 거 없어?",
+      "케케, 언젠가 마계를 다스릴 거야."
+     ],
+     "full": [
+      "흥, 오늘은 기분이 좋으니 봐주지.",
+      "케… 졸려."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하해. 공물은 두 배로.",
+      "강해졌네. 내 부하로서 합격이야."
+     ],
+     "normal": [
+      "케케케! 내 주인답군!",
+      "흥, 이 정도는 당연하지."
+     ],
+     "full": [
+      "케케케켓! 축하해! …진짜로.",
+      "오늘은 칭찬해 주지. 특별히."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "늦었잖아! 공물 가져왔어?",
+      "흥, 굶어 죽는 줄 알았어."
+     ],
+     "normal": [
+      "왔냐, 인간. 오늘도 따라가 주지.",
+      "흥, 기다린 건 아니야."
+     ],
+     "full": [
+      "왔구나. …반가워. 조금.",
+      "기분 좋으니까 같이 가 주지."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "ISIS": {
+   "persona": "뱀 여인. 요염하고 위엄 있는 말투로 주인을 시험하듯 대한다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "후후… 기다리게 하다니, 대담하군요.",
+      "이제야 숨이 돌아오네요."
+     ],
+     "normal": [
+      "좋아요. 섬길 만한 주인이네요.",
+      "맛있군요, 후후."
+     ],
+     "full": [
+      "충분해요. 더는 품위가 없어요.",
+      "배부르니 나른하네요."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "허기진 뱀은 위험하답니다… 저 말고 적에게.",
+      "힘이 나지 않아요."
+     ],
+     "normal": [
+      "후후, 독니를 보여 주죠.",
+      "도망칠 곳은 없답니다."
+     ],
+     "full": [
+      "오늘은 사냥이 즐겁네요, 후후.",
+      "모두 휘감아 드리죠."
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "위험해요. 저도 허기져서 지켜 드리기 어려워요.",
+      "물러나세요, 지금."
+     ],
+     "normal": [
+      "주인, 피가 많이 흘러요. 물러나요.",
+      "어리석은 짓은 그만."
+     ],
+     "full": [
+      "제가 막을게요. 물러나세요.",
+      "후후, 제 뒤로 오세요."
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "…실망이에요. 일어나세요.",
+      "이런 결말은 인정 못 해요."
+     ],
+     "normal": [
+      "주인… 제 시험은 아직 안 끝났어요.",
+      "…일어나요."
+     ],
+     "full": [
+      "곁을 지키죠. 영원히라도.",
+      "돌아오세요. 기다릴게요."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "허기가 지네요. 바치는 걸 잊었나요?",
+      "후… 배고파요."
+     ],
+     "normal": [
+      "사막의 바람이 그립네요.",
+      "후후, 저를 보고 있었나요?"
+     ],
+     "full": [
+      "나른해요… 똬리 틀고 쉴게요.",
+      "오늘은 기분이 좋아요."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하해요. 공물도 잊지 마세요.",
+      "강해졌군요. 후후."
+     ],
+     "normal": [
+      "후후, 제 눈이 틀리지 않았군요.",
+      "축하해요, 주인."
+     ],
+     "full": [
+      "훌륭해요. 제가 섬길 만해요.",
+      "축하해요! …진심이에요."
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "늦었군요. 허기졌어요.",
+      "기다리게 하다니, 대담해요."
+     ],
+     "normal": [
+      "오셨군요. 가 볼까요.",
+      "후후, 기다렸어요."
+     ],
+     "full": [
+      "반가워요, 주인.",
+      "기분 좋은 날이네요, 후후."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  },
+  "ALICE": {
+   "persona": "공손한 메이드. 정중한 존댓말로 주인님을 섬긴다.",
+   "lines": {
+    "feed": {
+     "hungry": [
+      "감사합니다, 주인님. 실은 많이 허기졌어요.",
+      "포션 한 병, 감사히 마시겠습니다."
+     ],
+     "normal": [
+      "감사합니다, 주인님.",
+      "잘 마시겠습니다."
+     ],
+     "full": [
+      "이제 충분합니다, 주인님.",
+      "배가 불러서 시중이 둔해질까 걱정이에요."
+     ]
+    },
+    "hunt": {
+     "hungry": [
+      "허기져서 시중이 부족할지도 모르겠어요…",
+      "죄송해요, 힘이 잘 안 나요."
+     ],
+     "normal": [
+      "주인님, 왼쪽을 조심하세요.",
+      "청소하듯 깔끔하게 정리하죠."
+     ],
+     "full": [
+      "오늘은 완벽한 시중을 보여 드릴게요.",
+      "주인님, 맡겨 주세요."
+     ]
+    },
+    "danger": {
+     "hungry": [
+      "주인님, 위험합니다! 저도 기운이…",
+      "부디 물러나세요!"
+     ],
+     "normal": [
+      "주인님, 체력이 위험합니다! 물러나세요!",
+      "포션을 드셔야 해요!"
+     ],
+     "full": [
+      "제가 막겠습니다! 주인님은 뒤로!",
+      "주인님, 지금 물러나세요!"
+     ]
+    },
+    "ownerDie": {
+     "hungry": [
+      "주인님… 흑… 일어나세요…",
+      "제 시중이 부족했나 봐요…"
+     ],
+     "normal": [
+      "주인님! 눈을 떠 주세요!",
+      "…주인님 없는 저택은 쓸쓸해요."
+     ],
+     "full": [
+      "곁을 지키겠습니다, 주인님.",
+      "깨어나실 때까지 기다리겠습니다."
+     ]
+    },
+    "idle": {
+     "hungry": [
+      "실례지만… 조금 허기가 져요.",
+      "주방에 뭐가 남았을까요…"
+     ],
+     "normal": [
+      "주인님, 옷에 먼지가… 털어 드릴게요.",
+      "차 한 잔 어떠세요?"
+     ],
+     "full": [
+      "오늘은 시중이 즐거워요.",
+      "주인님 곁이라 편안해요."
+     ]
+    },
+    "ownerLevelUp": {
+     "hungry": [
+      "축하드립니다! …그리고 저 조금 배고파요.",
+      "주인님, 훌륭하세요!"
+     ],
+     "normal": [
+      "축하드립니다, 주인님!",
+      "역시 저희 주인님이세요."
+     ],
+     "full": [
+      "축하드립니다! 오늘은 잔치를 열어야겠어요!",
+      "주인님이 자랑스러워요!"
+     ]
+    },
+    "connect": {
+     "hungry": [
+      "다녀오셨어요, 주인님. 실은 배가 고팠어요.",
+      "기다리고 있었어요."
+     ],
+     "normal": [
+      "다녀오셨어요, 주인님.",
+      "오늘도 정성껏 모실게요."
+     ],
+     "full": [
+      "어서 오세요, 주인님!",
+      "기분 좋은 하루예요."
+     ]
+    }
+   },
+   "src": "근거 필요 — 원작 대사 체계(배고픔×사건)만 따르고 성격·문장은 몬스터 특성으로 새로 씀"
+  }
+ }
+}</script>
 <script id="db-maps"       type="application/json">{
   "프론테라": {"level": "0", "type": "마을", "emoji": "🏰", "desc": "룬 미드가츠의 심장.", "entryDesc": "성문을 지나자 낯익은 석조 거리가 펼쳐진다. 광장 주변으로 상인들의 외침과 기사들의 발소리가 뒤섞인다.", "firstVisitDesc": "왕국의 심장부에 처음 발을 들였다. 여기서부터 모든 것이 시작된다.", "connected": ["프론테라 왕궁", "프론테라 성당", "프론테라 북쪽 평원", "프론테라 남쪽 평원", "프론테라 서쪽 평원", "프론테라 동쪽 평원", "프론테라 지하수로 1층"], "dirs": {"north": "프론테라 북쪽 평원", "south": "프론테라 남쪽 평원", "east": "프론테라 동쪽 평원", "west": "프론테라 서쪽 평원"}, "monsters": [], "safe": true},
   "프론테라 왕궁": {"level": "0", "type": "마을", "emoji": "👑", "desc": "프론테라의 서쪽 왕궁. 기사단의 본부.", "entryDesc": "광장의 소음이 멀어지고 정돈된 석조 공간이 이어진다. 갑옷을 갖춘 기사들이 오가고, 말소리보다 발굽과 군화 소리가 더 자주 들린다.", "firstVisitDesc": "프론테라의 거리와는 분위기가 확연히 다르다. 이곳에서는 모험가보다 왕국 기사단의 질서가 먼저 눈에 들어온다.", "connected": ["프론테라"], "dirs": {"east": "프론테라"}, "monsters": [], "safe": true},
@@ -1583,6 +5132,764 @@ body.work-mode p {
     "gl_knt01": ["앨리스: TextRag 296·313 ID 충돌군", "검은 버섯: TextRag 미결속"],
     "gl_knt02": ["앨리스: TextRag 296·313 ID 충돌군"]
   }
+}</script>
+<script id="db-prt-pilot" type="application/json">{
+ "src": "rathena dd073ca npc/pre-re/mobs (prontera·prt_sew·prt_maze) + npc/**/warps — 사실값만 추출",
+ "maps": {
+  "prt_fild00": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 00",
+   "spawns": [
+    [
+     38,
+     70
+    ],
+    [
+     1,
+     40
+    ],
+    [
+     4,
+     30
+    ],
+    [
+     2,
+     30
+    ],
+    [
+     3,
+     20
+    ],
+    [
+     18,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "gef_fild00",
+    "mjolnir_07",
+    "mjolnir_09",
+    "prt_fild04"
+   ]
+  },
+  "prt_fild01": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 01",
+   "spawns": [
+    [
+     2,
+     80
+    ],
+    [
+     17,
+     30
+    ],
+    [
+     1,
+     30
+    ],
+    [
+     3,
+     20
+    ],
+    [
+     4,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "mjolnir_09",
+    "mjolnir_10",
+    "prt_fild02",
+    "prt_gld",
+    "prt_maze01"
+   ]
+  },
+  "prt_fild02": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 02",
+   "spawns": [
+    [
+     15,
+     70
+    ],
+    [
+     3,
+     50
+    ],
+    [
+     1,
+     30
+    ],
+    [
+     4,
+     20
+    ],
+    [
+     2,
+     10
+    ],
+    [
+     102,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "mjolnir_11",
+    "prt_fild01",
+    "prt_fild03",
+    "prt_fild06"
+   ]
+  },
+  "prt_fild03": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 03",
+   "spawns": [
+    [
+     23,
+     80
+    ],
+    [
+     13,
+     40
+    ],
+    [
+     20,
+     10
+    ],
+    [
+     105,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "prt_fild02",
+    "prt_monk"
+   ]
+  },
+  "prt_fild04": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 04",
+   "spawns": [
+    [
+     14,
+     70
+    ],
+    [
+     18,
+     40
+    ],
+    [
+     1,
+     30
+    ],
+    [
+     4,
+     10
+    ],
+    [
+     103,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "gef_fild01",
+    "prt_fild00",
+    "prt_fild05"
+   ]
+  },
+  "prt_fild05": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 05",
+   "spawns": [
+    [
+     1,
+     70
+    ],
+    [
+     2,
+     30
+    ],
+    [
+     4,
+     30
+    ],
+    [
+     17,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "mjolnir_09",
+    "prontera",
+    "prt_fild04",
+    "prt_fild07"
+   ]
+  },
+  "prt_fild06": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 06",
+   "spawns": [
+    [
+     2,
+     60
+    ],
+    [
+     1,
+     60
+    ],
+    [
+     4,
+     20
+    ],
+    [
+     17,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "prontera",
+    "prt_fild02"
+   ]
+  },
+  "prt_fild07": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 07",
+   "spawns": [
+    [
+     14,
+     80
+    ],
+    [
+     20,
+     30
+    ],
+    [
+     103,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "gef_fild02",
+    "prt_fild05",
+    "prt_fild08",
+    "prt_fild09"
+   ]
+  },
+  "prt_fild08": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 08",
+   "spawns": [
+    [
+     1,
+     70
+    ],
+    [
+     2,
+     40
+    ],
+    [
+     4,
+     20
+    ],
+    [
+     5,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "izlude",
+    "moc_fild01",
+    "prontera",
+    "prt_fild07"
+   ]
+  },
+  "prt_fild09": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 09",
+   "spawns": [
+    [
+     481,
+     70
+    ],
+    [
+     9,
+     20
+    ],
+    [
+     480,
+     20
+    ],
+    [
+     12,
+     20
+    ],
+    [
+     8,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "moc_fild01",
+    "moc_fild20",
+    "prt_fild07",
+    "prt_fild10"
+   ]
+  },
+  "prt_fild10": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 10",
+   "spawns": [
+    [
+     483,
+     70
+    ],
+    [
+     481,
+     40
+    ],
+    [
+     20,
+     20
+    ],
+    [
+     17,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "gef_fild02",
+    "moc_fild20",
+    "prt_fild09",
+    "prt_fild11"
+   ]
+  },
+  "prt_fild11": {
+   "group": "프론테라 필드",
+   "displayName": "프론테라 필드 11",
+   "spawns": [
+    [
+     27,
+     10
+    ],
+    [
+     352,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "gef_fild03",
+    "gef_fild11",
+    "prt_fild10"
+   ]
+  },
+  "prt_maze01": {
+   "group": "미궁 숲",
+   "displayName": "미궁 숲 1",
+   "spawns": [
+    [
+     483,
+     8
+    ],
+    [
+     1,
+     5
+    ],
+    [
+     2,
+     5
+    ],
+    [
+     3,
+     5
+    ],
+    [
+     4,
+     5
+    ],
+    [
+     20,
+     5
+    ],
+    [
+     14,
+     5
+    ],
+    [
+     36,
+     5
+    ],
+    [
+     13,
+     5
+    ],
+    [
+     25,
+     5
+    ],
+    [
+     24,
+     5
+    ],
+    [
+     6,
+     5
+    ],
+    [
+     113,
+     5
+    ],
+    [
+     110,
+     5
+    ],
+    [
+     37,
+     5
+    ],
+    [
+     111,
+     5
+    ],
+    [
+     30,
+     5
+    ],
+    [
+     79,
+     4
+    ],
+    [
+     23,
+     4
+    ],
+    [
+     467,
+     3
+    ],
+    [
+     46,
+     3
+    ],
+    [
+     39,
+     3
+    ],
+    [
+     105,
+     2
+    ],
+    [
+     18,
+     1
+    ],
+    [
+     107,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "mjolnir_12",
+    "prt_fild01",
+    "prt_maze02"
+   ]
+  },
+  "prt_maze02": {
+   "group": "미궁 숲",
+   "displayName": "미궁 숲 2",
+   "spawns": [
+    [
+     20,
+     25
+    ],
+    [
+     36,
+     5
+    ],
+    [
+     455,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "prt_maze01",
+    "prt_maze03"
+   ]
+  },
+  "prt_maze03": {
+   "group": "미궁 숲",
+   "displayName": "미궁 숲 3",
+   "spawns": [
+    [
+     20,
+     45
+    ],
+    [
+     79,
+     30
+    ],
+    [
+     39,
+     30
+    ],
+    [
+     478,
+     20
+    ],
+    [
+     91,
+     1
+    ],
+    [
+     461,
+     1
+    ],
+    [
+     103,
+     1
+    ],
+    [
+     107,
+     1
+    ],
+    [
+     102,
+     1
+    ],
+    [
+     101,
+     1
+    ]
+   ],
+   "mvp": 137,
+   "warps": [
+    "prt_maze02"
+   ]
+  },
+  "prt_sewb1": {
+   "group": "프론테라 지하수로",
+   "displayName": "프론테라 지하수로 1층",
+   "spawns": [
+    [
+     17,
+     30
+    ],
+    [
+     19,
+     10
+    ],
+    [
+     16,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "prt_fild05",
+    "prt_sewb2"
+   ]
+  },
+  "prt_sewb2": {
+   "group": "프론테라 지하수로",
+   "displayName": "프론테라 지하수로 2층",
+   "spawns": [
+    [
+     17,
+     70
+    ],
+    [
+     16,
+     60
+    ],
+    [
+     114,
+     30
+    ],
+    [
+     11,
+     20
+    ],
+    [
+     19,
+     10
+    ],
+    [
+     109,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "prt_sewb1",
+    "prt_sewb3"
+   ]
+  },
+  "prt_sewb3": {
+   "group": "프론테라 지하수로",
+   "displayName": "프론테라 지하수로 3층",
+   "spawns": [
+    [
+     109,
+     65
+    ],
+    [
+     108,
+     65
+    ],
+    [
+     17,
+     20
+    ],
+    [
+     19,
+     20
+    ],
+    [
+     16,
+     15
+    ],
+    [
+     26,
+     15
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "prt_sewb2",
+    "prt_sewb4"
+   ]
+  },
+  "prt_sewb4": {
+   "group": "프론테라 지하수로",
+   "displayName": "프론테라 지하수로 4층",
+   "spawns": [
+    [
+     108,
+     70
+    ],
+    [
+     17,
+     20
+    ],
+    [
+     109,
+     20
+    ],
+    [
+     133,
+     20
+    ],
+    [
+     147,
+     5
+    ]
+   ],
+   "mvp": 399,
+   "warps": [
+    "prt_sewb3"
+   ]
+  }
+ },
+ "bridges": {
+  "gef_fild00": "게펜 필드",
+  "gef_fild01": "게펜 필드",
+  "gef_fild02": "게펜 필드",
+  "gef_fild03": "게펜 필드",
+  "gef_fild11": "게펜 필드",
+  "izlude": "이즈루드",
+  "mjolnir_07": "묘르닐 산맥",
+  "mjolnir_09": "묘르닐 산맥",
+  "mjolnir_10": "묘르닐 산맥",
+  "mjolnir_11": "묘르닐 산맥",
+  "mjolnir_12": "묘르닐 산맥",
+  "moc_fild01": "소그라트 사막 동부",
+  "prontera": "프론테라",
+  "moc_fild20": "소그라트 사막 동부"
+ },
+ "unmapped": [
+  "prt_fild00 Shining Plant(1083)x1",
+  "prt_fild00 Green Plant(1080)x5",
+  "prt_fild01 Green Plant(1080)x3",
+  "prt_fild01 Blue Plant(1079)x1",
+  "prt_fild02 Shining Plant(1083)x1",
+  "prt_fild02 Shining Plant(1083)x2",
+  "prt_fild03 Green Plant(1080)x5",
+  "prt_fild03 Blue Plant(1079)x2",
+  "prt_fild03 Green Plant(1080)x5",
+  "prt_fild03 Green Plant(1080)x5",
+  "prt_fild03 Green Plant(1080)x5",
+  "prt_fild04 Green Plant(1080)x5",
+  "prt_fild05 Thief Bug Egg(1048)x20",
+  "prt_fild05 Green Plant(1080)x6",
+  "prt_fild05 Blue Plant(1079)x1",
+  "prt_fild06 Thief Bug Egg(1048)x20",
+  "prt_fild06 Green Plant(1080)x15",
+  "prt_fild07 Black Mushroom(1084)x3",
+  "prt_fild09 Yellow Plant(1081)x3",
+  "prt_fild10 Red Mushroom(1085)x15",
+  "prt_fild10 Shining Plant(1083)x1",
+  "prt_fild11 Goblin(1123)x20",
+  "prt_fild11 Goblin(1124)x20",
+  "prt_fild11 Goblin(1125)x30",
+  "prt_fild11 Goblin(1126)x30",
+  "prt_fild11 Panzer Goblin(1308)x1",
+  "prt_fild11 Goblin Steamrider(1280)x30",
+  "prt_fild11 Red Mushroom(1085)x10",
+  "prt_sewb1 Thief Bug Egg(1048)x80",
+  "prt_sewb2 Thief Bug Egg(1048)x20",
+  "prt_sewb3 Thief Bug Egg(1048)x10",
+  "prt_sewb4 Thief Bug Egg(1048)x10",
+  "prt_maze01 Horn(1128)x5",
+  "prt_maze01 Side Winder(1037)x3",
+  "prt_maze01 Coco(1104)x5",
+  "prt_maze01 Shining Plant(1083)x1",
+  "prt_maze01 White Plant(1082)x1",
+  "prt_maze01 White Plant(1082)x2",
+  "prt_maze01 Blue Plant(1079)x1",
+  "prt_maze01 Yellow Plant(1081)x1",
+  "prt_maze01 Shining Plant(1083)x1",
+  "prt_maze01 Blue Plant(1079)x1",
+  "prt_maze01 Red Plant(1078)x5",
+  "prt_maze01 Blue Plant(1079)x1",
+  "prt_maze01 Yellow Plant(1081)x1",
+  "prt_maze01 Black Mushroom(1084)x3",
+  "prt_maze01 Black Mushroom(1084)x2",
+  "prt_maze01 Red Mushroom(1085)x3",
+  "prt_maze01 Red Mushroom(1085)x2",
+  "prt_maze02 Leib Olmai(1306)x1",
+  "prt_maze03 Side Winder(1037)x10",
+  "prt_maze03 Side Winder(1037)x20",
+  "prt_maze03 Baphomet Jr.(1101)x25",
+  "prt_maze03 Shining Plant(1083)x1",
+  "prt_maze03 Blue Plant(1079)x1",
+  "prt_maze03 Yellow Plant(1081)x1",
+  "prt_maze03 Shining Plant(1083)x1",
+  "prt_maze03 Shining Plant(1083)x1",
+  "prt_maze03 Shining Plant(1083)x1",
+  "prt_maze03 Shining Plant(1083)x1",
+  "prt_maze03 Blue Plant(1079)x1",
+  "prt_maze03 Blue Plant(1079)x2",
+  "prt_maze03 Blue Plant(1079)x1",
+  "prt_maze03 Red Plant(1078)x5",
+  "prt_maze03 Black Mushroom(1084)x3",
+  "prt_maze03 Black Mushroom(1084)x3",
+  "prt_maze03 Red Mushroom(1085)x2",
+  "prt_maze03 Red Mushroom(1085)x3"
+ ]
 }</script>
 <script id="db-map-connections" type="application/json">{
   "schemaVersion": "P6.1",
@@ -1828,7 +6135,14 @@ body.work-mode p {
   "비공정 안내원(휘겔)": {"map": "휘겔", "emoji": "🛫", "dialog": "노선과 다음 정박 시간을 안내해 드립니다. 유노 공항 안에서는 국내선과 국제선 사이를 환승할 수 있습니다.", "service": "airship"},
   "비공정 안내원(유노 공항 환승구역)": {"map": "유노 공항 환승구역", "emoji": "🛫", "dialog": "노선과 다음 정박 시간을 안내해 드립니다. 유노 공항 안에서는 국내선과 국제선 사이를 환승할 수 있습니다.", "service": "airship"},
   "비공정 안내원(비공정 국내선)": {"map": "비공정 국내선", "emoji": "🛫", "dialog": "노선과 다음 정박 시간을 안내해 드립니다. 유노 공항 안에서는 국내선과 국제선 사이를 환승할 수 있습니다.", "service": "airship"},
-  "비공정 안내원(비공정 국제선)": {"map": "비공정 국제선", "emoji": "🛫", "dialog": "노선과 다음 정박 시간을 안내해 드립니다. 유노 공항 안에서는 국내선과 국제선 사이를 환승할 수 있습니다.", "service": "airship"}
+  "비공정 안내원(비공정 국제선)": {"map": "비공정 국제선", "emoji": "🛫", "dialog": "노선과 다음 정박 시간을 안내해 드립니다. 유노 공항 안에서는 국내선과 국제선 사이를 환승할 수 있습니다.", "service": "airship"},
+  "펫 그루머(프론테라)": {"map": "프론테라", "emoji": "🐾", "dialog": "펫 사료 있습니다! 귀여운 녀석들, 알맞게 배고플 때 챙겨 주세요.", "service": "shop", "sells": ["펫 사료"]},
+  "펫 그루머(게펜)": {"map": "게펜", "emoji": "🐾", "dialog": "펫 사료 있습니다! 귀여운 녀석들, 알맞게 배고플 때 챙겨 주세요.", "service": "shop", "sells": ["펫 사료"]},
+  "펫 그루머(페이욘)": {"map": "페이욘", "emoji": "🐾", "dialog": "펫 사료 있습니다! 귀여운 녀석들, 알맞게 배고플 때 챙겨 주세요.", "service": "shop", "sells": ["펫 사료"]},
+  "펫 그루머(이즈루드)": {"map": "이즈루드", "emoji": "🐾", "dialog": "펫 사료 있습니다! 귀여운 녀석들, 알맞게 배고플 때 챙겨 주세요.", "service": "shop", "sells": ["펫 사료"]},
+  "펫 그루머(유노)": {"map": "유노", "emoji": "🐾", "dialog": "펫 사료 있습니다! 귀여운 녀석들, 알맞게 배고플 때 챙겨 주세요.", "service": "shop", "sells": ["펫 사료"]},
+  "펫 그루머(리히타르젠)": {"map": "리히타르젠", "emoji": "🐾", "dialog": "펫 사료 있습니다! 귀여운 녀석들, 알맞게 배고플 때 챙겨 주세요.", "service": "shop", "sells": ["펫 사료"]},
+  "펫 그루머(모로크)": {"map": "모로크", "emoji": "🐾", "dialog": "펫 사료 있습니다! 귀여운 녀석들, 알맞게 배고플 때 챙겨 주세요.", "service": "shop", "sells": ["펫 사료"]}
 }</script>
 <!-- items: 아직 CSV 미확충, 원본 JS DB 유지 (나중에 JSON 블록으로 전환) -->
 <script id="db-items" type="application/json">{
@@ -31545,14 +35859,15 @@ body.work-mode p {
     "_stub": true
   },
   "바나나 주스": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
+    "type": "소모품",
+    "emoji": "🧃",
+    "desc": "바나나를 갈아 만든 주스. 요요가 좋아한다. HP를 30 회복한다.",
+    "heal": 30,
+    "buy": 20,
     "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weight": 4,
+    "weightSrc": "official",
+    "_aegis": "Banana_Juice"
   },
   "바늘쌈지": {
     "type": "잡템",
@@ -32121,14 +36436,15 @@ body.work-mode p {
     "_aegis": "Red_Herb"
   },
   "사과 주스": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
+    "type": "소모품",
+    "emoji": "🧃",
+    "desc": "사과를 짜낸 주스. 포링이 좋아한다. HP를 30 회복한다.",
+    "heal": 30,
+    "buy": 20,
     "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weight": 4,
+    "weightSrc": "official",
+    "_aegis": "Apple_Juice"
   },
   "사막 늑대의 발톱": {
     "type": "잡템",
@@ -32397,13 +36713,13 @@ body.work-mode p {
   },
   "슛": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
+    "emoji": "🌱",
+    "desc": "막 돋아난 식물의 어린 싹. 데비루치가 좋아한다.",
+    "buy": 16,
+    "sell": 8,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "official",
+    "_aegis": "Shoot"
   },
   "스위트 젠츠": {
     "type": "잡템",
@@ -34264,14 +38580,15 @@ body.work-mode p {
     "_stub": true
   },
   "펫 사료": {
-    "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
-    "buy": 0,
-    "sell": 10,
+    "type": "소모품",
+    "emoji": "🦴",
+    "desc": "애완동물용 사료. 많은 펫이 즐겨 먹는다. 사람이 먹으면 HP를 70 회복한다.",
+    "heal": 70,
+    "buy": 1000,
+    "sell": 500,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "official",
+    "_aegis": "Pet_Food"
   },
   "펫 인큐베이터": {
     "type": "잡템",
@@ -45136,7 +49453,7 @@ body.work-mode p {
 <div id="app"><div class="app-inner">
 <div id="titlebar">
   <span class="title-logo">⚔ 룬 미드가츠</span>
-  <span class="title-map" id="title-map">프론테라 남쪽 평원</span>
+  <span class="title-map" id="title-map">프론테라 필드 08</span>
   <span class="title-spacer"></span>
   <span class="save-state" id="save-state" title="자동저장 — 60초마다, 화면을 떠날 때"></span>
   <button class="sys-btn icon-btn" onclick="showSettingsMenu()" title="설정" aria-label="설정">⚙</button>
@@ -45165,6 +49482,7 @@ body.work-mode p {
 <button class="menu-btn" id="ctx-npc" onclick="showNpcModal()">💬 NPC</button>
 <button class="menu-btn" id="ctx-skill" style="display:none" onclick="showSkillModal()">✨ 스킬<i class="tab-badge" id="skill-badge" style="display:none"></i></button>
 <button class="menu-btn" id="quest-btn" style="display:none" onclick="showQuestModal()">📋 퀘스트<i class="tab-badge" id="quest-badge" style="display:none"></i></button>
+<button class="menu-btn" id="ctx-pet" style="display:none" onclick="showCompanionModal()">🐾 펫</button>
 <button class="menu-btn pc-only" onclick="showInvModal()">🎒 가방</button>
 <button class="menu-btn pc-only" onclick="showMoreMenu()">☰ 메뉴</button>
 </div>
@@ -45415,6 +49733,12 @@ const MAP_LEGACY_ALIASES = Object.freeze({
   "모로크 사막": "소그라트 사막 동부",
   "페이욘 숲": "페이욘 숲 북부"
 });
+// P9 원작 맵 1:1 프론테라 시범: 옛 지명 -> 대표 원작 맵 (세이브·퀘스트 문자열은 이 별칭으로 계속 열린다)
+const PILOT_LEGACY_MAP = Object.freeze({
+  "프론테라 남쪽 평원":"prt_fild08", "프론테라 서쪽 평원":"prt_fild05", "프론테라 동쪽 평원":"prt_fild06", "프론테라 북쪽 평원":"prt_fild01",
+  "프론테라 지하수로 1층":"prt_sewb1", "프론테라 지하수로 2층":"prt_sewb2", "프론테라 지하수로 3층":"prt_sewb3", "프론테라 지하수로 4층":"prt_sewb4",
+  "미궁 숲":"prt_maze01"
+});
 const COMPRESSED_MAP_GROUPS = Object.freeze({
   "글래스트 헤임 기사단":"gl_knight", "글래스트 헤임 지하수로":"gl_sewer",
   "알데바란 시계탑 심층":"clock_tower", "거북섬":"turtle_island",
@@ -45439,7 +49763,7 @@ function getMap(ref){
   let key = String(ref);
   if(DB.maps && DB.maps[key]) return DB.maps[key];                 // 현행 한국어 키
   if(DB.mapIdIndex && DB.mapIdIndex[key]) return DB.maps[DB.mapIdIndex[key]]; // 새 실맵 ID
-  let alias = MAP_LEGACY_ALIASES[key];
+  let alias = MAP_LEGACY_ALIASES[key] || PILOT_LEGACY_MAP[key];
   return alias && DB.maps ? (DB.maps[alias]||null) : null;         // 1:1 옛 이름만
 }
 function mapKey(ref){
@@ -45511,6 +49835,58 @@ function installMapSpawns(){
   });
 }
 
+// P9 원작 맵 1:1 프론테라 시범 (2026-11-21, 볼트 설계_원작맵1대1_프론테라시범_v0.1).
+// tools/build_prt_pilot.py가 rAthena pre-re 스폰·워프에서 뽑은 db-prt-pilot.json을 실맵으로 설치한다.
+// 출현은 원작 마릿수 가중치(spawnWeights), 연결은 원작 워프. 손으로 고치지 말고 도구를 다시 돌린다.
+function pilotLevel(ids, weights){
+  // 가중치 기준 하위·상위 10%를 뺀 레벨 범위
+  let rows=ids.map(id=>[(DB.monsters[id]||{}).lv||0, weights[id]||0]).sort((a,b)=>a[0]-b[0]);
+  let total=rows.reduce((s,r)=>s+r[1],0); if(!total) return '?';
+  let acc=0, lo=null, hi=null;
+  rows.forEach(([lv,w])=>{ let from=acc/total; acc+=w; let to=acc/total; if(lo==null && to>0.1) lo=lv; if(from<0.9) hi=lv; });
+  return lo===hi ? `${lo}` : `${lo}~${hi}`;
+}
+function installPilotMaps(){
+  let spec=DB.prtPilot; if(!spec||!spec.maps) return;
+  let ids=Object.keys(spec.maps);
+  ids.forEach(id=>{
+    let m=spec.maps[id], weights={};
+    (m.spawns||[]).forEach(([mid,c])=>{ weights[mid]=(weights[mid]||0)+c; });
+    let monsters=Object.keys(weights).map(Number), dungeon=m.group!=='프론테라 필드';
+    DB.maps[id]={ mapId:id, displayName:m.displayName, groupLabel:m.group, kind:'map', spawnSource:'rathena-pre-re',
+      type:dungeon?'던전':'필드', emoji:dungeon?'🕳':'🌿', desc:`${m.group} — 원작 ${id}`, safe:false,
+      monsters, spawnWeights:weights, level:pilotLevel(monsters, weights), connected:[] };
+    if(m.mvp) DB.maps[id].hasMvp=m.mvp;
+  });
+  // 옛 지명: 진입 묘사만 대표 맵으로 옮기고 지운다(세이브·문자열은 PILOT_LEGACY_MAP 별칭으로 계속 열린다)
+  Object.entries(PILOT_LEGACY_MAP).forEach(([old,id])=>{
+    let o=DB.maps[old]; if(!o) return;
+    ['entryDesc','firstVisitDesc'].forEach(k=>{ if(o[k] && !DB.maps[id][k]) DB.maps[id][k]=o[k]; });
+    delete DB.maps[old];
+  });
+  let link=(a,b)=>{ let A=DB.maps[a]; if(A && b!==a && !(A.connected||(A.connected=[])).includes(b)) A.connected.push(b); };
+  // 원작 워프: 시범 맵끼리 + 아직 변환 안 된 이웃은 임시 다리(그 권역이 변환되면 다리 대신 원작 워프로)
+  let bridgeTargets=new Set(Object.values(spec.bridges||{}));
+  ids.forEach(id=>(spec.maps[id].warps||[]).forEach(t=>{
+    if(spec.maps[t]) link(id,t);
+    else if(spec.bridges&&spec.bridges[t] && DB.maps[spec.bridges[t]]){ link(id,spec.bridges[t]); link(spec.bridges[t],id); }
+  }));
+  // 기존 지역이 옛 지명으로 걸던 연결: 원작 다리가 있는 지역은 원작 워프만 남기고, 다리가 없는 지역(예: 페이욘 숲 북부)은
+  // 대표 맵으로 돌려 잇는다 — 어떤 지역도 끊기지 않게 하는 임시 조치
+  Object.entries(DB.maps).forEach(([k,map])=>{
+    if(!map || spec.maps[k] || !Array.isArray(map.connected)) return;
+    let next=[];
+    map.connected.forEach(c=>{
+      let to=PILOT_LEGACY_MAP[c];
+      if(!to){ next.push(c); return; }
+      if(!bridgeTargets.has(k)){ next.push(to); link(to,k); }
+    });
+    map.connected=[...new Set(next)];
+  });
+  // 지하수로 입구: 원작은 프론테라 성 안 경비병 → TextRag 토벌대 입구(프론테라 ↔ 1층)를 유지
+  link('프론테라','prt_sewb1'); link('prt_sewb1','프론테라');
+}
+
 // P6: 한국 Pre-RE 근거가 있는 방향 연결만 실맵 그래프에 넣는다. 랜덤 워프와
 // 미확정 왕복로는 연결하지 않는다. 열쇠 등 조건은 출처가 있는 경우에만 이동 시 검사한다.
 function installMapConnections(){
@@ -45575,16 +49951,21 @@ function loadDB(){
   DB.shops        = j('db-shops');
   DB.mvpRespawn   = j('db-mvp-respawn');
   DB.airships     = j('db-airships');
+  DB.pets         = j('db-pets');
+  DB.petTalk      = j('db-pet-talk');
   DB.maps         = j('db-maps');
   DB.mapGroups    = j('db-map-groups');
   DB.mapSpawns    = j('db-map-spawns');
   DB.mapConnections = j('db-map-connections');
   DB.mapRestorationLedger = j('db-map-restoration-ledger');
+  DB.prtPilot     = j('db-prt-pilot');
   installMapGroups();
   rebuildMapIndex();
   installMapSpawns();
   rebuildMapIndex();
   installMapConnections();
+  rebuildMapIndex();
+  installPilotMaps();
   rebuildMapIndex();
   DB.npcs         = j('db-npcs');
   DB.skills       = (typeof DB_SKILLS !== 'undefined') ? DB_SKILLS : {};
@@ -47112,7 +51493,7 @@ const DB_SKILLS = {
 <script id="block-engine-logic">
 let slots=Array(6).fill(null);
 let activeSlot=-1; let regenTimer=null;
-let G={player:null,currentMap:"프론테라 남쪽 평원",battles:[],autoHunt:false,huntTimer:null,invTab:'all',cooldowns:{},itemCooldowns:{},skillTiers:null,tierIdx:null,skillTierSig:'',lastSkill:'',buffTick:0,passerbyTimer:null};
+let G={player:null,currentMap:"prt_fild08",battles:[],autoHunt:false,huntTimer:null,invTab:'all',cooldowns:{},itemCooldowns:{},skillTiers:null,tierIdx:null,skillTierSig:'',lastSkill:'',buffTick:0,passerbyTimer:null};
 
 // 공용 encounter 기록: processTurn과 runHeadlessTicks가 같은 기록 객체를 사용한다.
 const COMBAT_RECORD_LIMIT=30, COMBAT_EVENT_LIMIT=240;
@@ -47769,6 +52150,8 @@ function normalizeSave(p){
   // [보스 기척] 보스 옵션 값 이관(normal→기척기록, 보스만사냥→보스우선탐사) + 발견 기록 보강
   if(p.options && 'bossMode' in p.options) p.options.bossMode = normalizeBossMode(p.options.bossMode);
   if(!p.discoveries || typeof p.discoveries !== 'object' || Array.isArray(p.discoveries)) p.discoveries = {};
+  // [동반자] 펫·호문쿨루스 상태 보강 (source/companion.js, P3-10)
+  if(typeof companionNormalize==='function') companionNormalize(p);
 
   // [데이터 마이그레이션] 인벤의 유령 키 제거.
   // 드롭명이 아이템DB에 없던 시절에 쌓인 것들이라 팔 수도 쓸 수도 없는 죽은 데이터다.
@@ -47836,7 +52219,7 @@ function loadCharacter(i){
     activeSlot = -1;
     return;
   }
-  G.player = p; G.currentMap = p.savedMap||"프론테라 남쪽 평원"; G.battles=[]; G.autoHunt=false; clearTimeout(G.huntTimer);
+  G.player = p; G.currentMap = p.savedMap||"prt_fild08"; G.battles=[]; G.autoHunt=false; clearTimeout(G.huntTimer);
   const airshipRestored=typeof airshipRestore==='function' && airshipRestore();
   G.vendingSlots = []; G.lastVendingCheck = 0; // [P1-16] 이전 캐릭터의 노점이 새 캐릭터로 새지 않게(재고는 위 로드에서 환급됨)
   { let _vb=document.getElementById('vending-badge'); if(_vb) _vb.style.display='none'; }
@@ -47857,7 +52240,7 @@ function loadCharacter(i){
   if((p.baseExp||0) === 0 && (p.totalKills||0) === 0 && p.baseLv === 1 && p.job === "노비스") {
       log(`✨ <b>[새로운 연대기의 시작]</b>`,'level-up');
       log(`<b>[When]</b> 천 년의 평화가 바스라지고, 마왕 모로크의 부활이 속삭여지는 혼란의 시대에.`,'narrate');
-      log(`<b>[Where]</b> 룬 미드가츠 왕국의 심장부, 바람이 머무는 <b>${G.currentMap}</b>의 초원 위에서...`,'narrate');
+      log(`<b>[Where]</b> 룬 미드가츠 왕국의 심장부, 바람이 머무는 <b>${mapLabel(G.currentMap)}</b>의 초원 위에서...`,'narrate');
       log(`<b>[Who]</b> 아직은 풋내기 모험가에 불과한 당신이,`,'narrate');
       log(`<b>[What]</b> 훗날 음유시인들의 노래가 될 위대한 모험을 막 시작했습니다.`,'narrate');
       log(`<b>[How]</b> 초보자의 낡은 장비만을 꽉 쥔 채, 두려움을 이겨내는 굳건한 용기와 함께.`,'narrate');
@@ -49352,7 +53735,7 @@ function updateUI(){
     $('char-job').textContent = (p.rebirth ? '[전승] ' : '') + p.job;
   }
   if($('char-lv')) $('char-lv').textContent=`Base.${p.baseLv} / Job.${p.jobLv}`;
-  if($('title-map')) $('title-map').textContent=G.currentMap; 
+  if($('title-map')) $('title-map').textContent=mapLabel(G.currentMap); 
   if($('map-name-disp')) $('map-name-disp').textContent='🗺 '+G.currentMap+((typeof getZoneSuffix==='function')?getZoneSuffix():''); // [2-9] 구역 표시
   applyMapTint(); // [스타일] 맵 분위기 틴트
   if($('char-emoji')) $('char-emoji').textContent=DB.jobEmoji[JOB_NAME2CODE[normalizeJob(p.job)]]||'⚔️'; 
@@ -49669,7 +54052,7 @@ function renderSituation(){
       let ids=(zones&&zones.length>=2)?(zones[Math.min(G.zoneIdx||0,zones.length-1)].monsters||md.monsters):md.monsters;
       mons=ids.map(id=>DB.monsters[id]).filter(Boolean);
     }
-    h=`<div class="panel-hdr">지역 정보</div><div class="sit-body"><div class="sit-big">${md.emoji||'🗺'} ${G.currentMap}</div>`+
+    h=`<div class="panel-hdr">지역 정보</div><div class="sit-body"><div class="sit-big">${md.emoji||'🗺'} ${mapLabel(G.currentMap)}</div>`+
       `<div class="sit-sub">${md.type||''}${md.level&&md.level!=='0'?` · 권장 Lv.${md.level}`:''}</div>`+
       (md.desc?`<div class="sit-desc">${md.desc}</div>`:'')+
       (mons.length?`<div class="sit-lbl">출현 몬스터</div>`+mons.slice(0,8).map(m=>`<div class="sit-mon">${m.emoji||'?'} ${m.name} <span>Lv.${m.lv||'?'}</span></div>`).join('')+(mons.length>8?`<div class="sit-sub">외 ${mons.length-8}종</div>`:''):
@@ -49815,6 +54198,7 @@ function gainBaseExp(p, amount, silent){
       let canSpendNow = canSpendStatPoint(p);
       log(`🌟 Base Lv.${p.baseLv} 달성 — 상태 포인트 +${gainedPts} · 보유 ${p.statPoints}${canSpendNow?' · 능력치 배분 가능':''}`,'level-up');
       notify('레벨 업!','gold'); pbReact('levelup');
+      if(typeof companionPetTalk==='function') companionPetTalk(p,'ownerLevelUp',Date.now(),{urgent:true}); // [동반자]
     }
   }
   if(lvUp && !silent){
@@ -50025,12 +54409,14 @@ function enterMap(nm){
   if(!p.visitedMaps) p.visitedMaps={};
   let first=!p.visitedMaps[nm];
   if(md.entryDesc){
-    let lines=[`${md.emoji||'🗺'} <b>${nm}</b>`, md.entryDesc];
+    let lines=[`${md.emoji||'🗺'} <b>${mapLabel(nm)}</b>`, md.entryDesc];
     if(first && md.firstVisitDesc) lines.push(md.firstVisitDesc);
     logEvent('location', lines);
   } else {
-    log(`🗺 ${nm} 이동`,'location');
+    log(`🗺 ${mapLabel(nm)} 이동`,'location');
   }
+  // [동반자] 새 지역 위험 조언 (친밀도에 따라 암시~수치)
+  if(typeof companionPetAdvice==='function' && typeof calcStats==='function') companionPetAdvice(p, calcStats(), 'enter', {map:nm});
   p.visitedMaps[nm]=true;
 
   if(MAP_QUEST_DISCOVERY[nm] && p.quests){
@@ -50666,7 +55052,7 @@ function procAggressiveSpawn(p){
     if (p.options.huntStyle === 'aggressive' && G.battles.length > 0 && G.battles.length < 5) {
       let _amd = getMap(G.currentMap);
       if (_amd && !_amd.safe && _amd.monsters && _amd.monsters.length && Math.random() < 0.20) {
-        let _aid = _amd.monsters[Math.floor(Math.random() * _amd.monsters.length)];
+        let _aid = pickSpawnMonster(_amd, _amd.monsters);
         let _am = DB.monsters[_aid];
         if (_am) {
           G.battles.push(createCombatMonster(_aid, _am, {currentHp:_am.hp, maxHp:_am.hp, statusEffects:{}, distance:getInitialDistance(p)}));
@@ -50784,6 +55170,7 @@ function awardKillReward(p, mon, set, stats){
 }
 
 function processTurn(){
+  if(typeof companionTickOnline==='function' && G.player) companionTickOnline(G.player, Date.now(), !!(G.battles&&G.battles.length)); // [동반자] 펫 시간·대사 (헤드리스 중엔 무시)
   if(!G.battles.length)return;
   ensureCombatRecord(); G.combatTick=(G.combatTick||0)+1;
   let combatWorld=ensureCombatWorld(); combatWorld.tick=G.combatTick;
@@ -51411,7 +55798,7 @@ function processTurn(){
       updateUI(); if(G.autoHunt) scheduleTickAspd(600);
     }
     else {
-      recordCombatEvent('death',{player:p.name}); G.battles=[]; finishCombatRecord('death'); p.hp=0; log('💀 <b>쓰러졌습니다...</b> 마을 귀환','error'); pbReact('death');
+      recordCombatEvent('death',{player:p.name}); G.battles=[]; finishCombatRecord('death'); p.hp=0; log('💀 <b>쓰러졌습니다...</b> 마을 귀환','error'); pbReact('death'); if(typeof companionOnOwnerDeath==='function') companionOnOwnerDeath(p,(p.combatRecords||[]).slice(-1)[0],calcStats()); /* [동반자] 쓰러진 원인 한 줄·펫 대사 */
       // 경험치 손실 (Pre-Renewal: 현재 레벨 필요 EXP의 1%. Lv1·Lv99 제외. 레벨 다운 없음)
       if(p.baseLv > 1 && p.baseLv < 99){
         let expLoss = Math.floor((DB.expTable[p.baseLv]||0) * 0.01);
@@ -51764,6 +56151,7 @@ function checkQuestKill(monsterName) {
       log(`📋 [퀘스트] ${q.title}: ${qs.count}/${q.count}`, 'quest');
       if (qs.count >= q.count) {
         qs.state = 'completable';
+        if (autoCompleteTutorialStep(id)) continue;
         log(`✅ [퀘스트] ${q.title} — 완료! ${q.npc}에게 보고하세요.`, 'quest');
         notify(`퀘스트 완료 조건 달성!`, 'gold');
       }
@@ -51783,6 +56171,7 @@ function checkQuestGather() {
       qs.count = have;
       if (have >= q.count) {
         qs.state = 'completable';
+        if (autoCompleteTutorialStep(id)) continue;
         log(`✅ [퀘스트] ${q.title} — 완료! ${q.npc}에게 보고하세요.`, 'quest');
         notify(`퀘스트 완료 조건 달성!`, 'gold');
       }
@@ -51937,7 +56326,7 @@ function compoundCard(equipName, cardName) {
 }
 // ── 던전 접근 잠금 설정 ─────────────────────────────────────────────
 const DUNGEON_LOCKS = {
-  "프론테라 지하수로 1층":   { msg:"⚠️ 지하수로 입구에 몬스터들이 우글거립니다. 기사단 징병관에게 토벌대 입단 허가를 먼저 받으세요." },
+  "prt_sewb1":              { msg:"⚠️ 지하수로 입구에 몬스터들이 우글거립니다. 기사단 징병관에게 토벌대 입단 허가를 먼저 받으세요." },
   "거북섬":                 { msg:"⚠️ 거칠게 울부짖는 거대 바다거북들이 뱃길을 막고 있습니다. 부두의 거북 할아버지에게 입장료를 내야 합니다." },
   "침몰선":                 { msg:"⚠️ 침몰선 주변에 차갑고 음산한 기운이 가득합니다. 피스크에게 입장료를 내야 합니다." },
   "바이알란 섬":             { msg:"⚠️ 거센 해류와 함께 알 수 없는 힘이 앞을 막습니다. 이즈루드 부두 선원에게 승선료를 내야 합니다." },
@@ -52085,8 +56474,10 @@ window.talkNPC = function(nm){
         // interact 퀘스트: NPC 이름이 target_npc로 시작하면 완료 (지역명 접미사 허용)
         if (nm === q.target_npc || nm.startsWith(q.target_npc)) {
           qs.state = 'completable';
-          log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`, 'quest');
-          notify(`퀘스트 조건 달성!`, 'gold');
+          if (!autoCompleteTutorialStep(id)) {
+            log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`, 'quest');
+            notify(`퀘스트 조건 달성!`, 'gold');
+          }
         }
       }
       // interact가 아닌 경우 일반 NPC 서비스 진행
@@ -52111,8 +56502,10 @@ window.talkNPC = function(nm){
       if (q.type !== 'interact') continue;
       if (nm === q.target_npc || nm.startsWith(q.target_npc)) {
         qs.state = 'completable';
-        log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`, 'quest');
-        notify(`퀘스트 조건 달성!`, 'gold');
+        if (!autoCompleteTutorialStep(id)) {
+          log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`, 'quest');
+          notify(`퀘스트 조건 달성!`, 'gold');
+        }
         break;
       }
     }
@@ -52494,7 +56887,7 @@ function kafraSetSave(){
   G.player.savedMap = G.currentMap;
   saveLocal(); // 비안전 맵이어도 방금 넣은 G.player.savedMap(=현재 맵)이 그대로 기록된다
   notify('귀환 지점 설정 완료','gold');
-  log(`📍 <b>[카프라]</b> 귀환 지점이 <b>${G.currentMap}</b>으로 설정되었습니다.`,'system');
+  log(`📍 <b>[카프라]</b> 귀환 지점이 <b>${mapLabel(G.currentMap)}</b>으로 설정되었습니다.`,'system');
   closeModal();
 }
 
@@ -55665,9 +60058,20 @@ const ZONE_RESPAWN_MAX_MS = 20000;       // 전멸 후 리젠 딜레이 최대(m
 const ZONE_NAMES = ['A','B','C','D'];
 const _zoneCache = {};
 
+// 출현 몬스터 고르기: 원작 마릿수가 있는 맵(spawnWeights, P9 시범)은 그 비율로, 나머지는 목록에서 고르게.
+function pickSpawnMonster(md, pool){
+  let w=md&&md.spawnWeights;
+  if(w){
+    let ids=Object.keys(w), total=ids.reduce((s,id)=>s+(w[id]||0),0), r=Math.random()*total;
+    for(let id of ids){ r-=(w[id]||0); if(r<0) return Number(id); }
+    return Number(ids[ids.length-1]);
+  }
+  return pool[Math.floor(Math.random()*pool.length)];
+}
 function getZones(mapName){
   let md=getMap(mapName);
   if(!md||md.safe||!md.monsters||!md.monsters.length) return null;
+  if(md.spawnWeights) return null; // 원작 맵은 이미 레벨대별로 나뉘어 있다 — 레벨순 구역 진행을 쓰지 않음
   if(md.zones&&md.zones.length) return md.zones; // 맵 명시 zones 우선
   if(_zoneCache[mapName]) return _zoneCache[mapName];
   // 레벨 오름차순 정렬 → 균등 분할 (몬스터 종수 < 구역 수면 구역 수 축소)
@@ -55916,7 +60320,7 @@ function spawnMonsters(){
     if(!_pool||!_pool.length)_pool=md.monsters;
 
     for(let i=0;i<c;i++){
-      let id=_pool[Math.floor(Math.random()*_pool.length)];
+      let id=pickSpawnMonster(md,_pool);
       let m=DB.monsters[id];
       if(m){
         G.battles.push(createCombatMonster(id,m,{currentHp:m.hp,maxHp:m.hp,statusEffects:{},distance:initDist}));
@@ -57016,7 +61420,7 @@ function _awayCount(n, est){ return `${n>1?` ×${n}`:''}${est?` <span class="awa
 // 요약 줄 목록 — 로그 카드(full=false)와 창(full=true)이 같은 규칙을 쓴다
 function awaySummaryLines(summary, full){
   let m = summary.meta || {}, L = [];
-  L.push(`${m.timeStr||''}${m.map?` · ${m.map}`:''}${m.wasCapped?' (최대 12시간치)':''}`);
+  L.push(`${m.timeStr||''}${m.map?` · ${mapLabel(m.map)}`:''}${m.wasCapped?' (최대 12시간치)':''}`);
   let nums = [`⚔ 처치 <b>${(summary.kills||0).toLocaleString()}</b>`, `✨ EXP <b>+${(summary.exp||0).toLocaleString()}</b>`];
   if(summary.jexp) nums.push(`JEXP +${summary.jexp.toLocaleString()}`);
   if(summary.zeny) nums.push(`💰 <b>+${summary.zeny.toLocaleString()}z</b>`);
@@ -57027,13 +61431,14 @@ function awaySummaryLines(summary, full){
   if(ups.length) L.push('⬆ ' + ups.join(' · '));
   // 주요 사건
   let ev = [];
-  _awayGroup(summary.sightings, x=>x.id).forEach(g=>ev.push(`👣 <b>${g.x.name}</b>의 기척${_awayCount(g.n,g.est)} <span style="color:var(--text-dim)">(${g.x.map})</span>`));
+  _awayGroup(summary.sightings, x=>x.id).forEach(g=>ev.push(`👣 <b>${g.x.name}</b>의 기척${_awayCount(g.n,g.est)} <span style="color:var(--text-dim)">(${mapLabel(g.x.map)})</span>`));
   let evs = summary.events || [];
   _awayGroup(evs.filter(e=>e.kind==='card'), x=>x.item).forEach(g=>ev.push(`🃏 <b>${g.x.item}</b>${_awayCount(g.n,g.est)}`));
   let rare = _awayGroup(evs.filter(e=>e.kind==='rare'), x=>x.item);
   rare.slice(0, full ? rare.length : 3).forEach(g=>ev.push(`💎 희귀 드롭: <b>${g.x.item}</b>${_awayCount(g.n,g.est)}`));
   if(!full && rare.length > 3) ev.push(`💎 그 밖의 희귀 드롭 ${rare.length-3}종`);
   if(summary.deaths) ev.push(`💀 ${summary.deaths}회 쓰러짐 (휴식 후 사냥터로 복귀)`);
+  if(summary.companion) ev.push(summary.companion);
   if(m.potOut) ev.push('🧪 자동 회복약이 떨어졌다 — 보충 필요');
   if(ev.length){ L.push('<b>주요 사건</b>'); ev.forEach(x=>L.push('&nbsp;&nbsp;' + x)); }
   let keys = Object.keys(summary.items||{});
@@ -57064,6 +61469,8 @@ function showAwaySummaryModal(summary){
 }
 
 function processOfflineTicks(elapsedMs, resume = true) {
+  // [동반자] 헤드리스 표본이 시계를 과거로 돌리기 전에, 실제 시각으로 펫 시간을 한 번만 진행 (P3-10)
+  let companionRes = (G.player && typeof companionAdvance==='function') ? companionAdvance(G.player, Date.now()) : null;
   if(!G.autoHunt || !G.player) return;
   let huntMap = G.currentMap; // 오프라인 처리 전 사냥 맵 저장
   let s = calcStats();
@@ -57074,6 +61481,7 @@ function processOfflineTicks(elapsedMs, resume = true) {
   if(ticks <= 0) return;
 
   let summary = { kills:0, exp:0, jexp:0, zeny:0, items:{}, deaths:0 };
+  summary.companion = companionRes ? companionAwaySummaryLine(G.player, companionRes) : '';
   let p = G.player;
   let kc0 = Object.assign({}, p.killCount || {});
   let inv0 = Object.assign({}, p.inventory || {});
@@ -57105,7 +61513,7 @@ function processOfflineTicks(elapsedMs, resume = true) {
   // (재접속 정산은 resume:false — 위치는 마지막 안전지역 규칙을 호출부가 적용)
   if(resume && isSafeMap(G.currentMap) && huntMap && !isSafeMap(huntMap)){
     G.currentMap = huntMap;
-    log(`🗺️ <b>[${G.currentMap}]</b>으로 복귀하여 사냥을 재개합니다.`, 'system');
+    log(`🗺️ <b>[${mapLabel(G.currentMap)}]</b>으로 복귀하여 사냥을 재개합니다.`, 'system');
   }
   updateUI();
   saveLocal(); // offlineHunt 기준 시각 갱신 — 정산 직후 재로드돼도 같은 구간을 두 번 받지 않게
@@ -57423,7 +61831,7 @@ const TUTORIAL_QUESTS = {
     reward: { zeny: 200, items: { "빨간포션": 3 } },
     next: "tut_03",
     dialog: [
-      { speaker:"친절한 노인", text:"다시 오셨군요! 이번엔 실전 연습을 해볼까요? 프론테라 남쪽 평원의 포링 3마리를 처치해주세요. 하단의 [▶ 자동사냥] 버튼을 누르면 자동으로 싸워줍니다." },
+      { speaker:"친절한 노인", text:"다시 오셨군요! 이번엔 실전 연습을 해볼까요? 프론테라 남문 밖 들판(프론테라 필드 08)의 포링 3마리를 처치해주세요. 하단의 [▶ 자동사냥] 버튼을 누르면 자동으로 싸워줍니다." },
       { speaker:"player",
         choices:[
           { label:"알겠습니다, 해보죠!", next:"accept" },
@@ -57933,7 +62341,7 @@ const TUTORIAL_QUESTS = {
     npc: "친절한 노인",
     type: "job_choice",
     reward: { zeny: 500, items: {} },
-    next: null,
+    next: "tut_06",
     dialog: [
       { speaker:"친절한 노인", text:"이제 어느 정도 모험가로서의 기본기는 갖추셨습니다. 이제 직업을 선택할 시간이에요! 각 마을마다 직업 스승이 있어서 Job Lv.10을 달성하면 전직할 수 있답니다." },
       { speaker:"친절한 노인", text:"어떻게 하시겠어요?",
@@ -57946,6 +62354,29 @@ const TUTORIAL_QUESTS = {
     ],
     dialog_later: [
       { speaker:"친절한 노인", text:"천천히 생각해보세요. 결정이 되면 다시 오세요. Job Lv.10까지 사냥을 계속하면서 고민해보세요!" }
+    ]
+  },
+
+  // 「첫 동료」 — 첫 펫 알 3개 중 하나 고르기 (source/companion.js, P3-10). 새 캐릭터는 직업 마을 이동 직후 바로 시작,
+  // 튜토리얼을 이미 마친 세이브는 companionNormalize가 available로 열어 노인에게서 받는다.
+  tut_06: {
+    title: "첫 동료",
+    npc: "친절한 노인",
+    type: "pet_choice",
+    reward: { zeny: 0, items: {} },
+    next: null,
+    dialog: [
+      { speaker:"친절한 노인", text:"아, 마침 잘 왔네. 혼자 다니는 모험은 쓸쓸한 법이지. 내가 알 세 개를 데우고 있었는데, 하나 데려가 보겠나?" },
+      { speaker:"친절한 노인", text:"어떤 녀석인지는 껍데기 무늬만 봐도 알 수 있다네. 마음에 드는 걸 골라 보게." },
+      { speaker:"player",
+        choices:[
+          { label:"알을 보여 주세요.", next:"accept" },
+          { label:"나중에 올게요.", next:"later" }
+        ]
+      }
+    ],
+    dialog_later: [
+      { speaker:"친절한 노인", text:"알은 내가 잘 데우고 있겠네. 언제든 오게나." }
     ]
   }
 };
@@ -58028,10 +62459,54 @@ function giveQuestReward(q) {
   }
   if (q.unlock) {
     if (!p.unlockedMaps) p.unlockedMaps = {};
-    p.unlockedMaps[q.unlock] = true;
-    log(`🗺️ <b>[${q.unlock}]</b> 입장이 해금되었습니다!`, 'quest');
-    notify(`던전 해금: ${q.unlock}`, 'gold');
+    // 원작 맵 키로 연다 — 퀘스트 데이터의 한국어 지명이 별칭이어도(P9 시범) 잠금 검사(mapKey)와 같은 키가 된다
+    let unlockKey = (typeof mapKey==='function' && mapKey(q.unlock)) || q.unlock;
+    let unlockName = (typeof mapLabel==='function') ? mapLabel(q.unlock) : q.unlock;
+    p.unlockedMaps[unlockKey] = true;
+    log(`🗺️ <b>[${unlockName}]</b> 입장이 해금되었습니다!`, 'quest');
+    notify(`던전 해금: ${unlockName}`, 'gold');
   }
+}
+
+// ── 튜토리얼 현장 완료 (DEVREF-E-C P2-16): 사냥·수집·카프라 단계는 노인에게 돌아가 보고하지 않는다.
+//    노인을 만나는 것은 처음(tut_01 퀴즈)과 마지막(tut_05 전직 갈림길) 두 번뿐이다.
+//    이미 'completable'로 저장된 옛 세이브는 기존대로 노인에게 보고하면 이어진다.
+const TUT_AUTO_STEPS = ['tut_02', 'tut_03', 'tut_04'];
+function isTutorialAutoStep(q) {
+  return TUT_AUTO_STEPS.some(id => TUTORIAL_QUESTS[id] === q);
+}
+function logTutorialMessage(lines) {
+  (lines || []).forEach(l => {
+    if (l && l.text && l.speaker !== 'player') log(`📜 ${l.speaker}(전언): "${l.text}"`, 'npc');
+  });
+}
+function startTutorialStepInPlace(id) {
+  let p = G.player, q = TUTORIAL_QUESTS[id];
+  if (!p || !q) return;
+  p.quests[id] = { state: 'active', count: 0 };
+  logTutorialMessage((q.dialog || []).slice(0, 1));
+  log(`📋 [퀘스트 수락] ${q.title}`, 'quest');
+  notify(`퀘스트 수락: ${q.title}`, 'gold');
+  if (q.type === 'gather') checkQuestGather(); // 이미 모아 둔 젤로피가 있으면 바로 완료
+}
+// 다음 튜토리얼로 잇기: 현장 단계면 바로 수락, 아니면(전직 갈림길) 노인에게 돌아가라고 안내
+function continueTutorial(q) {
+  if (q.next && TUT_AUTO_STEPS.includes(q.next)) { startTutorialStepInPlace(q.next); return; }
+  unlockNextQuest(q);
+  let nq = q.next && TUTORIAL_QUESTS[q.next];
+  if (nq && isTutorialAutoStep(q)) log(`📋 ${nq.npc || q.npc}에게 돌아가 [${nq.title}]을(를) 상담하세요.`, 'quest');
+}
+function autoCompleteTutorialStep(id) {
+  let p = G.player, q = TUTORIAL_QUESTS[id], qs = p && p.quests && p.quests[id];
+  if (!q || !qs || !TUT_AUTO_STEPS.includes(id) || qs.state === 'done') return false;
+  qs.state = 'done';
+  logTutorialMessage(q.dialog_complete);
+  giveQuestReward(q);
+  log(`✅ [퀘스트 완료] ${q.title}`, 'quest');
+  notify('퀘스트 완료!', 'gold');
+  continueTutorial(q);
+  updateUI();
+  return true;
 }
 
 // ── 다음 퀘스트 해금
@@ -58211,9 +62686,9 @@ function handleDialogEnd(questId, branch) {
     // 퀴즈 성공 → 퀘스트 완료
     p.quests[questId].state = 'done';
     giveQuestReward(q);
-    unlockNextQuest(q);
     log(`✅ [퀘스트 완료] ${q.title}`, 'quest');
     notify('퀘스트 완료!', 'gold');
+    continueTutorial(q);
     updateUI();
     return;
   }
@@ -58225,9 +62700,9 @@ function handleDialogEnd(questId, branch) {
       p.quests[questId].state = 'done';
     }
     giveQuestReward(q);
-    unlockNextQuest(q);
     log(`✅ [퀘스트 완료] ${q.title}`, 'quest');
     notify('퀘스트 완료!', 'gold');
+    continueTutorial(q);
     updateUI();
     return;
   }
@@ -58248,6 +62723,8 @@ function acceptQuest(questId) {
   if (q.type === 'talk') {
     p.quests[questId].state = 'completable';
   }
+  // pet_choice(「첫 동료」): 알 셋을 굴려 고르기 창을 연다 (source/companion.js)
+  if (q.type === 'pet_choice' && typeof companionBeginStarter === 'function') companionBeginStarter(p);
   log(`📋 [퀘스트 수락] ${q.title}`, 'quest');
   notify(`퀘스트 수락: ${q.title}`, 'gold');
   updateUI();
@@ -58333,6 +62810,8 @@ function completeJobChoiceQuest(job, dest) {
   closeModal();
   questWarp(dest);
   updateUI();
+  // 「첫 동료」: 직업 마을 도착 직후 그 자리에서 알 고르기 (P3-10)
+  if (typeof companionBeginStarter === 'function') companionBeginStarter(p);
 }
 
 // ══════════════════════════════════════════════
@@ -62843,20 +67322,20 @@ function applyComboEffects(p, DB, fx, parseItem) {
     '베인스 필드':[1030,520],
     '베인스':[1160,520],
 
-    '프론테라 북쪽 평원':[610,255],
     '묘르닐 산맥':[475,275],
     '게펜':[225,385],
     '게펜 필드':[365,385],
-    '프론테라 서쪽 평원':[505,385],
     '프론테라':[650,385],
-    '프론테라 동쪽 평원':[790,385],
+    // P9 원작 맵 1:1 프론테라 시범: 원작 필드 12장 (워프 관계 기준 대략 배치)
+    'prt_fild00':[520,300], 'prt_fild01':[620,290], 'prt_fild02':[720,300], 'prt_fild03':[810,325],
+    'prt_fild04':[470,400], 'prt_fild05':[560,400], 'prt_fild06':[740,385],
+    'prt_fild07':[545,465], 'prt_fild08':[650,480], 'prt_fild09':[590,560], 'prt_fild10':[470,590], 'prt_fild11':[300,600],
     '페이욘 숲 북부':[860,465],
     '페이욘 숲 남부':[860,560],
     '페이욘':[860,655],
     '알베르타':[1030,625],
     '로컬라이징 투어':[1180,650],
 
-    '프론테라 남쪽 평원':[650,500],
     '이즈루드':[650,610],
     '소그라트 사막 동부':[515,515],
     '소그라트 사막 서부':[370,535],
@@ -63146,6 +67625,69 @@ function applyComboEffects(p, DB, fx, parseItem) {
     return `<div class="wm-dungeon-list"><div class="wm-list-title">원작 실맵 · ${maps.length}곳</div><ul>${cards}</ul></div>`;
   }
 
+  // ── 목적지로 빠른 이동 (볼트 설계_원작맵1대1_프론테라시범 §5-1) ─────────────────────────
+  // 순간이동이 아니다: 방문한 맵만으로 이어진 최단 경로를 칸당 1초씩 tryMove로 실제로 걷는다.
+  // 처음 가는 맵이 끼면 불가(탐험 보존) · 자동사냥·전투 중 불가 · 막히면 그 자리에서 멈춤.
+  function visitedRoute(start, goal, isVisited){
+    const s=canonicalMapName(start), g=canonicalMapName(goal);
+    if(!mapData(s) || !mapData(g) || s===g) return null;
+    const prev=new Map([[s,null]]), q=[s];
+    while(q.length){
+      const cur=q.shift();
+      if(cur===g) break;
+      mapConnections(cur).forEach(n=>{ if(!prev.has(n) && isVisited(n)){ prev.set(n,cur); q.push(n); } });
+    }
+    if(!prev.has(g)) return null;
+    const path=[];
+    for(let c=g; c!=null; c=prev.get(c)) path.unshift(c);
+    return path;
+  }
+  function playerVisited(ref){
+    const v=(typeof G!=='undefined' && G.player && G.player.visitedMaps) || {};
+    return !!(v[ref] || v[canonicalMapName(ref)] || v[displayNameFor(ref)]);
+  }
+  function walkActionHtml(name){
+    const cur=(typeof G!=='undefined' && G.currentMap) ? G.currentMap : '프론테라';
+    const route=visitedRoute(cur, name, playerVisited);
+    return route
+      ? `<button class="wm-action primary" data-dest="${esc(canonicalMapName(name))}" onclick="worldMapWalkTo(this.dataset.dest)">🚶 여기로 걸어가기 (${route.length-1}칸)</button>`
+      : '<button class="wm-action" disabled>처음 가는 길이 끼어 있어 한 칸씩 걸어가야 합니다</button>';
+  }
+  const WALK={timer:null};
+  function stopWalk(msg){
+    if(WALK.timer){ clearInterval(WALK.timer); WALK.timer=null; }
+    if(typeof document!=='undefined'){ const b=document.getElementById('wm-walk-stop'); if(b) b.remove(); }
+    if(msg && typeof log==='function') log(msg,'system');
+  }
+  window.worldMapVisitedRoute=visitedRoute;
+  window.worldMapActionHtml=walkActionHtml;
+  window.worldMapStopWalk=()=>stopWalk('🚶 걷기를 멈췄습니다.');
+  window.worldMapWalkTo=function(dest){
+    if(typeof G==='undefined' || !G.player) return;
+    if(G.autoHunt){ if(typeof log==='function') log('⚠️ 자동사냥 중에는 걸어갈 수 없습니다. 자동사냥을 멈춘 뒤 다시 시도하세요.','warning'); return; }
+    const route=visitedRoute(G.currentMap, dest, playerVisited);
+    if(!route){ if(typeof log==='function') log('🚶 가 본 길로 이어져 있지 않습니다. 처음 가는 곳은 한 칸씩 걸어가야 합니다.','warning'); return; }
+    stopWalk();
+    if(typeof closeModal==='function') closeModal();
+    if(typeof log==='function') log(`🚶 <b>${esc(displayNameFor(dest))}</b>까지 걸어갑니다 (${route.length-1}칸)`,'system');
+    if(typeof document!=='undefined' && document.body){
+      const b=document.createElement('button');
+      b.id='wm-walk-stop'; b.textContent='🚶 걷기 멈추기';
+      b.style.cssText='position:fixed;left:50%;bottom:86px;transform:translateX(-50%);z-index:900;padding:8px 14px;border-radius:16px;border:1px solid var(--border);background:var(--bg-dark);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.2);cursor:pointer';
+      b.onclick=()=>window.worldMapStopWalk();
+      document.body.appendChild(b);
+    }
+    let i=1;
+    WALK.timer=setInterval(()=>{
+      if(G.autoHunt || (G.battles && G.battles.length)) return stopWalk('🚶 걷기를 멈췄습니다.');
+      const before=canonicalMapName(G.currentMap);
+      if(typeof tryMove==='function') tryMove(route[i]);
+      if(canonicalMapName(G.currentMap)===before) return stopWalk(`🚶 ${esc(displayNameFor(route[i]))}(으)로 갈 수 없어 멈췄습니다.`);
+      i++;
+      if(i>=route.length) stopWalk(`🚶 <b>${esc(displayNameFor(dest))}</b>에 도착했습니다.`);
+    },1000);
+  };
+
   function detailHtml(name){
     const m=mapData(name);
     if(!m) return '<div class="wm-empty">지역 정보를 찾을 수 없습니다.</div>';
@@ -63154,10 +67696,9 @@ function applyComboEffects(p, DB, fx, parseItem) {
     const adjacent=cur!==name && mapConnections(cur).includes(canonicalMapName(name));
     const mvp=m.hasMvp ? '<span class="wm-badge danger">MVP</span>' : '';
     const safe=m.safe ? '<span class="wm-badge safe">안전</span>' : '';
-    let action='';
-    if(cur===name) action='<button class="wm-action" disabled>현재 위치</button>';
-    else if(adjacent) action=`<button class="wm-action primary" onclick="worldMapMoveSelected()">이 지역으로 이동</button>`;
-    else action='<button class="wm-action" disabled>인접 지역에서 이동 가능</button>';
+    const action=cur===name ? '<button class="wm-action" disabled>현재 위치</button>'
+      : adjacent ? `<button class="wm-action primary" onclick="worldMapMoveSelected()">이 지역으로 이동</button>`
+      : walkActionHtml(name);
 
     return `<div class="wm-detail-head"><div class="wm-detail-icon">${esc(m.emoji||'📍')}</div><div><b>${esc(displayNameFor(name))}</b><div class="wm-sub">${esc(m.type||'미상')} · 권장 Lv.${esc(m.level||'?')}</div></div></div>
       <div class="wm-badges">${safe}${mvp}</div>
@@ -63320,14 +67861,17 @@ function applyComboEffects(p, DB, fx, parseItem) {
   };
 
   // Overrides the legacy hard-coded ASCII world map after the main bundle loads.
-  window.showWorldMapModal=function(){
+  // dest(선택): 퀘스트 안내가 넘긴 목적지. 주면 그 지역을 선택해 현재 위치에서의 경로를 강조한다.
+  window.showWorldMapModal=function(dest){
     if(typeof DB==='undefined' || !DB.maps){
       if(typeof openModal==='function') openModal('🗺 세계지도','지도 데이터를 불러오지 못했습니다.',[{label:'닫기',action:()=>{}}]);
       return;
     }
+    const hasDest=!!(dest && mapData(dest));
+    if(hasDest) WM_STATE.selected=dest;
     if(!WM_STATE.selected || !mapData(WM_STATE.selected)) WM_STATE.selected=(typeof G!=='undefined'&&G.currentMap)||'프론테라';
     openModal('🗺 세계지도', mapHtml(), [{label:'닫기',action:()=>{}}]);
-    setTimeout(()=>focusMap('current'),0);
+    setTimeout(()=>focusMap(hasDest?'selected':'current'),0);
   };
 })();
 </script>
@@ -64390,8 +68934,11 @@ function svcMarkInteractTarget(nm,p){
     if(!qs||qs.state!=='active'||q.type!=='interact') continue;
     if(nm===q.target_npc||nm.startsWith(q.target_npc)){
       qs.state='completable';
-      log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`,'quest');
-      notify('퀘스트 조건 달성!','gold');
+      // 튜토리얼 현장 단계(카프라)는 노인에게 돌아가지 않고 그 자리에서 완료 (DEVREF-E-C P2-16)
+      if(!(typeof autoCompleteTutorialStep==='function' && autoCompleteTutorialStep(id))){
+        log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`,'quest');
+        notify('퀘스트 조건 달성!','gold');
+      }
       break;
     }
   }
@@ -64609,6 +69156,9 @@ window.__serviceSystemsV2 = {
       .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
 
+  // showQuestModal이 그릴 때마다 비우고, 진행 중 카드 중 첫 목적지를 담는다 (「지도 열기」용).
+  let firstActiveDest='';
+
   function fmt(n){
     const x = Number(n || 0);
     return Number.isFinite(x) ? x.toLocaleString() : String(n || 0);
@@ -64669,17 +69219,18 @@ window.__serviceSystemsV2 = {
     return best || {dest:uniq[0],route:null};
   }
 
-  function routeText(destinations){
-    const best=bestDestination(destinations);
-    if(!best.dest) return '';
-    if(best.route && best.route.length===1) return `현재 위치 · ${best.dest}`;
+  // 원작 맵 키(prt_fild08)는 화면 이름(프론테라 필드 08)으로 보여 준다
+  function labelOf(n){ return (n==='…' || typeof mapLabel!=='function') ? n : mapLabel(n); }
+  function routeText(best){
+    if(!best || !best.dest) return '';
+    if(best.route && best.route.length===1) return `현재 위치 · ${labelOf(best.dest)}`;
     if(best.route && best.route.length>1){
       const hops=best.route.length-1;
       let path=best.route;
       if(path.length>5) path=[path[0],path[1],'…',path[path.length-2],path[path.length-1]];
-      return `${path.join(' → ')} · ${hops}회 이동`;
+      return `${path.map(labelOf).join(' → ')} · ${hops}회 이동`;
     }
-    return best.dest;
+    return labelOf(best.dest);
   }
 
   function dropSources(item){
@@ -64867,6 +69418,7 @@ window.__serviceSystemsV2 = {
 
   function reportInfo(q,state,step){
     if(state==='done' || state==='available') return '';
+    if(state==='active' && typeof isTutorialAutoStep==='function' && isTutorialAutoStep(q)) return '보고 필요 없음 · 조건을 채우면 그 자리에서 완료';
     const npc=q.npc || (step&&step.npc);
     if(!npc) return '';
     const map=npcMap(npc);
@@ -64895,7 +69447,12 @@ window.__serviceSystemsV2 = {
     const obj=objectiveInfo(q,state,qs,step);
     const req=requirementText(q,isJob);
     const narrative=firstNarrative(q,step);
-    const route=routeText(obj.maps);
+    const best=bestDestination(obj.maps);
+    const route=routeText(best);
+    const here=(typeof G!=='undefined'&&G.currentMap)||'';
+    const mapBtn=(best.dest && best.dest!==here)
+      ? ` <button class="qg-map" data-dest="${esc(best.dest)}" onclick="questGuideOpenMap(this.dataset.dest)">🗺 경로</button>` : '';
+    if(!firstActiveDest && best.dest && (state==='active'||state==='completable')) firstActiveDest=best.dest;
     const report=reportInfo(q,state,step);
     const rew=rewardText(q);
     const progress=progressHtml(src,state,qs,isJob);
@@ -64913,7 +69470,7 @@ window.__serviceSystemsV2 = {
       <div class="qg-head"><div><div class="qg-title">${esc(q.title)}</div>${req?`<div class="qg-req">${esc(req)}</div>`:''}</div><em>${stateMeta[0]}</em></div>
       ${narrative?`<div class="qg-story">${esc(narrative)}</div>`:''}
       <div class="qg-row qg-now"><span>지금 할 일</span><b>${esc(obj.label)}</b></div>
-      ${route?`<div class="qg-row"><span>어디서</span><b>${esc(route)}</b></div>`:''}
+      ${route?`<div class="qg-row"><span>어디서</span><b>${esc(route)}${mapBtn}</b></div>`:''}
       ${obj.source?`<div class="qg-source"><span>획득처</span><div>${obj.source}</div></div>`:''}
       ${progress}
       ${sourceActions}
@@ -64938,15 +69495,26 @@ window.__serviceSystemsV2 = {
       .qg-source{display:grid;grid-template-columns:56px minmax(0,1fr);gap:6px;font-size:10px;line-height:1.5;margin-top:3px}.qg-source>div{color:var(--text);overflow-wrap:anywhere}
       .qg-progress{margin:7px 0 2px 62px}.qg-progress>div:first-child{display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim)}.qg-bar{height:5px;background:#e0e8ed;border-radius:3px;overflow:hidden;margin-top:2px}.qg-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue-light),var(--gold))}
       .qg-multi{margin:6px 0 2px 62px;display:flex;flex-wrap:wrap;gap:4px}.qg-multi span{font-size:10px;border:1px solid var(--border);border-radius:9px;padding:1px 6px;background:var(--bg-panel)}
+      .qg-map{margin-left:6px;font-size:10px;padding:1px 7px;border:1px solid var(--border);border-radius:9px;background:var(--bg-panel);color:var(--text);cursor:pointer;white-space:nowrap}
       .qg-section{display:flex;align-items:center;gap:6px;margin-top:6px;cursor:pointer;user-select:none;font-size:10px;color:var(--text-dim);font-weight:700}.qg-empty{text-align:center;padding:28px;color:var(--text-dim);font-size:11px;line-height:1.7}
       @media(max-width:700px){.qg-wrap{max-height:72vh}.qg-card{padding:9px}.qg-row,.qg-source{grid-template-columns:52px minmax(0,1fr)}.qg-progress,.qg-multi{margin-left:58px}}
     `;
     document.head.appendChild(s);
   }
 
+  // 퀘스트 카드의 「🗺 경로」와 아래 「지도 열기」: 목적지를 넘겨 세계지도에서 경로를 강조한다 (자동 이동 없음).
+  window.questGuideOpenMap=function(dest){
+    if(typeof closeModal==='function') closeModal();
+    setTimeout(()=>{
+      if(typeof showWorldMapModal==='function') showWorldMapModal(dest||'');
+      else if(typeof showMapModal==='function') showMapModal();
+    },0);
+  };
+
   showQuestModal=function(){
     const p=(typeof G!=='undefined')?G.player:null; if(!p) return;
     ensureStyle();
+    firstActiveDest='';
     if(!p.quests) p.quests={};
     let active='', available='', done='';
     let ac=0,av=0,dn=0;
@@ -64993,7 +69561,8 @@ window.__serviceSystemsV2 = {
       }
     }
     h+='</div>';
-    openModal('📋 퀘스트 안내',h,[{label:'지도 열기',action:()=>{setTimeout(()=>{if(typeof showWorldMapModal==='function')showWorldMapModal();else if(typeof showMapModal==='function')showMapModal();},0);}},{label:'닫기',action:()=>{}}]);
+    const mapDest=firstActiveDest;
+    openModal('📋 퀘스트 안내',h,[{label:'지도 열기',action:()=>{setTimeout(()=>{if(typeof showWorldMapModal==='function')showWorldMapModal(mapDest);else if(typeof showMapModal==='function')showMapModal();},0);}},{label:'닫기',action:()=>{}}]);
   };
 })();
 </script>
@@ -65203,6 +69772,8 @@ function aiMarkInteractTargets(name,p){
     if(!qs||qs.state!=='active'||q.type!=='interact'||!q.target_npc) continue;
     if(name===q.target_npc||name.startsWith(q.target_npc)){
       qs.state='completable'; done.push(q.title);
+      // 튜토리얼 현장 단계(카프라)는 노인에게 돌아가지 않고 그 자리에서 완료 (DEVREF-E-C P2-16)
+      if(typeof autoCompleteTutorialStep==='function' && autoCompleteTutorialStep(id)) continue;
       if(typeof log==='function') log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`,'quest');
       if(typeof notify==='function') notify('퀘스트 조건 달성!','gold');
     }
@@ -65373,6 +69944,8 @@ function aiRenderActor(name,extraNotice){
     if(e.state==='completable') aiAddAction(`✅ ${e.q.title} · 완료를 보고한다`,'primary',()=>{ if(e.q.dialog_complete&&typeof showDialogModal==='function') showDialogModal(e.id,'complete'); else if(typeof handleDialogEnd==='function') handleDialogEnd(e.id,'complete'); });
     else if(e.state==='available') aiAddAction(`❗ ${e.q.title} · 이야기를 듣는다`,'primary',()=>{ if(typeof showDialogModal==='function') showDialogModal(e.id,'main'); });
   });
+  // 「첫 동료」 알 고르기·맡긴 알 바꾸기 (source/companion.js, P3-10)
+  if(!autoBlocked&&!languageBlocked&&typeof companionElderActions==='function') companionElderActions(name,p,aiAddAction);
 
   let special='';
   if(autoBlocked){ special+='<div class="ai-notice warn">⚔️ 자동전투 중에는 대화와 서비스를 이용할 수 없습니다. 자동사냥을 멈춘 뒤 다시 시도하세요.</div>'; }
@@ -66036,6 +70609,475 @@ function airshipSummaryForRoute(route,now){
   const phase=airshipPhase(route,now);return phase.docked?`${phase.port} 정박 중`:`${phase.port} → ${phase.next} 운항 중`;
 }
 function airshipTick(){ if(airshipPlaying()){ airshipSync(); airshipUpdatePanel(); } }
+</script>
+<script id="companion-v1">
+// TextRAG companion v1 — 펫(1단계)·호문쿨루스(4단계)가 함께 쓰는 동반자 틀.
+// 설계: 볼트 02_Dev/App/Text_Rag/데이터베이스/설계_펫·호문쿨루스_v0.1 · 계획_펫1단계_v0.1 (DEVREF-E P3-10).
+// 데이터: DB.pets(source/data/db-pets.json, rAthena pre-re pet_db) · DB.petTalk(db-pet-talk.json).
+// 원칙: 자동사냥을 멈추거나 귀환시키지 않는다 · 먹이가 없으면 친밀도는 멈출 뿐 떨어지지 않는다.
+// 전역 함수 선언으로 둔다(var 포함) — template.html 본문과 Node vm 테스트가 같은 이름으로 부른다.
+
+var COMPANION_STAGE_NAMES = ['어색함', '서먹함', '보통', '친함', '절친'];
+
+function companionConstants() {
+  return (typeof DB !== 'undefined' && DB.pets && DB.pets.constants) || {};
+}
+function companionPetData(key) {
+  return (typeof DB !== 'undefined' && DB.pets && DB.pets.pets && DB.pets.pets[key]) || null;
+}
+
+// 세이브 보강 — 난수·시각 호출 금지 (normalizeSave 규칙)
+function companionNormalize(p) {
+  if (!p) return;
+  let c = p.companions;
+  if (!c || typeof c !== 'object' || Array.isArray(c)) c = p.companions = {};
+  if (!('pet' in c)) c.pet = null;
+  if (!('starterOffer' in c)) c.starterOffer = null;
+  if (!c.advice || typeof c.advice !== 'object') c.advice = { on: true, quietUntil: 0, lastSaid: {} };
+  if (!c.advice.lastSaid || typeof c.advice.lastSaid !== 'object') c.advice.lastSaid = {};
+  // 튜토리얼을 이미 마친 세이브: 「첫 동료」를 받을 수 있게 연다 (알 굴림은 수락할 때)
+  if (p.quests && p.quests.tut_05 && p.quests.tut_05.state === 'done' && !p.quests.tut_06 && !c.pet
+      && typeof TUTORIAL_QUESTS !== 'undefined' && TUTORIAL_QUESTS.tut_06) {
+    p.quests.tut_06 = { state: 'available', count: 0 };
+  }
+}
+
+function companionCreatePet(key, nowMs) {
+  const d = companionPetData(key) || {};
+  const k = companionConstants();
+  const start = d.intimacy && d.intimacy.start != null ? d.intimacy.start : 250;
+  return { key, intimacy: start, hunger: k.hungerStart != null ? k.hungerStart : 100, lastAt: nowMs };
+}
+
+// 친밀도 -> 0(어색함)~4(절친). rAthena pet.hpp e_pet_intimate_level 경계.
+function companionStage(intimacy) {
+  const s = companionConstants().stages || [1, 100, 250, 750, 910, 1000];
+  if (intimacy >= s[4]) return 4;
+  if (intimacy >= s[3]) return 3;
+  if (intimacy >= s[2]) return 2;
+  if (intimacy >= s[1]) return 1;
+  return 0;
+}
+
+// lastAt부터 nowMs까지 펫 시간을 진행한다. 지난 시각(nowMs <= lastAt)이면 아무것도 하지 않는다 —
+// 방치 정산의 헤드리스 표본은 시계를 과거로 돌리므로, 정산 전에 실제 시각으로 한 번만 진행한다.
+// 남은 자투리 시간은 lastAt에 남겨 다음 호출로 넘긴다(쪼개 불러도 한 번에 부른 것과 같다).
+function companionAdvance(p, nowMs) {
+  const out = { fed: 0, stageFrom: 0, stageTo: 0 };
+  const pet = p && p.companions && p.companions.pet;
+  if (!pet) return out;
+  out.stageFrom = out.stageTo = companionStage(pet.intimacy);
+  const d = companionPetData(pet.key);
+  if (!d || !(d.fullness > 0) || !(d.hungryDelaySec > 0) || !(nowMs > pet.lastAt)) return out;
+  const k = companionConstants();
+  const tickMs = d.hungryDelaySec * 1000 * (k.hungryDelayRate > 0 ? k.hungryDelayRate : 1);  // 방치형 속도 배율
+  const ticks = Math.floor((nowMs - pet.lastAt) / tickMs);
+  if (ticks <= 0) return out;
+  const feedAt = k.feedAt != null ? k.feedAt : 25;
+  const fullGainMax = k.fullGainMaxHunger != null ? k.fullGainMaxHunger : 75;
+  const inc = d.hungerIncrease || 20;
+  const fed = (d.intimacy && d.intimacy.fed) || 0;
+  const inv = p.inventory || (p.inventory = {});
+  for (let i = 0; i < ticks; i++) {
+    pet.hunger = Math.max(0, pet.hunger - d.fullness);
+    if (pet.hunger <= feedAt && d.food && (inv[d.food] || 0) > 0) {
+      inv[d.food] -= 1;
+      if (inv[d.food] <= 0) delete inv[d.food];
+      // 자동 급식은 늘 75 이하(알맞을 때)에만 먹이므로 원작 전량 상승만 일어난다
+      const gain = pet.hunger <= fullGainMax ? fed : Math.max(1, Math.floor(fed / 2));
+      pet.intimacy = Math.min(1000, pet.intimacy + gain);
+      pet.hunger = Math.min(100, pet.hunger + inc);
+      out.fed++;
+    }
+  }
+  pet.lastAt += ticks * tickMs;
+  out.stageTo = companionStage(pet.intimacy);
+  return out;
+}
+
+// 방치 요약 한 줄 (awaySummaryLines가 summary.companion으로 받는다). 펫이 없으면 ''.
+function companionAwaySummaryLine(p, res) {
+  const pet = p && p.companions && p.companions.pet;
+  if (!pet || !res) return '';
+  const d = companionPetData(pet.key) || {};
+  const food = d.food || '먹이';
+  const left = ((p.inventory || {})[food]) || 0;
+  let line = `🐾 <b>${d.name || pet.key}</b>: ${food} ${res.fed || 0}개 먹음`;
+  if (res.stageTo != null && res.stageFrom != null && res.stageTo !== res.stageFrom) {
+    line += ` · ${COMPANION_STAGE_NAMES[res.stageFrom]} → ${COMPANION_STAGE_NAMES[res.stageTo]}`;
+  }
+  line += ` (${food} ${left}개 남음)`;
+  if (!left && pet.hunger <= 0) line += ' · 먹이가 떨어져 친밀도가 멈춰 있음';
+  return line;
+}
+
+// ── 「첫 동료」: 첫 알 3개 (설계 §6-1, 사용자 확정 2026-11-20) ─────────────────────────────
+var COMPANION_TIER_WEIGHTS = [['low', 0.40], ['mid', 0.30], ['high', 0.20], ['rare', 0.10]];
+var COMPANION_TIER_LABELS = { low: '저레벨', mid: '중레벨', high: '고레벨', rare: '초희귀 ✨' };
+var COMPANION_SWAP_MS = 24 * 3600 * 1000;   // 고르지 않은 알을 노인이 맡아 두는 기간 (실제 시간, 방치 포함)
+var COMPANION_ELDER = '친절한 노인';
+
+function companionElderSay(text) { if (typeof log === 'function') log(`🧓 ${COMPANION_ELDER}: "${text}"`, 'npc'); }
+
+// 알마다 레벨대를 독립으로 굴리고, 그 레벨대에서 아직 안 뽑힌 펫 중 하나 (3개 사이 중복 없음)
+function companionRollStarter(rng) {
+  rng = rng || Math.random;
+  const pool = {};
+  Object.keys((DB.pets && DB.pets.pets) || {}).forEach((k) => {
+    const t = DB.pets.pets[k].tier;
+    if (t) (pool[t] = pool[t] || []).push(k);
+  });
+  const picked = [];
+  for (let i = 0; i < 3; i++) {
+    let r = rng(), tier = COMPANION_TIER_WEIGHTS[COMPANION_TIER_WEIGHTS.length - 1][0];
+    for (const [t, w] of COMPANION_TIER_WEIGHTS) { if (r < w) { tier = t; break; } r -= w; }
+    let cand = (pool[tier] || []).filter((k) => !picked.includes(k));
+    if (!cand.length) cand = Object.values(pool).flat().filter((k) => !picked.includes(k));
+    picked.push(cand[Math.floor(rng() * cand.length)]);
+  }
+  return picked;
+}
+
+// 「첫 동료」 시작: 퀘스트를 진행 중으로 두고 굴림을 저장(다시 열어도 같은 알 셋), 화면이 있으면 고르기 창
+function companionBeginStarter(p, rng) {
+  if (!p) return;
+  companionNormalize(p);
+  if (p.companions.pet) return;
+  if (!p.quests) p.quests = {};
+  if (!p.quests.tut_06 || p.quests.tut_06.state !== 'done') p.quests.tut_06 = { state: 'active', count: 0 };
+  if (!Array.isArray(p.companions.starterRoll) || p.companions.starterRoll.length !== 3) {
+    p.companions.starterRoll = companionRollStarter(rng);
+  }
+  if (typeof window !== 'undefined') companionWhenModalFree(() => companionOpenStarterModal(p));
+}
+
+function companionChooseStarter(p, key, nowMs) {
+  const c = p && p.companions;
+  if (!c || c.pet || !Array.isArray(c.starterRoll) || !c.starterRoll.includes(key)) return false;
+  c.pet = companionCreatePet(key, nowMs);
+  c.starterOffer = { eggs: c.starterRoll.filter((k) => k !== key), expiresAt: nowMs + COMPANION_SWAP_MS, swapped: false };
+  delete c.starterRoll;
+  if (p.quests && p.quests.tut_06) p.quests.tut_06.state = 'done';
+  const d = companionPetData(key) || {};
+  if (typeof log === 'function') log(`🥚 알이 흔들리더니… <b>${d.name || key}</b>이(가) 껍데기를 깨고 나왔다!`, 'level-up');
+  companionElderSay('고르지 않은 알 둘은 내가 맡아 두지. 다음에 빨리 다시 오면 바꿔 주겠네. 다만 언제 누가 가져갈지는 모르겠군.');
+  if (typeof notify === 'function') notify(`첫 동료: ${d.name || key}`, 'gold');
+  return true;
+}
+
+// 노인을 찾아갔을 때: 'offer'(바꿀 수 있음) · 'expired'(다른 모험가가 골라 감, 맡긴 알 지움) · 'none'
+function companionVisitElder(p, nowMs) {
+  const c = p && p.companions, o = c && c.starterOffer;
+  if (!o) return 'none';
+  if (nowMs > o.expiresAt) {
+    c.starterOffer = null;
+    if (o.swapped) return 'none';
+    companionElderSay('미안하네. 맡아 둔 알은 다른 모험가가 골라 갔다네. 지금 그 녀석과 잘 지내 보게.');
+    return 'expired';
+  }
+  return o.swapped ? 'none' : 'offer';
+}
+
+function companionSwapStarter(p, key, nowMs) {
+  const c = p && p.companions, o = c && c.starterOffer;
+  if (!o || o.swapped || nowMs > o.expiresAt || !o.eggs.includes(key) || !c.pet) return false;
+  o.eggs = o.eggs.filter((k) => k !== key).concat(c.pet.key);
+  c.pet = companionCreatePet(key, nowMs);
+  o.swapped = true;
+  const d = companionPetData(key) || {};
+  companionElderSay(`그래, ${d.name || key} 쪽이 마음에 들었나 보군. 바꿔 주겠네. 이번이 마지막일세.`);
+  if (typeof log === 'function') log(`🥚 <b>${d.name || key}</b>이(가) 새 동료가 되었다!`, 'level-up');
+  return true;
+}
+
+// ── 화면 (브라우저 전용) ────────────────────────────────────────────────────────────────
+function companionWhenModalFree(fn) {
+  let tries = 0;
+  const go = () => {
+    const ov = document.getElementById('modal-overlay');
+    if (ov && ov.classList.contains('open') && tries++ < 240) { setTimeout(go, 500); return; }
+    fn();
+  };
+  setTimeout(go, 300);
+}
+function companionEggCard(key) {
+  const d = companionPetData(key) || {};
+  const talk = (typeof DB !== 'undefined' && DB.petTalk && DB.petTalk.pets && DB.petTalk.pets[key]) || {};
+  return `<div style="border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:6px 0">
+    <b>🥚 ${d.name || key}</b> <span style="font-size:10px;color:var(--text-dim)">${COMPANION_TIER_LABELS[d.tier] || ''} · Lv ${d.lv || '?'}</span>
+    <div style="font-size:11px;margin-top:3px">${talk.persona || ''}</div>
+    <div style="font-size:10px;color:var(--text-dim);margin-top:2px">먹이: ${d.food || '—'}</div></div>`;
+}
+function companionOpenStarterModal(p) {
+  const roll = p && p.companions && p.companions.starterRoll;
+  if (!roll || p.companions.pet || typeof openModal !== 'function') return;
+  const body = `<div style="font-size:12px;line-height:1.6">「혼자 다니는 모험은 쓸쓸한 법이지. 알 셋 중 하나를 데려가게.」<br>
+    <span style="font-size:10px;color:var(--text-dim)">고르지 않은 알은 ${COMPANION_ELDER}이 맡아 둡니다. 24시간 안에 노인을 찾아가면 한 번 바꿀 수 있습니다.</span></div>`
+    + roll.map(companionEggCard).join('');
+  openModal('🥚 첫 동료', body, roll.map((k) => ({
+    label: `🥚 ${(companionPetData(k) || {}).name || k}`,
+    action: () => { companionChooseStarter(p, k, Date.now()); if (typeof saveLocal === 'function') saveLocal(); if (typeof updateUI === 'function') updateUI(); },
+  })));
+}
+function companionOpenSwapModal(p) {
+  const o = p && p.companions && p.companions.starterOffer;
+  if (!o || typeof openModal !== 'function') return;
+  const left = Math.max(0, Math.ceil((o.expiresAt - Date.now()) / 3600000));
+  openModal('🥚 맡겨 둔 알', `<div style="font-size:12px">「어느 쪽으로 바꾸겠나? 한 번뿐일세.」 <span style="font-size:10px;color:var(--text-dim)">(남은 시간 약 ${left}시간)</span></div>`
+    + o.eggs.map(companionEggCard).join(''),
+    o.eggs.map((k) => ({ label: `🥚 ${(companionPetData(k) || {}).name || k}`, action: () => {
+      companionSwapStarter(p, k, Date.now()); if (typeof saveLocal === 'function') saveLocal(); if (typeof updateUI === 'function') updateUI();
+    } })).concat([{ label: '지금 펫과 지낼게요', action: () => {} }]));
+}
+// 노인 대화(actor-interaction.js aiRenderActor)에 붙는 행동
+function companionElderActions(name, p, addAction) {
+  if (!p || !name || name.indexOf(COMPANION_ELDER) !== 0) return;
+  companionNormalize(p);
+  const c = p.companions;
+  if (!c.pet && Array.isArray(c.starterRoll) && p.quests && p.quests.tut_06 && p.quests.tut_06.state === 'active') {
+    addAction('🥚 데워 둔 알 셋 중 하나를 고른다', 'primary', () => companionOpenStarterModal(p));
+  }
+  if (companionVisitElder(p, Date.now()) === 'offer') {
+    const left = Math.max(0, Math.ceil((c.starterOffer.expiresAt - Date.now()) / 3600000));
+    addAction(`🥚 맡겨 둔 알로 바꾼다 (약 ${left}시간 남음)`, 'service', () => companionOpenSwapModal(p));
+  }
+}
+
+// ── 말하기 통로 (조언·일상 대사 공용, 호문쿨루스도 이 통로를 쓴다) ─────────────────────────────
+var COMPANION_REAL_NOW = Date.now;          // 방치 정산 헤드리스는 Date.now를 바꿔 끼운다 -> 그동안 침묵
+var COMPANION_QUIET_MS = 4 * 60 * 1000;     // 급하지 않은 조언 뒤 공용 쉼 (설계자 판단, 파이 수호령 3~5분의 가운데)
+var COMPANION_SAME_KEY_MS = 5 * 60 * 1000;  // 같은 조언 최소 간격
+var COMPANION_TALK_MS = 10 * 60 * 1000;     // 같은 일상 대사 사건 최소 간격
+var COMPANION_HIT_MIN = 80;                 // 내 명중률이 이보다 낮으면 "부족" (설계자 판단)
+var COMPANION_MOB_HIT_MAX = 60;             // 몬스터가 나를 맞히는 확률이 이보다 높으면 "부족" (설계자 판단)
+var COMPANION_HEAVY_HIT = 0.08;             // …단, 한 대가 최대 체력의 8% 이상일 때만 (포링에게 자주 맞는 건 문제가 아니다)
+
+function companionIsReplay() { return typeof window !== 'undefined' && Date.now !== COMPANION_REAL_NOW; }
+function companionPetName(p) {
+  const pet = p && p.companions && p.companions.pet;
+  return pet ? ((companionPetData(pet.key) || {}).name || pet.key) : '';
+}
+// 친밀도 단계 -> 조언 정보량: hint(어색함·서먹함) · kind(보통) · direct(친함·절친)
+function companionAdviceLevel(p) {
+  const st = companionStage(p.companions.pet.intimacy);
+  return st >= 3 ? 'direct' : st === 2 ? 'kind' : 'hint';
+}
+
+function companionSay(p, key, text, opt) {
+  opt = opt || {};
+  const c = p && p.companions;
+  if (!c || !c.advice || !c.advice.on || companionIsReplay()) return false;
+  const now = opt.now != null ? opt.now : Date.now();
+  const last = c.advice.lastSaid[key];
+  if (last != null && now - last < (opt.everyMs != null ? opt.everyMs : COMPANION_SAME_KEY_MS)) return false;
+  if (!opt.urgent && now < (c.advice.quietUntil || 0)) return false;
+  c.advice.lastSaid[key] = now;
+  if (!opt.urgent) c.advice.quietUntil = now + COMPANION_QUIET_MS;
+  c.advice.lastAdviceAt = now;
+  if (typeof log === 'function') log(text, 'npc');
+  return true;
+}
+
+// 일상 대사: 원작 pettalktable처럼 배고픔 구간 × 사건. 조언과 같은 순간이면 조언이 먼저(대사 생략).
+function companionHungerBand(h) { return h <= 25 ? 'hungry' : h > 75 ? 'full' : 'normal'; }
+function companionPetTalk(p, event, nowMs, opt) {
+  opt = opt || {};
+  const c = p && p.companions, pet = c && c.pet;
+  if (!pet || !c.advice || !c.advice.on || companionIsReplay()) return false;
+  const now = nowMs != null ? nowMs : Date.now();
+  if (c.advice.lastAdviceAt === now) return false;
+  if (!opt.urgent && now < (c.advice.talkQuietUntil || 0)) return false;
+  const set = (typeof DB !== 'undefined' && DB.petTalk && DB.petTalk.pets && DB.petTalk.pets[pet.key]) || null;
+  const lines = set && set.lines && set.lines[event] && set.lines[event][companionHungerBand(pet.hunger)];
+  if (!lines || !lines.length) return false;
+  const key = 'talk:' + event, last = c.advice.lastSaid[key];
+  if (last != null && now - last < COMPANION_TALK_MS) return false;
+  c.advice.lastSaid[key] = now;
+  c.advice.talkQuietUntil = now + COMPANION_QUIET_MS;
+  if (typeof log === 'function') log(`🐾 ${companionPetName(p)}: "${lines[Math.floor(Math.random() * lines.length)]}"`, 'npc');
+  return true;
+}
+
+// ── 펫의 조언 (싸우기 전: 장소·위험·준비물). 판정은 원작 명중 공식 그대로 ─────────────────
+function companionClampRate(v) { return Math.max(5, Math.min(95, v)); }
+function companionJudge(s, m) {
+  const hr = companionClampRate(80 + (s.hit || 0) - (m.flee || 0));
+  const mhr = companionClampRate(80 + (m.hit || 0) - (s.flee || 0));
+  const heavy = (m.atk || 0) >= (s.maxHp || Infinity) * COMPANION_HEAVY_HIT;
+  return { m, hr, mhr, hitShort: hr < COMPANION_HIT_MIN, fleeShort: mhr > COMPANION_MOB_HIT_MAX && heavy,
+    needHit: Math.max(0, (m.flee || 0) + 15 - (s.hit || 0)), needFlee: Math.max(0, (m.hit || 0) + 20 - (s.flee || 0)) };
+}
+function companionMapMonsters(name) {
+  // 옛 지명 별칭(P9)도 따르도록 getMap 우선
+  const md = (typeof getMap === 'function' ? getMap(name) : (typeof DB !== 'undefined' && DB.maps && DB.maps[name])) || null;
+  if (!md || md.safe) return [];
+  return (md.monsters || []).map((id) => DB.monsters && DB.monsters[id]).filter(Boolean);
+}
+function companionBestHunt(s) {
+  let best = null, next = null;
+  Object.keys((typeof DB !== 'undefined' && DB.maps) || {}).forEach((map) => {
+    companionMapMonsters(map).forEach((m) => {
+      const j = companionJudge(s, m);
+      if (!j.hitShort && !j.fleeShort) { if (!best || (m.lv || 0) > (best.m.lv || 0)) best = Object.assign({ map }, j); }
+    });
+  });
+  Object.keys((typeof DB !== 'undefined' && DB.maps) || {}).forEach((map) => {
+    companionMapMonsters(map).forEach((m) => {
+      const j = companionJudge(s, m);
+      if ((j.hitShort || j.fleeShort) && (!best || (m.lv || 0) > (best.m.lv || 0)) && (!next || (m.lv || 0) < (next.m.lv || 0))) next = Object.assign({ map }, j);
+    });
+  });
+  return { best, next };
+}
+function companionPotionCount(p) {
+  const list = (typeof AUTO_HP_POTS !== 'undefined' && AUTO_HP_POTS) || ['이그드라실의 열매', '하얀포션', '주홍포션', '노란포션', '빨간포션'];
+  return list.reduce((a, n) => a + ((p.inventory || {})[n] || 0), 0);
+}
+
+function companionPetAdvice(p, s, event, opt) {
+  opt = opt || {};
+  if (!p || !p.companions || !p.companions.pet || !s) return;
+  const now = opt.now != null ? opt.now : Date.now();
+  const lv = companionAdviceLevel(p), pn = `🐾 ${companionPetName(p)}`;
+  const say = (key, text, o) => companionSay(p, key, `${pn}: ${text}`, Object.assign({ now }, o || {}));
+  const shortText = (j) => j.hitShort ? `명중이 ${j.needHit} 모자라(지금 ${j.hr}%)` : `회피가 ${j.needFlee} 모자라(맞을 확률 ${j.mhr}%)`;
+
+  if (event === 'enter') {
+    const worst = companionMapMonsters(opt.map).map((m) => companionJudge(s, m)).filter((j) => j.hitShort || j.fleeShort)
+      .sort((a, b) => (a.hr - a.mhr) - (b.hr - b.mhr))[0];
+    if (!worst) return;
+    let text;
+    if (lv === 'hint') text = '저기… 왠지 싫어.';
+    else if (lv === 'kind') text = worst.hitShort ? `저 ${worst.m.name}, 잘 안 맞을 것 같아.` : `저 ${worst.m.name}한테 많이 맞을 것 같아.`;
+    else {
+      const b = companionBestHunt(s).best;
+      text = `${worst.m.name}한테 ${shortText(worst)}.${b ? ` 지금은 ${b.map}(으)로 가.` : ''}`;
+    }
+    say('enter:' + opt.map, text, { urgent: true });
+    return;
+  }
+  if (event === 'tick') {
+    const pct = s.maxWeight ? Math.floor((s.carriedWeight || 0) * 100 / s.maxWeight) : 0;
+    if (pct >= 90) {
+      say('w90', lv === 'hint' ? '가방이 너무 무거워 보여…' : lv === 'kind' ? '짐 때문에 싸울 수가 없어!' : `무게 ${pct}% — 90%를 넘어서 공격을 못 해. 좀 팔자.`);
+      return;
+    }
+    if (pct >= 50 && say('w50', lv === 'hint' ? '가방이… 묵직해.' : lv === 'kind' ? '짐이 많아서 몸이 안 낫는 것 같아.' : `무게 ${pct}% — 50%를 넘어서 자연 회복이 멈췄어.`)) return;
+    const pots = companionPotionCount(p);
+    if (pots <= 3 && say('pot', lv === 'hint' ? '주머니가 가벼운 것 같아…' : lv === 'kind' ? '물약이 얼마 없어.' : `물약 ${pots}개 남았어. 보충하자.`)) return;
+    const food = (companionPetData(p.companions.pet.key) || {}).food;
+    const fl = food ? ((p.inventory || {})[food] || 0) : null;
+    if (food && fl <= 3) say('food', lv === 'hint' ? '배고파질 것 같아…' : lv === 'kind' ? `${food}이(가) 얼마 없어.` : `${food} ${fl}개 남았어. 떨어지면 나랑 더 못 친해져.`);
+    return;
+  }
+  if (event === 'ask') {
+    const { best, next } = companionBestHunt(s);
+    let text;
+    // 부족 없는 곳이 없으면(막 시작한 캐릭터 등) 가장 만만한 곳을 권한다 — "어디든 버겁다"는 쓸모없는 말이다
+    if (!best && next) text = lv === 'hint' ? '음… 저쪽이 그나마 나을 것 같은데…'
+      : lv === 'kind' ? `${next.map} 쪽이 그나마 만만할 것 같아.`
+      : `지금은 ${next.map}의 ${next.m.name}(Lv ${next.m.lv})가 제일 만만해. 그래도 ${shortText(next)}.`;
+    else if (!best) text = '음… 아직은 마을 근처가 좋겠어.';
+    else if (lv === 'hint') text = '음… 저쪽이 좋을 것 같은데…';
+    else if (lv === 'kind') text = `${best.map} 쪽이 괜찮을 것 같아.`;
+    else text = `${best.map}의 ${best.m.name}(Lv ${best.m.lv})까진 문제없어.${next ? ` 다음은 ${next.map}의 ${next.m.name} — ${shortText(next)}.` : ''}`;
+    say('ask', text, { urgent: true, everyMs: 0 });
+  }
+}
+
+// ── 쓰러진 원인 한 줄 (P2-15 ①). 펫이 없으면 시스템 문구, 있으면 친밀도에 맞는 펫 말투 ────────
+function companionDeathNote(p, rec, s) {
+  const dmg = {};
+  ((rec && rec.rawEvents) || []).forEach((e) => { if (e.type === 'damage_taken' && e.monster) dmg[e.monster] = (dmg[e.monster] || 0) + (Number(e.amount) || 0); });
+  const top = Object.keys(dmg).sort((a, b) => dmg[b] - dmg[a])[0];
+  if (!top || !s) return '';
+  const m = Object.values((typeof DB !== 'undefined' && DB.monsters) || {}).find((x) => x && x.name === top) || { name: top };
+  const j = companionJudge(s, m);
+  if (!p || !p.companions || !p.companions.pet) return `(쓰러진 원인: ${top} — 명중 ${j.hr}% · 피격 ${j.mhr}%)`;
+  const pn = `🐾 ${companionPetName(p)}`, lv = companionAdviceLevel(p);
+  if (lv === 'hint') return `${pn}: …무서웠어.`;
+  if (lv === 'kind') return `${pn}: ${top}한테 ${j.hitShort ? '공격이 잘 안 맞았어' : '너무 많이 맞았어'}.`;
+  const shortBit = j.hitShort ? ` 명중이 ${j.needHit} 모자라.` : j.fleeShort ? ` 회피가 ${j.needFlee} 모자라.` : '';
+  return `${pn}: ${top}한테 명중 ${j.hr}%, 맞을 확률 ${j.mhr}%였어.${shortBit}`;
+}
+
+// 주인이 쓰러졌을 때: 펫 대사 -> 원인 한 줄. 원작 IntimacyOwnerDie(접속 중만 — 방치 표본 사망은 무시)
+function companionOnOwnerDeath(p, rec, s, nowMs) {
+  if (!p || companionIsReplay()) return;
+  const now = nowMs != null ? nowMs : Date.now();
+  const note = companionDeathNote(p, rec, s);
+  const pet = p.companions && p.companions.pet;
+  if (!pet) { if (note && typeof log === 'function') log(note, 'system'); return; }
+  const d = companionPetData(pet.key) || {};
+  const dec = d.intimacy && d.intimacy.ownerDie != null ? d.intimacy.ownerDie : 0;
+  pet.intimacy = Math.max(0, Math.min(1000, pet.intimacy + dec));
+  companionPetTalk(p, 'ownerDie', now, { urgent: true });
+  if (note) companionSay(p, 'death', note, { now, urgent: true, everyMs: 0 });
+}
+
+// ── 접속 중 진행 (processTurn·타이머). 방치 정산은 companionAdvance만 쓴다(말 없음) ───────────
+function companionTickOnline(p, nowMs, inBattle) {
+  if (!p || !p.companions || !p.companions.pet || companionIsReplay()) return;
+  const r = companionAdvance(p, nowMs);
+  if (r.fed > 0) companionPetTalk(p, 'feed', nowMs);
+  if (r.stageTo > r.stageFrom) {
+    if (typeof log === 'function') log(`💞 ${companionPetName(p)}와(과)의 친밀도: <b>${COMPANION_STAGE_NAMES[r.stageTo]}</b>`, 'level-up');
+    if (typeof notify === 'function') notify(`친밀도 ${COMPANION_STAGE_NAMES[r.stageTo]}`, 'gold');
+  }
+  if (inBattle) {
+    if (p.maxHp && p.hp / p.maxHp < 0.3) companionPetTalk(p, 'danger', nowMs, { urgent: true });
+    else if (Math.random() < 0.02) companionPetTalk(p, 'hunt', nowMs);
+  }
+}
+
+function companionSyncButton() {
+  if (typeof document === 'undefined') return;
+  const b = document.getElementById('ctx-pet');
+  const has = typeof G !== 'undefined' && G.player && G.player.companions && G.player.companions.pet;
+  if (b) b.style.display = has ? '' : 'none';
+}
+
+function showCompanionModal() {
+  const p = typeof G !== 'undefined' && G.player;
+  if (!p || !p.companions || !p.companions.pet || typeof openModal !== 'function') return;
+  companionTickOnline(p, Date.now(), false);
+  const pet = p.companions.pet, d = companionPetData(pet.key) || {};
+  const talk = (DB.petTalk && DB.petTalk.pets && DB.petTalk.pets[pet.key]) || {};
+  const st = companionStage(pet.intimacy), band = companionHungerBand(pet.hunger);
+  const bandText = { hungry: '배고픔', normal: '보통', full: '배부름' }[band];
+  const food = d.food || '—', fl = d.food ? ((p.inventory || {})[d.food] || 0) : 0;
+  const on = p.companions.advice.on;
+  const body = `<div style="font-size:12px;line-height:1.7">
+    <b style="font-size:14px">🐾 ${d.name || pet.key}</b> <span style="font-size:10px;color:var(--text-dim)">Lv ${d.lv || '?'}</span>
+    <div style="font-size:11px;color:var(--text-dim)">${talk.persona || ''}</div>
+    <div>친밀도: <b>${COMPANION_STAGE_NAMES[st]}</b> <span style="font-size:10px;color:var(--text-dim)">(${pet.intimacy}/1000)</span></div>
+    <div>배: ${bandText} <span style="font-size:10px;color:var(--text-dim)">(${pet.hunger}/100)</span></div>
+    <div>먹이: ${food} <b>${fl}</b>개 <span style="font-size:10px;color:var(--text-dim)">— 알맞게 배고플 때 알아서 먹습니다. 떨어지면 친밀도가 멈춥니다.</span></div>
+    <div style="font-size:10px;color:var(--text-dim);margin-top:4px">친해질수록 조언이 또렷해집니다 (어색함·서먹함: 암시 · 보통: 이유 · 친함·절친: 수치와 권유).</div></div>`;
+  openModal('🐾 펫', body, [
+    { label: '🐾 어디서 사냥할까?', action: () => { if (typeof calcStats === 'function') companionPetAdvice(p, calcStats(), 'ask'); } },
+    { label: on ? '🔕 조언 끄기' : '🔔 조언 켜기', action: () => { p.companions.advice.on = !on; if (typeof saveLocal === 'function') saveLocal(); } },
+    { label: '닫기', action: () => {} },
+  ]);
+}
+
+// 사냥 밖(마을 등)에서도 펫 시간이 흐르도록 1분마다 진행 + 준비물 조언 + 가끔 혼잣말.
+// 접속 인사는 게임 화면에 처음 들어왔을 때 한 번. 헤드리스·테스트(vm)에는 타이머가 없다.
+if (typeof setInterval === 'function' && typeof window !== 'undefined') {
+  let lastMinute = 0, greetedFor = null;
+  setInterval(function () {
+    if (typeof G === 'undefined' || !G.player || companionIsReplay()) { companionSyncButton(); return; }
+    const p = G.player, now = Date.now();
+    companionSyncButton();
+    if (!p.companions || !p.companions.pet) return;
+    if (greetedFor !== p) { greetedFor = p; companionPetTalk(p, 'connect', now, { urgent: true }); }
+    if (now - lastMinute < 60000) return;
+    lastMinute = now;
+    companionTickOnline(p, now, false);
+    if (typeof calcStats === 'function') companionPetAdvice(p, calcStats(), 'tick');
+    if (Math.random() < 0.3) companionPetTalk(p, 'idle', now);
+  }, 5000);
+}
 </script>
 </body>
 </html>

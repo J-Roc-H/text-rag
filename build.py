@@ -13,7 +13,7 @@ CORS로 막힌다(DEVREF-E 보류-01).
 장소/NPC 상호작용은 source/actor-interaction.js, 아이템/카드 효과 집계(P0-B)는
 source/item-effects.js, 콤보 매칭·적용(P2-B1)은 source/combo-engine.js로 분리 관리하되
 빌드 시 </body> 직전에 모두 인라인한다.
-최종 index.html / 룬미드가츠_v9.27.html 은 계속 단일 HTML이다.
+최종 index.html / 룬미드가츠_v9.28.html 은 계속 단일 HTML이다.
 
 item-effects.js는 template.html 본문의 <script id="block-engine"> 안 calcStats()가
 정의된 훨씬 이전 위치보다 늦게(다른 주입 스크립트와 함께 </body> 직전에) 실행되지만,
@@ -33,6 +33,7 @@ TEMPLATE_PATH = os.path.join(BASE, "source", "template.html")
 DATA_DIR = os.path.join(BASE, "source", "data")
 WORLD_MAP_SCRIPT_PATH = os.path.join(BASE, "source", "world-map.js")
 AIRSHIP_SCRIPT_PATH = os.path.join(BASE, "source", "airship.js")
+COMPANION_SCRIPT_PATH = os.path.join(BASE, "source", "companion.js")
 SERVICE_SCRIPT_PATH = os.path.join(BASE, "source", "services.js")
 UI_HOTFIX_SCRIPT_PATH = os.path.join(BASE, "source", "ui-hotfix.js")
 QUEST_GUIDE_SCRIPT_PATH = os.path.join(BASE, "source", "quest-guide.js")
@@ -51,7 +52,7 @@ COMBO_IDENTITY_JSON_PATH = os.path.join(DATA_DIR, "combo-item-identity.json")
 # BLOCKS에 넣지 않는다(runtime 미연결). identity builder가 이 파일을 읽어 identity
 # map에 반영한다(tools/build_combo_item_identity.py).
 COMBO_IDENTITY_REVIEW_JSON_PATH = os.path.join(DATA_DIR, "combo-item-identity-reviewed.json")
-OUTPUT_PATH = os.path.join(BASE, "룬미드가츠_v9.27.html")
+OUTPUT_PATH = os.path.join(BASE, "룬미드가츠_v9.28.html")
 # GitHub Pages는 루트의 index.html을 서빙한다 — 버전 올려도 폰 북마크 URL이
 # 안 바뀌게 매 빌드마다 같은 내용을 index.html에도 복사한다 (2026-09-20)
 INDEX_PATH = os.path.join(BASE, "index.html")
@@ -72,6 +73,9 @@ BLOCKS = {
     "DB_PRODUCTION": "db-production.json",
     "DB_SHOPS": "db-shops.json",
     "DB_MVP_RESPAWN": "db-mvp-respawn.json",
+    "DB_PRT_PILOT": "db-prt-pilot.json",
+    "DB_PETS": "db-pets.json",
+    "DB_PET_TALK": "db-pet-talk.json",
 }
 
 NPC_SERVICES = {
@@ -713,6 +717,72 @@ def load_data_files():
     return raw, parsed
 
 
+def audit_prt_pilot(pilot, maps, monsters, mvp):
+    """원작 맵 1:1 프론테라 시범 데이터 감사. 이 데이터는 tools/build_prt_pilot.py만 만든다(손으로 고치지 않음)."""
+    errors = []
+    pm = pilot.get("maps") or {}
+    if len(pm) != 19:
+        errors.append(f"시범 맵 수 {len(pm)} (19여야 함)")
+    for mid, m in pm.items():
+        if mid in maps:
+            errors.append(f"{mid}: db-maps.json에 같은 키가 손으로 들어가 있음 — 시범 맵은 db-prt-pilot만 소유")
+        if not m.get("spawns") and not m.get("mvp"):
+            errors.append(f"{mid}: 출현 없음")
+        for tid, cnt in m.get("spawns") or []:
+            if str(tid) not in monsters:
+                errors.append(f"{mid}: 몬스터 {tid}가 db-monsters에 없음")
+            if not (isinstance(cnt, int) and cnt > 0):
+                errors.append(f"{mid}: 마릿수 {cnt}")
+        if m.get("mvp") and str(m["mvp"]) not in mvp:
+            errors.append(f"{mid}: MVP {m['mvp']}가 db-mvp-respawn에 없음")
+        for t in m.get("warps") or []:
+            if t not in pm and t not in (pilot.get("bridges") or {}) and not t.startswith(("prt_monk", "prt_gld")):
+                errors.append(f"{mid}: 워프 목적지 {t}가 시범 맵도 다리도 아님")
+    for o, legacy in (pilot.get("bridges") or {}).items():
+        if legacy not in maps:
+            errors.append(f"다리 {o} -> '{legacy}'가 db-maps에 없음")
+    return errors
+
+
+PET_TIERS = ("low", "mid", "high", "rare")
+
+
+def audit_pets(pets, monsters, items, talk):
+    """펫 데이터 감사 (P3-10). 첫 알 후보(tier 있는 펫)는 먹이·대사가 모두 있어야 한다."""
+    errors = []
+    names = {m.get("name") for m in monsters.values()}
+    counts = {t: 0 for t in PET_TIERS}
+    events, bands = talk.get("events", []), talk.get("bands", [])
+    for key, p in (pets.get("pets") or {}).items():
+        if p.get("name") not in names:
+            errors.append(f"{key}: 몬스터 '{p.get('name')}'가 db-monsters에 없음")
+        if p.get("food") is not None and p["food"] not in items:
+            errors.append(f"{key}: 먹이 '{p['food']}'가 db-items에 없음")
+        tier = p.get("tier")
+        if tier is None:
+            continue
+        if tier not in counts:
+            errors.append(f"{key}: tier '{tier}'는 {PET_TIERS} 밖")
+            continue
+        counts[tier] += 1
+        if p.get("food") is None:
+            errors.append(f"{key}: 첫 알 후보인데 먹이가 없음")
+        elif (items.get(p["food"]) or {}).get("_stub"):
+            errors.append(f"{key}: 먹이 '{p['food']}'가 빈 아이템(_stub) — 값·설명이 없다")
+        lines = ((talk.get("pets") or {}).get(key) or {}).get("lines")
+        if not lines:
+            errors.append(f"{key}: db-pet-talk에 대사가 없음")
+            continue
+        for e in events:
+            for b in bands:
+                if not (lines.get(e) or {}).get(b):
+                    errors.append(f"{key}: 대사 빈 칸 {e}/{b}")
+    for t, n in counts.items():
+        if n < 3:
+            errors.append(f"tier {t}: 첫 알 후보가 {n}마리 — 3마리 이상 필요(중복 없는 알 3개)")
+    return errors
+
+
 def audit_airships(spec, maps, npcs):
     errors = []
     routes = spec.get("routes", {})
@@ -755,6 +825,14 @@ def main():
     if airship_errors:
         raise ValueError("비공정 데이터 오류:\n  - " + "\n  - ".join(airship_errors))
     print("OK - airship route/map/NPC audit")
+    pet_errors = audit_pets(parsed["DB_PETS"], parsed["DB_MONSTERS"], parsed["DB_ITEMS"], parsed["DB_PET_TALK"])
+    if pet_errors:
+        raise ValueError("펫 데이터 오류:\n  - " + "\n  - ".join(pet_errors))
+    print("OK - pet db audit")
+    pilot_errors = audit_prt_pilot(parsed["DB_PRT_PILOT"], parsed["DB_MAPS"], parsed["DB_MONSTERS"], parsed["DB_MVP_RESPAWN"])
+    if pilot_errors:
+        raise ValueError("프론테라 시범 맵 데이터 오류:\n  - " + "\n  - ".join(pilot_errors))
+    print("OK - prontera pilot map audit")
     audit_quest_item_sources(template, parsed)
     drop_errors = audit_monster_drops(parsed["DB_MONSTERS"], parsed["DB_ITEMS"])
     if drop_errors:
@@ -885,6 +963,7 @@ def main():
     actor_interaction_script = open(ACTOR_INTERACTION_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     refine_reveal_script = open(REFINE_REVEAL_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     airship_script = open(AIRSHIP_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
+    companion_script = open(COMPANION_SCRIPT_PATH, encoding="utf-8", newline=None).read().rstrip()
     body_close = "</body>"
     count = template.count(body_close)
     assert count == 1, f"{body_close} matched {count} times (expected 1)"
@@ -904,6 +983,7 @@ def main():
         f'<script id="actor-interaction-v1">\n{actor_interaction_script}\n</script>\n'
         f'<script id="refine-reveal-v1">\n{refine_reveal_script}\n</script>\n'
         f'<script id="airship-v1">\n{airship_script}\n</script>\n'
+        f'<script id="companion-v1">\n{companion_script}\n</script>\n'
         f'{body_close}'
     )
     template = template.replace(body_close, injected, 1)

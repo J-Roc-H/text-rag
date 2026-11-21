@@ -20,20 +20,20 @@
     '베인스 필드':[1030,520],
     '베인스':[1160,520],
 
-    '프론테라 북쪽 평원':[610,255],
     '묘르닐 산맥':[475,275],
     '게펜':[225,385],
     '게펜 필드':[365,385],
-    '프론테라 서쪽 평원':[505,385],
     '프론테라':[650,385],
-    '프론테라 동쪽 평원':[790,385],
+    // P9 원작 맵 1:1 프론테라 시범: 원작 필드 12장 (워프 관계 기준 대략 배치)
+    'prt_fild00':[520,300], 'prt_fild01':[620,290], 'prt_fild02':[720,300], 'prt_fild03':[810,325],
+    'prt_fild04':[470,400], 'prt_fild05':[560,400], 'prt_fild06':[740,385],
+    'prt_fild07':[545,465], 'prt_fild08':[650,480], 'prt_fild09':[590,560], 'prt_fild10':[470,590], 'prt_fild11':[300,600],
     '페이욘 숲 북부':[860,465],
     '페이욘 숲 남부':[860,560],
     '페이욘':[860,655],
     '알베르타':[1030,625],
     '로컬라이징 투어':[1180,650],
 
-    '프론테라 남쪽 평원':[650,500],
     '이즈루드':[650,610],
     '소그라트 사막 동부':[515,515],
     '소그라트 사막 서부':[370,535],
@@ -323,6 +323,69 @@
     return `<div class="wm-dungeon-list"><div class="wm-list-title">원작 실맵 · ${maps.length}곳</div><ul>${cards}</ul></div>`;
   }
 
+  // ── 목적지로 빠른 이동 (볼트 설계_원작맵1대1_프론테라시범 §5-1) ─────────────────────────
+  // 순간이동이 아니다: 방문한 맵만으로 이어진 최단 경로를 칸당 1초씩 tryMove로 실제로 걷는다.
+  // 처음 가는 맵이 끼면 불가(탐험 보존) · 자동사냥·전투 중 불가 · 막히면 그 자리에서 멈춤.
+  function visitedRoute(start, goal, isVisited){
+    const s=canonicalMapName(start), g=canonicalMapName(goal);
+    if(!mapData(s) || !mapData(g) || s===g) return null;
+    const prev=new Map([[s,null]]), q=[s];
+    while(q.length){
+      const cur=q.shift();
+      if(cur===g) break;
+      mapConnections(cur).forEach(n=>{ if(!prev.has(n) && isVisited(n)){ prev.set(n,cur); q.push(n); } });
+    }
+    if(!prev.has(g)) return null;
+    const path=[];
+    for(let c=g; c!=null; c=prev.get(c)) path.unshift(c);
+    return path;
+  }
+  function playerVisited(ref){
+    const v=(typeof G!=='undefined' && G.player && G.player.visitedMaps) || {};
+    return !!(v[ref] || v[canonicalMapName(ref)] || v[displayNameFor(ref)]);
+  }
+  function walkActionHtml(name){
+    const cur=(typeof G!=='undefined' && G.currentMap) ? G.currentMap : '프론테라';
+    const route=visitedRoute(cur, name, playerVisited);
+    return route
+      ? `<button class="wm-action primary" data-dest="${esc(canonicalMapName(name))}" onclick="worldMapWalkTo(this.dataset.dest)">🚶 여기로 걸어가기 (${route.length-1}칸)</button>`
+      : '<button class="wm-action" disabled>처음 가는 길이 끼어 있어 한 칸씩 걸어가야 합니다</button>';
+  }
+  const WALK={timer:null};
+  function stopWalk(msg){
+    if(WALK.timer){ clearInterval(WALK.timer); WALK.timer=null; }
+    if(typeof document!=='undefined'){ const b=document.getElementById('wm-walk-stop'); if(b) b.remove(); }
+    if(msg && typeof log==='function') log(msg,'system');
+  }
+  window.worldMapVisitedRoute=visitedRoute;
+  window.worldMapActionHtml=walkActionHtml;
+  window.worldMapStopWalk=()=>stopWalk('🚶 걷기를 멈췄습니다.');
+  window.worldMapWalkTo=function(dest){
+    if(typeof G==='undefined' || !G.player) return;
+    if(G.autoHunt){ if(typeof log==='function') log('⚠️ 자동사냥 중에는 걸어갈 수 없습니다. 자동사냥을 멈춘 뒤 다시 시도하세요.','warning'); return; }
+    const route=visitedRoute(G.currentMap, dest, playerVisited);
+    if(!route){ if(typeof log==='function') log('🚶 가 본 길로 이어져 있지 않습니다. 처음 가는 곳은 한 칸씩 걸어가야 합니다.','warning'); return; }
+    stopWalk();
+    if(typeof closeModal==='function') closeModal();
+    if(typeof log==='function') log(`🚶 <b>${esc(displayNameFor(dest))}</b>까지 걸어갑니다 (${route.length-1}칸)`,'system');
+    if(typeof document!=='undefined' && document.body){
+      const b=document.createElement('button');
+      b.id='wm-walk-stop'; b.textContent='🚶 걷기 멈추기';
+      b.style.cssText='position:fixed;left:50%;bottom:86px;transform:translateX(-50%);z-index:900;padding:8px 14px;border-radius:16px;border:1px solid var(--border);background:var(--bg-dark);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.2);cursor:pointer';
+      b.onclick=()=>window.worldMapStopWalk();
+      document.body.appendChild(b);
+    }
+    let i=1;
+    WALK.timer=setInterval(()=>{
+      if(G.autoHunt || (G.battles && G.battles.length)) return stopWalk('🚶 걷기를 멈췄습니다.');
+      const before=canonicalMapName(G.currentMap);
+      if(typeof tryMove==='function') tryMove(route[i]);
+      if(canonicalMapName(G.currentMap)===before) return stopWalk(`🚶 ${esc(displayNameFor(route[i]))}(으)로 갈 수 없어 멈췄습니다.`);
+      i++;
+      if(i>=route.length) stopWalk(`🚶 <b>${esc(displayNameFor(dest))}</b>에 도착했습니다.`);
+    },1000);
+  };
+
   function detailHtml(name){
     const m=mapData(name);
     if(!m) return '<div class="wm-empty">지역 정보를 찾을 수 없습니다.</div>';
@@ -331,10 +394,9 @@
     const adjacent=cur!==name && mapConnections(cur).includes(canonicalMapName(name));
     const mvp=m.hasMvp ? '<span class="wm-badge danger">MVP</span>' : '';
     const safe=m.safe ? '<span class="wm-badge safe">안전</span>' : '';
-    let action='';
-    if(cur===name) action='<button class="wm-action" disabled>현재 위치</button>';
-    else if(adjacent) action=`<button class="wm-action primary" onclick="worldMapMoveSelected()">이 지역으로 이동</button>`;
-    else action='<button class="wm-action" disabled>인접 지역에서 이동 가능</button>';
+    const action=cur===name ? '<button class="wm-action" disabled>현재 위치</button>'
+      : adjacent ? `<button class="wm-action primary" onclick="worldMapMoveSelected()">이 지역으로 이동</button>`
+      : walkActionHtml(name);
 
     return `<div class="wm-detail-head"><div class="wm-detail-icon">${esc(m.emoji||'📍')}</div><div><b>${esc(displayNameFor(name))}</b><div class="wm-sub">${esc(m.type||'미상')} · 권장 Lv.${esc(m.level||'?')}</div></div></div>
       <div class="wm-badges">${safe}${mvp}</div>
@@ -497,13 +559,16 @@
   };
 
   // Overrides the legacy hard-coded ASCII world map after the main bundle loads.
-  window.showWorldMapModal=function(){
+  // dest(선택): 퀘스트 안내가 넘긴 목적지. 주면 그 지역을 선택해 현재 위치에서의 경로를 강조한다.
+  window.showWorldMapModal=function(dest){
     if(typeof DB==='undefined' || !DB.maps){
       if(typeof openModal==='function') openModal('🗺 세계지도','지도 데이터를 불러오지 못했습니다.',[{label:'닫기',action:()=>{}}]);
       return;
     }
+    const hasDest=!!(dest && mapData(dest));
+    if(hasDest) WM_STATE.selected=dest;
     if(!WM_STATE.selected || !mapData(WM_STATE.selected)) WM_STATE.selected=(typeof G!=='undefined'&&G.currentMap)||'프론테라';
     openModal('🗺 세계지도', mapHtml(), [{label:'닫기',action:()=>{}}]);
-    setTimeout(()=>focusMap('current'),0);
+    setTimeout(()=>focusMap(hasDest?'selected':'current'),0);
   };
 })();

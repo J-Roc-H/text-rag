@@ -874,9 +874,12 @@ body.work-mode p {
 <script id="db-monsters"   type="application/json">{{__DATA_DB_MONSTERS__}}</script>
 <script id="db-monster-ai-profiles" type="application/json">{{__DATA_DB_MONSTER_AI_PROFILES__}}</script>
 <script id="db-airships" type="application/json">{{__DATA_DB_AIRSHIPS__}}</script>
+<script id="db-pets" type="application/json">{{__DATA_DB_PETS__}}</script>
+<script id="db-pet-talk" type="application/json">{{__DATA_DB_PET_TALK__}}</script>
 <script id="db-maps"       type="application/json">{{__DATA_DB_MAPS__}}</script>
 <script id="db-map-groups" type="application/json">{{__DATA_DB_MAP_GROUPS__}}</script>
 <script id="db-map-spawns" type="application/json">{{__DATA_DB_MAP_SPAWNS__}}</script>
+<script id="db-prt-pilot" type="application/json">{{__DATA_DB_PRT_PILOT__}}</script>
 <script id="db-map-connections" type="application/json">{{__DATA_DB_MAP_CONNECTIONS__}}</script>
 <script id="db-map-restoration-ledger" type="application/json">{{__DATA_DB_MAP_RESTORATION_LEDGER__}}</script>
 <script id="db-element"    type="application/json">
@@ -997,7 +1000,7 @@ body.work-mode p {
 <div id="app"><div class="app-inner">
 <div id="titlebar">
   <span class="title-logo">⚔ 룬 미드가츠</span>
-  <span class="title-map" id="title-map">프론테라 남쪽 평원</span>
+  <span class="title-map" id="title-map">프론테라 필드 08</span>
   <span class="title-spacer"></span>
   <span class="save-state" id="save-state" title="자동저장 — 60초마다, 화면을 떠날 때"></span>
   <button class="sys-btn icon-btn" onclick="showSettingsMenu()" title="설정" aria-label="설정">⚙</button>
@@ -1026,6 +1029,7 @@ body.work-mode p {
 <button class="menu-btn" id="ctx-npc" onclick="showNpcModal()">💬 NPC</button>
 <button class="menu-btn" id="ctx-skill" style="display:none" onclick="showSkillModal()">✨ 스킬<i class="tab-badge" id="skill-badge" style="display:none"></i></button>
 <button class="menu-btn" id="quest-btn" style="display:none" onclick="showQuestModal()">📋 퀘스트<i class="tab-badge" id="quest-badge" style="display:none"></i></button>
+<button class="menu-btn" id="ctx-pet" style="display:none" onclick="showCompanionModal()">🐾 펫</button>
 <button class="menu-btn pc-only" onclick="showInvModal()">🎒 가방</button>
 <button class="menu-btn pc-only" onclick="showMoreMenu()">☰ 메뉴</button>
 </div>
@@ -1276,6 +1280,12 @@ const MAP_LEGACY_ALIASES = Object.freeze({
   "모로크 사막": "소그라트 사막 동부",
   "페이욘 숲": "페이욘 숲 북부"
 });
+// P9 원작 맵 1:1 프론테라 시범: 옛 지명 -> 대표 원작 맵 (세이브·퀘스트 문자열은 이 별칭으로 계속 열린다)
+const PILOT_LEGACY_MAP = Object.freeze({
+  "프론테라 남쪽 평원":"prt_fild08", "프론테라 서쪽 평원":"prt_fild05", "프론테라 동쪽 평원":"prt_fild06", "프론테라 북쪽 평원":"prt_fild01",
+  "프론테라 지하수로 1층":"prt_sewb1", "프론테라 지하수로 2층":"prt_sewb2", "프론테라 지하수로 3층":"prt_sewb3", "프론테라 지하수로 4층":"prt_sewb4",
+  "미궁 숲":"prt_maze01"
+});
 const COMPRESSED_MAP_GROUPS = Object.freeze({
   "글래스트 헤임 기사단":"gl_knight", "글래스트 헤임 지하수로":"gl_sewer",
   "알데바란 시계탑 심층":"clock_tower", "거북섬":"turtle_island",
@@ -1300,7 +1310,7 @@ function getMap(ref){
   let key = String(ref);
   if(DB.maps && DB.maps[key]) return DB.maps[key];                 // 현행 한국어 키
   if(DB.mapIdIndex && DB.mapIdIndex[key]) return DB.maps[DB.mapIdIndex[key]]; // 새 실맵 ID
-  let alias = MAP_LEGACY_ALIASES[key];
+  let alias = MAP_LEGACY_ALIASES[key] || PILOT_LEGACY_MAP[key];
   return alias && DB.maps ? (DB.maps[alias]||null) : null;         // 1:1 옛 이름만
 }
 function mapKey(ref){
@@ -1372,6 +1382,58 @@ function installMapSpawns(){
   });
 }
 
+// P9 원작 맵 1:1 프론테라 시범 (2026-11-21, 볼트 설계_원작맵1대1_프론테라시범_v0.1).
+// tools/build_prt_pilot.py가 rAthena pre-re 스폰·워프에서 뽑은 db-prt-pilot.json을 실맵으로 설치한다.
+// 출현은 원작 마릿수 가중치(spawnWeights), 연결은 원작 워프. 손으로 고치지 말고 도구를 다시 돌린다.
+function pilotLevel(ids, weights){
+  // 가중치 기준 하위·상위 10%를 뺀 레벨 범위
+  let rows=ids.map(id=>[(DB.monsters[id]||{}).lv||0, weights[id]||0]).sort((a,b)=>a[0]-b[0]);
+  let total=rows.reduce((s,r)=>s+r[1],0); if(!total) return '?';
+  let acc=0, lo=null, hi=null;
+  rows.forEach(([lv,w])=>{ let from=acc/total; acc+=w; let to=acc/total; if(lo==null && to>0.1) lo=lv; if(from<0.9) hi=lv; });
+  return lo===hi ? `${lo}` : `${lo}~${hi}`;
+}
+function installPilotMaps(){
+  let spec=DB.prtPilot; if(!spec||!spec.maps) return;
+  let ids=Object.keys(spec.maps);
+  ids.forEach(id=>{
+    let m=spec.maps[id], weights={};
+    (m.spawns||[]).forEach(([mid,c])=>{ weights[mid]=(weights[mid]||0)+c; });
+    let monsters=Object.keys(weights).map(Number), dungeon=m.group!=='프론테라 필드';
+    DB.maps[id]={ mapId:id, displayName:m.displayName, groupLabel:m.group, kind:'map', spawnSource:'rathena-pre-re',
+      type:dungeon?'던전':'필드', emoji:dungeon?'🕳':'🌿', desc:`${m.group} — 원작 ${id}`, safe:false,
+      monsters, spawnWeights:weights, level:pilotLevel(monsters, weights), connected:[] };
+    if(m.mvp) DB.maps[id].hasMvp=m.mvp;
+  });
+  // 옛 지명: 진입 묘사만 대표 맵으로 옮기고 지운다(세이브·문자열은 PILOT_LEGACY_MAP 별칭으로 계속 열린다)
+  Object.entries(PILOT_LEGACY_MAP).forEach(([old,id])=>{
+    let o=DB.maps[old]; if(!o) return;
+    ['entryDesc','firstVisitDesc'].forEach(k=>{ if(o[k] && !DB.maps[id][k]) DB.maps[id][k]=o[k]; });
+    delete DB.maps[old];
+  });
+  let link=(a,b)=>{ let A=DB.maps[a]; if(A && b!==a && !(A.connected||(A.connected=[])).includes(b)) A.connected.push(b); };
+  // 원작 워프: 시범 맵끼리 + 아직 변환 안 된 이웃은 임시 다리(그 권역이 변환되면 다리 대신 원작 워프로)
+  let bridgeTargets=new Set(Object.values(spec.bridges||{}));
+  ids.forEach(id=>(spec.maps[id].warps||[]).forEach(t=>{
+    if(spec.maps[t]) link(id,t);
+    else if(spec.bridges&&spec.bridges[t] && DB.maps[spec.bridges[t]]){ link(id,spec.bridges[t]); link(spec.bridges[t],id); }
+  }));
+  // 기존 지역이 옛 지명으로 걸던 연결: 원작 다리가 있는 지역은 원작 워프만 남기고, 다리가 없는 지역(예: 페이욘 숲 북부)은
+  // 대표 맵으로 돌려 잇는다 — 어떤 지역도 끊기지 않게 하는 임시 조치
+  Object.entries(DB.maps).forEach(([k,map])=>{
+    if(!map || spec.maps[k] || !Array.isArray(map.connected)) return;
+    let next=[];
+    map.connected.forEach(c=>{
+      let to=PILOT_LEGACY_MAP[c];
+      if(!to){ next.push(c); return; }
+      if(!bridgeTargets.has(k)){ next.push(to); link(to,k); }
+    });
+    map.connected=[...new Set(next)];
+  });
+  // 지하수로 입구: 원작은 프론테라 성 안 경비병 → TextRag 토벌대 입구(프론테라 ↔ 1층)를 유지
+  link('프론테라','prt_sewb1'); link('prt_sewb1','프론테라');
+}
+
 // P6: 한국 Pre-RE 근거가 있는 방향 연결만 실맵 그래프에 넣는다. 랜덤 워프와
 // 미확정 왕복로는 연결하지 않는다. 열쇠 등 조건은 출처가 있는 경우에만 이동 시 검사한다.
 function installMapConnections(){
@@ -1436,16 +1498,21 @@ function loadDB(){
   DB.shops        = j('db-shops');
   DB.mvpRespawn   = j('db-mvp-respawn');
   DB.airships     = j('db-airships');
+  DB.pets         = j('db-pets');
+  DB.petTalk      = j('db-pet-talk');
   DB.maps         = j('db-maps');
   DB.mapGroups    = j('db-map-groups');
   DB.mapSpawns    = j('db-map-spawns');
   DB.mapConnections = j('db-map-connections');
   DB.mapRestorationLedger = j('db-map-restoration-ledger');
+  DB.prtPilot     = j('db-prt-pilot');
   installMapGroups();
   rebuildMapIndex();
   installMapSpawns();
   rebuildMapIndex();
   installMapConnections();
+  rebuildMapIndex();
+  installPilotMaps();
   rebuildMapIndex();
   DB.npcs         = j('db-npcs');
   DB.skills       = (typeof DB_SKILLS !== 'undefined') ? DB_SKILLS : {};
@@ -2973,7 +3040,7 @@ const DB_SKILLS = {
 <script id="block-engine-logic">
 let slots=Array(6).fill(null);
 let activeSlot=-1; let regenTimer=null;
-let G={player:null,currentMap:"프론테라 남쪽 평원",battles:[],autoHunt:false,huntTimer:null,invTab:'all',cooldowns:{},itemCooldowns:{},skillTiers:null,tierIdx:null,skillTierSig:'',lastSkill:'',buffTick:0,passerbyTimer:null};
+let G={player:null,currentMap:"prt_fild08",battles:[],autoHunt:false,huntTimer:null,invTab:'all',cooldowns:{},itemCooldowns:{},skillTiers:null,tierIdx:null,skillTierSig:'',lastSkill:'',buffTick:0,passerbyTimer:null};
 
 // 공용 encounter 기록: processTurn과 runHeadlessTicks가 같은 기록 객체를 사용한다.
 const COMBAT_RECORD_LIMIT=30, COMBAT_EVENT_LIMIT=240;
@@ -3630,6 +3697,8 @@ function normalizeSave(p){
   // [보스 기척] 보스 옵션 값 이관(normal→기척기록, 보스만사냥→보스우선탐사) + 발견 기록 보강
   if(p.options && 'bossMode' in p.options) p.options.bossMode = normalizeBossMode(p.options.bossMode);
   if(!p.discoveries || typeof p.discoveries !== 'object' || Array.isArray(p.discoveries)) p.discoveries = {};
+  // [동반자] 펫·호문쿨루스 상태 보강 (source/companion.js, P3-10)
+  if(typeof companionNormalize==='function') companionNormalize(p);
 
   // [데이터 마이그레이션] 인벤의 유령 키 제거.
   // 드롭명이 아이템DB에 없던 시절에 쌓인 것들이라 팔 수도 쓸 수도 없는 죽은 데이터다.
@@ -3697,7 +3766,7 @@ function loadCharacter(i){
     activeSlot = -1;
     return;
   }
-  G.player = p; G.currentMap = p.savedMap||"프론테라 남쪽 평원"; G.battles=[]; G.autoHunt=false; clearTimeout(G.huntTimer);
+  G.player = p; G.currentMap = p.savedMap||"prt_fild08"; G.battles=[]; G.autoHunt=false; clearTimeout(G.huntTimer);
   const airshipRestored=typeof airshipRestore==='function' && airshipRestore();
   G.vendingSlots = []; G.lastVendingCheck = 0; // [P1-16] 이전 캐릭터의 노점이 새 캐릭터로 새지 않게(재고는 위 로드에서 환급됨)
   { let _vb=document.getElementById('vending-badge'); if(_vb) _vb.style.display='none'; }
@@ -3718,7 +3787,7 @@ function loadCharacter(i){
   if((p.baseExp||0) === 0 && (p.totalKills||0) === 0 && p.baseLv === 1 && p.job === "노비스") {
       log(`✨ <b>[새로운 연대기의 시작]</b>`,'level-up');
       log(`<b>[When]</b> 천 년의 평화가 바스라지고, 마왕 모로크의 부활이 속삭여지는 혼란의 시대에.`,'narrate');
-      log(`<b>[Where]</b> 룬 미드가츠 왕국의 심장부, 바람이 머무는 <b>${G.currentMap}</b>의 초원 위에서...`,'narrate');
+      log(`<b>[Where]</b> 룬 미드가츠 왕국의 심장부, 바람이 머무는 <b>${mapLabel(G.currentMap)}</b>의 초원 위에서...`,'narrate');
       log(`<b>[Who]</b> 아직은 풋내기 모험가에 불과한 당신이,`,'narrate');
       log(`<b>[What]</b> 훗날 음유시인들의 노래가 될 위대한 모험을 막 시작했습니다.`,'narrate');
       log(`<b>[How]</b> 초보자의 낡은 장비만을 꽉 쥔 채, 두려움을 이겨내는 굳건한 용기와 함께.`,'narrate');
@@ -5213,7 +5282,7 @@ function updateUI(){
     $('char-job').textContent = (p.rebirth ? '[전승] ' : '') + p.job;
   }
   if($('char-lv')) $('char-lv').textContent=`Base.${p.baseLv} / Job.${p.jobLv}`;
-  if($('title-map')) $('title-map').textContent=G.currentMap; 
+  if($('title-map')) $('title-map').textContent=mapLabel(G.currentMap); 
   if($('map-name-disp')) $('map-name-disp').textContent='🗺 '+G.currentMap+((typeof getZoneSuffix==='function')?getZoneSuffix():''); // [2-9] 구역 표시
   applyMapTint(); // [스타일] 맵 분위기 틴트
   if($('char-emoji')) $('char-emoji').textContent=DB.jobEmoji[JOB_NAME2CODE[normalizeJob(p.job)]]||'⚔️'; 
@@ -5530,7 +5599,7 @@ function renderSituation(){
       let ids=(zones&&zones.length>=2)?(zones[Math.min(G.zoneIdx||0,zones.length-1)].monsters||md.monsters):md.monsters;
       mons=ids.map(id=>DB.monsters[id]).filter(Boolean);
     }
-    h=`<div class="panel-hdr">지역 정보</div><div class="sit-body"><div class="sit-big">${md.emoji||'🗺'} ${G.currentMap}</div>`+
+    h=`<div class="panel-hdr">지역 정보</div><div class="sit-body"><div class="sit-big">${md.emoji||'🗺'} ${mapLabel(G.currentMap)}</div>`+
       `<div class="sit-sub">${md.type||''}${md.level&&md.level!=='0'?` · 권장 Lv.${md.level}`:''}</div>`+
       (md.desc?`<div class="sit-desc">${md.desc}</div>`:'')+
       (mons.length?`<div class="sit-lbl">출현 몬스터</div>`+mons.slice(0,8).map(m=>`<div class="sit-mon">${m.emoji||'?'} ${m.name} <span>Lv.${m.lv||'?'}</span></div>`).join('')+(mons.length>8?`<div class="sit-sub">외 ${mons.length-8}종</div>`:''):
@@ -5676,6 +5745,7 @@ function gainBaseExp(p, amount, silent){
       let canSpendNow = canSpendStatPoint(p);
       log(`🌟 Base Lv.${p.baseLv} 달성 — 상태 포인트 +${gainedPts} · 보유 ${p.statPoints}${canSpendNow?' · 능력치 배분 가능':''}`,'level-up');
       notify('레벨 업!','gold'); pbReact('levelup');
+      if(typeof companionPetTalk==='function') companionPetTalk(p,'ownerLevelUp',Date.now(),{urgent:true}); // [동반자]
     }
   }
   if(lvUp && !silent){
@@ -5886,12 +5956,14 @@ function enterMap(nm){
   if(!p.visitedMaps) p.visitedMaps={};
   let first=!p.visitedMaps[nm];
   if(md.entryDesc){
-    let lines=[`${md.emoji||'🗺'} <b>${nm}</b>`, md.entryDesc];
+    let lines=[`${md.emoji||'🗺'} <b>${mapLabel(nm)}</b>`, md.entryDesc];
     if(first && md.firstVisitDesc) lines.push(md.firstVisitDesc);
     logEvent('location', lines);
   } else {
-    log(`🗺 ${nm} 이동`,'location');
+    log(`🗺 ${mapLabel(nm)} 이동`,'location');
   }
+  // [동반자] 새 지역 위험 조언 (친밀도에 따라 암시~수치)
+  if(typeof companionPetAdvice==='function' && typeof calcStats==='function') companionPetAdvice(p, calcStats(), 'enter', {map:nm});
   p.visitedMaps[nm]=true;
 
   if(MAP_QUEST_DISCOVERY[nm] && p.quests){
@@ -6527,7 +6599,7 @@ function procAggressiveSpawn(p){
     if (p.options.huntStyle === 'aggressive' && G.battles.length > 0 && G.battles.length < 5) {
       let _amd = getMap(G.currentMap);
       if (_amd && !_amd.safe && _amd.monsters && _amd.monsters.length && Math.random() < 0.20) {
-        let _aid = _amd.monsters[Math.floor(Math.random() * _amd.monsters.length)];
+        let _aid = pickSpawnMonster(_amd, _amd.monsters);
         let _am = DB.monsters[_aid];
         if (_am) {
           G.battles.push(createCombatMonster(_aid, _am, {currentHp:_am.hp, maxHp:_am.hp, statusEffects:{}, distance:getInitialDistance(p)}));
@@ -6645,6 +6717,7 @@ function awardKillReward(p, mon, set, stats){
 }
 
 function processTurn(){
+  if(typeof companionTickOnline==='function' && G.player) companionTickOnline(G.player, Date.now(), !!(G.battles&&G.battles.length)); // [동반자] 펫 시간·대사 (헤드리스 중엔 무시)
   if(!G.battles.length)return;
   ensureCombatRecord(); G.combatTick=(G.combatTick||0)+1;
   let combatWorld=ensureCombatWorld(); combatWorld.tick=G.combatTick;
@@ -7272,7 +7345,7 @@ function processTurn(){
       updateUI(); if(G.autoHunt) scheduleTickAspd(600);
     }
     else {
-      recordCombatEvent('death',{player:p.name}); G.battles=[]; finishCombatRecord('death'); p.hp=0; log('💀 <b>쓰러졌습니다...</b> 마을 귀환','error'); pbReact('death');
+      recordCombatEvent('death',{player:p.name}); G.battles=[]; finishCombatRecord('death'); p.hp=0; log('💀 <b>쓰러졌습니다...</b> 마을 귀환','error'); pbReact('death'); if(typeof companionOnOwnerDeath==='function') companionOnOwnerDeath(p,(p.combatRecords||[]).slice(-1)[0],calcStats()); /* [동반자] 쓰러진 원인 한 줄·펫 대사 */
       // 경험치 손실 (Pre-Renewal: 현재 레벨 필요 EXP의 1%. Lv1·Lv99 제외. 레벨 다운 없음)
       if(p.baseLv > 1 && p.baseLv < 99){
         let expLoss = Math.floor((DB.expTable[p.baseLv]||0) * 0.01);
@@ -7625,6 +7698,7 @@ function checkQuestKill(monsterName) {
       log(`📋 [퀘스트] ${q.title}: ${qs.count}/${q.count}`, 'quest');
       if (qs.count >= q.count) {
         qs.state = 'completable';
+        if (autoCompleteTutorialStep(id)) continue;
         log(`✅ [퀘스트] ${q.title} — 완료! ${q.npc}에게 보고하세요.`, 'quest');
         notify(`퀘스트 완료 조건 달성!`, 'gold');
       }
@@ -7644,6 +7718,7 @@ function checkQuestGather() {
       qs.count = have;
       if (have >= q.count) {
         qs.state = 'completable';
+        if (autoCompleteTutorialStep(id)) continue;
         log(`✅ [퀘스트] ${q.title} — 완료! ${q.npc}에게 보고하세요.`, 'quest');
         notify(`퀘스트 완료 조건 달성!`, 'gold');
       }
@@ -7798,7 +7873,7 @@ function compoundCard(equipName, cardName) {
 }
 // ── 던전 접근 잠금 설정 ─────────────────────────────────────────────
 const DUNGEON_LOCKS = {
-  "프론테라 지하수로 1층":   { msg:"⚠️ 지하수로 입구에 몬스터들이 우글거립니다. 기사단 징병관에게 토벌대 입단 허가를 먼저 받으세요." },
+  "prt_sewb1":              { msg:"⚠️ 지하수로 입구에 몬스터들이 우글거립니다. 기사단 징병관에게 토벌대 입단 허가를 먼저 받으세요." },
   "거북섬":                 { msg:"⚠️ 거칠게 울부짖는 거대 바다거북들이 뱃길을 막고 있습니다. 부두의 거북 할아버지에게 입장료를 내야 합니다." },
   "침몰선":                 { msg:"⚠️ 침몰선 주변에 차갑고 음산한 기운이 가득합니다. 피스크에게 입장료를 내야 합니다." },
   "바이알란 섬":             { msg:"⚠️ 거센 해류와 함께 알 수 없는 힘이 앞을 막습니다. 이즈루드 부두 선원에게 승선료를 내야 합니다." },
@@ -7946,8 +8021,10 @@ window.talkNPC = function(nm){
         // interact 퀘스트: NPC 이름이 target_npc로 시작하면 완료 (지역명 접미사 허용)
         if (nm === q.target_npc || nm.startsWith(q.target_npc)) {
           qs.state = 'completable';
-          log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`, 'quest');
-          notify(`퀘스트 조건 달성!`, 'gold');
+          if (!autoCompleteTutorialStep(id)) {
+            log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`, 'quest');
+            notify(`퀘스트 조건 달성!`, 'gold');
+          }
         }
       }
       // interact가 아닌 경우 일반 NPC 서비스 진행
@@ -7972,8 +8049,10 @@ window.talkNPC = function(nm){
       if (q.type !== 'interact') continue;
       if (nm === q.target_npc || nm.startsWith(q.target_npc)) {
         qs.state = 'completable';
-        log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`, 'quest');
-        notify(`퀘스트 조건 달성!`, 'gold');
+        if (!autoCompleteTutorialStep(id)) {
+          log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`, 'quest');
+          notify(`퀘스트 조건 달성!`, 'gold');
+        }
         break;
       }
     }
@@ -8355,7 +8434,7 @@ function kafraSetSave(){
   G.player.savedMap = G.currentMap;
   saveLocal(); // 비안전 맵이어도 방금 넣은 G.player.savedMap(=현재 맵)이 그대로 기록된다
   notify('귀환 지점 설정 완료','gold');
-  log(`📍 <b>[카프라]</b> 귀환 지점이 <b>${G.currentMap}</b>으로 설정되었습니다.`,'system');
+  log(`📍 <b>[카프라]</b> 귀환 지점이 <b>${mapLabel(G.currentMap)}</b>으로 설정되었습니다.`,'system');
   closeModal();
 }
 
@@ -11526,9 +11605,20 @@ const ZONE_RESPAWN_MAX_MS = 20000;       // 전멸 후 리젠 딜레이 최대(m
 const ZONE_NAMES = ['A','B','C','D'];
 const _zoneCache = {};
 
+// 출현 몬스터 고르기: 원작 마릿수가 있는 맵(spawnWeights, P9 시범)은 그 비율로, 나머지는 목록에서 고르게.
+function pickSpawnMonster(md, pool){
+  let w=md&&md.spawnWeights;
+  if(w){
+    let ids=Object.keys(w), total=ids.reduce((s,id)=>s+(w[id]||0),0), r=Math.random()*total;
+    for(let id of ids){ r-=(w[id]||0); if(r<0) return Number(id); }
+    return Number(ids[ids.length-1]);
+  }
+  return pool[Math.floor(Math.random()*pool.length)];
+}
 function getZones(mapName){
   let md=getMap(mapName);
   if(!md||md.safe||!md.monsters||!md.monsters.length) return null;
+  if(md.spawnWeights) return null; // 원작 맵은 이미 레벨대별로 나뉘어 있다 — 레벨순 구역 진행을 쓰지 않음
   if(md.zones&&md.zones.length) return md.zones; // 맵 명시 zones 우선
   if(_zoneCache[mapName]) return _zoneCache[mapName];
   // 레벨 오름차순 정렬 → 균등 분할 (몬스터 종수 < 구역 수면 구역 수 축소)
@@ -11777,7 +11867,7 @@ function spawnMonsters(){
     if(!_pool||!_pool.length)_pool=md.monsters;
 
     for(let i=0;i<c;i++){
-      let id=_pool[Math.floor(Math.random()*_pool.length)];
+      let id=pickSpawnMonster(md,_pool);
       let m=DB.monsters[id];
       if(m){
         G.battles.push(createCombatMonster(id,m,{currentHp:m.hp,maxHp:m.hp,statusEffects:{},distance:initDist}));
@@ -12877,7 +12967,7 @@ function _awayCount(n, est){ return `${n>1?` ×${n}`:''}${est?` <span class="awa
 // 요약 줄 목록 — 로그 카드(full=false)와 창(full=true)이 같은 규칙을 쓴다
 function awaySummaryLines(summary, full){
   let m = summary.meta || {}, L = [];
-  L.push(`${m.timeStr||''}${m.map?` · ${m.map}`:''}${m.wasCapped?' (최대 12시간치)':''}`);
+  L.push(`${m.timeStr||''}${m.map?` · ${mapLabel(m.map)}`:''}${m.wasCapped?' (최대 12시간치)':''}`);
   let nums = [`⚔ 처치 <b>${(summary.kills||0).toLocaleString()}</b>`, `✨ EXP <b>+${(summary.exp||0).toLocaleString()}</b>`];
   if(summary.jexp) nums.push(`JEXP +${summary.jexp.toLocaleString()}`);
   if(summary.zeny) nums.push(`💰 <b>+${summary.zeny.toLocaleString()}z</b>`);
@@ -12888,13 +12978,14 @@ function awaySummaryLines(summary, full){
   if(ups.length) L.push('⬆ ' + ups.join(' · '));
   // 주요 사건
   let ev = [];
-  _awayGroup(summary.sightings, x=>x.id).forEach(g=>ev.push(`👣 <b>${g.x.name}</b>의 기척${_awayCount(g.n,g.est)} <span style="color:var(--text-dim)">(${g.x.map})</span>`));
+  _awayGroup(summary.sightings, x=>x.id).forEach(g=>ev.push(`👣 <b>${g.x.name}</b>의 기척${_awayCount(g.n,g.est)} <span style="color:var(--text-dim)">(${mapLabel(g.x.map)})</span>`));
   let evs = summary.events || [];
   _awayGroup(evs.filter(e=>e.kind==='card'), x=>x.item).forEach(g=>ev.push(`🃏 <b>${g.x.item}</b>${_awayCount(g.n,g.est)}`));
   let rare = _awayGroup(evs.filter(e=>e.kind==='rare'), x=>x.item);
   rare.slice(0, full ? rare.length : 3).forEach(g=>ev.push(`💎 희귀 드롭: <b>${g.x.item}</b>${_awayCount(g.n,g.est)}`));
   if(!full && rare.length > 3) ev.push(`💎 그 밖의 희귀 드롭 ${rare.length-3}종`);
   if(summary.deaths) ev.push(`💀 ${summary.deaths}회 쓰러짐 (휴식 후 사냥터로 복귀)`);
+  if(summary.companion) ev.push(summary.companion);
   if(m.potOut) ev.push('🧪 자동 회복약이 떨어졌다 — 보충 필요');
   if(ev.length){ L.push('<b>주요 사건</b>'); ev.forEach(x=>L.push('&nbsp;&nbsp;' + x)); }
   let keys = Object.keys(summary.items||{});
@@ -12925,6 +13016,8 @@ function showAwaySummaryModal(summary){
 }
 
 function processOfflineTicks(elapsedMs, resume = true) {
+  // [동반자] 헤드리스 표본이 시계를 과거로 돌리기 전에, 실제 시각으로 펫 시간을 한 번만 진행 (P3-10)
+  let companionRes = (G.player && typeof companionAdvance==='function') ? companionAdvance(G.player, Date.now()) : null;
   if(!G.autoHunt || !G.player) return;
   let huntMap = G.currentMap; // 오프라인 처리 전 사냥 맵 저장
   let s = calcStats();
@@ -12935,6 +13028,7 @@ function processOfflineTicks(elapsedMs, resume = true) {
   if(ticks <= 0) return;
 
   let summary = { kills:0, exp:0, jexp:0, zeny:0, items:{}, deaths:0 };
+  summary.companion = companionRes ? companionAwaySummaryLine(G.player, companionRes) : '';
   let p = G.player;
   let kc0 = Object.assign({}, p.killCount || {});
   let inv0 = Object.assign({}, p.inventory || {});
@@ -12966,7 +13060,7 @@ function processOfflineTicks(elapsedMs, resume = true) {
   // (재접속 정산은 resume:false — 위치는 마지막 안전지역 규칙을 호출부가 적용)
   if(resume && isSafeMap(G.currentMap) && huntMap && !isSafeMap(huntMap)){
     G.currentMap = huntMap;
-    log(`🗺️ <b>[${G.currentMap}]</b>으로 복귀하여 사냥을 재개합니다.`, 'system');
+    log(`🗺️ <b>[${mapLabel(G.currentMap)}]</b>으로 복귀하여 사냥을 재개합니다.`, 'system');
   }
   updateUI();
   saveLocal(); // offlineHunt 기준 시각 갱신 — 정산 직후 재로드돼도 같은 구간을 두 번 받지 않게
@@ -13284,7 +13378,7 @@ const TUTORIAL_QUESTS = {
     reward: { zeny: 200, items: { "빨간포션": 3 } },
     next: "tut_03",
     dialog: [
-      { speaker:"친절한 노인", text:"다시 오셨군요! 이번엔 실전 연습을 해볼까요? 프론테라 남쪽 평원의 포링 3마리를 처치해주세요. 하단의 [▶ 자동사냥] 버튼을 누르면 자동으로 싸워줍니다." },
+      { speaker:"친절한 노인", text:"다시 오셨군요! 이번엔 실전 연습을 해볼까요? 프론테라 남문 밖 들판(프론테라 필드 08)의 포링 3마리를 처치해주세요. 하단의 [▶ 자동사냥] 버튼을 누르면 자동으로 싸워줍니다." },
       { speaker:"player",
         choices:[
           { label:"알겠습니다, 해보죠!", next:"accept" },
@@ -13794,7 +13888,7 @@ const TUTORIAL_QUESTS = {
     npc: "친절한 노인",
     type: "job_choice",
     reward: { zeny: 500, items: {} },
-    next: null,
+    next: "tut_06",
     dialog: [
       { speaker:"친절한 노인", text:"이제 어느 정도 모험가로서의 기본기는 갖추셨습니다. 이제 직업을 선택할 시간이에요! 각 마을마다 직업 스승이 있어서 Job Lv.10을 달성하면 전직할 수 있답니다." },
       { speaker:"친절한 노인", text:"어떻게 하시겠어요?",
@@ -13807,6 +13901,29 @@ const TUTORIAL_QUESTS = {
     ],
     dialog_later: [
       { speaker:"친절한 노인", text:"천천히 생각해보세요. 결정이 되면 다시 오세요. Job Lv.10까지 사냥을 계속하면서 고민해보세요!" }
+    ]
+  },
+
+  // 「첫 동료」 — 첫 펫 알 3개 중 하나 고르기 (source/companion.js, P3-10). 새 캐릭터는 직업 마을 이동 직후 바로 시작,
+  // 튜토리얼을 이미 마친 세이브는 companionNormalize가 available로 열어 노인에게서 받는다.
+  tut_06: {
+    title: "첫 동료",
+    npc: "친절한 노인",
+    type: "pet_choice",
+    reward: { zeny: 0, items: {} },
+    next: null,
+    dialog: [
+      { speaker:"친절한 노인", text:"아, 마침 잘 왔네. 혼자 다니는 모험은 쓸쓸한 법이지. 내가 알 세 개를 데우고 있었는데, 하나 데려가 보겠나?" },
+      { speaker:"친절한 노인", text:"어떤 녀석인지는 껍데기 무늬만 봐도 알 수 있다네. 마음에 드는 걸 골라 보게." },
+      { speaker:"player",
+        choices:[
+          { label:"알을 보여 주세요.", next:"accept" },
+          { label:"나중에 올게요.", next:"later" }
+        ]
+      }
+    ],
+    dialog_later: [
+      { speaker:"친절한 노인", text:"알은 내가 잘 데우고 있겠네. 언제든 오게나." }
     ]
   }
 };
@@ -13889,10 +14006,54 @@ function giveQuestReward(q) {
   }
   if (q.unlock) {
     if (!p.unlockedMaps) p.unlockedMaps = {};
-    p.unlockedMaps[q.unlock] = true;
-    log(`🗺️ <b>[${q.unlock}]</b> 입장이 해금되었습니다!`, 'quest');
-    notify(`던전 해금: ${q.unlock}`, 'gold');
+    // 원작 맵 키로 연다 — 퀘스트 데이터의 한국어 지명이 별칭이어도(P9 시범) 잠금 검사(mapKey)와 같은 키가 된다
+    let unlockKey = (typeof mapKey==='function' && mapKey(q.unlock)) || q.unlock;
+    let unlockName = (typeof mapLabel==='function') ? mapLabel(q.unlock) : q.unlock;
+    p.unlockedMaps[unlockKey] = true;
+    log(`🗺️ <b>[${unlockName}]</b> 입장이 해금되었습니다!`, 'quest');
+    notify(`던전 해금: ${unlockName}`, 'gold');
   }
+}
+
+// ── 튜토리얼 현장 완료 (DEVREF-E-C P2-16): 사냥·수집·카프라 단계는 노인에게 돌아가 보고하지 않는다.
+//    노인을 만나는 것은 처음(tut_01 퀴즈)과 마지막(tut_05 전직 갈림길) 두 번뿐이다.
+//    이미 'completable'로 저장된 옛 세이브는 기존대로 노인에게 보고하면 이어진다.
+const TUT_AUTO_STEPS = ['tut_02', 'tut_03', 'tut_04'];
+function isTutorialAutoStep(q) {
+  return TUT_AUTO_STEPS.some(id => TUTORIAL_QUESTS[id] === q);
+}
+function logTutorialMessage(lines) {
+  (lines || []).forEach(l => {
+    if (l && l.text && l.speaker !== 'player') log(`📜 ${l.speaker}(전언): "${l.text}"`, 'npc');
+  });
+}
+function startTutorialStepInPlace(id) {
+  let p = G.player, q = TUTORIAL_QUESTS[id];
+  if (!p || !q) return;
+  p.quests[id] = { state: 'active', count: 0 };
+  logTutorialMessage((q.dialog || []).slice(0, 1));
+  log(`📋 [퀘스트 수락] ${q.title}`, 'quest');
+  notify(`퀘스트 수락: ${q.title}`, 'gold');
+  if (q.type === 'gather') checkQuestGather(); // 이미 모아 둔 젤로피가 있으면 바로 완료
+}
+// 다음 튜토리얼로 잇기: 현장 단계면 바로 수락, 아니면(전직 갈림길) 노인에게 돌아가라고 안내
+function continueTutorial(q) {
+  if (q.next && TUT_AUTO_STEPS.includes(q.next)) { startTutorialStepInPlace(q.next); return; }
+  unlockNextQuest(q);
+  let nq = q.next && TUTORIAL_QUESTS[q.next];
+  if (nq && isTutorialAutoStep(q)) log(`📋 ${nq.npc || q.npc}에게 돌아가 [${nq.title}]을(를) 상담하세요.`, 'quest');
+}
+function autoCompleteTutorialStep(id) {
+  let p = G.player, q = TUTORIAL_QUESTS[id], qs = p && p.quests && p.quests[id];
+  if (!q || !qs || !TUT_AUTO_STEPS.includes(id) || qs.state === 'done') return false;
+  qs.state = 'done';
+  logTutorialMessage(q.dialog_complete);
+  giveQuestReward(q);
+  log(`✅ [퀘스트 완료] ${q.title}`, 'quest');
+  notify('퀘스트 완료!', 'gold');
+  continueTutorial(q);
+  updateUI();
+  return true;
 }
 
 // ── 다음 퀘스트 해금
@@ -14072,9 +14233,9 @@ function handleDialogEnd(questId, branch) {
     // 퀴즈 성공 → 퀘스트 완료
     p.quests[questId].state = 'done';
     giveQuestReward(q);
-    unlockNextQuest(q);
     log(`✅ [퀘스트 완료] ${q.title}`, 'quest');
     notify('퀘스트 완료!', 'gold');
+    continueTutorial(q);
     updateUI();
     return;
   }
@@ -14086,9 +14247,9 @@ function handleDialogEnd(questId, branch) {
       p.quests[questId].state = 'done';
     }
     giveQuestReward(q);
-    unlockNextQuest(q);
     log(`✅ [퀘스트 완료] ${q.title}`, 'quest');
     notify('퀘스트 완료!', 'gold');
+    continueTutorial(q);
     updateUI();
     return;
   }
@@ -14109,6 +14270,8 @@ function acceptQuest(questId) {
   if (q.type === 'talk') {
     p.quests[questId].state = 'completable';
   }
+  // pet_choice(「첫 동료」): 알 셋을 굴려 고르기 창을 연다 (source/companion.js)
+  if (q.type === 'pet_choice' && typeof companionBeginStarter === 'function') companionBeginStarter(p);
   log(`📋 [퀘스트 수락] ${q.title}`, 'quest');
   notify(`퀘스트 수락: ${q.title}`, 'gold');
   updateUI();
@@ -14194,6 +14357,8 @@ function completeJobChoiceQuest(job, dest) {
   closeModal();
   questWarp(dest);
   updateUI();
+  // 「첫 동료」: 직업 마을 도착 직후 그 자리에서 알 고르기 (P3-10)
+  if (typeof companionBeginStarter === 'function') companionBeginStarter(p);
 }
 
 // ══════════════════════════════════════════════

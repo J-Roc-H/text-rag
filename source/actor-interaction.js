@@ -203,6 +203,8 @@ function aiMarkInteractTargets(name,p){
     if(!qs||qs.state!=='active'||q.type!=='interact'||!q.target_npc) continue;
     if(name===q.target_npc||name.startsWith(q.target_npc)){
       qs.state='completable'; done.push(q.title);
+      // 튜토리얼 현장 단계(카프라)는 노인에게 돌아가지 않고 그 자리에서 완료 (DEVREF-E-C P2-16)
+      if(typeof autoCompleteTutorialStep==='function' && autoCompleteTutorialStep(id)) continue;
       if(typeof log==='function') log(`📋 [퀘스트] ${q.title} — 완료 조건 달성! ${q.npc}에게 보고하세요.`,'quest');
       if(typeof notify==='function') notify('퀘스트 조건 달성!','gold');
     }
@@ -373,6 +375,8 @@ function aiRenderActor(name,extraNotice){
     if(e.state==='completable') aiAddAction(`✅ ${e.q.title} · 완료를 보고한다`,'primary',()=>{ if(e.q.dialog_complete&&typeof showDialogModal==='function') showDialogModal(e.id,'complete'); else if(typeof handleDialogEnd==='function') handleDialogEnd(e.id,'complete'); });
     else if(e.state==='available') aiAddAction(`❗ ${e.q.title} · 이야기를 듣는다`,'primary',()=>{ if(typeof showDialogModal==='function') showDialogModal(e.id,'main'); });
   });
+  // 「첫 동료」 알 고르기·맡긴 알 바꾸기 (source/companion.js, P3-10)
+  if(!autoBlocked&&!languageBlocked&&typeof companionElderActions==='function') companionElderActions(name,p,aiAddAction);
 
   let special='';
   if(autoBlocked){ special+='<div class="ai-notice warn">⚔️ 자동전투 중에는 대화와 서비스를 이용할 수 없습니다. 자동사냥을 멈춘 뒤 다시 시도하세요.</div>'; }
