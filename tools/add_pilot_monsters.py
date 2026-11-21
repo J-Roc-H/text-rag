@@ -22,6 +22,10 @@ NEW = {
     "1037": ("사이드 와인더", "🐍"),  # 사이드 와인더 카드
     "1048": ("도둑벌레 알", "🥚"),    # 도둑벌레 알 카드
 }
+# 게임에 원작 이름으로 이미 있으나 수치가 원작과 다른 몬스터 -> 원작 수치로 맞춤.
+# 440 고블린스팀라이더 = 원작 1280 Goblin Steamrider(STEAM_GOBLIN, 한국 원작명 고블린 스팀라이더 — 사용자 확인 2026-11-21).
+# 다른 맵에서 쓰이지 않던 항목이라 수치 교체의 영향은 원작 맵 시범뿐이다.
+ALIGN = {"440": "1280"}
 ELEMENT = {"무": "무속성", "무속성": "무속성", "물": "수속성", "불": "화속성", "땅": "지속성", "바람": "풍속성",
            "독": "독속성", "성": "성속성", "어둠": "암속성", "염": "염속성", "불사": "불사속성", "고스트": "유령속성"}
 
@@ -73,12 +77,7 @@ def main():
         if kr in items:
             en2kr.setdefault(en, kr)
 
-    names = {m["name"] for m in mons.values()}
-    next_id = max(int(k) for k in mons) + 1
-    added = []
-    for cid, (name, emoji) in NEW.items():
-        if name in names:
-            continue
+    def make_entry(cid, name, emoji):
         r = info[cid]
         lv = int(r["레벨"])
         n = lambda k: int(r[k])
@@ -95,7 +94,7 @@ def main():
         near = min(abs(m["lv"] - lv) for m in mons.values() if m.get("zeny"))
         zs = [m["zeny"] for m in mons.values() if m.get("zeny") and abs(m["lv"] - lv) == near]
         zeny = [int(statistics.median(z[0] for z in zs)), int(statistics.median(z[1] for z in zs))]
-        mons[str(next_id)] = {
+        return {
             "name": name, "emoji": emoji, "lv": lv, "hp": n("HP"),
             "atk": (n("ATK(min)") + n("ATK(max)")) // 2, "def": n("DEF"), "mdef": n("MDEF"),
             "softDef": n("VIT"), "hit": lv + n("DEX"), "flee": lv + n("AGI"),
@@ -103,8 +102,33 @@ def main():
             "range": n("사거리"), "atkDelay": n("공격딜레이"), "exp": n("BaseEXP"), "jexp": n("JobEXP"),
             "size": r["크기"], "race": r["종족"], "element": ELEMENT[r["속성"]], "elementLv": n("속성레벨"),
             "zeny": zeny, "drops": dl,
-        }
-        added.append((next_id, name, len(dl), len(drop_list(drops.get(cid, {}))), missing))
+        }, missing, len(drop_list(drops.get(cid, {})))
+
+    nl = b"\r\n" if b"\r\n" in raw else b"\n"
+    changed = False
+    # ① 이미 있는 게임 몬스터를 원작 수치로 맞춘다(이름·이모지는 게임 것 유지). 줄 단위로만 바꾼다.
+    for gid, cid in ALIGN.items():
+        cur = mons[gid]
+        entry, missing, total = make_entry(cid, cur["name"], cur["emoji"])
+        if cur.get("lv") == entry["lv"] and cur.get("hp") == entry["hp"]:
+            continue
+        head = b"  " + json.dumps(gid).encode() + b": "
+        i = raw.index(nl + head) + len(nl)
+        j = raw.index(nl, i)
+        tail = b"," if raw[i:j].rstrip().endswith(b",") else b""
+        raw = raw[:i] + head + json.dumps(entry, ensure_ascii=False, separators=(",", ":")).encode() + tail + raw[j:]
+        mons[gid] = entry
+        changed = True
+        print(f"align {gid} {cur['name']} <- original {cid} drops {len(entry['drops'])}/{total} missing={missing}")
+
+    names = {m["name"] for m in mons.values()}
+    next_id = max(int(k) for k in mons) + 1
+    added = []
+    for cid, (name, emoji) in NEW.items():
+        if name in names:
+            continue
+        mons[str(next_id)], missing, total = make_entry(cid, name, emoji)
+        added.append((next_id, name, len(mons[str(next_id)]["drops"]), total, missing))
         next_id += 1
 
     if added:
@@ -115,9 +139,11 @@ def main():
         lines = b"".join(b"," + nl + b"  " + json.dumps(str(a[0])).encode() + b": "
                          + json.dumps(mons[str(a[0])], ensure_ascii=False, separators=(",", ":")).encode()
                          for a in added)
-        out = body[:-1].rstrip() + lines + nl + b"}" + nl
+        raw = body[:-1].rstrip() + lines + nl + b"}" + nl
+        changed = True
+    if changed:
         tmp = mpath + ".tmp"
-        open(tmp, "wb").write(out)
+        open(tmp, "wb").write(raw)
         os.replace(tmp, mpath)
     for a in added:
         print(f"add {a[0]} {a[1]} drops {a[2]}/{a[3]} missing={a[4]}")
