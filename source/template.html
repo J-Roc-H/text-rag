@@ -5283,7 +5283,7 @@ function updateUI(){
   }
   if($('char-lv')) $('char-lv').textContent=`Base.${p.baseLv} / Job.${p.jobLv}`;
   if($('title-map')) $('title-map').textContent=mapLabel(G.currentMap); 
-  if($('map-name-disp')) $('map-name-disp').textContent='🗺 '+G.currentMap+((typeof getZoneSuffix==='function')?getZoneSuffix():''); // [2-9] 구역 표시
+  if($('map-name-disp')) $('map-name-disp').textContent='🗺 '+((typeof mapLabel==='function')?mapLabel(G.currentMap):G.currentMap)+((typeof getZoneSuffix==='function')?getZoneSuffix():''); // [2-9] 구역 표시
   applyMapTint(); // [스타일] 맵 분위기 틴트
   if($('char-emoji')) $('char-emoji').textContent=DB.jobEmoji[JOB_NAME2CODE[normalizeJob(p.job)]]||'⚔️'; 
   { let f=document.getElementById('eq-doll-fig'), j=document.getElementById('eq-doll-job'); // [P1-13 v1.2] 장비창 인형

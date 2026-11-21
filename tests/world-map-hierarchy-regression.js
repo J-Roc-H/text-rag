@@ -50,7 +50,7 @@ function render({runtimeMaps=maps, currentMap='프론테라'}={}) {
   const windowObj={};
   const documentObj={
     querySelectorAll(){ return []; },
-    getElementById(){ return detail; }
+    getElementById(id){ return id==='wm-quick' ? {innerHTML:''} : detail; }
   };
   const execute = new Function('DB', 'G', 'window', 'document', 'openModal', 'closeModal', 'setTimeout', 'getMap', `${source}\nreturn window;`);
   const world = execute(
@@ -122,7 +122,7 @@ const fullDetail={innerHTML:''};
 const fullExecute=new Function('DB','G','window','document','openModal','closeModal','setTimeout','getMap',`${source}\nreturn window;`);
 const fullWorld=fullExecute(
   live.DB, {currentMap:'프론테라'}, {},
-  {querySelectorAll(){ return []; },getElementById(){ return fullDetail; }},
+  {querySelectorAll(){ return []; },getElementById(id){ return id==='wm-quick' ? {innerHTML:''} : fullDetail; }},
   (_title,html)=>{ fullHtml=html; }, ()=>{}, callback=>callback(), live.getMap
 );
 fullWorld.showWorldMapModal();
