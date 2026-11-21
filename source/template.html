@@ -5283,7 +5283,7 @@ function updateUI(){
   }
   if($('char-lv')) $('char-lv').textContent=`Base.${p.baseLv} / Job.${p.jobLv}`;
   if($('title-map')) $('title-map').textContent=mapLabel(G.currentMap); 
-  if($('map-name-disp')) $('map-name-disp').textContent='🗺 '+G.currentMap+((typeof getZoneSuffix==='function')?getZoneSuffix():''); // [2-9] 구역 표시
+  if($('map-name-disp')) $('map-name-disp').textContent='🗺 '+((typeof mapLabel==='function')?mapLabel(G.currentMap):G.currentMap)+((typeof getZoneSuffix==='function')?getZoneSuffix():''); // [2-9] 구역 표시
   applyMapTint(); // [스타일] 맵 분위기 틴트
   if($('char-emoji')) $('char-emoji').textContent=DB.jobEmoji[JOB_NAME2CODE[normalizeJob(p.job)]]||'⚔️'; 
   { let f=document.getElementById('eq-doll-fig'), j=document.getElementById('eq-doll-job'); // [P1-13 v1.2] 장비창 인형
@@ -5841,12 +5841,38 @@ function isLogNearBottom(el){ return (el.scrollHeight-el.scrollTop-el.clientHeig
 function logSetScrollTop(gl,v){
   logState._progScroll=true;
   gl.scrollTop=v;
-  requestAnimationFrame(()=>{ requestAnimationFrame(()=>{ logState._progScroll=false; }); });
+  // 화면 갱신(rAF)이 멈춘 상태(숨은 창·절전)에서도 표시가 남아 다음 사용자 스크롤을 삼키지 않게 시간으로 푼다
+  clearTimeout(logState._progTimer); logState._progTimer=setTimeout(()=>{ logState._progScroll=false; },120);
 }
+
+// 사용자 손이 닿은 스크롤만 "읽는 중"으로 본다. 코드가 만든 스크롤 이벤트가 두 프레임 뒤에
+// 늦게 도착하면(아이폰 사파리) _progScroll 표시가 이미 풀려 사용자 스크롤로 오인됐고,
+// 중요 사건 읽기 고정의 자동 복귀 타이머까지 취소돼 「새 로그」 단추를 눌러야만 내려가던 원인.
+const LOG_USER_SCROLL_MS=1500; // 손 뗀 뒤 관성 스크롤까지 사용자 몫으로 본다
+function logMarkUserInput(){ logState.userInputAt=Date.now(); }
+function logUserScrolling(){ return logState.touching || (Date.now()-(logState.userInputAt||0))<LOG_USER_SCROLL_MS; }
+function logBindUserInput(){
+  let gl=$('game-log'); if(!gl || gl._logInputBound) return; gl._logInputBound=true;
+  gl.addEventListener('touchstart',()=>{ logState.touching=true; logMarkUserInput(); },{passive:true});
+  gl.addEventListener('touchmove',logMarkUserInput,{passive:true});
+  ['touchend','touchcancel'].forEach(ev=>gl.addEventListener(ev,()=>{ logState.touching=false; logMarkUserInput(); },{passive:true}));
+  ['wheel','pointerdown','mousedown'].forEach(ev=>gl.addEventListener(ev,logMarkUserInput,{passive:true}));
+  document.addEventListener('keydown',e=>{ if(/^(PageUp|PageDown|ArrowUp|ArrowDown|Home|End| )$/.test(e.key)) logMarkUserInput(); });
+  // 화면 높이가 바뀌면(주소창 접힘·로그 확대·창 전환) 따라가는 중일 때 바닥에 다시 붙인다
+  if(typeof ResizeObserver==='function') new ResizeObserver(()=>{ if(logState.following) logSetScrollTop(gl,gl.scrollHeight); }).observe(gl);
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',logBindUserInput); else logBindUserInput();
 
 function logOnScroll(){
   let gl=$('game-log');
   if(logState._progScroll){ logState._progScroll=false; return; } // 코드가 일으킨 스크롤은 무시
+  if(!logUserScrolling()){
+    // 사용자 입력 없이 생긴 스크롤(늦게 온 코드 스크롤·레이아웃 변화): 상태를 바꾸지 않는다.
+    // 따라가는 중이면 바닥에 다시 붙이고, 바닥에 닿았으면 따라가기를 되살린다.
+    if(logState.following){ if(!isLogNearBottom(gl)) logSetScrollTop(gl,gl.scrollHeight); }
+    else if(isLogNearBottom(gl) && !logState.holdTimer){ logState.following=true; logResetCounter(); }
+    return;
+  }
   if(isLogNearBottom(gl)){
     if(!logState.following){
       logState.following=true;

@@ -53736,7 +53736,7 @@ function updateUI(){
   }
   if($('char-lv')) $('char-lv').textContent=`Base.${p.baseLv} / Job.${p.jobLv}`;
   if($('title-map')) $('title-map').textContent=mapLabel(G.currentMap); 
-  if($('map-name-disp')) $('map-name-disp').textContent='🗺 '+G.currentMap+((typeof getZoneSuffix==='function')?getZoneSuffix():''); // [2-9] 구역 표시
+  if($('map-name-disp')) $('map-name-disp').textContent='🗺 '+((typeof mapLabel==='function')?mapLabel(G.currentMap):G.currentMap)+((typeof getZoneSuffix==='function')?getZoneSuffix():''); // [2-9] 구역 표시
   applyMapTint(); // [스타일] 맵 분위기 틴트
   if($('char-emoji')) $('char-emoji').textContent=DB.jobEmoji[JOB_NAME2CODE[normalizeJob(p.job)]]||'⚔️'; 
   { let f=document.getElementById('eq-doll-fig'), j=document.getElementById('eq-doll-job'); // [P1-13 v1.2] 장비창 인형
@@ -54294,12 +54294,38 @@ function isLogNearBottom(el){ return (el.scrollHeight-el.scrollTop-el.clientHeig
 function logSetScrollTop(gl,v){
   logState._progScroll=true;
   gl.scrollTop=v;
-  requestAnimationFrame(()=>{ requestAnimationFrame(()=>{ logState._progScroll=false; }); });
+  // 화면 갱신(rAF)이 멈춘 상태(숨은 창·절전)에서도 표시가 남아 다음 사용자 스크롤을 삼키지 않게 시간으로 푼다
+  clearTimeout(logState._progTimer); logState._progTimer=setTimeout(()=>{ logState._progScroll=false; },120);
 }
+
+// 사용자 손이 닿은 스크롤만 "읽는 중"으로 본다. 코드가 만든 스크롤 이벤트가 두 프레임 뒤에
+// 늦게 도착하면(아이폰 사파리) _progScroll 표시가 이미 풀려 사용자 스크롤로 오인됐고,
+// 중요 사건 읽기 고정의 자동 복귀 타이머까지 취소돼 「새 로그」 단추를 눌러야만 내려가던 원인.
+const LOG_USER_SCROLL_MS=1500; // 손 뗀 뒤 관성 스크롤까지 사용자 몫으로 본다
+function logMarkUserInput(){ logState.userInputAt=Date.now(); }
+function logUserScrolling(){ return logState.touching || (Date.now()-(logState.userInputAt||0))<LOG_USER_SCROLL_MS; }
+function logBindUserInput(){
+  let gl=$('game-log'); if(!gl || gl._logInputBound) return; gl._logInputBound=true;
+  gl.addEventListener('touchstart',()=>{ logState.touching=true; logMarkUserInput(); },{passive:true});
+  gl.addEventListener('touchmove',logMarkUserInput,{passive:true});
+  ['touchend','touchcancel'].forEach(ev=>gl.addEventListener(ev,()=>{ logState.touching=false; logMarkUserInput(); },{passive:true}));
+  ['wheel','pointerdown','mousedown'].forEach(ev=>gl.addEventListener(ev,logMarkUserInput,{passive:true}));
+  document.addEventListener('keydown',e=>{ if(/^(PageUp|PageDown|ArrowUp|ArrowDown|Home|End| )$/.test(e.key)) logMarkUserInput(); });
+  // 화면 높이가 바뀌면(주소창 접힘·로그 확대·창 전환) 따라가는 중일 때 바닥에 다시 붙인다
+  if(typeof ResizeObserver==='function') new ResizeObserver(()=>{ if(logState.following) logSetScrollTop(gl,gl.scrollHeight); }).observe(gl);
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',logBindUserInput); else logBindUserInput();
 
 function logOnScroll(){
   let gl=$('game-log');
   if(logState._progScroll){ logState._progScroll=false; return; } // 코드가 일으킨 스크롤은 무시
+  if(!logUserScrolling()){
+    // 사용자 입력 없이 생긴 스크롤(늦게 온 코드 스크롤·레이아웃 변화): 상태를 바꾸지 않는다.
+    // 따라가는 중이면 바닥에 다시 붙이고, 바닥에 닿았으면 따라가기를 되살린다.
+    if(logState.following){ if(!isLogNearBottom(gl)) logSetScrollTop(gl,gl.scrollHeight); }
+    else if(isLogNearBottom(gl) && !logState.holdTimer){ logState.following=true; logResetCounter(); }
+    return;
+  }
   if(isLogNearBottom(gl)){
     if(!logState.following){
       logState.following=true;
@@ -67322,23 +67348,26 @@ function applyComboEffects(p, DB, fx, parseItem) {
     '베인스 필드':[1030,520],
     '베인스':[1160,520],
 
-    '묘르닐 산맥':[475,275],
+    '묘르닐 산맥':[555,295],
     '게펜':[225,385],
     '게펜 필드':[365,385],
     '프론테라':[650,385],
-    // P9 원작 맵 1:1 프론테라 시범: 원작 필드 12장 (워프 관계 기준 대략 배치)
-    'prt_fild00':[520,300], 'prt_fild01':[620,290], 'prt_fild02':[720,300], 'prt_fild03':[810,325],
-    'prt_fild04':[470,400], 'prt_fild05':[560,400], 'prt_fild06':[740,385],
-    'prt_fild07':[545,465], 'prt_fild08':[650,480], 'prt_fild09':[590,560], 'prt_fild10':[470,590], 'prt_fild11':[300,600],
+    // P9 원작 맵 1:1 프론테라 시범: 원작 필드 12장. 원작 워프가 맵 어느 가장자리에 있는지로
+    // 칸을 정했다(프론테라 기준 가로 95·세로 90). 묘르닐 산맥=mjolnir_09, 이즈루드·소그라트 사막
+    // 동부(moc_fild01)·게펜 필드(gef_fild01)도 같은 칸 체계에 둔다.
+    'prt_fild00':[460,295], 'prt_fild01':[650,295], 'prt_fild02':[745,295], 'prt_fild03':[840,295],
+    'prt_fild04':[460,385], 'prt_fild05':[555,385], 'prt_fild06':[745,385],
+    'prt_fild07':[555,475], 'prt_fild08':[650,475],
+    'prt_fild11':[365,565], 'prt_fild10':[460,565], 'prt_fild09':[555,565],
     '페이욘 숲 북부':[860,465],
     '페이욘 숲 남부':[860,560],
     '페이욘':[860,655],
     '알베르타':[1030,625],
     '로컬라이징 투어':[1180,650],
 
-    '이즈루드':[650,610],
-    '소그라트 사막 동부':[515,515],
-    '소그라트 사막 서부':[370,535],
+    '이즈루드':[745,475],
+    '소그라트 사막 동부':[650,565],
+    '소그라트 사막 서부':[245,640],
     '모로크':[225,535],
     '오크 마을':[365,465],
     '코모도 필드':[370,655],
@@ -67688,17 +67717,28 @@ function applyComboEffects(p, DB, fx, parseItem) {
     },1000);
   };
 
+  function actionHtml(name){
+    const cur=(typeof G!=='undefined' && G.currentMap) ? G.currentMap : '프론테라';
+    const adjacent=cur!==name && mapConnections(cur).includes(canonicalMapName(name));
+    return cur===name ? '<button class="wm-action" disabled>현재 위치</button>'
+      : adjacent ? `<button class="wm-action primary" onclick="worldMapMoveSelected()">이 지역으로 이동</button>`
+      : walkActionHtml(name);
+  }
+  // 모바일: 상세 패널이 지도 아래로 밀려 이동 단추가 안 보인다 → 창 아래에 붙는 막대로 같은 단추를 띄운다.
+  function quickHtml(name){
+    if(!mapData(name)) return '';
+    return `<div class="wm-quick-name">📍 <b>${esc(displayNameFor(name))}</b></div><div class="wm-quick-act">${actionHtml(name)}</div>`;
+  }
+  window.worldMapQuickHtml=quickHtml;
+
   function detailHtml(name){
     const m=mapData(name);
     if(!m) return '<div class="wm-empty">지역 정보를 찾을 수 없습니다.</div>';
     const cur=(typeof G!=='undefined' && G.currentMap) ? G.currentMap : '프론테라';
     const path=shortestPath(cur,name);
-    const adjacent=cur!==name && mapConnections(cur).includes(canonicalMapName(name));
     const mvp=m.hasMvp ? '<span class="wm-badge danger">MVP</span>' : '';
     const safe=m.safe ? '<span class="wm-badge safe">안전</span>' : '';
-    const action=cur===name ? '<button class="wm-action" disabled>현재 위치</button>'
-      : adjacent ? `<button class="wm-action primary" onclick="worldMapMoveSelected()">이 지역으로 이동</button>`
-      : walkActionHtml(name);
+    const action=actionHtml(name);
 
     return `<div class="wm-detail-head"><div class="wm-detail-icon">${esc(m.emoji||'📍')}</div><div><b>${esc(displayNameFor(name))}</b><div class="wm-sub">${esc(m.type||'미상')} · 권장 Lv.${esc(m.level||'?')}</div></div></div>
       <div class="wm-badges">${safe}${mvp}</div>
@@ -67808,13 +67848,15 @@ function applyComboEffects(p, DB, fx, parseItem) {
       .wm-emoji{font-size:16px;pointer-events:none}.wm-label{font-size:11px;fill:var(--text);font-weight:600;pointer-events:none}.wm-node.compact .wm-label{font-size:10px;font-weight:500}.wm-mvp{font-size:11px;fill:#a34f4f;pointer-events:none}
       .wm-side{border:1px solid var(--border);border-radius:8px;background:var(--bg-dark);padding:12px;align-self:stretch}.wm-side h4{font-size:11px;color:var(--text-dim);margin:0 0 10px}.wm-detail-head{display:flex;align-items:center;gap:9px}.wm-detail-head b{font-size:14px}.wm-detail-icon{font-size:26px}.wm-sub{font-size:10px;color:var(--text-dim);margin-top:2px}.wm-badges{margin:9px 0 4px}.wm-badge{display:inline-block;font-size:9px;padding:2px 5px;border:1px solid var(--border);border-radius:10px;margin-right:4px}.wm-badge.safe{color:#3b745d}.wm-badge.danger{color:#9a4c4c}.wm-desc{font-size:11px;line-height:1.55;color:var(--text);min-height:34px}.wm-dungeon-list{margin:10px 0;padding:8px;background:var(--bg-panel);border-radius:5px}.wm-list-title{font-size:10px;font-weight:700;color:var(--text-dim);margin-bottom:5px}.wm-dungeon-list ul{margin:0;padding:0;list-style:none;max-height:190px;overflow:auto}.wm-dungeon-list li{padding:5px 0;border-top:1px solid var(--border);font-size:10px;line-height:1.4}.wm-dungeon-list li:first-child{border-top:0}.wm-dungeon-list li b{display:block;color:var(--text)}.wm-dungeon-list li span{display:block;color:var(--text-dim);font-size:9px}.wm-route-label{font-size:10px;color:var(--text-dim);margin-top:14px}.wm-route{font-size:11px;line-height:1.5;margin:4px 0 12px;padding:7px;background:var(--bg-panel);border-radius:5px;word-break:keep-all}.wm-action{width:100%;padding:7px;border-radius:5px;border:1px solid var(--border);background:var(--bg-panel);color:var(--text);font-size:11px}.wm-action.primary{background:var(--blue-light);border-color:var(--blue-light);color:#fff;cursor:pointer}.wm-action:disabled{opacity:.6}
       .wm-note{grid-column:1/-1;color:var(--text-dim);font-size:10px;margin-top:-5px}
-      @media(max-width:760px){.wm-toolbar{align-items:flex-start}.wm-view-controls{margin-left:0;width:100%}.wm-control{flex:1}.wm-shell{grid-template-columns:1fr;min-height:0}.wm-side{min-height:180px}.wm-canvas{min-height:430px}.wm-svg{min-width:1200px;min-height:680px}.wm-note{grid-column:1}}
+      .wm-quick{display:none}
+      @media(max-width:760px){.wm-quick{display:flex;position:sticky;bottom:0;z-index:5;gap:8px;align-items:center;margin-top:8px;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--bg-dark);box-shadow:0 -2px 8px rgba(0,0,0,.12)}.wm-quick-name{flex:0 1 40%;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.wm-quick-act{flex:1}.wm-quick-act .wm-action{padding:9px;font-size:12px}.wm-toolbar{align-items:flex-start}.wm-view-controls{margin-left:0;width:100%}.wm-control{flex:1}.wm-shell{grid-template-columns:1fr;min-height:0}.wm-side{min-height:180px}.wm-canvas{min-height:430px}.wm-svg{min-width:1200px;min-height:680px}.wm-note{grid-column:1}}
     </style>
     <div class="wm-toolbar">
       <div class="wm-legend"><span><i class="wm-dot town"></i>마을</span><span><i class="wm-dot field"></i>필드</span><span><i class="wm-dot dungeon"></i>던전</span><span>◎ 현재 위치</span><span>━ 도보 선택 경로</span><span>┄ 단방향 연결</span><span>🛫 공항 선택 시 점선: 국내선(파랑) · 국제선(보라)</span></div>
       <div class="wm-view-controls"><button class="wm-control ${WM_STATE.showDungeonEntrances?'active':''}" onclick="worldMapToggleEntrances()">${entranceLabel}</button><button class="wm-control" onclick="worldMapFocus('current')">현재 위치 보기</button><button class="wm-control" onclick="worldMapFocus('selected')">선택 위치 보기</button></div>
     </div>
-    <div class="wm-shell"><div class="wm-canvas">${renderSvg()}</div><aside class="wm-side"><h4>선택 지역</h4><div id="wm-detail">${detailHtml(WM_STATE.selected)}</div></aside><div class="wm-note">던전 입구 ${entranceCount}곳은 실제 입구 노드입니다. 지형 우선 보기는 노드만 잠시 접고, 선택한 던전의 원작 층별 실맵·출현군·이동 경로는 그대로 유지합니다. 이전 압축 그룹명은 지도에 표시하지 않습니다.</div></div>`;
+    <div class="wm-shell"><div class="wm-canvas">${renderSvg()}</div><aside class="wm-side"><h4>선택 지역</h4><div id="wm-detail">${detailHtml(WM_STATE.selected)}</div></aside><div class="wm-note">던전 입구 ${entranceCount}곳은 실제 입구 노드입니다. 지형 우선 보기는 노드만 잠시 접고, 선택한 던전의 원작 층별 실맵·출현군·이동 경로는 그대로 유지합니다. 이전 압축 그룹명은 지도에 표시하지 않습니다.</div></div>
+    <div class="wm-quick" id="wm-quick">${quickHtml(WM_STATE.selected)}</div>`;
   }
 
   function renderMapModal(){
@@ -67844,6 +67886,7 @@ function applyComboEffects(p, DB, fx, parseItem) {
     document.querySelectorAll('.wm-node.selected').forEach(el=>el.classList.remove('selected'));
     document.querySelectorAll('.wm-node').forEach(el=>{ if(el.getAttribute('data-name')===name) el.classList.add('selected'); });
     const d=document.getElementById('wm-detail'); if(d) d.innerHTML=detailHtml(name);
+    const q=document.getElementById('wm-quick'); if(q) q.innerHTML=quickHtml(name);
   };
 
   window.worldMapToggleEntrances=function(){
