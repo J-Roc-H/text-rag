@@ -26,8 +26,9 @@ function install() {
 const ctx = install(), DB = ctx.DB, api = ctx.api;
 const pilotIds = Object.keys(DB.prtPilot.maps);
 
-// 40 maps installed as real maps with weights (프론테라 19 + 이즈루드 해저동굴 5 + 페이욘 필드 11·동굴 5)
-assert.strictEqual(pilotIds.length, 40);
+// 71 maps installed as real maps with weights (프론테라 19 + 이즈루드 해저동굴 5 + 페이욘 16
+// + 알베르타 침몰선 2·거북섬 5 + 소그라트 사막 필드 11·개미 지옥 2·피라미드 6·스핑크스 5)
+assert.strictEqual(pilotIds.length, 71);
 pilotIds.forEach((id) => {
   const m = api.getMap(id);
   assert(m && m.kind === 'map' && m.mapId === id, id);
@@ -58,17 +59,30 @@ for (const [a, b] of [['프론테라', 'prt_fild08'], ['prt_fild08', '이즈루�
 assert(linked('프론테라', 'prt_sewb1') && linked('prt_sewb1', '프론테라'), '지하수로 입구(토벌대)');
 assert(!linked('프론테라', 'prt_fild01'), '원작에 없는 프론테라->prt_fild01 연결은 만들지 않음');
 // 이즈루드·페이욘 확대: 원작 워프(마을·통로 섬·궁수 마을은 다리)
-for (const [a, b] of [['이즈루드', 'iz_dun00'], ['페이욘', 'pay_fild01'], ['페이욘', 'pay_fild08'], ['페이욘', 'pay_dun00'], ['pay_fild03', '알베르타'], ['pay_fild01', '소그라트 사막 동부'], ['iz_dun03', 'iz_dun04']]) {
+for (const [a, b] of [['이즈루드', 'iz_dun00'], ['페이욘', 'pay_fild01'], ['페이욘', 'pay_fild08'], ['페이욘', 'pay_dun00'], ['pay_fild03', '알베르타'], ['pay_fild01', 'moc_fild03'], ['iz_dun03', 'iz_dun04']]) {
   assert(linked(a, b) && linked(b, a), `${a} <-> ${b}`);
 }
 assert.strictEqual(api.getMap('pay_dun04').hasMvp, 199);           // 월야화
 assert.strictEqual(api.getMap('pay_fild05').type, '필드');
 assert.strictEqual(api.getMap('iz_dun02').type, '던전');
+// 알베르타·소그라트 사막 확대: 마을 옆 통로 맵(모로크 폐허·moc_fild19·alb2trea)은 다리, 피라미드 지하 통로는 접음,
+// 거북섬은 원작대로 배(알베르타 ↔ 거북섬 던전), 출구 없는 moc_fild20은 들어온 길로 되돌아감
+for (const [a, b] of [['모로크', 'moc_fild07'], ['모로크', 'moc_fild12'], ['모로크', 'moc_pryd01'], ['모로크', 'in_sphinx1'], ['모로크', 'moc_fild20'],
+  ['알베르타', 'treasure01'], ['알베르타', 'tur_dun01'], ['moc_pryd01', 'moc_pryd05'], ['moc_fild18', '코모도 필드'], ['anthell01', '코모도 필드'],
+  ['prt_fild09', 'moc_fild20'], ['moc_fild03', 'pay_fild01']]) {
+  assert(linked(a, b) && linked(b, a), `${a} <-> ${b}`);
+}
+assert(!api.getMap('moc_fild21') && !api.getMap('moc_prydb1'), '이벤트 맵·통로 맵은 만들지 않음');
+for (const [id, mvp] of [['moc_pryd04', 138], ['in_sphinx5', 139], ['tur_dun04', 164], ['treasure02', 479]]) assert.strictEqual(api.getMap(id).hasMvp, mvp, id);
+assert.strictEqual(api.getMap('moc_fild01').type, '필드');
+assert.strictEqual(api.getMap('anthell01').type, '던전');
+assert.strictEqual(api.mapKey('거북섬'), 'tur_dun01');
 
 // every map stays reachable from 프론테라 (아무 지역도 끊기지 않음)
 const seen = new Set([api.mapKey('프론테라')]), q = [...seen];
 while (q.length) { const c = q.shift(); api.mapConnections(c).forEach((n) => { if (!seen.has(n)) { seen.add(n); q.push(n); } }); }
-['페이욘 숲 북부', '게펜', '묘르닐 산맥', '이즈루드', 'prt_maze03', 'prt_sewb4', 'prt_fild11', 'pay_fild05', 'pay_fild04', 'iz_dun04', 'pay_dun04', '알베르타']
+['페이욘 숲 북부', '게펜', '묘르닐 산맥', '이즈루드', 'prt_maze03', 'prt_sewb4', 'prt_fild11', 'pay_fild05', 'pay_fild04', 'iz_dun04', 'pay_dun04', '알베르타',
+  'moc_fild16', 'moc_pryd06', 'in_sphinx5', 'anthell02', 'treasure02', 'tur_dun04', 'tur_dun05', '차원 균열', '코모도']
   .forEach((k) => assert(seen.has(api.mapKey(k)), `프론테라에서 못 감: ${k}`));
 
 // ── Task 3: 가중치 뽑기 · 구역 끄기 ─────────────────────────────────────────────
@@ -121,6 +135,12 @@ while (q.length) { const c = q.shift(); api.mapConnections(c).forEach((n) => { i
   assert(c3.G.player.unlockedMaps.prt_sewb1, JSON.stringify(c3.G.player.unlockedMaps));
   const lock = html.slice(html.indexOf('const DUNGEON_LOCKS = {'), html.indexOf('const DUNGEON_LOCKS = {') + 400);
   assert(lock.includes('"prt_sewb1"'), '잠금 표도 원작 맵 키');
+  const lockAll = html.slice(html.indexOf('const DUNGEON_LOCKS = {'), html.indexOf('};', html.indexOf('const DUNGEON_LOCKS = {')));
+  assert(lockAll.includes('"tur_dun01"') && lockAll.includes('"treasure01"') && !lockAll.includes('"거북섬"') && !lockAll.includes('"침몰선"'), '알베르타 잠금도 원작 맵 키');
+  // 거북섬은 더 이상 층 분리 대기 묶음이 아니다: 옛 세이브의 거북섬 해금은 tur_dun01로
+  const turtle = { savedMap: '알베르타', unlockedMaps: { '거북섬': true, '침몰선': true } };
+  c3.mig.migrateSave(turtle);
+  assert(turtle.unlockedMaps.tur_dun01 && turtle.unlockedMaps.treasure01, JSON.stringify(turtle.unlockedMaps));
   // 시작 맵 기본값과 튜토리얼 대사
   assert(!/currentMap:"프론테라 남쪽 평원"|savedMap\|\|"프론테라 남쪽 평원"/.test(html), '기본 시작 맵이 옛 지명');
   assert(!html.includes('프론테라 남쪽 평원의 포링'), '튜토리얼 대사가 옛 지명');

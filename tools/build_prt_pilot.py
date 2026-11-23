@@ -23,9 +23,14 @@ REPO = "rathena/rathena"
 # 변환한 권역 (2026-11-21 프론테라 시범 → 이즈루드·페이욘 확대)
 SPAWN_FILES = ["npc/pre-re/mobs/fields/prontera.txt", "npc/pre-re/mobs/dungeons/prt_sew.txt", "npc/pre-re/mobs/dungeons/prt_maze.txt",
                "npc/pre-re/mobs/dungeons/iz_dun.txt",
-               "npc/pre-re/mobs/fields/payon.txt", "npc/pre-re/mobs/dungeons/pay_dun.txt"]
+               "npc/pre-re/mobs/fields/payon.txt", "npc/pre-re/mobs/dungeons/pay_dun.txt",
+               # 알베르타·소그라트 사막 확대 (2026-11-24)
+               "npc/pre-re/mobs/dungeons/treasure.txt", "npc/pre-re/mobs/dungeons/tur_dun.txt",
+               "npc/pre-re/mobs/fields/morocc.txt", "npc/pre-re/mobs/dungeons/anthell.txt",
+               "npc/pre-re/mobs/dungeons/moc_pryd.txt", "npc/pre-re/mobs/dungeons/in_sphinx.txt"]
 
-PILOT = re.compile(r"^(prt_fild\d\d|prt_sewb\d|prt_maze0\d|iz_dun0\d|pay_fild\d\d|pay_dun0\d)$")
+PILOT = re.compile(r"^(prt_fild\d\d|prt_sewb\d|prt_maze0\d|iz_dun0\d|pay_fild\d\d|pay_dun0\d"
+                   r"|treasure0\d|tur_dun0\d|moc_fild\d\d|anthell0\d|moc_pryd0\d|in_sphinx\d)$")
 
 
 def group_of(map_id):
@@ -41,6 +46,21 @@ def group_of(map_id):
         return "페이욘 필드", f"페이욘 필드 {map_id[-2:]}"
     if map_id.startswith("pay_dun"):
         return "페이욘 동굴", f"페이욘 동굴 {int(map_id[-2:]) + 1}층"
+    # 알베르타·소그라트 사막: 옛 TextRag 이름(침몰선·개미 지옥 n층·모로크 피라미드 n층·모로크 스핑크스)을 묶음으로,
+    # 층 번호는 원작 맵 번호 그대로(기계식). 거북섬 1~4는 기존 분리 대기 표의 이름을 그대로 쓴다.
+    if map_id.startswith("treasure"):
+        return "침몰선", f"침몰선 {int(map_id[-2:])}층"
+    if map_id.startswith("tur_dun"):
+        names = {"tur_dun01": "거북섬 던전", "tur_dun02": "거북이 섬 던전", "tur_dun03": "양거촌", "tur_dun04": "구양궁"}
+        return "거북섬", names.get(map_id, f"거북섬 {int(map_id[-2:])}")
+    if map_id.startswith("moc_fild"):
+        return "소그라트 사막 필드", f"소그라트 사막 {map_id[-2:]}"
+    if map_id.startswith("anthell"):
+        return "개미 지옥", f"개미 지옥 {int(map_id[-2:])}층"
+    if map_id.startswith("moc_pryd"):
+        return "모로크 피라미드", f"모로크 피라미드 {int(map_id[-2:])}층"
+    if map_id.startswith("in_sphinx"):
+        return "모로크 스핑크스", f"모로크 스핑크스 {map_id[-1]}층"
     raise ValueError(map_id)
 
 
@@ -55,8 +75,16 @@ BRIDGE_RULES = [
     (r"^alberta$", "알베르타"),
     (r"^gef_fild\d\d$", "게펜 필드"),
     (r"^mjolnir_\d\d$", "묘르닐 산맥"),
-    (r"^moc_fild\d\d$", "소그라트 사막 동부"),
+    (r"^morocc$", "모로크"),
+    (r"^moc_ruins$", "모로크"),       # 모로크 폐허(몬스터 없음, 마을 바로 옆) — 피라미드 입구
+    (r"^moc_fild19$", "모로크"),      # 몬스터 없는 마을 앞 사막 — 스핑크스 입구
+    (r"^alb2trea$", "알베르타"),      # 몬스터 없는 통로 — 침몰선 입구
+    (r"^cmd_fild\d\d$", "코모도 필드"),
 ]
+# 몬스터 없는 통로 맵(다리 대상도 아님): 양쪽 이웃을 바로 잇는다. 피라미드 지하 연결 통로(1층 <-> 5층)
+PASSTHROUGH = {"moc_prydb1"}
+# 변환하지 않는 원작 맵: 모로크 파괴 이벤트 맵(출현이 모로크의 현신·상처받은 모로크뿐, TextRag 몬스터로 못 맞춤)
+EXCLUDE = {"moc_fild21", "moc_fild22"}
 
 WARP = re.compile(r"^([a-z0-9_]+),\d+,\d+(?:,\d+)?\t(?:warp2?)\t[^\t]+\t\d+,\d+,([a-z0-9_]+),\d+,\d+")
 SCRIPT_HEAD = re.compile(r"^([a-z0-9_]+),\d+,\d+,\d+\tscript\t")
@@ -99,8 +127,20 @@ def monster_index(vault_db):
     for mid, m in monsters.items():
         by_fp.setdefault((m.get("lv"), m.get("hp"), m.get("exp"), m.get("jexp")), set()).add(mid)
     ro_to_tr = {}
+    drops = {r["몬스터ID"]: r for r in read_csv(os.path.join(vault_db, "몬스터 드롭 아이템.csv"))}
+
+    def rates(cid):
+        r = drops.get(cid, {})
+        return [float(r[f"확률{i}"].rstrip("%")) for i in range(1, 9) if r.get(f"확률{i}")]
+
     for r in read_csv(os.path.join(vault_db, "몬스터 정보.csv")):
         hit = by_fp.get((num(r["레벨"]), num(r["HP"]), num(r["BaseEXP"]), num(r["JobEXP"])), set())
+        if len(hit) > 1:
+            # 지문이 같은 게임 몬스터가 여럿(예: 마타·제노크 수치 동일) -> 원작 드롭 확률과 가장 많이 겹치는 하나만, 동점이면 포기
+            ro = rates(r["ID"])
+            score = {t: sum(any(abs(p - q) < 1e-9 for q in (monsters[t].get("drops") or {}).values()) for p in ro) for t in hit}
+            best = max(score.values())
+            hit = {t for t, s in score.items() if s == best} if best else hit
         if len(hit) == 1:
             ro_to_tr[r["ID"]] = next(iter(hit))
     name_to_id = {}
@@ -130,7 +170,7 @@ def main():
     for f in SPAWN_FILES:
         for line in gh_text(f):
             m = SPAWN.match(line)
-            if not m or not PILOT.match(m.group(1)):
+            if not m or not PILOT.match(m.group(1)) or m.group(1) in EXCLUDE:
                 continue
             map_id, boss, ro_name, ro_id, count = m.group(1), bool(m.group(2)), m.group(3), m.group(4), int(m.group(5))
             g, disp = group_of(map_id)
@@ -159,12 +199,24 @@ def main():
             w = WARP_CMD.search(line) if src else None
             if w:
                 pair = (src, w.group(1))
-            if pair and pair[0] != pair[1] and (PILOT.match(pair[0]) or PILOT.match(pair[1])):
+            if pair and pair[0] != pair[1] and not (EXCLUDE & set(pair)) and \
+                    (PILOT.match(pair[0]) or PILOT.match(pair[1]) or PASSTHROUGH & set(pair)):
                 edges.add(pair)
+    # 통로 맵 접기: A -> 통로 -> B 를 A -> B 로
+    for p_ in PASSTHROUGH:
+        ins = {a for a, b in edges if b == p_ and a != p_}
+        outs = {b for a, b in edges if a == p_ and b != p_}
+        edges = {e for e in edges if p_ not in e} | {(a, b) for a in ins for b in outs if a != b}
+    # 출구가 하나도 없는 맵(원작 자료에 나가는 워프가 없음, 예: moc_fild20)은 들어온 맵으로 되돌아 나간다 — 갇히지 않게
+    for x in [k for k in maps if not any(a == k for a, _ in edges)]:
+        edges |= {(x, a) for a, b in list(edges) if b == x}
+    # 반대로 들어오는 워프가 없는 맵(원작은 NPC 대화로 들어감, 예: tur_dun05)은 나가는 곳에서 들어온다 — 못 가는 맵이 없게
+    for x in [k for k in maps if not any(b == k for _, b in edges)]:
+        edges |= {(b, x) for a, b in list(edges) if a == x}
     bridges = {}
     for a_, b_ in sorted(edges):
         for x in (a_, b_):
-            if PILOT.match(x) or x in bridges:
+            if x in maps or x in bridges:
                 continue
             for pat, legacy in BRIDGE_RULES:
                 if re.match(pat, x):
@@ -175,7 +227,7 @@ def main():
 
     head = gh_head()
     out = {
-        "src": f"rathena {head[:7]} npc/pre-re/mobs (prontera·prt_sew·prt_maze·iz_dun·payon·pay_dun) + npc/**/warps — 사실값만 추출",
+        "src": f"rathena {head[:7]} npc/pre-re/mobs (prontera·prt_sew·prt_maze·iz_dun·payon·pay_dun·treasure·tur_dun·morocc·anthell·moc_pryd·in_sphinx) + npc/**/warps — 사실값만 추출",
         "maps": {k: {"group": v["group"], "displayName": v["displayName"],
                      "spawns": sorted(([int(t), c] for t, c in v["spawns"].items()), key=lambda x: -x[1]),
                      "mvp": int(v["mvp"]) if v["mvp"] else None,
