@@ -51,14 +51,8 @@ def drop_list(r):
     return out
 
 
-def main():
-    mpath = os.path.join(DATA, "db-monsters.json")
-    raw = open(mpath, "rb").read()
-    mons = json.loads(raw.decode("utf-8-sig"))
-    items = json.load(open(os.path.join(DATA, "db-items.json"), encoding="utf-8-sig"))
-    info = rows("몬스터 정보.csv", "ID")
-    drops = rows("몬스터 드롭 아이템.csv", "몬스터ID")
-
+def build_en2kr(mons, items, info, drops):
+    """영문 아이템 키 -> 게임 한국어 이름. tools/build_gathering.py도 같은 대응표를 쓴다."""
     # 영문 아이템 키 -> 한국어: ① 아이템의 _aegis ② 지문이 맞는 기존 몬스터의 드롭을 확률로 짝짓기
     en2kr = {v["_aegis"]: k for k, v in items.items() if isinstance(v, dict) and v.get("_aegis")}
     fp = {}
@@ -83,6 +77,18 @@ def main():
     for en, kr in {"Acorn": "도토리", "Tsurugi_": "츠루기", "Hood_": "후드", "Guisarme_": "귀삼", "Chrysalis": "번데기"}.items():
         if kr in items:
             en2kr.setdefault(en, kr)
+    return en2kr
+
+
+def main():
+    mpath = os.path.join(DATA, "db-monsters.json")
+    raw = open(mpath, "rb").read()
+    mons = json.loads(raw.decode("utf-8-sig"))
+    items = json.load(open(os.path.join(DATA, "db-items.json"), encoding="utf-8-sig"))
+    info = rows("몬스터 정보.csv", "ID")
+    drops = rows("몬스터 드롭 아이템.csv", "몬스터ID")
+
+    en2kr = build_en2kr(mons, items, info, drops)
 
     def make_entry(cid, name, emoji):
         r = info[cid]

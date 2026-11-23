@@ -876,6 +876,7 @@ body.work-mode p {
 <script id="db-airships" type="application/json">{{__DATA_DB_AIRSHIPS__}}</script>
 <script id="db-pets" type="application/json">{{__DATA_DB_PETS__}}</script>
 <script id="db-pet-talk" type="application/json">{{__DATA_DB_PET_TALK__}}</script>
+<script id="db-gathering" type="application/json">{{__DATA_DB_GATHERING__}}</script>
 <script id="db-maps"       type="application/json">{{__DATA_DB_MAPS__}}</script>
 <script id="db-map-groups" type="application/json">{{__DATA_DB_MAP_GROUPS__}}</script>
 <script id="db-map-spawns" type="application/json">{{__DATA_DB_MAP_SPAWNS__}}</script>
@@ -1503,6 +1504,7 @@ function loadDB(){
   DB.airships     = j('db-airships');
   DB.pets         = j('db-pets');
   DB.petTalk      = j('db-pet-talk');
+  DB.gathering    = j('db-gathering');
   DB.maps         = j('db-maps');
   DB.mapGroups    = j('db-map-groups');
   DB.mapSpawns    = j('db-map-spawns');
@@ -4339,7 +4341,9 @@ function rollDrops(p, mon, opts, stats){
       log(`🎁 ${name} 획득!`,'loot');
       if(isCard) pbReact('card', k);
     }
-  });
+  });
+  // [P3-11] 펫 채집 — 처치 한 번마다 원작 풀·버섯 비율로 기회(온라인·방치 표본·외삽 공통 경로)
+  if(typeof companionGatherOnKill==='function') companionGatherOnKill(p, opts);
 }
 
 // ── 아이템 표시명 생성 (카드 접두/접미어 + 배수 처리) ──────────────────────────
