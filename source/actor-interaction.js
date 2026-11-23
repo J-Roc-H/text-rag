@@ -314,7 +314,7 @@ function aiDungeonState(n,p){
 }
 function aiDungeonHtml(st){
   let rows=st.rows.map(r=>`<div><span>${aiEsc(r[0])}</span><span>${r[1]?'✅':'❌'}${r[2]?` ${aiEsc(r[2])}`:''}</span></div>`).join('');
-  return `<div class="ai-card"><div class="ai-card-head"><span class="ai-card-title">🗺️ ${aiEsc(st.target||'입장 허가')}</span><span class="ai-card-state">${st.already?'해금 완료':st.canEnter?'입장 가능':'조건 미달'}</span></div>${rows?`<div class="ai-cond">${rows}</div>`:''}</div>`;
+  return `<div class="ai-card"><div class="ai-card-head"><span class="ai-card-title">🗺️ ${aiEsc((st.target&&typeof mapLabel==='function'&&mapLabel(st.target))||st.target||'입장 허가')}</span><span class="ai-card-state">${st.already?'해금 완료':st.canEnter?'입장 가능':'조건 미달'}</span></div>${rows?`<div class="ai-cond">${rows}</div>`:''}</div>`;
 }
 function aiExchangeRecipes(n){
   if(Array.isArray(n.exchanges)) return n.exchanges;

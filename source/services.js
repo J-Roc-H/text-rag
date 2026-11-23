@@ -620,13 +620,13 @@ function svcShowDungeonAccess(nm,n){
   let p=G.player, st=svcDungeonState(n,p);
   if(st.already){
     openModal(`${n.emoji||'🗺️'} ${nm}`,
-      `<div style="font-size:12px;line-height:1.8;"><b>${svcHtml(st.target)}</b> 입장 허가는 이미 등록되어 있습니다.<br><span style="font-size:10px;color:var(--text-dim);">입장료를 다시 지불하지 않습니다.</span></div>`,
+      `<div style="font-size:12px;line-height:1.8;"><b>${svcHtml(((typeof mapLabel==='function'&&mapLabel(st.target))||st.target))}</b> 입장 허가는 이미 등록되어 있습니다.<br><span style="font-size:10px;color:var(--text-dim);">입장료를 다시 지불하지 않습니다.</span></div>`,
       [{label:'확인',action:()=>{}}]);
     return;
   }
   let cond = st.rows.length ? st.rows.map(x=>`<div>${x}</div>`).join('') : '<div>추가 조건 없음</div>';
   let body = `<div style="font-size:12px;line-height:1.7;">
-    <b>${svcHtml(st.target)}</b> 입장 허가
+    <b>${svcHtml(((typeof mapLabel==='function'&&mapLabel(st.target))||st.target))}</b> 입장 허가
     <div style="margin-top:8px;padding:8px;border:1px solid var(--border);border-radius:3px;font-size:10px;">${cond}</div>
     ${n.consumeReqItems?'<div style="margin-top:5px;font-size:10px;color:var(--text-dim);">요구 아이템은 허가 시 소모됩니다.</div>':''}
   </div>`;
@@ -641,7 +641,7 @@ window.serviceDungeonUnlock = function(nm){
   let n=DB.npcs[nm], p=G.player;
   if(!n) return;
   let st=svcDungeonState(n,p);
-  if(st.already){ log(`🗺️ ${st.target} 입장은 이미 해금되어 있습니다.`,'system'); closeModal(); return; }
+  if(st.already){ log(`🗺️ ${((typeof mapLabel==='function'&&mapLabel(st.target))||st.target)} 입장은 이미 해금되어 있습니다.`,'system'); closeModal(); return; }
   if(!st.canEnter){ log(`⚠ 입장 조건 미달: ${st.reasons.join(' / ')}`,'warning'); svcShowDungeonAccess(nm,n); return; }
 
   if(n.consumeReqItems){
@@ -654,8 +654,8 @@ window.serviceDungeonUnlock = function(nm){
   if(!p.unlockedMaps) p.unlockedMaps={};
   p.unlockedMaps[st.target]=true;
   if(st.cost) log(`💰 -${st.cost.toLocaleString()}z (입장 허가)`,'warning');
-  log(`🗺️ <b>[${st.target}]</b> 입장이 해금되었습니다!`,'quest');
-  notify(`던전 해금: ${st.target}`,'gold');
+  log(`🗺️ <b>[${((typeof mapLabel==='function'&&mapLabel(st.target))||st.target)}]</b> 입장이 해금되었습니다!`,'quest');
+  notify(`던전 해금: ${((typeof mapLabel==='function'&&mapLabel(st.target))||st.target)}`,'gold');
   if(typeof checkQuestGather==='function') checkQuestGather();
   svcSave(); updateUI(); closeModal();
 };

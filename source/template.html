@@ -1278,13 +1278,16 @@ const DB = {};
 const MAP_LEGACY_ALIASES = Object.freeze({
   "프론테라 평원": "프론테라 남쪽 평원",
   "모로크 사막": "소그라트 사막 동부",
-  "페이욘 숲": "페이욘 숲 북부"
+  "페이욘 숲": "pay_fild08"
 });
 // P9 원작 맵 1:1 프론테라 시범: 옛 지명 -> 대표 원작 맵 (세이브·퀘스트 문자열은 이 별칭으로 계속 열린다)
 const PILOT_LEGACY_MAP = Object.freeze({
   "프론테라 남쪽 평원":"prt_fild08", "프론테라 서쪽 평원":"prt_fild05", "프론테라 동쪽 평원":"prt_fild06", "프론테라 북쪽 평원":"prt_fild01",
   "프론테라 지하수로 1층":"prt_sewb1", "프론테라 지하수로 2층":"prt_sewb2", "프론테라 지하수로 3층":"prt_sewb3", "프론테라 지하수로 4층":"prt_sewb4",
-  "미궁 숲":"prt_maze01"
+  "미궁 숲":"prt_maze01",
+  // 이즈루드·페이욘 확대(2026-11-21): 옛 이름과 같은 층 이름의 원작 맵으로. 바이알란 섬(배삯 목적지)은 해저동굴 입구로
+  "해저동굴 1층":"iz_dun00", "해저동굴 2층":"iz_dun01", "바이알란 섬":"iz_dun00",
+  "페이욘 숲 북부":"pay_fild08", "페이욘 숲 남부":"pay_fild01", "페이욘 동굴 1층":"pay_dun00", "페이욘 동굴 3층":"pay_dun02"
 });
 const COMPRESSED_MAP_GROUPS = Object.freeze({
   "글래스트 헤임 기사단":"gl_knight", "글래스트 헤임 지하수로":"gl_sewer",
@@ -1399,7 +1402,7 @@ function installPilotMaps(){
   ids.forEach(id=>{
     let m=spec.maps[id], weights={};
     (m.spawns||[]).forEach(([mid,c])=>{ weights[mid]=(weights[mid]||0)+c; });
-    let monsters=Object.keys(weights).map(Number), dungeon=m.group!=='프론테라 필드';
+    let monsters=Object.keys(weights).map(Number), dungeon=!/필드$/.test(m.group);
     DB.maps[id]={ mapId:id, displayName:m.displayName, groupLabel:m.group, kind:'map', spawnSource:'rathena-pre-re',
       type:dungeon?'던전':'필드', emoji:dungeon?'🕳':'🌿', desc:`${m.group} — 원작 ${id}`, safe:false,
       monsters, spawnWeights:weights, level:pilotLevel(monsters, weights), connected:[] };
@@ -7902,7 +7905,7 @@ const DUNGEON_LOCKS = {
   "prt_sewb1":              { msg:"⚠️ 지하수로 입구에 몬스터들이 우글거립니다. 기사단 징병관에게 토벌대 입단 허가를 먼저 받으세요." },
   "거북섬":                 { msg:"⚠️ 거칠게 울부짖는 거대 바다거북들이 뱃길을 막고 있습니다. 부두의 거북 할아버지에게 입장료를 내야 합니다." },
   "침몰선":                 { msg:"⚠️ 침몰선 주변에 차갑고 음산한 기운이 가득합니다. 피스크에게 입장료를 내야 합니다." },
-  "바이알란 섬":             { msg:"⚠️ 거센 해류와 함께 알 수 없는 힘이 앞을 막습니다. 이즈루드 부두 선원에게 승선료를 내야 합니다." },
+  "iz_dun00":               { msg:"⚠️ 바이란 섬으로 가는 뱃길이 없습니다. 이즈루드 부두 선원에게 승선료를 내야 합니다." },
   "오딘 신전":              { msg:"⚠️ 신들의 강렬한 기운이 발을 묶어 놓습니다. 휘겔의 발굴 안내인에게 탐사 지원금을 내야 합니다." },
   "아루나펠츠 신전 성역":    { msg:"⚠️ 여신 프레이야의 성스러운 빛이 강하게 가로막습니다. 네마에게 성역 입장 의식을 먼저 거쳐야 합니다." },
   "생체연구소 1층":          { msg:"⚠️ 중무장한 레켄버 경비원들이 입구를 굳게 지키고 있습니다. 피쉬본에게 비밀 통로를 물어보세요." },

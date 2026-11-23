@@ -31,10 +31,13 @@
     'prt_fild04':[460,385], 'prt_fild05':[555,385], 'prt_fild06':[745,385],
     'prt_fild07':[555,475], 'prt_fild08':[650,475],
     'prt_fild11':[365,565], 'prt_fild10':[460,565], 'prt_fild09':[555,565],
-    '페이욘 숲 북부':[860,465],
-    '페이욘 숲 남부':[860,560],
-    '페이욘':[860,655],
-    '알베르타':[1030,625],
+    // 페이욘 권역 원작 필드 11장: 원작 워프 가장자리 기준 칸(페이욘 기준 가로 95·세로 90, 북쪽이 위).
+    // pay_fild04는 소그라트 사막(moc_fild01·02) 쪽에 붙은 칸이다.
+    '페이욘':[840,655], 'pay_fild08':[935,655], 'pay_fild09':[1030,655],
+    'pay_fild01':[840,745], 'pay_fild07':[935,745], 'pay_fild10':[1030,745],
+    'pay_fild11':[745,835], 'pay_fild02':[840,835], 'pay_fild03':[935,835], '알베르타':[1030,835],
+    'pay_fild05':[840,925], 'pay_fild06':[935,925],
+    'pay_fild04':[745,565],
     '로컬라이징 투어':[1180,650],
 
     '이즈루드':[745,475],
@@ -43,12 +46,12 @@
     '모로크':[225,535],
     '오크 마을':[365,465],
     '코모도 필드':[370,655],
-    '코모도':[260,745],
-    '움발라 필드':[475,735],
-    '움발라':[585,735],
-    '이그드라실 줄기':[690,760],
-    '니플헤임':[805,760],
-    '니플헤임 필드':[920,760],
+    '코모도':[260,1005],
+    '움발라 필드':[475,995],
+    '움발라':[585,995],
+    '이그드라실 줄기':[690,1020],
+    '니플헤임':[805,1020],
+    '니플헤임 필드':[920,1020],
 
     '차원 균열':[1210,745],
     '이세계 캠프(아쉬바쿰)':[1340,745],
@@ -63,7 +66,7 @@
   ];
   // 던전 입구는 본 지도 안에서 도시·필드 곁에 보인다. 실제 층별 맵은 선택
   // 패널에서만 펼친다. 모든 층을 전역 캔버스에 뿌려 지도를 망가뜨리지 않는다.
-  const WM_BOUNDS = {minX:100,maxX:1600,minY:35,maxY:880};
+  const WM_BOUNDS = {minX:100,maxX:1600,minY:35,maxY:1080};
 
   // Keep every original dungeon entrance available, while allowing the player
   // to temporarily read the geographic backbone without 40+ entrance labels.
@@ -490,7 +493,7 @@
       </g>`;
     }).join('');
 
-    return `<svg class="wm-svg" viewBox="100 20 1500 860" role="img" aria-label="룬 미드가츠 세계지도">
+    return `<svg class="wm-svg" viewBox="100 20 1500 1080" role="img" aria-label="룬 미드가츠 세계지도">
       ${labels}<g class="wm-edges">${edges.join('')}</g><g class="wm-flights">${flights.join('')}</g><g class="wm-nodes">${nodes}</g>
     </svg>`;
   }
@@ -546,10 +549,10 @@
     const x=Number(node.getAttribute('data-x'));
     const y=Number(node.getAttribute('data-y'));
     if(!Number.isFinite(x) || !Number.isFinite(y)) return;
-    // ViewBox is 1500×860 from x=100/y=20. Convert that stable map coordinate
+    // ViewBox is 1500×1080 from x=100/y=20. Convert that stable map coordinate
     // to the scrollable SVG width so the same focus works on desktop and mobile.
     canvas.scrollLeft=Math.max(0,((x-100)/1500)*canvas.scrollWidth-canvas.clientWidth/2);
-    canvas.scrollTop=Math.max(0,((y-20)/860)*canvas.scrollHeight-canvas.clientHeight/2);
+    canvas.scrollTop=Math.max(0,((y-20)/1080)*canvas.scrollHeight-canvas.clientHeight/2);
   }
 
   window.worldMapSelect=function(name){

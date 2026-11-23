@@ -26,8 +26,8 @@ function install() {
 const ctx = install(), DB = ctx.DB, api = ctx.api;
 const pilotIds = Object.keys(DB.prtPilot.maps);
 
-// 19 maps installed as real maps with weights
-assert.strictEqual(pilotIds.length, 19);
+// 40 maps installed as real maps with weights (프론테라 19 + 이즈루드 해저동굴 5 + 페이욘 필드 11·동굴 5)
+assert.strictEqual(pilotIds.length, 40);
 pilotIds.forEach((id) => {
   const m = api.getMap(id);
   assert(m && m.kind === 'map' && m.mapId === id, id);
@@ -57,11 +57,18 @@ for (const [a, b] of [['프론테라', 'prt_fild08'], ['prt_fild08', '이즈루�
 }
 assert(linked('프론테라', 'prt_sewb1') && linked('prt_sewb1', '프론테라'), '지하수로 입구(토벌대)');
 assert(!linked('프론테라', 'prt_fild01'), '원작에 없는 프론테라->prt_fild01 연결은 만들지 않음');
+// 이즈루드·페이욘 확대: 원작 워프(마을·통로 섬·궁수 마을은 다리)
+for (const [a, b] of [['이즈루드', 'iz_dun00'], ['페이욘', 'pay_fild01'], ['페이욘', 'pay_fild08'], ['페이욘', 'pay_dun00'], ['pay_fild03', '알베르타'], ['pay_fild01', '소그라트 사막 동부'], ['iz_dun03', 'iz_dun04']]) {
+  assert(linked(a, b) && linked(b, a), `${a} <-> ${b}`);
+}
+assert.strictEqual(api.getMap('pay_dun04').hasMvp, 199);           // 월야화
+assert.strictEqual(api.getMap('pay_fild05').type, '필드');
+assert.strictEqual(api.getMap('iz_dun02').type, '던전');
 
 // every map stays reachable from 프론테라 (아무 지역도 끊기지 않음)
 const seen = new Set([api.mapKey('프론테라')]), q = [...seen];
 while (q.length) { const c = q.shift(); api.mapConnections(c).forEach((n) => { if (!seen.has(n)) { seen.add(n); q.push(n); } }); }
-['페이욘 숲 북부', '게펜', '묘르닐 산맥', '이즈루드', 'prt_maze03', 'prt_sewb4', 'prt_fild11']
+['페이욘 숲 북부', '게펜', '묘르닐 산맥', '이즈루드', 'prt_maze03', 'prt_sewb4', 'prt_fild11', 'pay_fild05', 'pay_fild04', 'iz_dun04', 'pay_dun04', '알베르타']
   .forEach((k) => assert(seen.has(api.mapKey(k)), `프론테라에서 못 감: ${k}`));
 
 // ── Task 3: 가중치 뽑기 · 구역 끄기 ─────────────────────────────────────────────
