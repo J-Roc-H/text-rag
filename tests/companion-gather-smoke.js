@@ -62,7 +62,7 @@ for (const mid of Object.keys(GATHER.maps)) assert(pilot.maps[mid], `${mid}는 �
   const herb = p.inventory['빨간 허브'] || 0;
   const want = chances * (15 / total) * 0.55;
   assert(Math.abs(herb - want) / want < 0.08, `빨간 허브 ${herb} vs 기대 ${want}`);
-  assert(logs.some(([m, k]) => k === 'loot' && /^🐾 포링이 (풀을 뜯어|버섯을 캐) /.test(m)), '채집 로그');
+  assert(logs.some(([m, k]) => k === 'loot' && /^🐾 포링이 (빨간 풀을 뜯어|검은 버섯을 캐) /.test(m)), '채집 로그');
 }
 
 // ④ 친밀도: 절친은 1.25배, 어색함은 0.5배 (빈도만)
@@ -119,6 +119,36 @@ for (const mid of Object.keys(GATHER.maps)) assert(pilot.maps[mid], `${mid}는 �
   assert.strictEqual(ctx.companionJosa('빨간 허브', '을', '를'), '를');
   assert.strictEqual(ctx.companionJosa('파란허브', '을', '를'), '를');
   assert.strictEqual(ctx.companionJosa('꿀', '을', '를'), '을');
+}
+
+// ⑧ 이름·희귀 재료·지도 표시 (2026-11-23 사용자: 풀 이름, 빠진 결과 아이템 채움, 채집 있는 맵/없는 맵 구분)
+{
+  const names = Object.values(GATHER.sources).map((s) => s.name);
+  assert.deepStrictEqual(names, ['빨간 풀', '파란 풀', '초록 풀', '노란 풀', '하얀 풀', '빛나는 풀', '검은 버섯', '빨간 버섯']);
+  for (const s of Object.values(GATHER.sources)) assert.deepStrictEqual(s.missing, [], `${s.name} 빠진 결과`);
+  assert(GATHER.sources['1084'].drops['데트리민덱스타'] === 0.5, '검은 버섯 -> 데트리민덱스타 0.5%');
+  assert(GATHER.sources['1085'].drops['카르보데일니롤'] === 0.5, '빨간 버섯 -> 카르보데일니롤 0.5%');
+  for (const k of ['데트리민덱스타', '카르보데일니롤', '쓴 약초', '환상의 꽃', '노래하는 식물', '히나레', '알로에', '센티멘탈 플라워', '뾰족한 비늘']) {
+    assert(!ITEMS[k]._stub, `${k}가 아직 빈 칸`);
+  }
+  const { ctx, p } = env();
+  const info = ctx.companionGatherInfo('pay_dun00');
+  assert.deepStrictEqual(Array.from(info.names), ['빨간 풀', '검은 버섯']);
+  assert.strictEqual(info.level, '많음');           // 18/85
+  assert.strictEqual(ctx.companionGatherInfo('iz_dun00').level, '드묾');   // 5/155
+  assert.strictEqual(ctx.companionGatherInfo('프론테라'), null);
+  // 지역 정보 줄: 펫 유무에 따라 안내가 다르다
+  ctx.getMap = (k) => (k === 'pay_dun00' ? { monsters: [1] } : k === 'prt_fild08' ? { monsters: [1] } : { safe: true });
+  assert(/펫이 있어야 캘 수 있습니다/.test(ctx.companionGatherHtml(p, 'pay_dun00')));
+  p.companions.pet = ctx.companionCreatePet('PORING', 0);
+  assert(/포링이 사냥 틈틈이 캐 옵니다/.test(ctx.companionGatherHtml(p, 'pay_dun00')));
+  assert(/없는 곳/.test(ctx.companionGatherHtml(p, 'prt_fild08')), '채집 없는 사냥터는 없다고 알린다');
+  assert.strictEqual(ctx.companionGatherHtml(p, '프론테라'), '', '안전 지역엔 채집 줄이 없다');
+  // 희귀 재료가 실제로 나온다: 빨간 버섯만 있는 필드 11에서 처치 3만 번
+  ctx.G.currentMap = 'pay_fild11';
+  const rng = lcg(5);
+  for (let i = 0; i < 30000; i++) ctx.companionGatherOnKill(p, { silent: true }, rng);
+  assert((p.inventory['카르보데일니롤'] || 0) > 0, '카르보데일니롤이 나온다');
 }
 
 console.log('companion-gather-smoke: PASS');

@@ -5610,7 +5610,7 @@ function renderSituation(){
       `<div class="sit-sub">${md.type||''}${md.level&&md.level!=='0'?` · 권장 Lv.${md.level}`:''}</div>`+
       (md.desc?`<div class="sit-desc">${md.desc}</div>`:'')+
       (mons.length?`<div class="sit-lbl">출현 몬스터</div>`+mons.slice(0,8).map(m=>`<div class="sit-mon">${m.emoji||'?'} ${m.name} <span>Lv.${m.lv||'?'}</span></div>`).join('')+(mons.length>8?`<div class="sit-sub">외 ${mons.length-8}종</div>`:''):
-        `<div class="sit-sub">${md.safe?'안전 지역 — 몬스터가 출현하지 않습니다':'출현 몬스터 정보 없음'}</div>`)+`</div>`;
+        `<div class="sit-sub">${md.safe?'안전 지역 — 몬스터가 출현하지 않습니다':'출현 몬스터 정보 없음'}</div>`)+(typeof companionGatherHtml==='function'?companionGatherHtml(G.player,G.currentMap):'')+`</div>`;
   }
   if(box._h!==h){ box.innerHTML=h; box._h=h; }
 }

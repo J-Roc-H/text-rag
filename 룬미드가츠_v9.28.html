@@ -4995,96 +4995,97 @@ body.work-mode p {
  "sources": {
   "1078": {
    "kind": "풀",
+   "name": "빨간 풀",
    "drops": {
     "빨간 허브": 55.0,
     "꽃": 10.0,
     "슛": 10.0,
     "식물의 줄기": 5.0,
+    "뾰족한 비늘": 3.0,
     "솜털": 5.0,
-    "멘트": 0.5
+    "멘트": 0.5,
+    "센티멘탈 플라워": 0.02
    },
-   "missing": [
-    "Centimental_Flower",
-    "Pointed_Scale"
-   ]
+   "missing": []
   },
   "1079": {
    "kind": "풀",
+   "name": "파란 풀",
    "drops": {
     "파란허브": 55.0,
     "꽃": 10.0,
     "슛": 10.0,
     "식물의 줄기": 5.0,
+    "뾰족한 비늘": 3.0,
     "마스텔라의 열매": 0.5,
     "포도": 10.0,
     "센티멘탈 리프": 0.02
    },
-   "missing": [
-    "Pointed_Scale"
-   ]
+   "missing": []
   },
   "1080": {
    "kind": "풀",
+   "name": "초록 풀",
    "drops": {
     "초록허브": 70.0,
     "꽃": 10.0,
+    "쓴 약초": 0.2,
     "식물의 줄기": 30.0,
+    "뾰족한 비늘": 15.0,
+    "알로에": 0.5,
     "알로에 잎": 0.5,
     "센티멘탈 리프": 0.02
    },
-   "missing": [
-    "Aloe",
-    "Bitter_Herb",
-    "Pointed_Scale"
-   ]
+   "missing": []
   },
   "1081": {
    "kind": "풀",
+   "name": "노란 풀",
    "drops": {
     "옐로 허브": 55.0,
     "꽃": 10.0,
     "슛": 10.0,
     "식물의 줄기": 5.0,
-    "솜털": 5.0
+    "뾰족한 비늘": 3.0,
+    "노래하는 식물": 0.05,
+    "솜털": 5.0,
+    "센티멘탈 플라워": 0.02
    },
-   "missing": [
-    "Centimental_Flower",
-    "Pointed_Scale",
-    "Singing_Plant"
-   ]
+   "missing": []
   },
   "1082": {
    "kind": "풀",
+   "name": "하얀 풀",
    "drops": {
     "하얀허브": 55.0,
     "꽃": 10.0,
     "맹독초": 0.2,
     "식물의 줄기": 30.0,
-    "알로에 잎": 0.5
+    "뾰족한 비늘": 15.0,
+    "알로에 잎": 0.5,
+    "히나레": 0.5,
+    "센티멘탈 플라워": 0.02
    },
-   "missing": [
-    "Centimental_Flower",
-    "Hinalle",
-    "Pointed_Scale"
-   ]
+   "missing": []
   },
   "1083": {
    "kind": "풀",
+   "name": "빛나는 풀",
    "drops": {
     "파란허브": 55.0,
     "옐로 허브": 10.0,
     "하얀허브": 10.0,
+    "환상의 꽃": 0.05,
     "이그드라실의 씨앗": 0.2,
     "꿀": 5.0,
     "이그드라실의 열매": 0.5,
     "엠페리움": 0.01
    },
-   "missing": [
-    "Illusion_Flower"
-   ]
+   "missing": []
   },
   "1084": {
    "kind": "버섯",
+   "name": "검은 버섯",
    "drops": {
     "알코올": 0.5,
     "데트리민덱스타": 0.5,
@@ -5098,6 +5099,7 @@ body.work-mode p {
   },
   "1085": {
    "kind": "버섯",
+   "name": "빨간 버섯",
    "drops": {
     "알코올": 0.5,
     "카르보데일니롤": 0.5,
@@ -36274,13 +36276,13 @@ body.work-mode p {
   },
   "노래하는 식물": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "🎶",
+    "desc": "바람이 스치면 가느다란 소리를 내는 식물.",
+    "_aegis": "Singing_Plant",
     "buy": 0,
-    "sell": 10,
+    "sell": 250,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "official"
   },
   "노버스(적) 카드": {
     "type": "잡템",
@@ -36548,13 +36550,13 @@ body.work-mode p {
   },
   "데트리민덱스타": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "⚗️",
+    "desc": "버섯에서 드물게 얻는 약품 원료. 연금술 재료로 귀하게 쓰인다.",
+    "_aegis": "Detrimindexta",
     "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "sell": 200,
+    "weight": 3,
+    "weightSrc": "official"
   },
   "도마뱀의 목덜미": {
     "type": "잡템",
@@ -37969,13 +37971,13 @@ body.work-mode p {
   },
   "센티멘탈 플라워": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "💐",
+    "desc": "보고 있으면 괜히 마음이 아련해지는 꽃.",
+    "_aegis": "Centimental_Flower",
     "buy": 0,
     "sell": 10,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "stub"
   },
   "소년의 순수함": {
     "type": "잡템",
@@ -38259,13 +38261,13 @@ body.work-mode p {
   },
   "쓴 약초": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "🌱",
+    "desc": "입이 오그라들 만큼 쓴 약초. 포포링이 좋아한다고 한다.",
+    "_aegis": "Bitter_Herb",
     "buy": 0,
     "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weight": 5,
+    "weightSrc": "official"
   },
   "아노리안의 가죽": {
     "type": "잡템",
@@ -38347,13 +38349,13 @@ body.work-mode p {
   },
   "알로에": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "🪴",
+    "desc": "두툼한 잎에 진액이 가득한 알로에.",
+    "_aegis": "Aloe",
     "buy": 0,
-    "sell": 10,
+    "sell": 250,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "official"
   },
   "알로에 잎": {
     "type": "잡템",
@@ -39545,13 +39547,13 @@ body.work-mode p {
   },
   "카르보데일니롤": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "⚗️",
+    "desc": "버섯에서 드물게 얻는 약품 원료. 연금술 재료로 귀하게 쓰인다.",
+    "_aegis": "Karvodailnirol",
     "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "sell": 200,
+    "weight": 3,
+    "weightSrc": "official"
   },
   "카운터 대거": {
     "type": "잡템",
@@ -40264,13 +40266,13 @@ body.work-mode p {
   },
   "환상의 꽃": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "🌸",
+    "desc": "보는 각도에 따라 빛깔이 바뀌는 신비한 꽃.",
+    "_aegis": "Illusion_Flower",
     "buy": 0,
-    "sell": 10,
+    "sell": 500,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "official"
   },
   "황금 머리카락": {
     "type": "잡템",
@@ -40371,13 +40373,13 @@ body.work-mode p {
   },
   "히나레": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "🍃",
+    "desc": "약효가 있다고 알려진 풀, 히나레.",
+    "_aegis": "Hinalle",
     "buy": 0,
-    "sell": 10,
+    "sell": 250,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "official"
   },
   "히나레의 잎": {
     "type": "잡템",
@@ -40922,6 +40924,17 @@ body.work-mode p {
     "sell": 3000,
     "weight": 10,
     "weightSrc": "estimate"
+  },
+  "뾰족한 비늘": {
+    "type": "잡템",
+    "emoji": "🔺",
+    "desc": "풀줄기에 붙어 있던 끝이 뾰족한 비늘. (한국어 이름 잠정)",
+    "_aegis": "Pointed_Scale",
+    "buy": 0,
+    "sell": 34,
+    "weight": 1,
+    "weightSrc": "official",
+    "_krPending": true
   }
 }</script>
 <!-- P2-B1: db-combos.json({meta, combos}) 정본을 runtime에 연결 -- P2-A 시절 주석("HTML
@@ -55397,7 +55410,7 @@ function renderSituation(){
       `<div class="sit-sub">${md.type||''}${md.level&&md.level!=='0'?` · 권장 Lv.${md.level}`:''}</div>`+
       (md.desc?`<div class="sit-desc">${md.desc}</div>`:'')+
       (mons.length?`<div class="sit-lbl">출현 몬스터</div>`+mons.slice(0,8).map(m=>`<div class="sit-mon">${m.emoji||'?'} ${m.name} <span>Lv.${m.lv||'?'}</span></div>`).join('')+(mons.length>8?`<div class="sit-sub">외 ${mons.length-8}종</div>`:''):
-        `<div class="sit-sub">${md.safe?'안전 지역 — 몬스터가 출현하지 않습니다':'출현 몬스터 정보 없음'}</div>`)+`</div>`;
+        `<div class="sit-sub">${md.safe?'안전 지역 — 몬스터가 출현하지 않습니다':'출현 몬스터 정보 없음'}</div>`)+(typeof companionGatherHtml==='function'?companionGatherHtml(G.player,G.currentMap):'')+`</div>`;
   }
   if(box._h!==h){ box.innerHTML=h; box._h=h; }
 }
@@ -68984,7 +68997,8 @@ function applyComboEffects(p, DB, fx, parseItem) {
       return row && row.name;
     }).filter(Boolean);
     if(!monsters.length) return m&&m.spawnVerified ? '출현군 확인 · 기록 없음' : '출현군 근거 보류';
-    return `${m&&m.spawnVerified?'출현군 확인':'출현 몬스터'} · ${monsters.join(', ')}`;
+    const gi=(typeof companionGatherInfo==='function') ? companionGatherInfo(name) : null; // [P3-11]
+    return `${m&&m.spawnVerified?'출현군 확인':'출현 몬스터'} · ${monsters.join(', ')}${gi?` · 채집 ${gi.names.join(', ')}`:''}`;
   }
 
   function dungeonDetailList(name){
@@ -69082,10 +69096,13 @@ function applyComboEffects(p, DB, fx, parseItem) {
     const path=shortestPath(cur,name);
     const mvp=m.hasMvp ? '<span class="wm-badge danger">MVP</span>' : '';
     const safe=m.safe ? '<span class="wm-badge safe">안전</span>' : '';
+    const gi=(typeof companionGatherInfo==='function') ? companionGatherInfo(name) : null; // [P3-11] 펫 채집
+    const gather=gi ? `<span class="wm-badge" title="${esc(gi.names.join(', '))}">🌿 채집 ${esc(gi.level)}</span>` : '';
     const action=actionHtml(name);
 
     return `<div class="wm-detail-head"><div class="wm-detail-icon">${esc(m.emoji||'📍')}</div><div><b>${esc(displayNameFor(name))}</b><div class="wm-sub">${esc(m.type||'미상')} · 권장 Lv.${esc(m.level||'?')}</div></div></div>
-      <div class="wm-badges">${safe}${mvp}</div>
+      <div class="wm-badges">${safe}${mvp}${gather}</div>
+      ${gi?`<div class="wm-sub">채집 · ${esc(gi.names.join(', '))}</div>`:''}
       <p class="wm-desc">${esc(m.desc||'')}</p>
       ${dungeonDetailList(name)}
       ${typeof airshipRouteInfoHtml==='function'?airshipRouteInfoHtml(name):''}
@@ -72419,19 +72436,21 @@ function companionTickOnline(p, nowMs, inBattle) {
 
 // ── 펫의 채집 (P3-11, 설계 §6-5) ────────────────────────────────────────────────────────
 // 원작 풀·버섯은 몬스터가 아니라 채집 요소다. 데이터: DB.gathering(tools/build_gathering.py).
-// 처치 한 번마다 「원작에서 그 맵의 풀·버섯을 만나던 비율(풀·버섯 마릿수 ÷ 몬스터 마릿수)」로 채집 기회가 온다.
+// 처치 한 번마다 「그 맵의 원작 풀·버섯 마릿수 ÷ 몬스터 마릿수」로 채집 기회가 온다. 원작은 유저가 캐기 나름이라
+// 원작 기준 빈도는 없다 — 그 맵에 풀·버섯이 얼마나 흔했는지를 빈도로 옮긴 설계자 판단이다. 풀·버섯이 없던 맵에서는 채집이 없다.
 // 펫이 있으면 펫이 캐 오고(결과는 원작 드롭률 그대로), 없으면 캐지 못하고 가끔 아쉬워만 한다(사용자 결정 2026-11-23).
-// 친밀도는 기회의 빈도에만 곱한다 — 보통(첫 펫의 출발 단계)이 원작과 같은 1배. 드롭률은 건드리지 않는다.
+// 친밀도는 기회의 빈도에만 곱한다(보통 = 1배). 드롭률은 건드리지 않는다.
 var COMPANION_GATHER_STAGE_MULT = [0.5, 0.75, 1, 1.1, 1.25];   // 어색함·서먹함·보통·친함·절친 (설계자 판단)
 var COMPANION_GATHER_WISH_MS = 10 * 60 * 1000;                 // 펫이 없을 때 아쉬움 문구 최소 간격
+// {N}은 풀·버섯 이름, {이}/{가}는 받침에 맞춘 조사로 바뀐다
 var COMPANION_GATHER_WISH = {
   '풀': [
-    '수풀 사이로 약초 같은 풀이 보인다. 하지만 몬스터가 계속 다가와 허리를 숙일 틈이 없다… 대신 캐 줄 동료가 있으면 좋을 텐데.',
-    '발치에 풀이 무성하다. 손을 뻗으려다 등 뒤의 기척에 그만둔다. 망을 봐 주거나 캐 줄 동료가 있었다면.',
+    '수풀 사이로 {N}{이} 보인다. 하지만 몬스터가 계속 다가와 허리를 숙일 틈이 없다… 대신 캐 줄 동료가 있으면 좋을 텐데.',
+    '발치에 {N}{이} 무성하다. 손을 뻗으려다 등 뒤의 기척에 그만둔다. 망을 봐 주거나 캐 줄 동료가 있었다면.',
   ],
   '버섯': [
-    '바위틈에 버섯이 돋아 있다. 지금 등을 보였다간 당한다… 곁에 동료라도 있었으면.',
-    '눅눅한 바닥에 버섯이 보이지만, 주변이 너무 위험해 손을 뗄 수 없다. 함께 다닐 동료가 아쉽다.',
+    '바위틈에 {N}{이} 돋아 있다. 지금 등을 보였다간 당한다… 곁에 동료라도 있었으면.',
+    '눅눅한 바닥에 {N}{이} 보이지만, 주변이 너무 위험해 손을 뗄 수 없다. 함께 다닐 동료가 아쉽다.',
   ],
 };
 var companionGatherWishAt = -Infinity;  // 세이브에 남기지 않는다(접속 중 쉼 간격일 뿐)
@@ -72446,6 +72465,32 @@ function companionGatherTable(mapRef) {
   if (!g || !g.maps) return null;
   const key = typeof mapKey === 'function' ? mapKey(mapRef) : mapRef;
   return (key && g.maps[key]) || null;
+}
+// 지역 정보·세계지도용: 이 맵에서 캘 수 있는 풀·버섯 이름(흔한 순)과 흔한 정도. 채집 없는 맵은 null.
+function companionGatherInfo(mapRef) {
+  const t = companionGatherTable(mapRef);
+  if (!t || !t.gather || !t.gather.length || !(t.monsters > 0)) return null;
+  const src = (DB.gathering && DB.gathering.sources) || {};
+  const total = t.gather.reduce((a, x) => a + x[1], 0), rate = total / t.monsters;
+  return {
+    names: t.gather.map(([id]) => (src[String(id)] || {}).name).filter(Boolean),
+    kinds: t.gather.map(([id]) => (src[String(id)] || {}).kind).filter(Boolean),
+    level: rate >= 0.15 ? '많음' : rate >= 0.05 ? '보통' : '드묾',
+  };
+}
+// 지역 정보 칸의 「채집」 줄. 안전 지역·몬스터 없는 맵은 빈 문자열(채집 개념 자체가 없음).
+function companionGatherHtml(p, mapRef) {
+  const md = typeof getMap === 'function' ? (getMap(mapRef) || {}) : {};
+  if (md.safe || !(md.monsters && md.monsters.length)) return '';
+  const g = companionGatherInfo(mapRef);
+  if (!g) return '<div class="sit-lbl">채집</div><div class="sit-sub">캘 만한 풀·버섯이 없는 곳</div>';
+  const icon = (k) => (k === '버섯' ? '🍄' : '🌿');
+  const list = g.names.map((n, i) => `${icon(g.kinds[i])} ${n}`).join(' · ');
+  const pet = p && p.companions && p.companions.pet;
+  const how = pet ? `🐾 ${companionPetName(p)}${companionJosa(companionPetName(p), '이', '가')} 사냥 틈틈이 캐 옵니다`
+    : '펫이 있어야 캘 수 있습니다';
+  return `<div class="sit-lbl">채집 <span style="font-weight:normal">· ${g.level}</span></div>`
+    + `<div class="sit-sub">${list}</div><div class="sit-sub">${how}</div>`;
 }
 // 처치 한 번 뒤의 채집. rng는 시험용(기본 Math.random). 돌려주는 값: null(기회 없음) 또는 { kind, items, wished }
 function companionGatherOnKill(p, opts, rng) {
@@ -72469,7 +72514,9 @@ function companionGatherOnKill(p, opts, rng) {
     if (now - companionGatherWishAt < COMPANION_GATHER_WISH_MS) return { kind: s.kind, items: [], wished: false };
     companionGatherWishAt = now;
     const lines = COMPANION_GATHER_WISH[s.kind] || COMPANION_GATHER_WISH['풀'];
-    if (typeof log === 'function') log(`${s.kind === '버섯' ? '🍄' : '🌿'} ${lines[Math.floor(rng() * lines.length)]}`, 'system');
+    const nm = s.name || s.kind;
+    const text = lines[Math.floor(rng() * lines.length)].replace('{N}', nm).replace('{이}', companionJosa(nm, '이', '가'));
+    if (typeof log === 'function') log(`${s.kind === '버섯' ? '🍄' : '🌿'} ${text}`, 'system');
     return { kind: s.kind, items: [], wished: true };
   }
   const set = typeof ensureSettings === 'function' ? ensureSettings(p) : (p.settings || {});
@@ -72487,12 +72534,13 @@ function companionGatherOnKill(p, opts, rng) {
       opts.summary.items[name] = (opts.summary.items[name] || 0) + 1;
       if (s.drops[k] <= (typeof AWAY_RARE_DROP_PCT !== 'undefined' ? AWAY_RARE_DROP_PCT : 1)) {
         if (!opts.summary.events) opts.summary.events = [];
-        opts.summary.events.push({ kind: 'rare', item: name, monster: s.kind, phase: opts.summary.phase || 'sample' });
+        opts.summary.events.push({ kind: 'rare', item: name, monster: s.name || s.kind, phase: opts.summary.phase || 'sample' });
       }
     }
   });
   if (got.length && !silent && typeof log === 'function') {
-    const pn = companionPetName(p), act = s.kind === '버섯' ? '버섯을 캐' : '풀을 뜯어';
+    const pn = companionPetName(p), nm = s.name || s.kind;
+    const act = `${nm}${companionJosa(nm, '을', '를')} ${s.kind === '버섯' ? '캐' : '뜯어'}`;
     log(`🐾 ${pn}${companionJosa(pn, '이', '가')} ${act} <b>${got.join('</b>, <b>')}</b>${companionJosa(got[got.length - 1], '을', '를')} 가져왔다!`, 'loot');
   }
   return { kind: s.kind, items: got, wished: false };

@@ -315,7 +315,8 @@
       return row && row.name;
     }).filter(Boolean);
     if(!monsters.length) return m&&m.spawnVerified ? '출현군 확인 · 기록 없음' : '출현군 근거 보류';
-    return `${m&&m.spawnVerified?'출현군 확인':'출현 몬스터'} · ${monsters.join(', ')}`;
+    const gi=(typeof companionGatherInfo==='function') ? companionGatherInfo(name) : null; // [P3-11]
+    return `${m&&m.spawnVerified?'출현군 확인':'출현 몬스터'} · ${monsters.join(', ')}${gi?` · 채집 ${gi.names.join(', ')}`:''}`;
   }
 
   function dungeonDetailList(name){
@@ -413,10 +414,13 @@
     const path=shortestPath(cur,name);
     const mvp=m.hasMvp ? '<span class="wm-badge danger">MVP</span>' : '';
     const safe=m.safe ? '<span class="wm-badge safe">안전</span>' : '';
+    const gi=(typeof companionGatherInfo==='function') ? companionGatherInfo(name) : null; // [P3-11] 펫 채집
+    const gather=gi ? `<span class="wm-badge" title="${esc(gi.names.join(', '))}">🌿 채집 ${esc(gi.level)}</span>` : '';
     const action=actionHtml(name);
 
     return `<div class="wm-detail-head"><div class="wm-detail-icon">${esc(m.emoji||'📍')}</div><div><b>${esc(displayNameFor(name))}</b><div class="wm-sub">${esc(m.type||'미상')} · 권장 Lv.${esc(m.level||'?')}</div></div></div>
-      <div class="wm-badges">${safe}${mvp}</div>
+      <div class="wm-badges">${safe}${mvp}${gather}</div>
+      ${gi?`<div class="wm-sub">채집 · ${esc(gi.names.join(', '))}</div>`:''}
       <p class="wm-desc">${esc(m.desc||'')}</p>
       ${dungeonDetailList(name)}
       ${typeof airshipRouteInfoHtml==='function'?airshipRouteInfoHtml(name):''}
