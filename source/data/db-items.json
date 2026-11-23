@@ -28793,13 +28793,13 @@
   },
   "노래하는 식물": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "🎶",
+    "desc": "바람이 스치면 가느다란 소리를 내는 식물.",
+    "_aegis": "Singing_Plant",
     "buy": 0,
-    "sell": 10,
+    "sell": 250,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "official"
   },
   "노버스(적) 카드": {
     "type": "잡템",
@@ -29067,13 +29067,13 @@
   },
   "데트리민덱스타": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "⚗️",
+    "desc": "버섯에서 드물게 얻는 약품 원료. 연금술 재료로 귀하게 쓰인다.",
+    "_aegis": "Detrimindexta",
     "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "sell": 200,
+    "weight": 3,
+    "weightSrc": "official"
   },
   "도마뱀의 목덜미": {
     "type": "잡템",
@@ -30488,13 +30488,13 @@
   },
   "센티멘탈 플라워": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "💐",
+    "desc": "보고 있으면 괜히 마음이 아련해지는 꽃.",
+    "_aegis": "Centimental_Flower",
     "buy": 0,
     "sell": 10,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "stub"
   },
   "소년의 순수함": {
     "type": "잡템",
@@ -30778,13 +30778,13 @@
   },
   "쓴 약초": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "🌱",
+    "desc": "입이 오그라들 만큼 쓴 약초. 포포링이 좋아한다고 한다.",
+    "_aegis": "Bitter_Herb",
     "buy": 0,
     "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weight": 5,
+    "weightSrc": "official"
   },
   "아노리안의 가죽": {
     "type": "잡템",
@@ -30866,13 +30866,13 @@
   },
   "알로에": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "🪴",
+    "desc": "두툼한 잎에 진액이 가득한 알로에.",
+    "_aegis": "Aloe",
     "buy": 0,
-    "sell": 10,
+    "sell": 250,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "official"
   },
   "알로에 잎": {
     "type": "잡템",
@@ -32064,13 +32064,13 @@
   },
   "카르보데일니롤": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "⚗️",
+    "desc": "버섯에서 드물게 얻는 약품 원료. 연금술 재료로 귀하게 쓰인다.",
+    "_aegis": "Karvodailnirol",
     "buy": 0,
-    "sell": 10,
-    "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "sell": 200,
+    "weight": 3,
+    "weightSrc": "official"
   },
   "카운터 대거": {
     "type": "잡템",
@@ -32783,13 +32783,13 @@
   },
   "환상의 꽃": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "🌸",
+    "desc": "보는 각도에 따라 빛깔이 바뀌는 신비한 꽃.",
+    "_aegis": "Illusion_Flower",
     "buy": 0,
-    "sell": 10,
+    "sell": 500,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "official"
   },
   "황금 머리카락": {
     "type": "잡템",
@@ -32890,13 +32890,13 @@
   },
   "히나레": {
     "type": "잡템",
-    "emoji": "❓",
-    "desc": "용도가 알려지지 않은 물건.",
+    "emoji": "🍃",
+    "desc": "약효가 있다고 알려진 풀, 히나레.",
+    "_aegis": "Hinalle",
     "buy": 0,
-    "sell": 10,
+    "sell": 250,
     "weight": 1,
-    "weightSrc": "stub",
-    "_stub": true
+    "weightSrc": "official"
   },
   "히나레의 잎": {
     "type": "잡템",
@@ -33441,5 +33441,16 @@
     "sell": 3000,
     "weight": 10,
     "weightSrc": "estimate"
+  },
+  "뾰족한 비늘": {
+    "type": "잡템",
+    "emoji": "🔺",
+    "desc": "풀줄기에 붙어 있던 끝이 뾰족한 비늘. (한국어 이름 잠정)",
+    "_aegis": "Pointed_Scale",
+    "buy": 0,
+    "sell": 34,
+    "weight": 1,
+    "weightSrc": "official",
+    "_krPending": true
   }
 }

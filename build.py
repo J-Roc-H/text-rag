@@ -76,6 +76,7 @@ BLOCKS = {
     "DB_PRT_PILOT": "db-prt-pilot.json",
     "DB_PETS": "db-pets.json",
     "DB_PET_TALK": "db-pet-talk.json",
+    "DB_GATHERING": "db-gathering.json",
 }
 
 NPC_SERVICES = {

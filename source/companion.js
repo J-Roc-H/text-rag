@@ -417,6 +417,118 @@ function companionTickOnline(p, nowMs, inBattle) {
   }
 }
 
+// ── 펫의 채집 (P3-11, 설계 §6-5) ────────────────────────────────────────────────────────
+// 원작 풀·버섯은 몬스터가 아니라 채집 요소다. 데이터: DB.gathering(tools/build_gathering.py).
+// 처치 한 번마다 「그 맵의 원작 풀·버섯 마릿수 ÷ 몬스터 마릿수」로 채집 기회가 온다. 원작은 유저가 캐기 나름이라
+// 원작 기준 빈도는 없다 — 그 맵에 풀·버섯이 얼마나 흔했는지를 빈도로 옮긴 설계자 판단이다. 풀·버섯이 없던 맵에서는 채집이 없다.
+// 펫이 있으면 펫이 캐 오고(결과는 원작 드롭률 그대로), 없으면 캐지 못하고 가끔 아쉬워만 한다(사용자 결정 2026-11-23).
+// 친밀도는 기회의 빈도에만 곱한다(보통 = 1배). 드롭률은 건드리지 않는다.
+var COMPANION_GATHER_STAGE_MULT = [0.5, 0.75, 1, 1.1, 1.25];   // 어색함·서먹함·보통·친함·절친 (설계자 판단)
+var COMPANION_GATHER_WISH_MS = 10 * 60 * 1000;                 // 펫이 없을 때 아쉬움 문구 최소 간격
+// {N}은 풀·버섯 이름, {이}/{가}는 받침에 맞춘 조사로 바뀐다
+var COMPANION_GATHER_WISH = {
+  '풀': [
+    '수풀 사이로 {N}{이} 보인다. 하지만 몬스터가 계속 다가와 허리를 숙일 틈이 없다… 대신 캐 줄 동료가 있으면 좋을 텐데.',
+    '발치에 {N}{이} 무성하다. 손을 뻗으려다 등 뒤의 기척에 그만둔다. 망을 봐 주거나 캐 줄 동료가 있었다면.',
+  ],
+  '버섯': [
+    '바위틈에 {N}{이} 돋아 있다. 지금 등을 보였다간 당한다… 곁에 동료라도 있었으면.',
+    '눅눅한 바닥에 {N}{이} 보이지만, 주변이 너무 위험해 손을 뗄 수 없다. 함께 다닐 동료가 아쉽다.',
+  ],
+};
+var companionGatherWishAt = -Infinity;  // 세이브에 남기지 않는다(접속 중 쉼 간격일 뿐)
+
+function companionJosa(word, withFinal, withoutFinal) {
+  const w = String(word || ''), c = w.charCodeAt(w.length - 1);
+  if (!(c >= 0xAC00 && c <= 0xD7A3)) return withFinal + '(' + withoutFinal + ')';
+  return (c - 0xAC00) % 28 ? withFinal : withoutFinal;
+}
+function companionGatherTable(mapRef) {
+  const g = typeof DB !== 'undefined' && DB.gathering;
+  if (!g || !g.maps) return null;
+  const key = typeof mapKey === 'function' ? mapKey(mapRef) : mapRef;
+  return (key && g.maps[key]) || null;
+}
+// 지역 정보·세계지도용: 이 맵에서 캘 수 있는 풀·버섯 이름(흔한 순)과 흔한 정도. 채집 없는 맵은 null.
+function companionGatherInfo(mapRef) {
+  const t = companionGatherTable(mapRef);
+  if (!t || !t.gather || !t.gather.length || !(t.monsters > 0)) return null;
+  const src = (DB.gathering && DB.gathering.sources) || {};
+  const total = t.gather.reduce((a, x) => a + x[1], 0), rate = total / t.monsters;
+  return {
+    names: t.gather.map(([id]) => (src[String(id)] || {}).name).filter(Boolean),
+    kinds: t.gather.map(([id]) => (src[String(id)] || {}).kind).filter(Boolean),
+    level: rate >= 0.15 ? '많음' : rate >= 0.05 ? '보통' : '드묾',
+  };
+}
+// 지역 정보 칸의 「채집」 줄. 안전 지역·몬스터 없는 맵은 빈 문자열(채집 개념 자체가 없음).
+function companionGatherHtml(p, mapRef) {
+  const md = typeof getMap === 'function' ? (getMap(mapRef) || {}) : {};
+  if (md.safe || !(md.monsters && md.monsters.length)) return '';
+  const g = companionGatherInfo(mapRef);
+  if (!g) return '<div class="sit-lbl">채집</div><div class="sit-sub">캘 만한 풀·버섯이 없는 곳</div>';
+  const icon = (k) => (k === '버섯' ? '🍄' : '🌿');
+  const list = g.names.map((n, i) => `${icon(g.kinds[i])} ${n}`).join(' · ');
+  const pet = p && p.companions && p.companions.pet;
+  const how = pet ? `🐾 ${companionPetName(p)}${companionJosa(companionPetName(p), '이', '가')} 사냥 틈틈이 캐 옵니다`
+    : '펫이 있어야 캘 수 있습니다';
+  return `<div class="sit-lbl">채집 <span style="font-weight:normal">· ${g.level}</span></div>`
+    + `<div class="sit-sub">${list}</div><div class="sit-sub">${how}</div>`;
+}
+// 처치 한 번 뒤의 채집. rng는 시험용(기본 Math.random). 돌려주는 값: null(기회 없음) 또는 { kind, items, wished }
+function companionGatherOnKill(p, opts, rng) {
+  if (!p) return null;
+  opts = opts || {};
+  rng = rng || Math.random;
+  const mapRef = opts.map != null ? opts.map : (typeof G !== 'undefined' ? G.currentMap : null);
+  const t = companionGatherTable(mapRef);
+  if (!t || !t.gather || !t.gather.length || !(t.monsters > 0)) return null;
+  const total = t.gather.reduce((a, x) => a + x[1], 0);
+  const pet = p.companions && p.companions.pet;
+  const mult = pet ? COMPANION_GATHER_STAGE_MULT[companionStage(pet.intimacy)] : 1;
+  if (rng() >= Math.min(1, total / t.monsters) * mult) return null;
+  let r = rng() * total, src = t.gather[0][0];
+  for (const [id, n] of t.gather) { r -= n; if (r < 0) { src = id; break; } }
+  const s = (DB.gathering.sources || {})[String(src)] || { kind: '풀', drops: {} };
+  const silent = !!opts.silent || companionIsReplay();
+  if (!pet) {
+    if (silent) return { kind: s.kind, items: [], wished: false };
+    const now = Date.now();
+    if (now - companionGatherWishAt < COMPANION_GATHER_WISH_MS) return { kind: s.kind, items: [], wished: false };
+    companionGatherWishAt = now;
+    const lines = COMPANION_GATHER_WISH[s.kind] || COMPANION_GATHER_WISH['풀'];
+    const nm = s.name || s.kind;
+    const text = lines[Math.floor(rng() * lines.length)].replace('{N}', nm).replace('{이}', companionJosa(nm, '이', '가'));
+    if (typeof log === 'function') log(`${s.kind === '버섯' ? '🍄' : '🌿'} ${text}`, 'system');
+    return { kind: s.kind, items: [], wished: true };
+  }
+  const set = typeof ensureSettings === 'function' ? ensureSettings(p) : (p.settings || {});
+  const rate = (set.dropRate || 1) * (typeof returnerMult === 'function' ? returnerMult(p) : 1);
+  if (!p.inventory) p.inventory = {};
+  const got = [];
+  Object.keys(s.drops).forEach((k) => {
+    const it = DB.items ? DB.items[k] : null;
+    if (DB.items && !it) return;  // 데이터에 없는 이름은 굴리지 않는다(rollDrops와 같음)
+    if (rng() * 100 >= s.drops[k] * rate) return;
+    const name = it && it.slots > 0 ? `${k} [${it.slots}]` : k;
+    p.inventory[name] = (p.inventory[name] || 0) + 1;
+    got.push(name);
+    if (opts.summary) {
+      opts.summary.items[name] = (opts.summary.items[name] || 0) + 1;
+      if (s.drops[k] <= (typeof AWAY_RARE_DROP_PCT !== 'undefined' ? AWAY_RARE_DROP_PCT : 1)) {
+        if (!opts.summary.events) opts.summary.events = [];
+        opts.summary.events.push({ kind: 'rare', item: name, monster: s.name || s.kind, phase: opts.summary.phase || 'sample' });
+      }
+    }
+  });
+  if (got.length && !silent && typeof log === 'function') {
+    const pn = companionPetName(p), nm = s.name || s.kind;
+    const act = `${nm}${companionJosa(nm, '을', '를')} ${s.kind === '버섯' ? '캐' : '뜯어'}`;
+    log(`🐾 ${pn}${companionJosa(pn, '이', '가')} ${act} <b>${got.join('</b>, <b>')}</b>${companionJosa(got[got.length - 1], '을', '를')} 가져왔다!`, 'loot');
+  }
+  return { kind: s.kind, items: got, wished: false };
+}
+
 function companionSyncButton() {
   if (typeof document === 'undefined') return;
   const b = document.getElementById('ctx-pet');
