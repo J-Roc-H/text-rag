@@ -737,7 +737,7 @@ def audit_prt_pilot(pilot, maps, monsters, mvp):
         if m.get("mvp") and str(m["mvp"]) not in mvp:
             errors.append(f"{mid}: MVP {m['mvp']}가 db-mvp-respawn에 없음")
         for t in m.get("warps") or []:
-            if t not in pm and t not in (pilot.get("bridges") or {}) and not t.startswith(("prt_monk", "prt_gld", "pay_gld")):
+            if t not in pm and t not in (pilot.get("bridges") or {}) and not t.startswith(("prt_monk", "prt_gld", "pay_gld", "in_moc_16")):
                 errors.append(f"{mid}: 워프 목적지 {t}가 시범 맵도 다리도 아님")
     for o, legacy in (pilot.get("bridges") or {}).items():
         if legacy not in maps:

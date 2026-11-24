@@ -148,6 +148,99 @@
    ],
    "monsters": 181
   },
+  "moc_fild01": {
+   "gather": [
+    [
+     1081,
+     10
+    ]
+   ],
+   "monsters": 160
+  },
+  "moc_fild02": {
+   "gather": [
+    [
+     1081,
+     7
+    ],
+    [
+     1080,
+     7
+    ]
+   ],
+   "monsters": 160
+  },
+  "moc_fild03": {
+   "gather": [
+    [
+     1080,
+     14
+    ]
+   ],
+   "monsters": 151
+  },
+  "moc_fild07": {
+   "gather": [
+    [
+     1081,
+     5
+    ]
+   ],
+   "monsters": 180
+  },
+  "moc_fild11": {
+   "gather": [
+    [
+     1083,
+     1
+    ]
+   ],
+   "monsters": 160
+  },
+  "moc_fild12": {
+   "gather": [
+    [
+     1081,
+     10
+    ]
+   ],
+   "monsters": 170
+  },
+  "moc_fild13": {
+   "gather": [
+    [
+     1081,
+     15
+    ],
+    [
+     1085,
+     13
+    ]
+   ],
+   "monsters": 170
+  },
+  "moc_fild17": {
+   "gather": [
+    [
+     1081,
+     6
+    ],
+    [
+     1079,
+     1
+    ]
+   ],
+   "monsters": 185
+  },
+  "moc_fild18": {
+   "gather": [
+    [
+     1081,
+     8
+    ]
+   ],
+   "monsters": 207
+  },
   "pay_dun00": {
    "gather": [
     [
@@ -485,7 +578,7 @@
      10
     ]
    ],
-   "monsters": 150
+   "monsters": 151
   },
   "prt_maze01": {
    "gather": [

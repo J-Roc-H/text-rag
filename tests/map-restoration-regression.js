@@ -56,8 +56,8 @@ const groups = Object.values(runtime.DB.maps).filter(map => map && map.kind === 
 const physicalMaps = Object.values(runtime.DB.maps).filter(map => map && map.kind === 'map');
 
 assert.strictEqual(runtime.SAVE_SCHEMA_VERSION, 2, 'P4 schema version');
-assert.strictEqual(groups.length, 12, 'compressed UI group count');
-assert.strictEqual(physicalMaps.length, 49, 'original physical map count including c_tower1');
+assert.strictEqual(groups.length, 11, 'compressed UI group count');
+assert.strictEqual(physicalMaps.length, 45, 'original physical map count including c_tower1');
 assert(groups.every(group => !(group.monsters || []).length && !group.hasMvp), 'groups must not retain combat data');
 assert(physicalMaps.every(map => map.mapId && map.displayName), 'physical map schema');
 
@@ -90,7 +90,7 @@ assert.strictEqual(runtime.unmetMapMoveRequirement('c_tower3', 'c_tower4', {inve
 assert.strictEqual(runtime.unmetMapMoveRequirement('c_tower3', 'c_tower4', {inventory:{'시계탑의 열쇠':1}}), null, 'key route opens with item');
 assert.strictEqual(runtime.getMapMoveRule('c_tower2', 'alde_dun03'), null, 'random warp candidate remains unimplemented');
 
-assert.strictEqual(restorationLedger.groups.length, 12, 'ledger covers every split map group');
+assert.strictEqual(restorationLedger.groups.length, 11, 'ledger covers every split map group');
 assert.deepStrictEqual(runtime.validateMapRestorationLedger(), [], 'ledger permits only confirmed current map/spawn/connection data');
 runtime.getMap('gl_sew01').monsters.push(80);
 assert(runtime.validateMapRestorationLedger().includes('unapproved spawn:gl_sew01'), 'ledger fails closed on an unsupported spawn');

@@ -1,6 +1,226 @@
 {
- "src": "rathena dd073ca npc/pre-re/mobs (prontera·prt_sew·prt_maze·iz_dun·payon·pay_dun) + npc/**/warps — 사실값만 추출",
+ "src": "rathena 4cd08b7 npc/pre-re/mobs (prontera·prt_sew·prt_maze·iz_dun·payon·pay_dun·treasure·tur_dun·morocc·anthell·moc_pryd·in_sphinx) + npc/**/warps — 사실값만 추출",
  "maps": {
+  "anthell01": {
+   "group": "개미 지옥",
+   "displayName": "개미 지옥 1층",
+   "spawns": [
+    [
+     501,
+     87
+    ],
+    [
+     63,
+     50
+    ],
+    [
+     65,
+     40
+    ],
+    [
+     19,
+     20
+    ],
+    [
+     64,
+     15
+    ],
+    [
+     66,
+     10
+    ],
+    [
+     484,
+     1
+    ],
+    [
+     428,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "anthell02",
+    "cmd_fild08"
+   ]
+  },
+  "anthell02": {
+   "group": "개미 지옥",
+   "displayName": "개미 지옥 2층",
+   "spawns": [
+    [
+     64,
+     50
+    ],
+    [
+     66,
+     30
+    ],
+    [
+     19,
+     20
+    ],
+    [
+     501,
+     15
+    ],
+    [
+     63,
+     15
+    ],
+    [
+     65,
+     15
+    ],
+    [
+     484,
+     3
+    ]
+   ],
+   "mvp": 197,
+   "warps": [
+    "anthell01",
+    "cmd_fild08"
+   ]
+  },
+  "in_sphinx1": {
+   "group": "모로크 스핑크스",
+   "displayName": "모로크 스핑크스 1층",
+   "spawns": [
+    [
+     133,
+     40
+    ],
+    [
+     60,
+     20
+    ],
+    [
+     61,
+     20
+    ],
+    [
+     54,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "in_sphinx2",
+    "moc_fild19"
+   ]
+  },
+  "in_sphinx2": {
+   "group": "모로크 스핑크스",
+   "displayName": "모로크 스핑크스 2층",
+   "spawns": [
+    [
+     60,
+     50
+    ],
+    [
+     61,
+     50
+    ],
+    [
+     54,
+     20
+    ],
+    [
+     133,
+     15
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "in_sphinx1",
+    "in_sphinx3"
+   ]
+  },
+  "in_sphinx3": {
+   "group": "모로크 스핑크스",
+   "displayName": "모로크 스핑크스 3층",
+   "spawns": [
+    [
+     58,
+     65
+    ],
+    [
+     54,
+     15
+    ],
+    [
+     59,
+     5
+    ],
+    [
+     86,
+     5
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "in_sphinx2",
+    "in_sphinx4"
+   ]
+  },
+  "in_sphinx4": {
+   "group": "모로크 스핑크스",
+   "displayName": "모로크 스핑크스 4층",
+   "spawns": [
+    [
+     57,
+     50
+    ],
+    [
+     59,
+     20
+    ],
+    [
+     181,
+     15
+    ],
+    [
+     86,
+     4
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "in_sphinx3",
+    "in_sphinx5"
+   ]
+  },
+  "in_sphinx5": {
+   "group": "모로크 스핑크스",
+   "displayName": "모로크 스핑크스 5층",
+   "spawns": [
+    [
+     59,
+     70
+    ],
+    [
+     493,
+     20
+    ],
+    [
+     54,
+     10
+    ],
+    [
+     181,
+     10
+    ],
+    [
+     86,
+     7
+    ]
+   ],
+   "mvp": 139,
+   "warps": [
+    "in_sphinx4"
+   ]
+  },
   "iz_dun00": {
    "group": "바이란 섬 해저동굴",
    "displayName": "해저동굴 1층",
@@ -165,6 +385,584 @@
    "mvp": null,
    "warps": [
     "iz_dun03"
+   ]
+  },
+  "moc_fild01": {
+   "group": "소그라트 사막 필드",
+   "displayName": "소그라트 사막 01",
+   "spawns": [
+    [
+     9,
+     70
+    ],
+    [
+     5,
+     30
+    ],
+    [
+     501,
+     20
+    ],
+    [
+     480,
+     20
+    ],
+    [
+     12,
+     10
+    ],
+    [
+     1,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "moc_fild02",
+    "moc_fild20",
+    "pay_fild04",
+    "prt_fild08",
+    "prt_fild09"
+   ]
+  },
+  "moc_fild02": {
+   "group": "소그라트 사막 필드",
+   "displayName": "소그라트 사막 02",
+   "spawns": [
+    [
+     22,
+     70
+    ],
+    [
+     480,
+     40
+    ],
+    [
+     5,
+     30
+    ],
+    [
+     501,
+     10
+    ],
+    [
+     12,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "moc_fild01",
+    "moc_fild03",
+    "moc_fild13",
+    "pay_fild04",
+    "pay_gld"
+   ]
+  },
+  "moc_fild03": {
+   "group": "소그라트 사막 필드",
+   "displayName": "소그라트 사막 03",
+   "spawns": [
+    [
+     28,
+     70
+    ],
+    [
+     498,
+     30
+    ],
+    [
+     20,
+     20
+    ],
+    [
+     10,
+     20
+    ],
+    [
+     119,
+     10
+    ],
+    [
+     107,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "moc_fild02",
+    "moc_fild13",
+    "pay_fild01",
+    "pay_fild11"
+   ]
+  },
+  "moc_fild07": {
+   "group": "소그라트 사막 필드",
+   "displayName": "소그라트 사막 07",
+   "spawns": [
+    [
+     5,
+     70
+    ],
+    [
+     480,
+     50
+    ],
+    [
+     506,
+     30
+    ],
+    [
+     12,
+     30
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "moc_fild20",
+    "morocc"
+   ]
+  },
+  "moc_fild11": {
+   "group": "소그라트 사막 필드",
+   "displayName": "소그라트 사막 11",
+   "spawns": [
+    [
+     71,
+     70
+    ],
+    [
+     123,
+     20
+    ],
+    [
+     21,
+     20
+    ],
+    [
+     67,
+     10
+    ],
+    [
+     64,
+     10
+    ],
+    [
+     65,
+     10
+    ],
+    [
+     63,
+     10
+    ],
+    [
+     501,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "moc_fild12",
+    "moc_fild17",
+    "moc_fild20"
+   ]
+  },
+  "moc_fild12": {
+   "group": "소그라트 사막 필드",
+   "displayName": "소그라트 사막 12",
+   "spawns": [
+    [
+     506,
+     50
+    ],
+    [
+     12,
+     50
+    ],
+    [
+     480,
+     35
+    ],
+    [
+     5,
+     35
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "moc_fild11",
+    "moc_fild18",
+    "morocc"
+   ]
+  },
+  "moc_fild13": {
+   "group": "소그라트 사막 필드",
+   "displayName": "소그라트 사막 13",
+   "spawns": [
+    [
+     29,
+     75
+    ],
+    [
+     125,
+     30
+    ],
+    [
+     25,
+     30
+    ],
+    [
+     20,
+     20
+    ],
+    [
+     5,
+     10
+    ],
+    [
+     493,
+     5
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "moc_fild02",
+    "moc_fild03",
+    "moc_fild20"
+   ]
+  },
+  "moc_fild16": {
+   "group": "소그라트 사막 필드",
+   "displayName": "소그라트 사막 16",
+   "spawns": [
+    [
+     68,
+     70
+    ],
+    [
+     67,
+     30
+    ],
+    [
+     123,
+     25
+    ],
+    [
+     65,
+     20
+    ],
+    [
+     64,
+     10
+    ],
+    [
+     501,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "in_moc_16",
+    "moc_fild17",
+    "moc_fild20"
+   ]
+  },
+  "moc_fild17": {
+   "group": "소그라트 사막 필드",
+   "displayName": "소그라트 사막 17",
+   "spawns": [
+    [
+     67,
+     100
+    ],
+    [
+     110,
+     30
+    ],
+    [
+     124,
+     25
+    ],
+    [
+     123,
+     15
+    ],
+    [
+     501,
+     10
+    ],
+    [
+     69,
+     5
+    ]
+   ],
+   "mvp": 198,
+   "warps": [
+    "moc_fild11",
+    "moc_fild16",
+    "moc_fild18"
+   ]
+  },
+  "moc_fild18": {
+   "group": "소그라트 사막 필드",
+   "displayName": "소그라트 사막 18",
+   "spawns": [
+    [
+     21,
+     80
+    ],
+    [
+     110,
+     70
+    ],
+    [
+     6,
+     40
+    ],
+    [
+     112,
+     10
+    ],
+    [
+     501,
+     5
+    ],
+    [
+     106,
+     1
+    ],
+    [
+     79,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "cmd_fild09",
+    "moc_fild12",
+    "moc_fild17"
+   ]
+  },
+  "moc_fild20": {
+   "group": "소그라트 사막 필드",
+   "displayName": "소그라트 사막 20",
+   "spawns": [
+    [
+     69,
+     70
+    ],
+    [
+     506,
+     50
+    ],
+    [
+     12,
+     50
+    ],
+    [
+     5,
+     30
+    ],
+    [
+     64,
+     20
+    ],
+    [
+     65,
+     20
+    ],
+    [
+     63,
+     20
+    ],
+    [
+     112,
+     20
+    ],
+    [
+     501,
+     10
+    ],
+    [
+     401,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "moc_fild01",
+    "moc_fild07",
+    "moc_fild11",
+    "moc_fild13",
+    "moc_fild16",
+    "morocc",
+    "prt_fild09",
+    "prt_fild10"
+   ]
+  },
+  "moc_pryd01": {
+   "group": "모로크 피라미드",
+   "displayName": "모로크 피라미드 1층",
+   "spawns": [
+    [
+     19,
+     50
+    ],
+    [
+     20,
+     20
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "moc_pryd02",
+    "moc_pryd05",
+    "moc_ruins"
+   ]
+  },
+  "moc_pryd02": {
+   "group": "모로크 피라미드",
+   "displayName": "모로크 피라미드 2층",
+   "spawns": [
+    [
+     55,
+     30
+    ],
+    [
+     449,
+     30
+    ],
+    [
+     448,
+     30
+    ],
+    [
+     20,
+     20
+    ],
+    [
+     133,
+     20
+    ],
+    [
+     56,
+     5
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "moc_pryd01",
+    "moc_pryd03"
+   ]
+  },
+  "moc_pryd03": {
+   "group": "모로크 피라미드",
+   "displayName": "모로크 피라미드 3층",
+   "spawns": [
+    [
+     55,
+     70
+    ],
+    [
+     387,
+     20
+    ],
+    [
+     54,
+     10
+    ],
+    [
+     133,
+     5
+    ],
+    [
+     86,
+     5
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "moc_pryd02",
+    "moc_pryd04"
+   ]
+  },
+  "moc_pryd04": {
+   "group": "모로크 피라미드",
+   "displayName": "모로크 피라미드 4층",
+   "spawns": [
+    [
+     56,
+     50
+    ],
+    [
+     55,
+     25
+    ],
+    [
+     54,
+     20
+    ],
+    [
+     86,
+     15
+    ],
+    [
+     419,
+     3
+    ]
+   ],
+   "mvp": 138,
+   "warps": [
+    "moc_pryd03"
+   ]
+  },
+  "moc_pryd05": {
+   "group": "모로크 피라미드",
+   "displayName": "모로크 피라미드 5층",
+   "spawns": [
+    [
+     57,
+     60
+    ],
+    [
+     387,
+     50
+    ],
+    [
+     55,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "moc_pryd01",
+    "moc_pryd06"
+   ]
+  },
+  "moc_pryd06": {
+   "group": "모로크 피라미드",
+   "displayName": "모로크 피라미드 6층",
+   "spawns": [
+    [
+     418,
+     20
+    ],
+    [
+     419,
+     20
+    ],
+    [
+     86,
+     20
+    ],
+    [
+     387,
+     10
+    ]
+   ],
+   "mvp": 194,
+   "warps": [
+    "moc_pryd05"
    ]
   },
   "pay_dun00": {
@@ -1029,6 +1827,10 @@
     [
      352,
      10
+    ],
+    [
+     505,
+     1
     ]
    ],
    "mvp": null,
@@ -1385,15 +2187,235 @@
    "warps": [
     "prt_sewb3"
    ]
+  },
+  "treasure01": {
+   "group": "침몰선",
+   "displayName": "침몰선 1층",
+   "spawns": [
+    [
+     41,
+     71
+    ],
+    [
+     502,
+     43
+    ],
+    [
+     45,
+     20
+    ],
+    [
+     80,
+     15
+    ],
+    [
+     26,
+     12
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "alb2trea",
+    "treasure02"
+   ]
+  },
+  "treasure02": {
+   "group": "침몰선",
+   "displayName": "침몰선 2층",
+   "spawns": [
+    [
+     149,
+     38
+    ],
+    [
+     45,
+     20
+    ],
+    [
+     502,
+     20
+    ],
+    [
+     41,
+     18
+    ],
+    [
+     80,
+     14
+    ],
+    [
+     86,
+     8
+    ],
+    [
+     91,
+     1
+    ],
+    [
+     404,
+     1
+    ],
+    [
+     202,
+     1
+    ]
+   ],
+   "mvp": 479,
+   "warps": [
+    "treasure01"
+   ]
+  },
+  "tur_dun01": {
+   "group": "거북섬",
+   "displayName": "거북섬 던전",
+   "spawns": [
+    [
+     410,
+     25
+    ],
+    [
+     507,
+     25
+    ],
+    [
+     360,
+     15
+    ],
+    [
+     42,
+     10
+    ],
+    [
+     162,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "tur_dun02",
+    "tur_dun05"
+   ]
+  },
+  "tur_dun02": {
+   "group": "거북섬",
+   "displayName": "거북이 섬 던전",
+   "spawns": [
+    [
+     162,
+     40
+    ],
+    [
+     159,
+     40
+    ],
+    [
+     160,
+     20
+    ],
+    [
+     360,
+     15
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "tur_dun01",
+    "tur_dun03",
+    "tur_dun05"
+   ]
+  },
+  "tur_dun03": {
+   "group": "거북섬",
+   "displayName": "양거촌",
+   "spawns": [
+    [
+     160,
+     40
+    ],
+    [
+     504,
+     35
+    ],
+    [
+     162,
+     15
+    ],
+    [
+     163,
+     10
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "tur_dun02",
+    "tur_dun04"
+   ]
+  },
+  "tur_dun04": {
+   "group": "거북섬",
+   "displayName": "구양궁",
+   "spawns": [
+    [
+     504,
+     41
+    ],
+    [
+     163,
+     33
+    ],
+    [
+     160,
+     15
+    ],
+    [
+     404,
+     7
+    ],
+    [
+     162,
+     4
+    ]
+   ],
+   "mvp": 164,
+   "warps": [
+    "tur_dun03"
+   ]
+  },
+  "tur_dun05": {
+   "group": "거북섬",
+   "displayName": "거북섬 5",
+   "spawns": [
+    [
+     160,
+     5
+    ],
+    [
+     162,
+     3
+    ],
+    [
+     504,
+     1
+    ]
+   ],
+   "mvp": null,
+   "warps": [
+    "tur_dun01",
+    "tur_dun02"
+   ]
   }
  },
  "bridges": {
+  "alb2trea": "알베르타",
   "alberta": "알베르타",
+  "cmd_fild08": "코모도 필드",
+  "cmd_fild09": "코모도 필드",
   "gef_fild00": "게펜 필드",
   "gef_fild01": "게펜 필드",
   "gef_fild02": "게펜 필드",
   "gef_fild03": "게펜 필드",
   "gef_fild11": "게펜 필드",
+  "moc_fild19": "모로크",
   "izlu2dun": "이즈루드",
   "izlude": "이즈루드",
   "mjolnir_07": "묘르닐 산맥",
@@ -1401,13 +2423,11 @@
   "mjolnir_10": "묘르닐 산맥",
   "mjolnir_11": "묘르닐 산맥",
   "mjolnir_12": "묘르닐 산맥",
-  "moc_fild01": "소그라트 사막 동부",
-  "moc_fild02": "소그라트 사막 동부",
-  "moc_fild03": "소그라트 사막 동부",
+  "morocc": "모로크",
+  "moc_ruins": "모로크",
   "pay_arche": "페이욘",
   "payon": "페이욘",
-  "prontera": "프론테라",
-  "moc_fild20": "소그라트 사막 동부"
+  "prontera": "프론테라"
  },
  "unmapped": [
   "prt_fild00 Shining Plant(1083)x1",
@@ -1429,7 +2449,6 @@
   "prt_fild09 Yellow Plant(1081)x3",
   "prt_fild10 Red Mushroom(1085)x15",
   "prt_fild10 Shining Plant(1083)x1",
-  "prt_fild11 Panzer Goblin(1308)x1",
   "prt_fild11 Red Mushroom(1085)x10",
   "prt_maze01 Shining Plant(1083)x1",
   "prt_maze01 White Plant(1082)x1",
@@ -1526,6 +2545,71 @@
   "pay_dun04 Red Plant(1078)x10",
   "pay_dun04 White Plant(1082)x2",
   "pay_dun04 White Plant(1082)x2",
-  "pay_dun04 White Plant(1082)x2"
+  "pay_dun04 White Plant(1082)x2",
+  "moc_fild01 Yellow Plant(1081)x10",
+  "moc_fild02 Yellow Plant(1081)x1",
+  "moc_fild02 Yellow Plant(1081)x1",
+  "moc_fild02 Yellow Plant(1081)x1",
+  "moc_fild02 Yellow Plant(1081)x1",
+  "moc_fild02 Yellow Plant(1081)x1",
+  "moc_fild02 Yellow Plant(1081)x1",
+  "moc_fild02 Yellow Plant(1081)x1",
+  "moc_fild02 Green Plant(1080)x1",
+  "moc_fild02 Green Plant(1080)x1",
+  "moc_fild02 Green Plant(1080)x1",
+  "moc_fild02 Green Plant(1080)x1",
+  "moc_fild02 Green Plant(1080)x1",
+  "moc_fild02 Green Plant(1080)x1",
+  "moc_fild02 Green Plant(1080)x1",
+  "moc_fild03 Green Plant(1080)x2",
+  "moc_fild03 Green Plant(1080)x2",
+  "moc_fild03 Green Plant(1080)x2",
+  "moc_fild03 Green Plant(1080)x2",
+  "moc_fild03 Green Plant(1080)x2",
+  "moc_fild03 Green Plant(1080)x2",
+  "moc_fild03 Green Plant(1080)x2",
+  "moc_fild07 Yellow Plant(1081)x5",
+  "moc_fild11 Shining Plant(1083)x1",
+  "moc_fild12 Yellow Plant(1081)x10",
+  "moc_fild13 Red Mushroom(1085)x1",
+  "moc_fild13 Red Mushroom(1085)x1",
+  "moc_fild13 Red Mushroom(1085)x1",
+  "moc_fild13 Red Mushroom(1085)x1",
+  "moc_fild13 Red Mushroom(1085)x1",
+  "moc_fild13 Red Mushroom(1085)x1",
+  "moc_fild13 Red Mushroom(1085)x1",
+  "moc_fild13 Red Mushroom(1085)x1",
+  "moc_fild13 Red Mushroom(1085)x1",
+  "moc_fild13 Red Mushroom(1085)x1",
+  "moc_fild13 Red Mushroom(1085)x1",
+  "moc_fild13 Red Mushroom(1085)x1",
+  "moc_fild13 Red Mushroom(1085)x1",
+  "moc_fild13 Yellow Plant(1081)x1",
+  "moc_fild13 Yellow Plant(1081)x1",
+  "moc_fild13 Yellow Plant(1081)x1",
+  "moc_fild13 Yellow Plant(1081)x1",
+  "moc_fild13 Yellow Plant(1081)x1",
+  "moc_fild13 Yellow Plant(1081)x1",
+  "moc_fild13 Yellow Plant(1081)x3",
+  "moc_fild13 Yellow Plant(1081)x3",
+  "moc_fild13 Yellow Plant(1081)x3",
+  "moc_fild17 Yellow Plant(1081)x1",
+  "moc_fild17 Yellow Plant(1081)x1",
+  "moc_fild17 Yellow Plant(1081)x1",
+  "moc_fild17 Blue Plant(1079)x1",
+  "moc_fild17 Yellow Plant(1081)x1",
+  "moc_fild17 Yellow Plant(1081)x1",
+  "moc_fild17 Yellow Plant(1081)x1",
+  "moc_fild18 Yellow Plant(1081)x1",
+  "moc_fild18 Yellow Plant(1081)x1",
+  "moc_fild18 Yellow Plant(1081)x1",
+  "moc_fild18 Yellow Plant(1081)x1",
+  "moc_fild18 Yellow Plant(1081)x1",
+  "moc_fild18 Yellow Plant(1081)x1",
+  "moc_fild18 Yellow Plant(1081)x1",
+  "moc_fild18 Yellow Plant(1081)x1",
+  "moc_fild20 Incarnation of Morocc(1918)x1",
+  "moc_fild20 Incarnation of Morocc(1919)x1",
+  "moc_fild20 Incarnation of Morocc(1921)x1"
  ]
 }
